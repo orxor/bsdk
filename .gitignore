@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/bsdk/v16
+/src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/bin
+/src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
