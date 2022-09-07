@@ -16,4 +16,7 @@
     <DefineConstants>UseWPF</DefineConstants>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Internal\" />
+  </ItemGroup>
 </Project>
