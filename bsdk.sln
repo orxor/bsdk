@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32802.440
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Modeling.UnifiedModelingLanguage", "src\dotnet\assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj", "{D3BD5FDA-0CE4-4CC9-BCC9-21CCCBEB61DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.UnifiedModelingLanguage", "src\dotnet\assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj", "{D3BD5FDA-0CE4-4CC9-BCC9-21CCCBEB61DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Modeling.VSShellPackage", "src\dotnet\packages\BinaryStudio.Modeling.VSShellPackage\BinaryStudio.Modeling.VSShellPackage.csproj", "{7994C105-8A6E-4DA9-88F1-D1CD867A9EAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{D3BD5FDA-0CE4-4CC9-BCC9-21CCCBEB61DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3BD5FDA-0CE4-4CC9-BCC9-21CCCBEB61DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3BD5FDA-0CE4-4CC9-BCC9-21CCCBEB61DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7994C105-8A6E-4DA9-88F1-D1CD867A9EAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7994C105-8A6E-4DA9-88F1-D1CD867A9EAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7994C105-8A6E-4DA9-88F1-D1CD867A9EAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7994C105-8A6E-4DA9-88F1-D1CD867A9EAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
