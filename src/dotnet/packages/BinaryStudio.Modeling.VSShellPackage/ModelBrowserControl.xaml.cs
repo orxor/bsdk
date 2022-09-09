@@ -10,6 +10,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
         public ModelBrowserControl()
             {
             InitializeComponent();
+            DataContext = null;
             }
 
         private void Button1_Click(object sender, RoutedEventArgs e)

@@ -15,13 +15,13 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage.Internal
                     ToArray());
             }}
 
-        public IList<Element> OwnedElement { get; }
+        public virtual IList<Element> OwnedElement { get; }
 
         public Element Owner { get; }
 
-        public EElement(String identifer)
+        public EElement(String identifier)
             {
-            Identifier = Identifier;
+            Identifier = identifier;
             OwnedElement = new List<Element>();
             }
         }

@@ -1,11 +1,18 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
+using BinaryStudio.Modeling.UnifiedModelingLanguage;
 using Microsoft.VisualStudio;
+using Action = System.Action;
+using IAsyncServiceProvider = Microsoft.VisualStudio.Shell.IAsyncServiceProvider;
 using Task = System.Threading.Tasks.Task;
 
 namespace BinaryStudio.Modeling.VSShellPackage
@@ -29,6 +36,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
         /// VS Package that provides this command, not null.
         /// </summary>
         private readonly AsyncPackage package;
+        private Object DataContextProperty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ModelBrowserToolWindowCommand"/> class.
@@ -40,6 +48,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
             {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+            Dispatcher = Dispatcher.CurrentDispatcher;
 
             var menuCommandID = new CommandID(CommandSet, CommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
@@ -49,20 +58,29 @@ namespace BinaryStudio.Modeling.VSShellPackage
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static ModelBrowserToolWindowCommand Instance
-            {
-            get;
-            private set;
-            }
+        public static ModelBrowserToolWindowCommand Instance { get;private set; }
+        public Dispatcher Dispatcher { get; }
+        public Boolean InvokeRequired { get { return Dispatcher.Thread.ManagedThreadId != Thread.CurrentThread.ManagedThreadId; }}
 
         /// <summary>
         /// Gets the service provider from the owner package.
         /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
-            {
-            get
+        private IAsyncServiceProvider ServiceProvider { get {
+            return this.package;
+            }}
+
+        public Object DataContext {
+            get { return DataContextProperty; }
+            set
                 {
-                return this.package;
+                if (SetValue(ref DataContextProperty,value)) {
+                    var window = package.FindToolWindow(typeof(ModelBrowserToolWindow), 0, true);
+                    if (window != null) {
+                        if (window.Content is FrameworkElement target) {
+                            target.DataContext = value;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -76,10 +94,11 @@ namespace BinaryStudio.Modeling.VSShellPackage
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
-            OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
+            var commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             Instance = new ModelBrowserToolWindowCommand(package, commandService);
             }
 
+        #region M:Execute(Object,EventArgs)
         /// <summary>
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
@@ -95,5 +114,47 @@ namespace BinaryStudio.Modeling.VSShellPackage
                 ErrorHandler.ThrowOnFailure(windowFrame.Show());
                 }
             }
+        #endregion
+        #region M:OnPropertyChanged(String)
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] String propertyname = null) {
+            var handler = PropertyChanged;
+            if (handler != null) {
+                var e = new PropertyChangedEventArgs(propertyname);
+                if (InvokeRequired) {
+                    Dispatcher.Invoke(DispatcherPriority.Normal, new Action(()=>{
+                        handler.Invoke(this, e);
+                        }));
+                    }
+                else
+                    {
+                    handler.Invoke(this, e);
+                    }
+                }
+            }
+        #endregion
+        #region M:SetValue<T>(ref T,T,String):Boolean
+        private Boolean SetValue<T>(ref T field, T value, [CallerMemberName] String propertyName = null) {
+            var r = true;
+            var equatable = value as IEquatable<T>;
+            if (equatable != null) {
+                r = equatable.Equals(field);
+                }
+            else if (typeof(T).IsSubclassOf(typeof(Enum)))
+                {
+                r = Equals(value, field);
+                }
+            else
+                {
+                r = Equals(value, field);
+                }
+            if (!r)
+                {
+                field = value;
+                OnPropertyChanged(propertyName);
+                }
+            return !r;
+            }
+        #endregion
         }
     }

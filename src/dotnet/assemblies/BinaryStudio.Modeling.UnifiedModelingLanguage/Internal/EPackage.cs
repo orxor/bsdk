@@ -12,7 +12,14 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage.Internal
         public TemplateSignature OwnedTemplateSignature { get; }
         public TemplateBinding[] TemplateBinding { get; }
         public String URI { get; }
-        public IList<Package> NestedPackage { get; }
+
+        public IList<Package> NestedPackage { get{
+            return new ReadOnlyCollection<Package>(
+                OwnedElement.
+                    OfType<Package>().
+                    ToArray());
+            }}
+
         public Package NestingPackage { get; }
 
         public IList<Type> OwnedType { get {
@@ -31,9 +38,10 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage.Internal
                     ToArray());
             }}
 
-        public EPackage(String identifer)
-            : base(identifer)
+        public EPackage(String identifier)
+            : base(identifier)
             {
+
             }
 
         #region P:Visibility:VisibilityKind

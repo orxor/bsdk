@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BinaryStudio.Modeling.UnifiedModelingLanguage
     {
     public interface Element
         {
+        String Identifier { get; }
+
         /// <summary>
         /// The Comments owned by this <see cref="Element"/>.
         /// {subsets <see cref="OwnedElement"/>}

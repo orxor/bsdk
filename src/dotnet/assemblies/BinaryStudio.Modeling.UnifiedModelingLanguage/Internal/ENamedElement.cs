@@ -11,8 +11,8 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage.Internal
         public Dependency[] ClientDependency { get; }
         public StringExpression NameExpression { get; }
 
-        protected ENamedElement(String identifer)
-            : base(identifer)
+        protected ENamedElement(String identifier)
+            : base(identifier)
             {
             }
 

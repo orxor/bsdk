@@ -11,8 +11,8 @@ namespace BinaryStudio.Modeling.UnifiedModelingLanguage.Internal
         public Constraint[] OwnedRule { get; }
         public PackageImport[] PackageImport { get; }
 
-        public ENamespace(String identifer)
-            : base(identifer)
+        public ENamespace(String identifier)
+            : base(identifier)
             {
             }
         }

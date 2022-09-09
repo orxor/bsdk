@@ -1,4 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Windows;
+using BinaryStudio.Modeling.UnifiedModelingLanguage;
 using Microsoft.VisualStudio.Shell;
 
 namespace BinaryStudio.Modeling.VSShellPackage
