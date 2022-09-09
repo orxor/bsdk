@@ -7,3 +7,9 @@
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
 /src/dotnet/packages/BinaryStudio.Modeling.VSShellPackage/bin
 /src/dotnet/packages/BinaryStudio.Modeling.VSShellPackage/obj
+/src/dotnet/assemblies/BinaryStudio.Modeling/bin
+/src/dotnet/assemblies/BinaryStudio.Modeling/obj
+/src/dotnet/assemblies/BinaryStudio.Modeling.PlatformUI/bin
+/src/dotnet/assemblies/BinaryStudio.Modeling.PlatformUI/obj
+/src/dotnet/assemblies/BinaryStudio.PlatformUI/bin
+/src/dotnet/assemblies/BinaryStudio.PlatformUI/obj

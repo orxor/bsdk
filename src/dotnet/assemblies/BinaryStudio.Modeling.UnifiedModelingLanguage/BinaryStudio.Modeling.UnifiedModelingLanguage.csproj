@@ -19,4 +19,7 @@
   <ItemGroup>
     <Folder Include="Internal\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.Modeling\BinaryStudio.Modeling.csproj" />
+  </ItemGroup>
 </Project>
