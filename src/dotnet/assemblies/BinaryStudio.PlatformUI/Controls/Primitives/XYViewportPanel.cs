@@ -40,7 +40,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             private set { SetValue(PhysicalViewportPropertyKey, value); }
             }
         #endregion
-        #region P:IScrollInfo.ViewportWidth(ViewportHeight):Vector
+        #region P:IScrollInfo.Viewport{Width,Height}:Vector
         private static readonly DependencyPropertyKey ViewportPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Viewport), typeof(Vector), typeof(XYViewportPanel), new PropertyMetadata(default(Vector), OnViewportChanged));
         /// <summary>Identifies the <see cref="Viewport"/> dependency property.</summary>
         /// <returns>The identifier for the <see cref="Viewport"/> dependency property.</returns>
@@ -57,9 +57,10 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             if ((Offset.X > 0) || (Offset.Y > 0)) {
                 var offsetP = NewValue-OldValue;
                 var offsetO = Offset - offsetP;
-                Offset = new Vector(
-                    Math.Max(offsetO.X,0.0),
-                    Math.Max(offsetO.Y,0.0));
+                var offsetN = Offset;
+                if (Offset.X > 0) { offsetN = new Vector(Math.Max(offsetO.X,0),offsetN.Y); }
+                if (Offset.Y > 0) { offsetN = new Vector(offsetN.X,Math.Max(offsetO.Y,0)); }
+                Offset = offsetN;
                 }
             InvalidateScrollInfo();
             }
@@ -86,7 +87,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             }}
         #endregion
         #endregion
-        #region P:IScrollInfo.ExtentWidth(ExtentHeight):Vector
+        #region P:IScrollInfo.Extent{Width,Height}:Vector
         private static readonly DependencyPropertyKey ExtentPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Extent), typeof(Vector), typeof(XYViewportPanel), new PropertyMetadata(default(Vector), OnExtentChanged));
         /// <summary>Identifies the <see cref="Extent"/> dependency property.</summary>
         /// <returns>The identifier for the <see cref="Extent"/> dependency property.</returns>
@@ -124,7 +125,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             }}
         #endregion
         #endregion
-        #region P:IScrollInfo.HorizontalOffset(VerticalOffset):Vector
+        #region P:IScrollInfo.{Horizontal,Vertical}Offset:Vector
         private static readonly DependencyPropertyKey OffsetPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Offset), typeof(Vector), typeof(XYViewportPanel),new PropertyMetadata(default(Vector), OnOffsetChanged, OnOffsetCoerceValue));
 
         private static Object OnOffsetCoerceValue(DependencyObject sender, Object basevalue) {
@@ -167,6 +168,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             get { return Offset.Y; }
             }
         #endregion
+        #region M:IScrollInfo.Line{Up,Down,Left,Right}
         #region M:IScrollInfo.LineUp
         /// <summary>Scrolls up within content by one logical unit.</summary>
         void IScrollInfo.LineUp()
@@ -195,6 +197,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             ((IScrollInfo)this).SetVerticalOffset(Math.Round(Offset.X + 1));
             }
         #endregion
+        #endregion
+        #region M:IScrollInfo.Page{Up,Down,Left,Right}
         #region M:IScrollInfo.PageUp
         /// <summary>Scrolls up within content by one page.</summary>
         void IScrollInfo.PageUp()
@@ -223,6 +227,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             ((IScrollInfo)this).SetHorizontalOffset(Offset.X + Viewport.X);
             }
         #endregion
+        #endregion
+        #region M:IScrollInfo.MouseWheel{Up,Down,Left,Right}
         #region M:IScrollInfo.MouseWheelUp
         /// <summary>Scrolls up within content after a user clicks the wheel button on a mouse.</summary>
         void IScrollInfo.MouseWheelUp()
@@ -251,6 +257,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             ((IScrollInfo)this).LineRight();
             }
         #endregion
+        #endregion
+        #region M:IScrollInfo.Set{Horizontal,Vertical}Offset(Double)
         #region M:IScrollInfo.SetHorizontalOffset(Double)
         /// <summary>Sets the amount of horizontal offset.</summary>
         /// <param name="offset">The degree to which content is horizontally offset from the containing viewport.</param>
@@ -267,16 +275,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             Offset = new Vector(Offset.X,offset);
             }
         #endregion
-        #region M:IScrollInfo.MakeVisible(Visual,Rect)
-        /// <summary>Forces content to scroll until the coordinate space of a <see cref="T:System.Windows.Media.Visual"/> object is visible.</summary>
-        /// <param name="visual">A <see cref="T:System.Windows.Media.Visual"/> that becomes visible.</param>
-        /// <param name="rectangle">A bounding rectangle that identifies the coordinate space to make visible.</param>
-        /// <returns>A <see cref="T:System.Windows.Rect"/> that is visible.</returns>
-        Rect IScrollInfo.MakeVisible(Visual visual, Rect rectangle) {
-            if (rectangle.IsEmpty || (visual == null) || (visual == this) || !IsAncestorOf(visual)) { return Rect.Empty; }
-            throw new NotImplementedException();
-            }
         #endregion
+        #region P:IScrollInfo.Can{Horizontally,Vertically}Scroll:Boolean
         #region P:IScrollInfo.CanHorizontallyScroll:Boolean
         public static readonly DependencyProperty CanHorizontallyScrollProperty = DependencyProperty.Register("CanHorizontallyScroll", typeof(Boolean), typeof(XYViewportPanel), new PropertyMetadata(default(Boolean), OnCanHorizontallyScrollChanged));
         private static void OnCanHorizontallyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
@@ -310,6 +310,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             get { return LinkedScrollInfo?.CanVerticallyScroll ?? (Boolean)GetValue(CanVerticallyScrollProperty); }
             set { SetValue(CanVerticallyScrollProperty, value); }
             }
+        #endregion
         #endregion
         #region P:IScrollInfo.ScrollOwner:ScrollViewer
         public static readonly DependencyProperty ScrollOwnerProperty = DependencyProperty.Register("ScrollOwner", typeof(ScrollViewer), typeof(XYViewportPanel), new PropertyMetadata(default(ScrollViewer), OnScrollOwnerChanged));
@@ -379,6 +380,16 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 }
             }
         #endregion
+        #region M:IScrollInfo.MakeVisible(Visual,Rect)
+        /// <summary>Forces content to scroll until the coordinate space of a <see cref="T:System.Windows.Media.Visual"/> object is visible.</summary>
+        /// <param name="visual">A <see cref="T:System.Windows.Media.Visual"/> that becomes visible.</param>
+        /// <param name="rectangle">A bounding rectangle that identifies the coordinate space to make visible.</param>
+        /// <returns>A <see cref="T:System.Windows.Rect"/> that is visible.</returns>
+        Rect IScrollInfo.MakeVisible(Visual visual, Rect rectangle) {
+            if (rectangle.IsEmpty || (visual == null) || (visual == this) || !IsAncestorOf(visual)) { return Rect.Empty; }
+            throw new NotImplementedException();
+            }
+        #endregion
         #region M:InvalidateScrollInfo
         protected virtual void InvalidateScrollInfo() {
             if (ScrollOwner != null) {
@@ -387,7 +398,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 }
             }
         #endregion
-        #region M:void OnRender(DrawingContext)
+        #region M:OnRender(DrawingContext)
         /// <summary>Draws the content of a <see cref="T:System.Windows.Media.DrawingContext"/> object during the render pass of a <see cref="T:System.Windows.Controls.Panel"/> element.</summary>
         /// <param name="context">The <see cref="T:System.Windows.Media.DrawingContext"/> object to draw.</param>
         protected override void OnRender(DrawingContext context)
