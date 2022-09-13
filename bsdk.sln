@@ -7,11 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.Unifi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Modeling.VSShellPackage", "src\dotnet\packages\BinaryStudio.Modeling.VSShellPackage\BinaryStudio.Modeling.VSShellPackage.csproj", "{7994C105-8A6E-4DA9-88F1-D1CD867A9EAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Modeling.PlatformUI", "src\dotnet\assemblies\BinaryStudio.Modeling.PlatformUI\BinaryStudio.Modeling.PlatformUI.csproj", "{CF1F7531-1568-40B1-8E2B-59D8829EC6CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.PlatformUI", "src\dotnet\assemblies\BinaryStudio.Modeling.PlatformUI\BinaryStudio.Modeling.PlatformUI.csproj", "{CF1F7531-1568-40B1-8E2B-59D8829EC6CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PlatformUI", "src\dotnet\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj", "{851F4AE5-62B5-40CB-BDDB-6B2B2BD7C198}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PlatformUI", "src\dotnet\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj", "{851F4AE5-62B5-40CB-BDDB-6B2B2BD7C198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Modeling", "src\dotnet\assemblies\BinaryStudio.Modeling\BinaryStudio.Modeling.csproj", "{9B256AA9-D8A8-4B62-A5EA-4FE375505685}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling", "src\dotnet\assemblies\BinaryStudio.Modeling\BinaryStudio.Modeling.csproj", "{9B256AA9-D8A8-4B62-A5EA-4FE375505685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XYViewportSample", "src\dotnet\samples\XYViewportSample\XYViewportSample.csproj", "{78E586B8-1BB9-4A72-9441-B165FB2030C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{9B256AA9-D8A8-4B62-A5EA-4FE375505685}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B256AA9-D8A8-4B62-A5EA-4FE375505685}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B256AA9-D8A8-4B62-A5EA-4FE375505685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78E586B8-1BB9-4A72-9441-B165FB2030C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78E586B8-1BB9-4A72-9441-B165FB2030C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78E586B8-1BB9-4A72-9441-B165FB2030C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78E586B8-1BB9-4A72-9441-B165FB2030C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
