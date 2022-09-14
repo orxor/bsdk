@@ -13,5 +13,7 @@
 /src/dotnet/assemblies/BinaryStudio.Modeling.PlatformUI/obj
 /src/dotnet/assemblies/BinaryStudio.PlatformUI/bin
 /src/dotnet/assemblies/BinaryStudio.PlatformUI/obj
+/src/dotnet/assemblies/BinaryStudio.DiagnosticServices/bin
+/src/dotnet/assemblies/BinaryStudio.DiagnosticServices/obj
 /src/dotnet/samples/XYViewportSample/bin
 /src/dotnet/samples/XYViewportSample/obj

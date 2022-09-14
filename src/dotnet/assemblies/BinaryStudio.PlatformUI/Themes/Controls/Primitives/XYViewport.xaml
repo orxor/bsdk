@@ -25,17 +25,89 @@
   </Style>
   <Style TargetType="{x:Type e:XYViewportNode}">
     <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"/>
-    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+    <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="SnapsToDevicePixels" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type e:XYViewportNode}">
+          <Grid>
+            <Border Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                    x:Name="Content">
+                <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+            </Border>
+            <e:XYViewportNodeSizeDecorator x:Name="Size" Visibility="Hidden"/>
+          </Grid>
+          <!--<ControlTemplate.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+              <Setter TargetName="Content" Property="IsHitTestVisible" Value="False"/>
+              <Setter TargetName="Size" Property="Visibility" Value="Visible"/>
+            </Trigger>
+          </ControlTemplate.Triggers>-->
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+  <Style TargetType="{x:Type e:XYViewportNodeSizeDecorator}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type e:XYViewportNodeSizeDecorator}">
           <Border Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                  BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid Margin="-3">
+              <Grid.Resources>
+                <Style TargetType="{x:Type e:Thumb}">
+                  <Setter Property="BorderThickness" Value="0"/>
+                  <Setter Property="BorderBrush" Value="{x:Null}"/>
+                  <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"/>
+                  <Setter Property="SnapsToDevicePixels" Value="True"/>
+                  <Setter Property="Width" Value="5"/>
+                  <Setter Property="Height" Value="5"/>
+                  <Setter Property="Template">
+                    <Setter.Value>
+                      <ControlTemplate TargetType="{x:Type e:Thumb}">
+                        <Rectangle StrokeThickness="{TemplateBinding BorderThickness}"
+                              Stroke="{TemplateBinding BorderBrush}"
+                              Fill="{TemplateBinding Background}"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                      </ControlTemplate>
+                    </Setter.Value>
+                  </Setter>
+                </Style>
+              </Grid.Resources>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+              <e:Thumb Background="Transparent" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" Grid.RowSpan="5" Width="Auto" Height="Auto" x:Name="ThumbAll"/>
+              <Rectangle Fill="Transparent" Margin="2" Grid.Column="0" Grid.Row="0" Grid.RowSpan="5" Grid.ColumnSpan="5"
+                         Stroke="{DynamicResource {x:Static SystemColors.ControlDarkDarkBrushKey}}"
+                         StrokeThickness="1"
+                         StrokeDashArray="4 1"/>
+              <e:Thumb Grid.Row="0" Grid.Column="0" Cursor="SizeNWSE" x:Name="ThumbLeftTop"/>
+              <e:Thumb Grid.Row="0" Grid.Column="4" Cursor="SizeNESW" x:Name="ThumbRightTop"/>
+              <e:Thumb Grid.Row="4" Grid.Column="0" Cursor="SizeNESW" x:Name="ThumbLeftBottom"/>
+              <e:Thumb Grid.Row="4" Grid.Column="4" Cursor="SizeNWSE" x:Name="ThumbRightBottom"/>
+              <e:Thumb Grid.Row="2" Grid.Column="0" Cursor="SizeWE"   x:Name="ThumbLeft"/>
+              <e:Thumb Grid.Row="2" Grid.Column="4" Cursor="SizeWE"   x:Name="ThumbRight"/>
+              <e:Thumb Grid.Row="0" Grid.Column="2" Cursor="SizeNS"   x:Name="ThumbTop"/>
+              <e:Thumb Grid.Row="4" Grid.Column="2" Cursor="SizeNS"   x:Name="ThumbBottom"/>
+            </Grid>
           </Border>
         </ControlTemplate>
       </Setter.Value>

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI.Controls.Primitives
     {
@@ -90,10 +85,68 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <summary>Prepares the specified element to display the specified item.</summary>
         /// <param name="element">The element that is used to display the specified item.</param>
         /// <param name="item">The specified item to display.</param>
-        protected override void PrepareContainerForItemOverride(DependencyObject element, Object item)
-            {
+        protected override void PrepareContainerForItemOverride(DependencyObject element, Object item) {
             base.PrepareContainerForItemOverride(element, item);
+            if (element is XYViewportNode container) {
+                container.Owner = this;
+                }
             }
         #endregion
+        #region M:OnSelectionChanged(SelectionChangedEventArgs)
+        /// <summary>Called when the selection changes.</summary>
+        /// <param name="e">The event data.</param>
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e) {
+            base.OnSelectionChanged(e);
+            if (ItemsHost is XYViewportPanel panel) {
+                panel.OnSelectionChanged(e);
+                }
+            }
+        #endregion
+        #region M:OnMouseLeftButtonDown(MouseButtonEventArgs)
+        /// <summary>Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> routed event is raised on this element. Implement this method to add class handling for this event.</summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+            {
+            Diagnostic.Print((new StackTrace()).GetFrame(0).GetMethod());
+            base.OnMouseLeftButtonDown(e);
+            }
+        #endregion
+        #region M:OnPreviewMouseLeftButtonDown(MouseButtonEventArgs)
+        /// <summary>Invoked when an unhandled <see cref="E:System.Windows.UIElement.PreviewMouseLeftButtonDown"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.</summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
+        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+            {
+            Diagnostic.Print((new StackTrace()).GetFrame(0).GetMethod());
+            base.OnPreviewMouseLeftButtonDown(e);
+            }
+        #endregion
+
+        internal void SelectItem(DependencyObject item) {
+            if (!IsUpdatingSelectedItems) {
+                BeginUpdateSelectedItems();
+                SelectedItems.Add(item);
+                EndUpdateSelectedItems();
+                if (ItemsHost is XYViewportPanel panel) {
+                    panel.BringTop(item as UIElement);
+                    }
+                }
+            }
+
+        internal void UnselectItem(DependencyObject item) {
+            if (!IsUpdatingSelectedItems) {
+                BeginUpdateSelectedItems();
+                SelectedItems.Remove(item);
+                EndUpdateSelectedItems();
+                }
+            }
+
+        public Panel ItemsHost { get {
+            var pi = typeof(ItemsControl).GetProperty("ItemsHost", BindingFlags.Instance | BindingFlags.NonPublic);
+            #if NET40
+            return (Panel)pi.GetValue(this, null);
+            #else
+            return (Panel)pi.GetValue(this);
+            #endif
+            }}
         }
     }

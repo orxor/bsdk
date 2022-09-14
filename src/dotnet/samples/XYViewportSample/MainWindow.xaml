@@ -11,6 +11,7 @@
     <u:XYViewport Margin="20">
       <u:XYViewportNode u:XYViewport.Left="100" u:XYViewport.Top="100" Width="50" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Hello!</u:XYViewportNode>
       <u:XYViewportNode u:XYViewport.Left="370" u:XYViewport.Top="270" Width="50" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">World!</u:XYViewportNode>
+      <u:XYViewportNode u:XYViewport.Left="370" u:XYViewport.Top="970" Width="50" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Another</u:XYViewportNode>
     </u:XYViewport>
   </Grid>
 </Window>

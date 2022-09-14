@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Extensions;
 
 namespace BinaryStudio.PlatformUI.Controls.Primitives
@@ -11,6 +16,62 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
     using static Double;
     public class XYViewportPanel : Panel, IScrollInfo
         {
+        #region P:Can{Horizontally,Vertically}ScrollComputed:Boolean
+        #region P:CanHorizontallyScrollComputed:Boolean
+        private static readonly DependencyPropertyKey CanHorizontallyScrollComputedPropertyKey = DependencyProperty.RegisterReadOnly("CanHorizontallyScrollComputed", typeof(Boolean), typeof(XYViewportPanel), new PropertyMetadata(default(Boolean)));
+        public static readonly DependencyProperty CanHorizontallyScrollComputedProperty = CanHorizontallyScrollComputedPropertyKey.DependencyProperty;
+        public Boolean CanHorizontallyScrollComputed
+            {
+            get { return (Boolean)GetValue(CanHorizontallyScrollComputedProperty); }
+            private set { SetValue(CanHorizontallyScrollComputedPropertyKey, value); }
+            }
+        #endregion
+        #region P:CanVerticallyScrollComputed:Boolean
+        private static readonly DependencyPropertyKey CanVerticallyScrollComputedPropertyKey = DependencyProperty.RegisterReadOnly("CanVerticallyScrollComputed", typeof(Boolean), typeof(XYViewportPanel), new PropertyMetadata(default(Boolean)));
+        public static readonly DependencyProperty CanVerticallyScrollComputedProperty = CanVerticallyScrollComputedPropertyKey.DependencyProperty;
+        public Boolean CanVerticallyScrollComputed
+            {
+            get { return (Boolean)GetValue(CanVerticallyScrollComputedProperty); }
+            private set { SetValue(CanVerticallyScrollComputedPropertyKey, value); }
+            }
+        #endregion
+        #endregion
+        #region P:Can{Horizontally,Vertically}Scroll:Boolean
+        #region P:IScrollInfo.CanHorizontallyScroll:Boolean
+        public static readonly DependencyProperty CanHorizontallyScrollProperty = DependencyProperty.Register("CanHorizontallyScroll", typeof(Boolean), typeof(XYViewportPanel), new PropertyMetadata(default(Boolean), OnCanHorizontallyScrollChanged));
+        private static void OnCanHorizontallyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is XYViewportPanel source) {
+                if (source.LinkedScrollInfo != null) { source.LinkedScrollInfo.CanHorizontallyScroll = (Boolean)e.NewValue; }
+                source.InvalidateScrollInfo();
+                }
+            }
+
+        /// <summary>Gets or sets a value that indicates whether scrolling on the horizontal axis is possible.</summary>
+        /// <returns>true if scrolling is possible; otherwise, false. This property has no default value.</returns>
+        public Boolean CanHorizontallyScroll
+            {
+            get { return LinkedScrollInfo?.CanHorizontallyScroll ?? (Boolean)GetValue(CanHorizontallyScrollProperty); }
+            set { SetValue(CanHorizontallyScrollProperty, value); }
+            }
+        #endregion
+        #region P:IScrollInfo.CanVerticallyScroll:Boolean
+        public static readonly DependencyProperty CanVerticallyScrollProperty = DependencyProperty.Register("CanVerticallyScroll", typeof(Boolean), typeof(XYViewportPanel), new PropertyMetadata(default(Boolean), OnCanVerticallyScrollChanged));
+        private static void OnCanVerticallyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is XYViewportPanel source) {
+                if (source.LinkedScrollInfo != null) { source.LinkedScrollInfo.CanVerticallyScroll = (Boolean)e.NewValue; }
+                source.InvalidateScrollInfo();
+                }
+            }
+
+        /// <summary>Gets or sets a value that indicates whether scrolling on the vertical axis is possible. </summary>
+        /// <returns>true if scrolling is possible; otherwise, false. This property has no default value.</returns>
+        public Boolean CanVerticallyScroll
+            {
+            get { return LinkedScrollInfo?.CanVerticallyScroll ?? (Boolean)GetValue(CanVerticallyScrollProperty); }
+            set { SetValue(CanVerticallyScrollProperty, value); }
+            }
+        #endregion
+        #endregion
         #region P:LinkedScrollInfo:IScrollInfo
         public static readonly DependencyProperty LinkedScrollInfoProperty = DependencyProperty.Register("LinkedScrollInfo", typeof(IScrollInfo), typeof(XYViewportPanel), new PropertyMetadata(default(IScrollInfo)));
         public IScrollInfo LinkedScrollInfo
@@ -40,7 +101,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             private set { SetValue(PhysicalViewportPropertyKey, value); }
             }
         #endregion
-        #region P:IScrollInfo.Viewport{Width,Height}:Vector
+        #region P:Viewport{Width,Height}:Vector
         private static readonly DependencyPropertyKey ViewportPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Viewport), typeof(Vector), typeof(XYViewportPanel), new PropertyMetadata(default(Vector), OnViewportChanged));
         /// <summary>Identifies the <see cref="Viewport"/> dependency property.</summary>
         /// <returns>The identifier for the <see cref="Viewport"/> dependency property.</returns>
@@ -87,7 +148,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             }}
         #endregion
         #endregion
-        #region P:IScrollInfo.Extent{Width,Height}:Vector
+        #region P:Extent{Width,Height}:Vector
         private static readonly DependencyPropertyKey ExtentPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Extent), typeof(Vector), typeof(XYViewportPanel), new PropertyMetadata(default(Vector), OnExtentChanged));
         /// <summary>Identifies the <see cref="Extent"/> dependency property.</summary>
         /// <returns>The identifier for the <see cref="Extent"/> dependency property.</returns>
@@ -125,11 +186,16 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             }}
         #endregion
         #endregion
-        #region P:IScrollInfo.{Horizontal,Vertical}Offset:Vector
+        #region P:{Horizontal,Vertical}Offset:Vector
         private static readonly DependencyPropertyKey OffsetPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Offset), typeof(Vector), typeof(XYViewportPanel),new PropertyMetadata(default(Vector), OnOffsetChanged, OnOffsetCoerceValue));
 
         private static Object OnOffsetCoerceValue(DependencyObject sender, Object basevalue) {
-            return DoubleUtil.Round((Vector)basevalue);
+            var r = DoubleUtil.Round((Vector)basevalue);
+            if (sender is XYViewportPanel source) {
+                r.X = source.CanHorizontallyScrollComputed ? r.X : 0.0;
+                r.Y = source.CanVerticallyScrollComputed   ? r.Y : 0.0;
+                }
+            return r;
             }
 
         /// <summary>Identifies the <see cref="Offset"/> dependency property.</summary>
@@ -276,42 +342,6 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             }
         #endregion
         #endregion
-        #region P:IScrollInfo.Can{Horizontally,Vertically}Scroll:Boolean
-        #region P:IScrollInfo.CanHorizontallyScroll:Boolean
-        public static readonly DependencyProperty CanHorizontallyScrollProperty = DependencyProperty.Register("CanHorizontallyScroll", typeof(Boolean), typeof(XYViewportPanel), new PropertyMetadata(default(Boolean), OnCanHorizontallyScrollChanged));
-        private static void OnCanHorizontallyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            if (sender is XYViewportPanel source) {
-                if (source.LinkedScrollInfo != null) { source.LinkedScrollInfo.CanHorizontallyScroll = (Boolean)e.NewValue; }
-                source.InvalidateScrollInfo();
-                }
-            }
-
-        /// <summary>Gets or sets a value that indicates whether scrolling on the horizontal axis is possible.</summary>
-        /// <returns>true if scrolling is possible; otherwise, false. This property has no default value.</returns>
-        public Boolean CanHorizontallyScroll
-            {
-            get { return LinkedScrollInfo?.CanHorizontallyScroll ?? (Boolean)GetValue(CanHorizontallyScrollProperty); }
-            set { SetValue(CanHorizontallyScrollProperty, value); }
-            }
-        #endregion
-        #region P:IScrollInfo.CanVerticallyScroll:Boolean
-        public static readonly DependencyProperty CanVerticallyScrollProperty = DependencyProperty.Register("CanVerticallyScroll", typeof(Boolean), typeof(XYViewportPanel), new PropertyMetadata(default(Boolean), OnCanVerticallyScrollChanged));
-        private static void OnCanVerticallyScrollChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            if (sender is XYViewportPanel source) {
-                if (source.LinkedScrollInfo != null) { source.LinkedScrollInfo.CanVerticallyScroll = (Boolean)e.NewValue; }
-                source.InvalidateScrollInfo();
-                }
-            }
-
-        /// <summary>Gets or sets a value that indicates whether scrolling on the vertical axis is possible. </summary>
-        /// <returns>true if scrolling is possible; otherwise, false. This property has no default value.</returns>
-        public Boolean CanVerticallyScroll
-            {
-            get { return LinkedScrollInfo?.CanVerticallyScroll ?? (Boolean)GetValue(CanVerticallyScrollProperty); }
-            set { SetValue(CanVerticallyScrollProperty, value); }
-            }
-        #endregion
-        #endregion
         #region P:IScrollInfo.ScrollOwner:ScrollViewer
         public static readonly DependencyProperty ScrollOwnerProperty = DependencyProperty.Register("ScrollOwner", typeof(ScrollViewer), typeof(XYViewportPanel), new PropertyMetadata(default(ScrollViewer), OnScrollOwnerChanged));
         private static void OnScrollOwnerChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
@@ -379,6 +409,59 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 SetValue(ScrollOwnerProperty, value);
                 }
             }
+
+        private void EnsureScrollOwner() {
+            if (ScrollOwner == null) {
+                ScrollOwner = this.FindAncestor<ScrollViewer>();
+                }
+            }
+        #endregion
+        #region P:SelectionRectangle:Rect
+        internal static readonly DependencyProperty SelectionRectangleProperty = DependencyProperty.Register("SelectionRectangle", typeof(Rect), typeof(XYViewportPanel), new PropertyMetadata(default(Rect), OnSelectionRectangleChanged));
+        private static void OnSelectionRectangleChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is XYViewportPanel source) {
+                source.OnSelectionRectangleChanged();
+                }
+            }
+
+        private void OnSelectionRectangleChanged() {
+            var Source = SelectionRectangle;
+            Debug.Print($"SelectionRectangle:{{{Source}}}");
+            if (SelectionRectangleAdorner == null) {
+                var layer = AdornerLayer.GetAdornerLayer(this);
+                if (layer != null) {
+                    SelectionRectangleAdorner = new GeometrySelectionAdorner(this)
+                        {
+                        Visibility = Visibility.Visible,
+                        Width = 0,
+                        Height = 0,
+                        OffsetX = 0,
+                        OffsetY = 0
+                        };
+                    layer.Add(SelectionRectangleAdorner);
+                    }
+                }
+            if (SelectionRectangleAdorner != null) {
+                if (Source.IsEmpty) {
+                    SelectionRectangleAdorner.Visibility = Visibility.Hidden;
+                    }
+                else
+                    {
+                    Source = FromLogical(Source);
+                    SelectionRectangleAdorner.Visibility = Visibility.Visible;
+                    SelectionRectangleAdorner.OffsetX = Source.X;
+                    SelectionRectangleAdorner.OffsetY = Source.Y;
+                    SelectionRectangleAdorner.Width = Source.Width;
+                    SelectionRectangleAdorner.Height = Source.Height;
+                    }
+                }
+            }
+
+        internal Rect SelectionRectangle
+            {
+            get { return (Rect)GetValue(SelectionRectangleProperty); }
+            set { SetValue(SelectionRectangleProperty, value); }
+            }
         #endregion
         #region M:IScrollInfo.MakeVisible(Visual,Rect)
         /// <summary>Forces content to scroll until the coordinate space of a <see cref="T:System.Windows.Media.Visual"/> object is visible.</summary>
@@ -396,6 +479,8 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 ScrollOwner.InvalidateScrollInfo();
                 InvalidateVisual();
                 }
+            CanHorizontallyScrollComputed = ExtentWidth  > ViewportWidth;
+            CanVerticallyScrollComputed   = ExtentHeight > ViewportHeight;
             }
         #endregion
         #region M:OnRender(DrawingContext)
@@ -413,11 +498,116 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             context.Pop();
             context.DrawText(new Point(10.0, 0.0), $"Offset:{{{Offset.X},{Offset.Y}}}");
             context.DrawText(new Point(10.0,10.0), $"Viewport:{{{Viewport.X},{Viewport.Y}}}");
+            context.DrawText(new Point(10.0,20.0), $"CanHorizontallyScrollComputed:{{{CanHorizontallyScrollComputed}}}");
+            context.DrawText(new Point(10.0,30.0), $"CanVerticallyScrollComputed:{{{CanVerticallyScrollComputed}}}");
             context.DrawText(new Point( 5.0-Offset.X,Extent.Y-Offset.Y-15.0), $"Extent.Y:{{{Extent.Y}}}");
             var r = new FormattedText($"Extent.X:{{{Extent.X}}}", CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,new Typeface("Segoe UI"),10.0, Brushes.Gray);
             context.PushTransform(new RotateTransform(-90.0,-Offset.X + Extent.X - 15.0,-Offset.Y + r.Width + 5.0));
             context.DrawText(new Point(-Offset.X + Extent.X - 15.0,-Offset.Y + r.Width + 5.0), r);
             context.Pop();
+            }
+        #endregion
+        #region M:OnMouseLeftButtonDown(MouseButtonEventArgs)
+        /// <summary>Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> routed event is raised on this element. Implement this method to add class handling for this event.</summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
+            Diagnostic.Print((new StackTrace()).GetFrame(0).GetMethod());
+            if (!IsSelecting) {
+                IsSelecting = true;
+                e.Handled = true;
+                CaptureMouse();
+                OriginSelectingPoint = ToLogical(e.GetPosition(this));
+                }
+            base.OnMouseLeftButtonDown(e);
+            }
+        #endregion
+        #region M:OnPreviewMouseLeftButtonDown(MouseButtonEventArgs)
+        /// <summary>Invoked when an unhandled <see cref="E:System.Windows.UIElement.PreviewMouseLeftButtonDown"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.</summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
+        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+            {
+            Diagnostic.Print((new StackTrace()).GetFrame(0).GetMethod());
+            base.OnPreviewMouseLeftButtonDown(e);
+            }
+        #endregion
+        #region M:OnMouseMove(MouseEventArgs)
+        /// <summary>Invoked when an unhandled <see cref="E:System.Windows.Input.Mouse.MouseMove"/> attached event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.</summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
+        protected override void OnMouseMove(MouseEventArgs e) {
+            if (IsSelecting) {
+                e.Handled = true;
+                var position = ToLogical(e.GetPosition(this));
+                if (position != OriginSelectingPoint) {
+                    var Δ = position - OriginSelectingPoint;
+                    UpdateOffset(Δ.X,OriginSelectingPoint.X,position.X,out var X,out var OffsetX);
+                    UpdateOffset(Δ.Y,OriginSelectingPoint.Y,position.Y,out var Y,out var OffsetY);
+                    SelectionRectangle = new Rect(OffsetX,OffsetY,X,Y);
+                    var HitTest = DraggingScrollHitTest();
+                    if (HitTest != null) {
+                        EnsureScrollOwner();
+                        var scrollviewer = ScrollOwner;
+                        if (scrollviewer != null) {
+                            var offset = HitTest.Offset;
+                            if (HitTest.Kind.HasFlag(DraggingScrollHitTestResultKind.Bottom)) { scrollviewer.ScrollToVerticalOffset(Math.Min(scrollviewer.VerticalOffset + offset.Y, ExtentHeight - ViewportHeight*0.5)); }
+                            if (HitTest.Kind.HasFlag(DraggingScrollHitTestResultKind.Top))    { scrollviewer.ScrollToVerticalOffset(Math.Max(scrollviewer.VerticalOffset + offset.Y, 0)); }
+                            if (HitTest.Kind.HasFlag(DraggingScrollHitTestResultKind.Left))   { scrollviewer.ScrollToHorizontalOffset(Math.Max(scrollviewer.HorizontalOffset + offset.X, 0)); }
+                            if (HitTest.Kind.HasFlag(DraggingScrollHitTestResultKind.Right))  { scrollviewer.ScrollToHorizontalOffset(Math.Min(scrollviewer.HorizontalOffset + offset.X, ExtentWidth - ViewportWidth*0.5)); }
+                            }
+                        }
+                    }
+                }
+            base.OnMouseMove(e);
+            }
+        #endregion
+        #region M:OnMouseLeftButtonUp(MouseButtonEventArgs)
+        /// <summary>Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonUp"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.</summary>
+        /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was released.</param>
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e) {
+            if (IsSelecting) {
+                Diagnostic.Print((new StackTrace()).GetFrame(0).GetMethod());
+                IsSelecting = false;
+                e.Handled = true;
+                ReleaseMouseCapture();
+                SelectionRectangle = Rect.Empty;
+                }
+            base.OnMouseLeftButtonUp(e);
+            }
+        #endregion
+        #region M:OnSelectionChanged(SelectionChangedEventArgs)
+        /// <summary>Called when the selection changes.</summary>
+        /// <param name="e">The event data.</param>
+        protected internal virtual void OnSelectionChanged(SelectionChangedEventArgs e) {
+            if (e == null) { throw new ArgumentNullException(nameof(e)); }
+            //var StaticSelectionAdornerVisibility = Visibility.Visible;
+            //XYViewportNodeSizeDecorator SelectionDecorator = null;
+            //switch (e.AddedItems.Count) {
+            //    case 0:
+            //        {
+            //        StaticSelectionAdornerVisibility = Visibility.Hidden;
+            //        }
+            //        break;
+            //    case 1:
+            //        {
+            //        SelectionDecorator = new XYViewportNodeSizeDecorator
+            //            {
+            //            };
+            //        }
+            //        break;
+            //    default:
+            //        {
+            //        }
+            //        break;
+            //    }
+            //if (StaticSelectionAdorner == null) {
+            //    var layer = AdornerLayer.GetAdornerLayer(this);
+            //    if (layer != null) {
+            //        layer.Add(StaticSelectionAdorner = new AdornerContainer(this));
+            //        }
+            //    }
+            //if (StaticSelectionAdorner != null) {
+            //    StaticSelectionAdorner.Visibility = StaticSelectionAdornerVisibility;
+            //    StaticSelectionAdorner.Child = SelectionDecorator;
+            //    }
             }
         #endregion
         #region M:MeasureOverride(Size):Size
@@ -503,5 +693,91 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
             return new Rect(α,β);
             }
         #endregion
+        #region M:BringTop(UIElement)
+        public void BringTop(UIElement element) {
+            if (element != null) {
+                var n = InternalChildren.OfType<UIElement>().Max(GetZIndex);
+                SetZIndex(element, n + 1);
+                }
+            }
+        #endregion
+
+        private static void UpdateOffset(Double δ,Double o, Double c, out Double α, out Double β) {
+            if (δ >= 0)
+                {
+                α = Math.Max(δ,1.0);
+                β = o;
+                }
+            else
+                {
+                α = -δ;
+                β = c;
+                }
+            }
+
+        #region M:ToLogical(Point):Point
+        private Point ToLogical(Point value)
+            {
+            return value + Offset;
+            }
+        #endregion
+        #region M:FromLogical(Point):Point
+        private Point FromLogical(Point value) {
+            return value - Offset;
+            }
+        #endregion
+        #region M:FromLogical(Rect):Rect
+        private Rect FromLogical(Rect value) {
+            return new Rect(FromLogical(value.TopLeft),value.Size);
+            }
+        #endregion
+        #region M:DraggingScrollHitTest:DraggingScrollHitTestResult
+        public DraggingScrollHitTestResult DraggingScrollHitTest()
+            {
+            var r = DraggingScrollHitTestResultKind.None; 
+            EnsureScrollOwner();
+            var scrollviewer = ScrollOwner;
+            if (scrollviewer != null) {
+                var size = new Vector(scrollviewer.ActualWidth, scrollviewer.ActualHeight);
+                size -= new Vector(
+                    ((scrollviewer.HorizontalScrollBarVisibility == ScrollBarVisibility.Visible) || ((scrollviewer.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto) && (scrollviewer.ComputedHorizontalScrollBarVisibility == Visibility.Visible))) ? SystemParameters.VerticalScrollBarWidth    : 0.0,
+                    ((scrollviewer.VerticalScrollBarVisibility   == ScrollBarVisibility.Visible) || ((scrollviewer.VerticalScrollBarVisibility   == ScrollBarVisibility.Auto) && (scrollviewer.ComputedVerticalScrollBarVisibility   == Visibility.Visible))) ? SystemParameters.HorizontalScrollBarHeight : 0.0);
+                var tolerance = new Vector(Math.Min(size.X * 0.25, 40), Math.Min(size.Y * 0.25, 40));
+                var pt = Mouse.GetPosition(scrollviewer);
+                var offset = new Vector(30, 30);
+                if (pt.Y < tolerance.Y)
+                    {
+                    r = DraggingScrollHitTestResultKind.Top;
+                    offset.Y *= (tolerance.Y - pt.Y)/tolerance.Y;
+                    offset.Y = -offset.Y;
+                    }
+                else if (pt.Y > size.Y - tolerance.Y)
+                    {
+                    r = DraggingScrollHitTestResultKind.Bottom;
+                    offset.Y *= (tolerance.Y - (size.Y - pt.Y))/tolerance.Y;
+                    }
+                if (pt.X < tolerance.X)
+                    {
+                    r |= DraggingScrollHitTestResultKind.Left;
+                    offset.X *= (tolerance.X - pt.X)/tolerance.X;
+                    offset.X = -offset.X;
+                    }
+                else if (pt.X > size.X - tolerance.X)
+                    {
+                    r |= DraggingScrollHitTestResultKind.Right;
+                    offset.X *= (tolerance.X - (size.X - pt.X))/tolerance.X;
+                    }
+                if (r != DraggingScrollHitTestResultKind.None)
+                    {
+                    return new DraggingScrollHitTestResult(scrollviewer, pt, r, offset);
+                    }
+                }
+            return null;
+            }
+        #endregion
+
+        private GeometrySelectionAdorner SelectionRectangleAdorner;
+        private Boolean IsSelecting;
+        private Point OriginSelectingPoint;
         }
     }
