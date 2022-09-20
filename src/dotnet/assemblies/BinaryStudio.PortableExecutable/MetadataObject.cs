@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.IO;
+using BinaryStudio.Serialization;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable
     {
-    public class MetadataObject : IDisposable, IServiceProvider
+    public class MetadataObject : IDisposable, IServiceProvider, IJsonSerializable
         {
         public virtual MetadataObjectState State { get { return state; }}
         public MetadataScope Scope { get; }
@@ -113,6 +113,11 @@ namespace BinaryStudio.PortableExecutable
         public virtual void AttachFileMapping(FileMappingMemory mapping)
             {
             Mapping = mapping;
+            }
+        #endregion
+        #region M:WriteTo(IJsonWriter)
+        public virtual void WriteTo(IJsonWriter writer)
+            {
             }
         #endregion
 

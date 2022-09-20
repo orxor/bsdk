@@ -23,13 +23,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{23BC9A12
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.PlatformComponents", "src\dotnet\tests\UnitTests.BinaryStudio.PlatformComponents\UnitTests.BinaryStudio.PlatformComponents.csproj", "{EB798EE4-6253-4769-A733-07144EFF94BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PortableExecutable", "src\dotnet\assemblies\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj", "{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PortableExecutable", "src\dotnet\assemblies\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj", "{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.IO", "src\dotnet\assemblies\BinaryStudio.IO\BinaryStudio.IO.csproj", "{0BAFB00A-AA45-4200-8C45-B4311BE109DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BDAD0FA5-BBDF-4F6B-B117-4A222B60CB83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DllResources", "src\dotnet\samples\DllResources\DllResources.csproj", "{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DllResources", "src\dotnet\samples\DllResources\DllResources.csproj", "{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Serialization", "src\dotnet\assemblies\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj", "{A565512C-E636-41BF-9FCB-793D4133B73F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +87,10 @@ Global
 		{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A565512C-E636-41BF-9FCB-793D4133B73F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A565512C-E636-41BF-9FCB-793D4133B73F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A565512C-E636-41BF-9FCB-793D4133B73F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A565512C-E636-41BF-9FCB-793D4133B73F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

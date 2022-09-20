@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
 using BinaryStudio.PortableExecutable.Win32;
-using Microsoft.Win32;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.PortableExecutable
     {
-    public class ResourceIdentifier
+    public class ResourceIdentifier : IJsonSerializable
         {
         public Int32? Identifier { get; }
         public String Name { get; }
@@ -49,5 +49,12 @@ namespace BinaryStudio.PortableExecutable
                 : Name;
             }
         #endregion
+
+        public void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Identifier),ToString());
+                }
+            }
         }
     }

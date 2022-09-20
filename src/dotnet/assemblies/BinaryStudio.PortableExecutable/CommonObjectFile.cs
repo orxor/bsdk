@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using BinaryStudio.PortableExecutable.Win32;
+using BinaryStudio.Serialization;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable
     {
@@ -384,5 +386,14 @@ namespace BinaryStudio.PortableExecutable
 
         private unsafe void Load(Byte* address, IMAGE_RUNTIME_FUNCTION_ENTRY* entries, Int64 size, IMAGE_FILE_MACHINE machine, RVA rvami) {
             }
+
+        #region M:WriteTo(IJsonWriter)
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Resources),Resources);
+                }
+            }
+        #endregion
         }
     }

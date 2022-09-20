@@ -2,6 +2,8 @@
 using System.IO;
 using BinaryStudio.IO;
 using BinaryStudio.PortableExecutable.Win32;
+using BinaryStudio.Serialization;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable
     {
@@ -57,6 +59,13 @@ namespace BinaryStudio.PortableExecutable
             {
             base.AttachFileMapping(mapping);
             COFFMetadataObject?.AttachFileMapping(mapping);
+            }
+        #endregion
+        #region M:WriteTo(IJsonWriter)
+        public override void WriteTo(IJsonWriter writer) {
+            if (COFFMetadataObject != null) {
+                COFFMetadataObject.WriteTo(writer);
+                }
             }
         #endregion
 

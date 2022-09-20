@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using BinaryStudio.PortableExecutable.Win32;
-using Microsoft.Win32;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.PortableExecutable
     {
-    public class ResourceDescriptor
+    public class ResourceDescriptor : IJsonSerializable
         {
         [DebuggerDisplay("{ToString(Identifier),nq}")]
         public ResourceIdentifier Identifier { get; }
@@ -36,12 +36,10 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
         #region M:AddRange(IEnumerable<ResourceDescriptor>)
-        internal void AddRange(IEnumerable<ResourceDescriptor> descriptors)
-            {
+        internal void AddRange(IEnumerable<ResourceDescriptor> descriptors) {
             if (descriptors == null) { throw new ArgumentNullException(nameof(descriptors)); }
             if (Resources == null) { Resources = new List<ResourceDescriptor>(); }
-            foreach (var descriptor in descriptors)
-                {
+            foreach (var descriptor in descriptors) {
                 Resources.Add(descriptor);
                 }
             }
@@ -64,6 +62,23 @@ namespace BinaryStudio.PortableExecutable
         public override String ToString()
             {
             return ToString(Identifier);
+            }
+
+        public void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValueIfNotNull(nameof(Level),Level);
+                if ((Level == IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE) && (Identifier.Identifier.HasValue)) {
+                    writer.WriteValue("CodePage", (Identifier.Identifier == 0)
+                        ? "{neutral}"
+                        : CultureInfo.GetCultureInfo(Identifier.Identifier.Value).IetfLanguageTag);
+                    }
+                else
+                    {
+                    writer.WriteValueIfNotNull(nameof(Identifier),Identifier);
+                    }
+                writer.WriteValueIfNotNull(nameof(Resources),Resources);
+                }
             }
         }
     }
