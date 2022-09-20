@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using BinaryStudio.PortableExecutable.Win32;
+using BinaryStudio.Serialization;
 using Microsoft.Win32;
 
 namespace BinaryStudio.PortableExecutable
     {
     internal class ResourceStringTableDescriptor : ResourceDescriptor, IDictionary<UInt32, String>
         {
-        private readonly IDictionary<UInt32, String> values;
+        private readonly IDictionary<UInt32,String> values;
 
         internal ResourceStringTableDescriptor(ResourceDescriptor owner, ResourceIdentifier identifier)
             :base(owner, identifier)
@@ -122,6 +125,26 @@ namespace BinaryStudio.PortableExecutable
             Source.Add(descriptor.Source[0]);
             foreach (var item in descriptor) {
                 values.Add(item.Key, item.Value);
+                }
+            }
+
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValueIfNotNull(nameof(Level),Level);
+                if ((Level == IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE) && (Identifier.Identifier.HasValue)) {
+                    writer.WriteValue("CodePage", GetIetfLanguageTag(Identifier.Identifier.Value));
+                    }
+                else if (Level == IMAGE_RESOURCE_LEVEL.LEVEL_TYPE)
+                    {
+                    writer.WriteValueIfNotNull("Type",(IMAGE_RESOURCE_TYPE)Identifier.Identifier.GetValueOrDefault());
+                    }
+                else
+                    {
+                    writer.WriteValueIfNotNull(nameof(Identifier),Identifier);
+                    }
+                writer.WriteValueIfNotNull("Values",values.Select(i => $"{i.Key:x8}:{i.Value}").ToArray());
+                writer.WriteValueIfNotNull(nameof(Resources),Resources);
                 }
             }
         }

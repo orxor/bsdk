@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net40;net45;net5.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>FEATURE_MUI</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net40'">
     <Reference Include="System.ComponentModel.DataAnnotations" />

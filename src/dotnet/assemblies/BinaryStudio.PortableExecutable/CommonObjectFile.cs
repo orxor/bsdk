@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -27,6 +28,7 @@ namespace BinaryStudio.PortableExecutable
         public Boolean Is64Bit { get { return Flags.HasFlag(ImageFlags.Is64Bit); }}
         public IList<ImportLibraryReference> ImportLibraryReferences { get;private set; }
         public IList<ResourceDescriptor> Resources { get;private set; }
+        public CultureInfo Language { get;private set; }
 
         internal CommonObjectFile(MetadataScope scope, MetadataObjectIdentity identity)
             : base(scope, identity)
@@ -340,16 +342,16 @@ namespace BinaryStudio.PortableExecutable
                     {
                     switch (descriptor.Owner.Owner.Identifier.Name) {
                         #region MUI
-                        case "MUI"           :
+                        case "MUI":
                             {
                             #if FEATURE_MUI
-                            // TODO: Переработать механизм загрузки MUI на ассинхронный вариант с уведомлением
                             var mui = new ResourceMUIDescriptor(descriptor.Owner, descriptor.Identifier, bytes);
                             r = mui;
                             if (mui.IsUltimateFallbackLocationExternal) {
                                 /* Try to find appropriate MUI file */
-                                MUI = LoadMUI(mui.UltimateFallbackLanguage) ??
-                                      LoadMUI(CultureInfo.CurrentUICulture);
+                                var MUI = LoadMUI(mui.UltimateFallbackLanguage) ??
+                                          LoadMUI(CultureInfo.CurrentUICulture);
+                                mui.AttachExternalResource(MUI);
                                 }
                             else
                                 {
@@ -384,6 +386,21 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
 
+        private MetadataObject LoadMUI(CultureInfo culture) { 
+            if (culture != null) {
+                var service = Identity.ServiceIdentity;
+                /*if (service == MetadataScope.FileServiceGuid)*/ {
+                    var filename = Path.GetFileName(Identity.LocalName);
+                    var r = Scope.Load(Is64Bit
+                        ? $@"C:\Windows\System32\{culture.IetfLanguageTag}\{filename}.mui"
+                        : $@"C:\Windows\SysWOW64\{culture.IetfLanguageTag}\{filename}.mui"
+                        );
+                    return r;
+                    }
+                }
+            return null;
+            }
+
         private unsafe void Load(Byte* address, IMAGE_RUNTIME_FUNCTION_ENTRY* entries, Int64 size, IMAGE_FILE_MACHINE machine, RVA rvami) {
             }
 
@@ -391,6 +408,7 @@ namespace BinaryStudio.PortableExecutable
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Identity),Identity.LocalName);
                 writer.WriteValue(nameof(Resources),Resources);
                 }
             }

@@ -69,6 +69,13 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
 
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <param name="type">An object that specifies the type of service object to get.</param>
+        /// <returns>A service object of type <paramref name="type"/>. -or- <see langword="null" /> if there is no service object of type <paramref name="type"/>.</returns>
+        public override Object GetService(Type type) {
+            return base.GetService(type) ?? COFFMetadataObject?.GetService(type);
+            }
+
         private MetadataObject COFFMetadataObject;
         }
     }

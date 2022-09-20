@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using BinaryStudio.PortableExecutable.Win32;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.PortableExecutable
     {
     internal class ResourceMessageTableDescriptor : ResourceDescriptor, IDictionary<UInt32, String>
         {
-        private readonly IDictionary<UInt32, String> values;
+        private readonly IDictionary<UInt32,String> values;
 
         private enum MESSAGE_RESOURCE_ENTRY_ENCODING : ushort
             {
@@ -141,5 +145,25 @@ namespace BinaryStudio.PortableExecutable
             get { return values.Values; }
             }
         #endregion
+        
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValueIfNotNull(nameof(Level),Level);
+                if ((Level == IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE) && (Identifier.Identifier.HasValue)) {
+                    writer.WriteValue("CodePage", GetIetfLanguageTag(Identifier.Identifier.Value));
+                    }
+                else if (Level == IMAGE_RESOURCE_LEVEL.LEVEL_TYPE)
+                    {
+                    writer.WriteValueIfNotNull("Type",(IMAGE_RESOURCE_TYPE)Identifier.Identifier.GetValueOrDefault());
+                    }
+                else
+                    {
+                    writer.WriteValueIfNotNull(nameof(Identifier),Identifier);
+                    }
+                writer.WriteValueIfNotNull("Values",values.Select(i => $"{i.Key:x8}:{i.Value}").ToArray());
+                writer.WriteValueIfNotNull(nameof(Resources),Resources);
+                }
+            }
         }
     }

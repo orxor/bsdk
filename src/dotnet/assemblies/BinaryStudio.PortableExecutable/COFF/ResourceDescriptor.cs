@@ -64,14 +64,31 @@ namespace BinaryStudio.PortableExecutable
             return ToString(Identifier);
             }
 
-        public void WriteTo(IJsonWriter writer) {
+        #region M:GetIetfLanguageTag(Int32):String
+        protected static String GetIetfLanguageTag(Int32 value) {
+            try
+                {
+                return (value == 0)
+                    ? "{neutral}"
+                    : CultureInfo.GetCultureInfo(value).IetfLanguageTag;
+                }
+            catch
+                {
+                return $"{{invalid}}:{{{value}}}";
+                }
+            }
+        #endregion
+
+        public virtual void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             using (writer.ScopeObject()) {
                 writer.WriteValueIfNotNull(nameof(Level),Level);
                 if ((Level == IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE) && (Identifier.Identifier.HasValue)) {
-                    writer.WriteValue("CodePage", (Identifier.Identifier == 0)
-                        ? "{neutral}"
-                        : CultureInfo.GetCultureInfo(Identifier.Identifier.Value).IetfLanguageTag);
+                    writer.WriteValue("CodePage", GetIetfLanguageTag(Identifier.Identifier.Value));
+                    }
+                else if (Level == IMAGE_RESOURCE_LEVEL.LEVEL_TYPE)
+                    {
+                    writer.WriteValueIfNotNull("Type",(IMAGE_RESOURCE_TYPE)Identifier.Identifier.GetValueOrDefault());
                     }
                 else
                     {
