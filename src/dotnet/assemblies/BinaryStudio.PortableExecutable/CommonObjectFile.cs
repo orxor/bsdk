@@ -24,11 +24,13 @@ namespace BinaryStudio.PortableExecutable
         public ImageFlags Flags { get;private set; }
         public Boolean Is64Bit { get { return Flags.HasFlag(ImageFlags.Is64Bit); }}
         public IList<ImportLibraryReference> ImportLibraryReferences { get;private set; }
+        public IList<ResourceDescriptor> Resources { get;private set; }
 
         internal CommonObjectFile(MetadataScope scope, MetadataObjectIdentity identity)
             : base(scope, identity)
             {
             IgnoreOptionalHeaderSize = true;
+            Resources = EmptyList<ResourceDescriptor>.Value;
             }
 
         private unsafe delegate void* RVA(UInt32 virtualaddress);
@@ -163,6 +165,29 @@ namespace BinaryStudio.PortableExecutable
                 case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_EXPORT:    { Load(address, (IMAGE_EXPORT_DIRECTORY*)(address + directory->VirtualAddress), section); } break;
                 case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_RESOURCE:
                     {
+                    var r = Load(source, address + (Int64)directory->VirtualAddress, (IMAGE_RESOURCE_DIRECTORY*)(address + directory->VirtualAddress), section, null);
+                    if (r != null) {
+                        var descriptor = r.FirstOrDefault(i => i.Identifier.Identifier == (Int32)IMAGE_RESOURCE_TYPE.RT_STRING);
+                        if (descriptor != null) {
+                            /* Reorganize RT_STRING to RT_STRING->LangId */
+                            var L = new Dictionary<Int32,ResourceStringTableDescriptor>();
+                            foreach (var i in descriptor.Resources) {
+                                foreach (var j in i.Resources.OfType<ResourceStringTableDescriptor>()) {
+                                    #region DEBUG
+                                    Debug.Assert(j.Identifier.Identifier != null);
+                                    #endregion
+                                    ResourceStringTableDescriptor table;
+                                    if (!L.TryGetValue((Int32)j.Identifier.Identifier, out table)) {
+                                        L.Add((Int32)j.Identifier.Identifier, table = new ResourceStringTableDescriptor(descriptor, j.Identifier){ Level = IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE });
+                                        }
+                                    table.Merge(j);
+                                    }
+                                }
+                            descriptor.Resources.Clear();
+                            descriptor.AddRange(L.Values);
+                            }
+                        Resources = r;
+                        }
                     }
                     break;
                 }
@@ -272,6 +297,88 @@ namespace BinaryStudio.PortableExecutable
                     }
                 }
             return target;
+            }
+        #endregion
+        #region M:Load(Byte*,Byte*,IMAGE_RESOURCE_DIRECTORY*,IMAGE_SECTION_HEADER*,ResourceDescriptor):IList<ResourceDescriptor>
+        private unsafe IList<ResourceDescriptor> Load(Byte* baseaddress, Byte* address, IMAGE_RESOURCE_DIRECTORY* directory, IMAGE_SECTION_HEADER* section, ResourceDescriptor owner) {
+            var r = new List<ResourceDescriptor>();
+            var source = (IMAGE_DIRECTORY_ENTRY_RESOURCE*)(directory + 1);
+            for (var i = 0; i < directory->NumberOfNamedEntries + directory->NumberOfIdEntries; i++) {
+                var resource = new ResourceDescriptor(owner, new ResourceIdentifier(address, source));
+                if ((source->DataEntryOffset & 0x80000000) == 0x80000000) {
+                    resource.AddRange(Load(
+                        baseaddress,
+                        address,
+                        (IMAGE_RESOURCE_DIRECTORY*)(address + (source->DataEntryOffset & 0x7FFFFFFF)),
+                        section, resource));
+                    }
+                else
+                    {
+                    resource = Load(baseaddress, (IMAGE_RESOURCE_DATA_ENTRY*)(address + source->DataEntryOffset), section, resource);
+                    }
+                r.Add(resource);
+                source++;
+                }
+            return r;
+            }
+        #endregion
+        #region M:Load(Byte*,IMAGE_RESOURCE_DATA_ENTRY*,IMAGE_SECTION_HEADER*,ResourceDescriptor):ResourceDescriptor
+        private unsafe ResourceDescriptor Load(Byte* baseaddress, IMAGE_RESOURCE_DATA_ENTRY* source, IMAGE_SECTION_HEADER* section, ResourceDescriptor descriptor) {
+            var bytes = new Byte[source->Size];
+            ResourceDescriptor r = null;
+            Marshal.Copy((IntPtr)(void*)(baseaddress + (Int64)source->OffsetToData - (Int64)section->VirtualAddress + (Int64)section->PointerToRawData),bytes, 0, bytes.Length);
+            if (descriptor.Level == IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE) {
+                if (descriptor.Owner.Owner.Identifier.Identifier != null) {
+                    switch ((IMAGE_RESOURCE_TYPE)descriptor.Owner.Owner.Identifier.Identifier) {
+                        case IMAGE_RESOURCE_TYPE.RT_MESSAGETABLE: { r = new ResourceMessageTableDescriptor(descriptor.Owner, descriptor.Identifier, bytes); } break;
+                        case IMAGE_RESOURCE_TYPE.RT_STRING:       { r = new ResourceStringTableDescriptor(descriptor.Owner, descriptor.Identifier, bytes); } break;
+                        }
+                    }
+                else
+                    {
+                    switch (descriptor.Owner.Owner.Identifier.Name) {
+                        #region MUI
+                        case "MUI"           :
+                            {
+                            #if FEATURE_MUI
+                            // TODO: Переработать механизм загрузки MUI на ассинхронный вариант с уведомлением
+                            var mui = new ResourceMUIDescriptor(descriptor.Owner, descriptor.Identifier, bytes);
+                            r = mui;
+                            if (mui.IsUltimateFallbackLocationExternal) {
+                                /* Try to find appropriate MUI file */
+                                MUI = LoadMUI(mui.UltimateFallbackLanguage) ??
+                                      LoadMUI(CultureInfo.CurrentUICulture);
+                                }
+                            else
+                                {
+                                Language = mui.Language;
+                                }
+                            #endif
+                            }
+                            break;
+                        #endregion
+                        #region TYPELIB
+                        case "TYPELIB":
+                            {
+                            Trace.WriteLine("TYPELIB");
+                            #if FEATURE_TYPELIB
+                            fixed (Byte* memory = bytes)
+                                {
+                                TypeLibrary = (TypeLibraryDescriptor)Scope.LoadObject(memory, bytes.Length).GetService(typeof(TypeLibraryDescriptor));
+                                #if DEBUG
+                                //File.WriteAllBytes($"{TypeLibrary.Name}.tlb", bytes);
+                                #endif
+                                }
+                            #endif
+                            }
+                            break;
+                        #endregion
+                        }
+                    }
+                }
+            r = r ?? new ResourceDescriptor(descriptor.Owner, descriptor.Identifier, bytes);
+            r.CodePage = source->CodePage;
+            return r;
             }
         #endregion
 

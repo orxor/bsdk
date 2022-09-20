@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PortableExecut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.IO", "src\dotnet\assemblies\BinaryStudio.IO\BinaryStudio.IO.csproj", "{0BAFB00A-AA45-4200-8C45-B4311BE109DA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BDAD0FA5-BBDF-4F6B-B117-4A222B60CB83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DllResources", "src\dotnet\samples\DllResources\DllResources.csproj", "{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,12 +81,17 @@ Global
 		{0BAFB00A-AA45-4200-8C45-B4311BE109DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BAFB00A-AA45-4200-8C45-B4311BE109DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BAFB00A-AA45-4200-8C45-B4311BE109DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EB798EE4-6253-4769-A733-07144EFF94BA} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
+		{77C459EC-225F-47BF-ADFD-0ABC4A451CAB} = {BDAD0FA5-BBDF-4F6B-B117-4A222B60CB83}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D635BC8-0B0E-4835-9367-310A2779B655}
