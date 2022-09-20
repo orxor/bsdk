@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Newtonsoft.Json;
 
 namespace XYViewportSample
     {
@@ -13,5 +14,14 @@ namespace XYViewportSample
     /// </summary>
     public partial class App : Application
         {
+        protected override void OnStartup(StartupEventArgs e)
+            {
+            var writer = new JsonTextWriter(Console.Out){
+                    Formatting = Formatting.Indented,
+                    Indentation = 2,
+                    IndentChar = ' '
+                    };
+            base.OnStartup(e);
+            }
         }
     }

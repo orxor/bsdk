@@ -15,7 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XYViewportSample", "src\dotnet\samples\XYViewportSample\XYViewportSample.csproj", "{78E586B8-1BB9-4A72-9441-B165FB2030C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.DiagnosticServices", "src\dotnet\assemblies\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj", "{C95424F3-2787-497C-8EB7-755F0278C86D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DiagnosticServices", "src\dotnet\assemblies\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj", "{C95424F3-2787-497C-8EB7-755F0278C86D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PlatformComponents", "src\dotnet\assemblies\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj", "{FFA2A274-DACF-4B62-99FC-8EE7CF15AFCE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{23BC9A12-C1DC-4C1C-A799-0AF200780D9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.PlatformComponents", "src\dotnet\tests\UnitTests.BinaryStudio.PlatformComponents\UnitTests.BinaryStudio.PlatformComponents.csproj", "{EB798EE4-6253-4769-A733-07144EFF94BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.PortableExecutable", "src\dotnet\assemblies\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj", "{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,9 +59,24 @@ Global
 		{C95424F3-2787-497C-8EB7-755F0278C86D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C95424F3-2787-497C-8EB7-755F0278C86D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C95424F3-2787-497C-8EB7-755F0278C86D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFA2A274-DACF-4B62-99FC-8EE7CF15AFCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFA2A274-DACF-4B62-99FC-8EE7CF15AFCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFA2A274-DACF-4B62-99FC-8EE7CF15AFCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFA2A274-DACF-4B62-99FC-8EE7CF15AFCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB798EE4-6253-4769-A733-07144EFF94BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB798EE4-6253-4769-A733-07144EFF94BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB798EE4-6253-4769-A733-07144EFF94BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB798EE4-6253-4769-A733-07144EFF94BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EB798EE4-6253-4769-A733-07144EFF94BA} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D635BC8-0B0E-4835-9367-310A2779B655}
