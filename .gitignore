@@ -17,8 +17,10 @@
 /src/dotnet/assemblies/BinaryStudio.DiagnosticServices/obj
 /src/dotnet/assemblies/BinaryStudio.PlatformComponents/bin
 /src/dotnet/assemblies/BinaryStudio.PlatformComponents/obj
-/src/dotnet/assemblies/BinaryStudio.PortableExecutable/obj
 /src/dotnet/assemblies/BinaryStudio.PortableExecutable/bin
+/src/dotnet/assemblies/BinaryStudio.PortableExecutable/obj
+/src/dotnet/assemblies/BinaryStudio.IO/bin
+/src/dotnet/assemblies/BinaryStudio.IO/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/samples/XYViewportSample/bin
