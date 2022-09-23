@@ -15,7 +15,7 @@ namespace UnitTests.BinaryStudio.PlatformComponents
         public void FormatMessage() {
             foreach (var name in Enum.GetNames<HResult>()) {
                 var scode = (Int32)(HResult)Enum.Parse<HResult>(name);
-                var value = HResultException.FormatMessage(scode);
+                var value = HResultException.FormatMessage(unchecked((UInt32)scode));
                 Assert.IsNotEmpty(value);
                 }
             }

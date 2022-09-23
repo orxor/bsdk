@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DllResources": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

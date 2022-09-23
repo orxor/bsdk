@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CLDB_E_INTERNALERROR" xml:space="preserve">
+    <value>Internal error.</value>
+  </data>
+  <data name="CLR_E_BIND_ASSEMBLY_NOT_FOUND" xml:space="preserve">
+    <value>A binding for the specified assembly name was not found.</value>
+  </data>
+  <data name="CLR_E_BIND_ASSEMBLY_PUBLIC_KEY_MISMATCH" xml:space="preserve">
+    <value>The assembly version has a public key token that does not match that of the request.</value>
+  </data>
+  <data name="CLR_E_BIND_ASSEMBLY_VERSION_TOO_LOW" xml:space="preserve">
+    <value>The bound assembly has a version that is lower than that of the request.</value>
+  </data>
+  <data name="CLR_E_BIND_IMAGE_UNAVAILABLE" xml:space="preserve">
+    <value>The requested image was not found or is unavailable.</value>
+  </data>
+  <data name="CLR_E_BIND_NI_DEP_IDENTITY_MISMATCH" xml:space="preserve">
+    <value>Native image identity mismatch with respect to its dependencies</value>
+  </data>
+  <data name="CLR_E_BIND_NI_SECURITY_FAILURE" xml:space="preserve">
+    <value>Native image was generated in a different trust level than present at runtime.</value>
+  </data>
+  <data name="CLR_E_BIND_SYS_ASM_NI_MISSING" xml:space="preserve">
+    <value>Could not use native image because System.Private.CoreLib.dll is missing a native image.</value>
+  </data>
+  <data name="CLR_E_BIND_TYPE_NOT_FOUND" xml:space="preserve">
+    <value>A binding for the specified type name was not found.</value>
+  </data>
+  <data name="CLR_E_BIND_UNRECOGNIZED_IDENTITY_FORMAT" xml:space="preserve">
+    <value>The provided identity format is not recognized.</value>
+  </data>
+  <data name="CLR_E_CROSSGEN_NO_IBC_DATA_FOUND" xml:space="preserve">
+    <value>Cannot compile using the PartialNgen flag because no IBC data was found.</value>
+  </data>
+  <data name="CLR_E_GC_BAD_AFFINITY_CONFIG" xml:space="preserve">
+    <value>GCHeapAffinitizeMask or GCHeapAffinitizeRanges didn't specify any CPUs the current process is affinitized to.</value>
+  </data>
+  <data name="CLR_E_GC_BAD_AFFINITY_CONFIG_FORMAT" xml:space="preserve">
+    <value>GCHeapAffinitizeRanges configuration string has invalid format.</value>
+  </data>
+  <data name="CLR_E_GC_BAD_HARD_LIMIT" xml:space="preserve">
+    <value>GC heap hard limit configuration is invalid.</value>
+  </data>
+  <data name="CLR_E_GC_LARGE_PAGE_MISSING_HARD_LIMIT" xml:space="preserve">
+    <value>GC large page support requires hard limit settings.</value>
+  </data>
+  <data name="CLR_E_GC_OOM" xml:space="preserve">
+    <value>Failfast due to an OOM during a GC.</value>
+  </data>
+  <data name="CORDBG_E_ASSEMBLY_UPDATES_APPLIED" xml:space="preserve">
+    <value>The operation is not supported because assembly updates have been applied.</value>
+  </data>
+  <data name="CORDBG_E_UNSUPPORTED_DELEGATE" xml:space="preserve">
+    <value>The delegate contains a delegate currently not supported by the API.</value>
+  </data>
+  <data name="CORDBG_S_BAD_END_SEQUENCE_POINT" xml:space="preserve">
+    <value>Attempt to SetIP when not going to a sequence point. If both this and CORDBG_E_BAD_START_SEQUENCE_POINT are true, only CORDBG_E_BAD_START_SEQUENCE_POINT will be reported.</value>
+  </data>
+  <data name="CORDBG_S_BAD_START_SEQUENCE_POINT" xml:space="preserve">
+    <value>Attempt to SetIP not at a sequence point sequence point.</value>
+  </data>
+  <data name="CORDBG_S_FUNC_EVAL_ABORTED" xml:space="preserve">
+    <value>The func eval completed, but was aborted.</value>
+  </data>
+  <data name="CORDBG_S_FUNC_EVAL_HAS_NO_RESULT" xml:space="preserve">
+    <value>Some Func evals will lack a return value.</value>
+  </data>
+  <data name="CORDBG_S_VALUE_POINTS_TO_VOID" xml:space="preserve">
+    <value>The Debugging API doesn't support dereferencing void pointers.</value>
+  </data>
+  <data name="CORDIAGIPC_E_BAD_ENCODING" xml:space="preserve">
+    <value>The runtime was unable to decode the Header or Payload.</value>
+  </data>
+  <data name="CORDIAGIPC_E_UNKNOWN_COMMAND" xml:space="preserve">
+    <value>The specified CommandSet or CommandId is unknown.</value>
+  </data>
+  <data name="CORDIAGIPC_E_UNKNOWN_ERROR" xml:space="preserve">
+    <value>An unknown error occurred in the Diagnpostics IPC Server.</value>
+  </data>
+  <data name="CORDIAGIPC_E_UNKNOWN_MAGIC" xml:space="preserve">
+    <value>The magic version of Diagnostics IPC is unknown.</value>
+  </data>
+  <data name="CORPROF_E_ASYNCHRONOUS_UNSAFE" xml:space="preserve">
+    <value>A legal asynchronous call was made at an unsafe time (e.g., CLR locks are held).</value>
+  </data>
+  <data name="CORPROF_E_CALLBACK3_REQUIRED" xml:space="preserve">
+    <value>Profiler must implement ICorProfilerCallback3 interface for this call to be supported.</value>
+  </data>
+  <data name="CORPROF_E_CALLBACK4_REQUIRED" xml:space="preserve">
+    <value>Profiler must implement ICorProfilerCallback4 interface for this call to be supported.</value>
+  </data>
+  <data name="CORPROF_E_CALLBACK6_REQUIRED" xml:space="preserve">
+    <value>Profiler must implement ICorProfilerCallback6 interface for this call to be supported.</value>
+  </data>
+  <data name="CORPROF_E_CALLBACK7_REQUIRED" xml:space="preserve">
+    <value>Profiler must implement ICorProfilerCallback7 interface for this call to be supported.</value>
+  </data>
+  <data name="CORPROF_E_CLASSID_IS_ARRAY" xml:space="preserve">
+    <value>The specified ClassID cannot be inspected by this function because it is an array.</value>
+  </data>
+  <data name="CORPROF_E_CLASSID_IS_COMPOSITE" xml:space="preserve">
+    <value>The specified ClassID is a non-array composite type (e.g., ref) and cannot be inspected.</value>
+  </data>
+  <data name="CORPROF_E_CONCURRENT_GC_NOT_PROFILABLE" xml:space="preserve">
+    <value>Concurrent GC mode is enabled, which prevents use of COR_PRF_MONITOR_GC.</value>
+  </data>
+  <data name="CORPROF_E_DEBUGGING_DISABLED" xml:space="preserve">
+    <value>This functionality requires CoreCLR debugging to be enabled.</value>
+  </data>
+  <data name="CORPROF_E_FUNCTION_IS_COLLECTIBLE" xml:space="preserve">
+    <value>The specified function is instantiated into a collectible assembly, and is thus not supported by this API method.</value>
+  </data>
+  <data name="CORPROF_E_IMMUTABLE_FLAGS_SET" xml:space="preserve">
+    <value>Detach is impossible because immutable flags were set by the profiler at startup. Detach was not attempted; the profiler is still fully attached.</value>
+  </data>
+  <data name="CORPROF_E_INCONSISTENT_WITH_FLAGS" xml:space="preserve">
+    <value>The profiler called a function that first requires additional flags to be set in the event mask.  This HRESULT may also indicate that the profiler called a function that first requires that some of the flags currently set in the event mask be reset.</value>
+  </data>
+  <data name="CORPROF_E_IPC_FAILED" xml:space="preserve">
+    <value>AttachProfiler() encountered an error while communicating on the pipe to the target profilee.  This is often caused by a target profilee that is shutting down or killed while AttachProfiler() is reading or writing the pipe.</value>
+  </data>
+  <data name="CORPROF_E_IRREVERSIBLE_INSTRUMENTATION_PRESENT" xml:space="preserve">
+    <value>Detach is impossible because the profiler has either instrumented IL or inserted enter/leave hooks. Detach was not attempted; the profiler is still fully attached.</value>
+  </data>
+  <data name="CORPROF_E_LITERALS_HAVE_NO_ADDRESS" xml:space="preserve">
+    <value>Returned when asked for the address of a static that is a literal.</value>
+  </data>
+  <data name="CORPROF_E_MODULE_IS_DYNAMIC" xml:space="preserve">
+    <value>The specified module was dynamically generated (e.g., via Reflection.Emit API), and is thus not supported by this API method.</value>
+  </data>
+  <data name="CORPROF_E_PROFILEE_INCOMPATIBLE_WITH_TRIGGER" xml:space="preserve">
+    <value>Unable to request a profiler attach because the target profilee's runtime is of a version incompatible with the current process calling AttachProfiler().</value>
+  </data>
+  <data name="CORPROF_E_PROFILEE_PROCESS_NOT_FOUND" xml:space="preserve">
+    <value>AttachProfiler() was unable to find a profilee with the specified process ID.</value>
+  </data>
+  <data name="CORPROF_E_PROFILER_ALREADY_ACTIVE" xml:space="preserve">
+    <value>The request to attach a profiler was denied because a profiler is already loaded.</value>
+  </data>
+  <data name="CORPROF_E_PROFILER_CANCEL_ACTIVATION" xml:space="preserve">
+    <value>The profiler has requested that the CLR instance not load the profiler into this process.</value>
+  </data>
+  <data name="CORPROF_E_PROFILER_DETACHING" xml:space="preserve">
+    <value>The profiler's call into the CLR is disallowed because the profiler is attempting to detach.</value>
+  </data>
+  <data name="CORPROF_E_PROFILER_NOT_ATTACHABLE" xml:space="preserve">
+    <value>The profiler does not support attaching to a live process.</value>
+  </data>
+  <data name="CORPROF_E_PROFILER_NOT_YET_INITIALIZED" xml:space="preserve">
+    <value>The profiler called a function that cannot complete because the profiler is not yet fully initialized.</value>
+  </data>
+  <data name="CORPROF_E_REJIT_INLINING_DISABLED" xml:space="preserve">
+    <value>The runtime's tracking of inlined methods for ReJIT is not enabled.</value>
+  </data>
+  <data name="CORPROF_E_REJIT_NOT_ENABLED" xml:space="preserve">
+    <value>This call is not supported unless ReJIT is first enabled during initialization by setting COR_PRF_ENABLE_REJIT via SetEventMask.</value>
+  </data>
+  <data name="CORPROF_E_RUNTIME_UNINITIALIZED" xml:space="preserve">
+    <value>The profiler called a function that cannot complete because the CLR is not yet fully initialized.  The profiler may try again once the CLR has fully started.</value>
+  </data>
+  <data name="CORPROF_E_STACKSNAPSHOT_ABORTED" xml:space="preserve">
+    <value>Stackwalking callback requested the walk to abort.</value>
+  </data>
+  <data name="CORPROF_E_STACKSNAPSHOT_INVALID_TGT_THREAD" xml:space="preserve">
+    <value>A profiler tried to walk the stack of an invalid thread.</value>
+  </data>
+  <data name="CORPROF_E_STACKSNAPSHOT_UNMANAGED_CTX" xml:space="preserve">
+    <value>A profiler can not walk a thread that is currently executing unmanaged code.</value>
+  </data>
+  <data name="CORPROF_E_STACKSNAPSHOT_UNSAFE" xml:space="preserve">
+    <value>A stackwalk at this point may cause dead locks or data corruption.</value>
+  </data>
+  <data name="CORPROF_E_SUSPENSION_IN_PROGRESS" xml:space="preserve">
+    <value>The runtime cannot be suspened since a suspension is already in progress.</value>
+  </data>
+  <data name="CORPROF_E_TIMEOUT_WAITING_FOR_CONCURRENT_GC" xml:space="preserve">
+    <value>Timed out on waiting for concurrent GC to finish during attach.</value>
+  </data>
+  <data name="CORPROF_E_UNRECOGNIZED_PIPE_MSG_FORMAT" xml:space="preserve">
+    <value>The message sent on the profiling API attach pipe is in an unrecognized format.</value>
+  </data>
+  <data name="CORPROF_E_UNSUPPORTED_CALL_SEQUENCE" xml:space="preserve">
+    <value>A call was made at an unsupported time.  Examples include illegally calling a profiling API method asynchronously, calling a method that might trigger a GC at an unsafe time, and calling a method at a time that could cause locks to be taken out of order.</value>
+  </data>
+  <data name="CORPROF_E_UNSUPPORTED_FOR_ATTACHING_PROFILER" xml:space="preserve">
+    <value>This call was attempted by a profiler that attached to the process after startup, but this call is only supported by profilers that are loaded into the process on startup.</value>
+  </data>
+  <data name="COR_E_AMBIGUOUSIMPLEMENTATION" xml:space="preserve">
+    <value>Ambiguous implementation found.</value>
+  </data>
+  <data name="COR_E_AMBIGUOUSMATCH" xml:space="preserve">
+    <value>While late binding to a method via reflection, could not resolve between.</value>
+  </data>
+  <data name="COR_E_DATA" xml:space="preserve">
+    <value>Invalid data.</value>
+  </data>
+  <data name="COR_E_INSUFFICIENTMEMORY" xml:space="preserve">
+    <value>Not enough memory was available for an operation.</value>
+  </data>
+  <data name="COR_E_RUNTIMEWRAPPED" xml:space="preserve">
+    <value>An object that does not derive from System.Exception has been wrapped in a RuntimeWrappedException.</value>
+  </data>
+  <data name="COR_E_THREADSTART" xml:space="preserve">
+    <value>Indicate that a user thread fails to start.</value>
+  </data>
+  <data name="META_E_CA_FRIENDS_SN_REQUIRED" xml:space="preserve">
+    <value>Strong-name signed assemblies can only grant friend access to strong name-signed assemblies.</value>
+  </data>
+  <data name="META_S_DUPLICATE" xml:space="preserve">
+    <value>Attempt to define an object that already exists in valid scenerios.</value>
+  </data>
+  <data name="TRK_S_NOTIFICATION_QUOTA_EXCEEDED" xml:space="preserve">
+    <value>The server received a MOVE_NOTIFICATION request, but the FileTable size limit has already been reached.</value>
+  </data>
+  <data name="TRK_S_OUT_OF_SYNC" xml:space="preserve">
+    <value>The VolumeSequenceNumber of a MOVE_NOTIFICATION request is incorrect.</value>
+  </data>
+  <data name="TRK_VOLUME_NOT_FOUND" xml:space="preserve">
+    <value>The VolumeID in a request was not found in the server's ServerVolumeTable.</value>
+  </data>
+  <data name="TRK_VOLUME_NOT_OWNED" xml:space="preserve">
+    <value>A notification was sent to the LnkSvrMessage method, but the RequestMachine for the request was not the VolumeOwner for a VolumeID in the request.</value>
+  </data>
+</root>

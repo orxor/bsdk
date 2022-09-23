@@ -148,5 +148,6 @@
         FACILITY_XBOX                                     = 0x0923,
         FACILITY_GAME                                     = 0x0924,
         FACILITY_PIX                                      = 0x0abc,
+        FACILITY_DLT                                      = 0x0dea
         }
     }

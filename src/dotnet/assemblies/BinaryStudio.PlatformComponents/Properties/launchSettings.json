@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BinaryStudio.PlatformComponents": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

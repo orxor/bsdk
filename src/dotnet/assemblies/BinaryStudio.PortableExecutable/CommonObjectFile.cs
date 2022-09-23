@@ -260,6 +260,7 @@ namespace BinaryStudio.PortableExecutable
         #endregion
         #region M:LoadImportTable(Byte*,Int64):IEnumerable<ImportSymbolDescriptor>
         private unsafe IEnumerable<ImportSymbolDescriptor> LoadImportTable(Byte* address, Int64 offset) {
+            return EmptyArray<ImportSymbolDescriptor>.Value;
             var r = address + offset;
             var target = new List<ImportSymbolDescriptor>();
             for (;;) {

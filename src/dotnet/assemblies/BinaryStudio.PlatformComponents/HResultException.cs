@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace BinaryStudio.PlatformComponents.Win32
     {
+    using HRESULT=HResult;
     public class HResultException : COMException
         {
         public HResultException(Int32 code, CultureInfo culture)
-            :base(FormatMessage(code,culture), code)
+            :base(FormatMessage(unchecked((UInt32)code),culture), code)
             {
             }
 
@@ -28,16 +32,19 @@ namespace BinaryStudio.PlatformComponents.Win32
             {
             }
 
-        #region M:FormatMessage(Int32,IntPtr,CultureInfo):String
-        protected internal static unsafe String FormatMessage(Int32 SCode, IntPtr Module, CultureInfo Culture) {
-            if (Module == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(Module)); }
+        #region M:FormatMessage(UInt32,IntPtr,CultureInfo):String
+        protected internal static unsafe String FormatMessage(UInt32 SCode, IntPtr Module, CultureInfo Culture) {
             void* o;
             var LangId = ((((UInt32)(SUBLANG_DEFAULT)) << 10) | (UInt32)(LANG_NEUTRAL));
             if (Culture != null) {
                 LangId = unchecked((UInt32)(Culture.LCID));
                 }
-            if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_HMODULE,Module,SCode,
-                LangId,&o, 0, new IntPtr[0])) {
+            var Flags = (Module == IntPtr.Zero)
+                ? FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM|FORMAT_MESSAGE_IGNORE_INSERTS
+                : FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_HMODULE|FORMAT_MESSAGE_IGNORE_INSERTS;
+            if (FormatMessage(Flags,Module,SCode,
+                LangId,&o, 0, IntPtr.Zero))
+                {
                 try
                     {
                     var r = (new String((Char*)o)).
@@ -52,16 +59,32 @@ namespace BinaryStudio.PlatformComponents.Win32
                     LocalFree(o);
                     }
                 }
+            //else
+            //    {
+            //    var ECode = Marshal.GetLastWin32Error();
+            //    if ((ECode < 0xffff) && ((Win32ErrorCode)ECode == Win32ErrorCode.ERROR_RESOURCE_TYPE_NOT_FOUND)) {
+            //        var r = LoadString(Module, SCode);
+            //        return r;
+            //        }
+            //    }
             return null;
             }
         #endregion
-        #region M:FormatMessage(Int32,String,CultureInfo):String
-        protected internal static String FormatMessage(Int32 SCode, String Module, CultureInfo Culture) {
+        #region M:FormatMessage(UInt32,String,CultureInfo):String
+        protected internal static String FormatMessage(UInt32 SCode, String Module, CultureInfo Culture) {
             if (Module == null) { throw new ArgumentNullException(nameof(Module)); }
             if (String.IsNullOrWhiteSpace(Module)) { throw new ArgumentOutOfRangeException(nameof(Module)); }
             lock(Libraries) {
                 if (!Libraries.TryGetValue(Module,out var Library)) {
                     Library = LoadLibrary(Module);
+                    if (Library == IntPtr.Zero) {
+                        EnumProcessModules(out var Modules);
+                        var ModuleNames = new String[Modules.Length];
+                        for (var i = 0; i < Modules.Length; i++) {
+                            ModuleNames[i] = GetModuleFileName(Modules[i]);
+                            }
+                        Library = LoadLibrary(Module,ModuleNames,Culture);
+                        }
                     if (Library != IntPtr.Zero) {
                         Libraries.Add(Module,Library);
                         }
@@ -73,66 +96,49 @@ namespace BinaryStudio.PlatformComponents.Win32
             return null;
             }
         #endregion
-        #region M:FormatMessage(Int32,CultureInfo):String
-        public static unsafe String FormatMessage(Int32 SCode, CultureInfo Culture = null) {
-            void* o = null;
-            var LangId = ((((UInt32)(SUBLANG_DEFAULT)) << 10) | (UInt32)(LANG_NEUTRAL));
-            if (Culture != null) {
-                LangId = unchecked((UInt32)(Culture.LCID));
-                }
-            try
-                {
-                if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_FROM_SYSTEM,IntPtr.Zero,SCode,
-                    LangId, &o, 0, IntPtr.Zero)) {
-                    try
+        #region M:FormatMessage(UInt32,CultureInfo):String
+        public static String FormatMessage(UInt32 SCode, CultureInfo Culture = null) {
+            var r = FormatMessage(SCode,IntPtr.Zero,Culture);
+            if (r != null) {  return r; }
+            for (;;) {
+                var Severity  = (SCode >> 31) & 0x0001;
+                var FacilityI = (SCode >> 16) & 0x1fff;
+                var FacilityE = (FACILITY)FacilityI;
+                var SCodeE = (HResult)(unchecked((Int32)SCode));
+                var Code = SCode & 0xffff;
+                switch (FacilityI) {
+                    case FACILITY_MEDIASERVER: { r = FormatMessage(SCode,"wmerror.dll",Culture); } break;
+                    case FACILITY_GRAPHICS:
                         {
-                        var r = (new String((Char*)o)).
-                            Replace("\n", " ").
-                            Replace("\r", " ").
-                            Replace("  ", " ").
-                            Trim();
-                        if ((SCode >= 0xFFFF) || (SCode < 0))
-                            {
-                            return $"{r}";
-                            }
-                        else
-                            {
-                            return $"{r}";
-                            }
-                        }
-                    finally
-                        {
-                        LocalFree(o);
-                        }
-                    }
-                }
-            catch
-                {
-                }
-
-            var Severity = (SCode >> 31) & 0x0001;
-            var Facility = (SCode >> 16) & 0x1fff;
-            var Code = SCode & 0xffff;
-                {
-                var r = (SCode >= 0xffff) || (SCode < 0)
-                    ? $"HRESULT:{{{(HResult)SCode}}},Facility:{{{(FACILITY)Facility}}}"
-                    : $"{{WIN32:{(Win32ErrorCode)SCode}}}";
-                switch (Facility)
-                    {
-                    case FACILITY_MEDIASERVER:
-                        {
-                        r = FormatMessage(SCode,"winmm.dll",Culture);
+                        r = FormatMessage(SCode & 0x7fffffff,IntPtr.Zero,Culture) ??
+                            FormatMessage(SCode | 0x80000000,IntPtr.Zero,Culture);
                         }
                         break;
+                    case FACILITY_URT:         { r = LoadString("mscorrc.dll",(SCode & 0xffff) + 0x6000,Culture); } break;
+                    }
+                if (SCode >= 0xffff) {
+                    if (HResultMappings.TryGetValue(SCodeE,out var SCodeM)) {
+                        SCode = unchecked((UInt32)(Int32)SCodeM);
+                        continue;
+                        }
+                    }
+                r = r ?? Properties.Resources.ResourceManager.GetString(((HResult)SCode).ToString(),Culture);
+                if (r == null) {
+                    r = (SCode >= 0xffff) || (SCode < 0)
+                        ? $"HRESULT:{{{SCodeE}}},Facility:{{{FacilityE}}}"
+                        : $"{{WIN32:{(Win32ErrorCode)SCode}}}";
                     }
                 return r;
                 }
             }
         #endregion
 
+        private const UInt32 FORMAT_MESSAGE_IGNORE_INSERTS  = 0x00000200;
         private const UInt32 FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x00000100;
         private const UInt32 FORMAT_MESSAGE_FROM_SYSTEM     = 0x00001000;
         private const UInt32 FORMAT_MESSAGE_FROM_HMODULE    = 0x00000800;
+        private const UInt32 FORMAT_MESSAGE_ARGUMENT_ARRAY  = 0x00002000;
+
         private const UInt32 LANG_NEUTRAL                   = 0x00;
         private const UInt32 SUBLANG_DEFAULT                = 0x01;
         private const Int32  FACILITY_NT_BIT                = 0x10000000;
@@ -284,11 +290,118 @@ namespace BinaryStudio.PlatformComponents.Win32
         private const Int32  FACILITY_XBOX                                     = 0x0923;
         private const Int32  FACILITY_GAME                                     = 0x0924;
         private const Int32  FACILITY_PIX                                      = 0x0abc;
+        private const Int32  FACILITY_DLT                                      = 0x0dea;
 
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
-        [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
-        [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr arguments);
+        [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  UInt32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
+        [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  UInt32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr arguments);
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr LoadLibrary(String filename);
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr GetCurrentProcess();
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern Int32 GetModuleFileName(IntPtr Module,StringBuilder FileName, Int32 Length);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern Int32 LoadString(IntPtr Module,UInt32 Identifier,StringBuilder FileName, Int32 Length);
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, EntryPoint = "K32EnumProcessModules")] private static extern IntPtr EnumProcessModules(IntPtr Process,[MarshalAs(UnmanagedType.LPArray)] IntPtr[] Modules, Int32 ModulesCount, out Int32 CountRequired);
+
+        #region M:GetModuleFileName(IntPtr):String
+        private static String GetModuleFileName(IntPtr Module) {
+            var o = new StringBuilder(260);
+            while (true) {
+                var r = GetModuleFileName(Module, o, o.Capacity);
+                if (r == 0)
+                    {
+                    return null;
+                    }
+                if (r <= o.Capacity)
+                    {
+                    break;
+                    }
+                o.EnsureCapacity(o.Capacity * 2);
+                }
+            return o.ToString();
+            }
+        #endregion
+        #region M:LoadString(IntPtr,UInt32):String
+        private static String LoadString(IntPtr Module,UInt32 Identifier) {
+            var o = new StringBuilder(260);
+            while (true) {
+                var r = LoadString(Module, Identifier, o, o.Capacity);
+                if (r == 0)
+                    {
+                    return null;
+                    }
+                if (r <= o.Capacity)
+                    {
+                    break;
+                    }
+                o.EnsureCapacity(o.Capacity * 2);
+                }
+            return o.ToString();
+            }
+        #endregion
+        #region M:LoadString(String,UInt32,CultureInfo):String
+        private static String LoadString(String Module,UInt32 Identifier,CultureInfo Culture) {
+            if (Module == null) { throw new ArgumentNullException(nameof(Module)); }
+            if (String.IsNullOrWhiteSpace(Module)) { throw new ArgumentOutOfRangeException(nameof(Module)); }
+            lock(Libraries) {
+                if (!Libraries.TryGetValue(Module,out var Library)) {
+                    Library = LoadLibrary(Module);
+                    if (Library == IntPtr.Zero) {
+                        EnumProcessModules(out var Modules);
+                        var ModuleNames = new String[Modules.Length];
+                        for (var i = 0; i < Modules.Length; i++) {
+                            ModuleNames[i] = GetModuleFileName(Modules[i]);
+                            }
+                        Library = LoadLibrary(Module,ModuleNames,Culture);
+                        }
+                    if (Library != IntPtr.Zero) {
+                        Libraries.Add(Module,Library);
+                        }
+                    }
+                if (Library != IntPtr.Zero) {
+                    return LoadString(Library,Identifier);
+                    }
+                }
+            return null;
+            }
+        #endregion
+        #region M:LoadLibrary(String,String[],CultureInfo):IntPtr
+        private static IntPtr LoadLibrary(String Module,String[] Modules,CultureInfo Culture) {
+            #if NET40
+            Culture = Culture ?? CultureInfo.CurrentCulture;
+            #else
+            Culture = Culture ?? CultureInfo.DefaultThreadCurrentCulture;
+            #endif
+            var IetfLanguageTag = Culture.IetfLanguageTag;
+            var TwoLetterISOLanguageName = Culture.TwoLetterISOLanguageName;
+            var Library = LoadLibrary(Module);
+            if (Library == IntPtr.Zero) {
+                for (var i = 0; i < Modules.Length; i++) {
+                    if (Modules[i] != null) {
+                        if (Modules[i].EndsWith(Module, StringComparison.OrdinalIgnoreCase)) {
+                            Library = LoadLibrary(Modules[i]);
+                            break;
+                            }
+                        }
+                    }
+                if (Library == IntPtr.Zero) {
+                    for (var i = 0; i < Modules.Length; i++) {
+                                                    Library = LoadLibrary(Path.Combine(Path.GetDirectoryName(Modules[i]),IetfLanguageTag,Module));
+                        if (Library == IntPtr.Zero) Library = LoadLibrary(Path.Combine(Path.GetDirectoryName(Modules[i]),TwoLetterISOLanguageName,Module));
+                        if (Library == IntPtr.Zero) Library = LoadLibrary(Path.Combine(Path.GetDirectoryName(Modules[i]),Module));
+                        if (Library != IntPtr.Zero) {
+                            break;
+                            }
+                        }
+                    }
+                }
+            return Library;
+            }
+        #endregion
+        #region M:EnumProcessModules({out}IntPtr[])
+        private static void EnumProcessModules(out IntPtr[] Modules) {
+            EnumProcessModules(GetCurrentProcess(),null,0,out var CountRequired);
+            EnumProcessModules(GetCurrentProcess(),Modules = new IntPtr[CountRequired],CountRequired,out CountRequired);
+            }
+        #endregion
 
         public static Exception GetExceptionForHR(Int32 scode) { return GetExceptionForHR(scode, null); }
         public static Exception GetExceptionForHR(Int32 scode, CultureInfo culture) {
@@ -299,12 +412,13 @@ namespace BinaryStudio.PlatformComponents.Win32
             else
                 {
                 switch ((Win32ErrorCode)scode) {
-                    case Win32ErrorCode.ERROR_ACCESS_DENIED: return new UnauthorizedAccessException(FormatMessage(scode, culture));
+                    case Win32ErrorCode.ERROR_ACCESS_DENIED: return new UnauthorizedAccessException(FormatMessage(unchecked((UInt32)scode), culture));
                     }
                 }
             return new HResultException(scode, culture);
             }
 
         private static readonly IDictionary<String,IntPtr> Libraries = new ConcurrentDictionary<String,IntPtr>(StringComparer.OrdinalIgnoreCase);
+        private static readonly IDictionary<HRESULT,HRESULT> HResultMappings = new Dictionary<HResult,HResult>();
         }
     }
