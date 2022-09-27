@@ -29,3 +29,4 @@
 /src/dotnet/samples/XYViewportSample/obj
 /src/dotnet/samples/DllResources/bin
 /src/dotnet/samples/DllResources/obj
+*.user

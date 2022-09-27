@@ -3,6 +3,9 @@
     <TargetFrameworks>netcoreapp3.1;net40;net45;net5.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
+    <DefineConstants>TRACE;AA</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -16,4 +19,18 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Messages.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Messages.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <Win32Resource>$(ProjectDir)obj\$(Configuration)\$(TargetFramework)\Messages.res</Win32Resource>
+  </PropertyGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="PowerShell.exe -File $(ProjectDir)Properties\Messages.ps1 -Source $(ProjectDir)Properties\Messages.xml -Target $(ProjectDir)obj\$(ConfigurationName)\$(TargetFramework)\Messages.mc" />
+  </Target>
 </Project>

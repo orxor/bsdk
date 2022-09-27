@@ -5,6 +5,7 @@ namespace BinaryStudio.PlatformComponents.Win32
     public enum HResult
         {
         S_OK                                                                  = unchecked((Int32)0x00000000),
+        S_FALSE                                                               = unchecked((Int32)0x00000001),
         CACHE_E_NOCACHE_UPDATED                                               = unchecked((Int32)0x80040170),
         CACHE_S_FORMATETC_NOTSUPPORTED                                        = unchecked((Int32)0x00040170),
         CACHE_S_SAMECACHE                                                     = unchecked((Int32)0x00040171),

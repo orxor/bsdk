@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Messages>
+  <Message Language="0x0409" SCode="0x800a0006">The result is too large to be represented in function's return type.</Message>
+  <Message Language="0x0409" SCode="0x800a0007">Insufficient memory to continue the execution of the program.</Message>
+  <Message Language="0x0409" SCode="0x800a000b">Attempted to divide by zero.</Message>
+  <Message Language="0x0409" SCode="0x800a001c">Operation caused a stack overflow.</Message>
+  <Message Language="0x0409" SCode="0x800a0035">Unable to find the specified file.</Message>
+  <Message Language="0x0409" SCode="0x800a0039">I/O error occurred.</Message>
+  <Message Language="0x0409" SCode="0x800a0046">Permission denied.</Message>
+  <Message Language="0x0409" SCode="0x800a004b">Attempted to perform an unauthorized operation.</Message>
+  <Message Language="0x0409" SCode="0x800a004c">Attempted to access a path that is not on the disk.</Message>
+  <Message Language="0x0409" SCode="0x800a01c1">VB6: Argument not optional.</Message>
+  <Message Language="0x0409" SCode="0x800a014f">VB6: Could not access system registry.</Message>
+  <Message Language="0x0409" SCode="0x800a793d">VB6: Error loading from file.</Message>
+  <Message Language="0x0409" SCode="0x800a793c">VB6: Error saving to file.</Message>
+  <Message Language="0x0409" SCode="0x800a003e">VB6: Input past end of file.</Message>
+  <Message Language="0x0409" SCode="0x800a01cd">VB6: Method or data member not found.</Message>
+  <Message Language="0x0409" SCode="0x800a01bd">VB6: Object doesn't support this action.</Message>
+  <Message Language="0x0409" SCode="0x800a01b6">VB6: Object doesn't support this property or method.</Message>
+  <Message Language="0x0409" SCode="0x800a7919">VB6: Out of memory.</Message>
+  <Message Language="0x0409" SCode="0x800a01a3">VB6: Permission to use object denied.</Message>
+  <Message Language="0x0409" SCode="0x800a0009">VB6: Subscript out of range.</Message>
+  <Message Language="0x0409" SCode="0x800a01cb">VB6: Object or class does not support the set of events.</Message>
+  <Message Language="0x0409" SCode="0x800a01ca">VB6: Variable uses an automation type not supported.</Message>
+  <Message Language="0x0409" SCode="0x800a01c2">VB6: Wrong number of arguments or invalid property assignment.</Message>
+  <Message Language="0x0409" SCode="0x0dead100">The {VolumeSequenceNumber} of a {MOVE_NOTIFICATION} request is incorrect.</Message>
+  <Message Language="0x0409" SCode="0x0dead102">The {VolumeID} in a request was not found in the server's {ServerVolumeTable}.</Message>
+  <Message Language="0x0409" SCode="0x0dead103">A notification was sent to the {LnkSvrMessage} method, but the {RequestMachine} for the request was not the {VolumeOwner} for a {VolumeID} in the request.</Message>
+  <Message Language="0x0409" SCode="0x0dead107">The server received a {MOVE_NOTIFICATION} request, but the {FileTable} size limit has already been reached.</Message>
+  <Message Language="0x0409" SCode="0x8dead01b">A requested object was not found.</Message>
+  <Message Language="0x0409" SCode="0x8dead01c">The server received a CREATE_VOLUME subrequest of a SYNC_VOLUMES request, but the ServerVolumeTable size limit for the RequestMachine has already been reached.</Message>
+  <Message Language="0x0409" SCode="0x8dead01e">The server is busy, and the client should retry the request at a later time.</Message>
+  <Message Language="0x0409" SCode="0xc0262504">An array passed to a function cannot hold all of the data that the function wants to put in it.</Message>
+  <Message Language="0x0409" SCode="0xc0262506">The protected video path (PVP) cannot find an actual GDI display device that corresponds to the passed-in GDI display device name.</Message>
+  <Message Language="0x0409" SCode="0xc0262507">This function failed because the GDI display device passed to it was not attached to the Windows desktop.</Message>
+  <Message Language="0x0409" SCode="0xc0262508">The PVP does not support mirroring display devices because they do not have video outputs.</Message>
+  <Message Language="0x0409" SCode="0xc026250a">The function failed because an invalid pointer parameter was passed to it. A pointer parameter is invalid if it is null, it points to an invalid address, it points to a kernel mode address, or it is not correctly aligned.</Message>
+  <Message Language="0x0409" SCode="0xc026250d">This function failed because the GDI device passed to it did not have any monitors associated with it.</Message>
+  <Message Language="0x0409" SCode="0xc0262519">The operating system asynchronously destroyed this OPM video output because the operating system's state changed. This error typically occurs because the monitor physical device object (PDO) associated with this video output was removed, the monitor PDO associated with this video output was stopped, the video output's session became a nonconsole session or the video output's desktop became an inactive desktop.</Message>
+  <Message Language="0x0409" SCode="0xc02625d6">The HMONITOR no longer exists, is not attached to the desktop, or corresponds to a mirroring device.</Message>
+  <Message Language="0x0409" SCode="0xc02625d7">The Direct3D (D3D) device's GDI display device no longer exists, is not attached to the desktop, or is a mirroring display device.</Message>
+  
+  <Message Language="0x0409" SCode="0x80132004">A binding for the specified assembly name was not found.</Message>
+  <Message Language="0x0409" SCode="0x80132001">The assembly version has a public key token that does not match that of the request.</Message>
+  <Message Language="0x0409" SCode="0x80132000">The bound assembly has a version that is lower than that of the request.</Message>
+  <Message Language="0x0409" SCode="0x80132002">The requested image was not found or is unavailable.</Message>
+  <Message Language="0x0409" SCode="0x80132008">Native image identity mismatch with respect to its dependencies.</Message>
+  <Message Language="0x0409" SCode="0x80132007">Native image was generated in a different trust level than present at runtime.</Message>
+  <Message Language="0x0409" SCode="0x80132006">Could not use native image because System.Private.CoreLib.dll is missing a native image.</Message>
+  <Message Language="0x0409" SCode="0x80132005">A binding for the specified type name was not found.</Message>
+  <Message Language="0x0409" SCode="0x80132003">The provided identity format is not recognized.</Message>
+  <Message Language="0x0409" SCode="0x8013200c">Cannot compile using the PartialNgen flag because no IBC data was found.</Message>
+  <Message Language="0x0409" SCode="0x8013200a">{GCHeapAffinitizeMask} or {GCHeapAffinitizeRanges} didn't specify any CPUs the current process is affinitized to.</Message>
+  <Message Language="0x0409" SCode="0x8013200b">{GCHeapAffinitizeRanges} configuration string has invalid format.</Message>
+  <Message Language="0x0409" SCode="0x8013200d">GC heap hard limit configuration is invalid.</Message>
+  <Message Language="0x0409" SCode="0x8013200e">GC large page support requires hard limit settings.</Message>
+  <Message Language="0x0409" SCode="0x80132009">Failfast due to an OOM during a GC.</Message>
+  <Message Language="0x0409" SCode="0x8013106a">Ambiguous implementation found.</Message>
+  <Message Language="0x0409" SCode="0x8000211d">While late binding to a method via reflection, could not resolve between.</Message>
+  <Message Language="0x0409" SCode="0x8013153d">Not enough memory was available for an operation.</Message>
+  <Message Language="0x0409" SCode="0x8013153e">An object that does not derive from {System.Exception} has been wrapped in a {RuntimeWrappedException}.</Message>
+  <Message Language="0x0409" SCode="0x80131525">Indicate that a user thread fails to start.</Message>
+  <Message Language="0x0409" SCode="0x80131920">Invalid data.</Message>
+  <Message Language="0x0409" SCode="0x80131fff">Internal error.</Message>
+  <Message Language="0x0409" SCode="0x80131c69">DBG: The operation is not supported because assembly updates have been applied.</Message>
+  <Message Language="0x0409" SCode="0x80131c68">DBG: The delegate contains a delegate currently not supported by the API.</Message>
+  <Message Language="0x0409" SCode="0x0013130c">DBG: Attempt to {SetIP} when not going to a sequence point. If both this and {CORDBG_E_BAD_START_SEQUENCE_POINT} are true, only {CORDBG_E_BAD_START_SEQUENCE_POINT} will be reported.</Message>
+  <Message Language="0x0409" SCode="0x0013130b">DBG: Attempt to {SetIP} not at a sequence point sequence point.</Message>
+  <Message Language="0x0409" SCode="0x00131319">DBG: The func eval completed, but was aborted.</Message>
+  <Message Language="0x0409" SCode="0x00131316">DBG: Some func evals will lack a return value.</Message>
+  <Message Language="0x0409" SCode="0x00131317">DBG: The Debugging API doesn't support dereferencing void pointers.</Message>
+  <Message Language="0x0409" SCode="0x80131384">DIAG: The runtime was unable to decode the Header or Payload.</Message>
+  <Message Language="0x0409" SCode="0x80131385">DIAG: The specified {CommandSet} or {CommandId} is unknown.</Message>
+  <Message Language="0x0409" SCode="0x80131387">DIAG: An unknown error occurred in the Diagnpostics IPC Server.</Message>
+  <Message Language="0x0409" SCode="0x80131386">DIAG: The magic version of Diagnostics IPC is unknown.</Message>
+  <Message Language="0x0409" SCode="0x80131364">PROF: A legal asynchronous call was made at an unsafe time (e.g., CLR locks are held).</Message>
+  <Message Language="0x0409" SCode="0x8013136e">PROF: Profiler must implement {ICorProfilerCallback3} interface for this call to be supported.</Message>
+  <Message Language="0x0409" SCode="0x8013137b">PROF: Profiler must implement {ICorProfilerCallback4} interface for this call to be supported.</Message>
+  <Message Language="0x0409" SCode="0x80131380">PROF: Profiler must implement {ICorProfilerCallback6} interface for this call to be supported.</Message>
+  <Message Language="0x0409" SCode="0x80131382">PROF: Profiler must implement {ICorProfilerCallback7} interface for this call to be supported.</Message>
+  <Message Language="0x0409" SCode="0x80131365">PROF: The specified {ClassID} cannot be inspected by this function because it is an array.</Message>
+  <Message Language="0x0409" SCode="0x80131366">PROF: The specified {ClassID} is a non-array composite type (e.g., ref) and cannot be inspected.</Message>
+  <Message Language="0x0409" SCode="0x80131376">PROF: Concurrent GC mode is enabled, which prevents use of {COR_PRF_MONITOR_GC}.</Message>
+  <Message Language="0x0409" SCode="0x80131378">PROF: This functionality requires {CoreCLR} debugging to be enabled.</Message>
+  <Message Language="0x0409" SCode="0x8013137e">PROF: The specified function is instantiated into a collectible assembly, and is thus not supported by this API method.</Message>
+  <Message Language="0x0409" SCode="0x80131372">PROF: Detach is impossible because immutable flags were set by the profiler at startup. Detach was not attempted; the profiler is still fully attached.</Message>
+  <Message Language="0x0409" SCode="0x80131374">PROF: The profiler called a function that first requires additional flags to be set in the event mask.  This {HRESULT} may also indicate that the profiler called a function that first requires that some of the flags currently set in the event mask be reset.</Message>
+  <Message Language="0x0409" SCode="0x8013136c">PROF: {AttachProfiler} encountered an error while communicating on the pipe to the target profilee.  This is often caused by a target profilee that is shutting down or killed while {AttachProfiler} is reading or writing the pipe.</Message>
+  <Message Language="0x0409" SCode="0x80131370">PROF: Detach is impossible because the profiler has either instrumented IL or inserted enter/leave hooks. Detach was not attempted; the profiler is still fully attached.</Message>
+  <Message Language="0x0409" SCode="0x80131362">PROF: Returned when asked for the address of a static that is a literal.</Message>
+  <Message Language="0x0409" SCode="0x8013137a">PROF: The specified module was dynamically generated (e.g., via {Reflection.Emit} API), and is thus not supported by this API method.</Message>
+  <Message Language="0x0409" SCode="0x8013136b">PROF: Unable to request a profiler attach because the target profilee's runtime is of a version incompatible with the current process calling {AttachProfiler}.</Message>
+  <Message Language="0x0409" SCode="0x8013136d">PROF: {AttachProfiler} was unable to find a profilee with the specified process ID.</Message>
+  <Message Language="0x0409" SCode="0x8013136a">PROF: The request to attach a profiler was denied because a profiler is already loaded.</Message>
+  <Message Language="0x0409" SCode="0x80131375">PROF: The profiler has requested that the CLR instance not load the profiler into this process.</Message>
+  <Message Language="0x0409" SCode="0x80131367">PROF: The profiler's call into the CLR is disallowed because the profiler is attempting to detach.</Message>
+  <Message Language="0x0409" SCode="0x80131368">PROF: The profiler does not support attaching to a live process.</Message>
+  <Message Language="0x0409" SCode="0x80131373">PROF: The profiler called a function that cannot complete because the profiler is not yet fully initialized.</Message>
+  <Message Language="0x0409" SCode="0x80131383">PROF: The runtime's tracking of inlined methods for {ReJIT} is not enabled.</Message>
+  <Message Language="0x0409" SCode="0x8013137c">PROF: This call is not supported unless {ReJIT} is first enabled during initialization by setting {COR_PRF_ENABLE_REJIT} via {SetEventMask}.</Message>
+  <Message Language="0x0409" SCode="0x80131371">PROF: The profiler called a function that cannot complete because the CLR is not yet fully initialized. The profiler may try again once the CLR has fully started.</Message>
+  <Message Language="0x0409" SCode="0x80131361">PROF: Stackwalking callback requested the walk to abort.</Message>
+  <Message Language="0x0409" SCode="0x8013135e">PROF: A profiler tried to walk the stack of an invalid thread.</Message>
+  <Message Language="0x0409" SCode="0x8013135f">PROF: A profiler can not walk a thread that is currently executing unmanaged code.</Message>
+  <Message Language="0x0409" SCode="0x80131360">PROF: A stackwalk at this point may cause dead locks or data corruption.</Message>
+  <Message Language="0x0409" SCode="0x80131388">PROF: The runtime cannot be suspened since a suspension is already in progress.</Message>
+  <Message Language="0x0409" SCode="0x80131379">PROF: Timed out on waiting for concurrent GC to finish during attach.</Message>
+  <Message Language="0x0409" SCode="0x80131369">PROF: The message sent on the profiling API attach pipe is in an unrecognized format.</Message>
+  <Message Language="0x0409" SCode="0x80131363">PROF: A call was made at an unsupported time. Examples include illegally calling a profiling API method asynchronously, calling a method that might trigger a GC at an unsafe time, and calling a method at a time that could cause locks to be taken out of order.</Message>
+  <Message Language="0x0409" SCode="0x8013136f">PROF: This call was attempted by a profiler that attached to the process after startup, but this call is only supported by profilers that are loaded into the process on startup.</Message>
+  <Message Language="0x0409" SCode="0x801311e6">META: Strong-name signed assemblies can only grant friend access to strong name-signed assemblies.</Message>
+  <Message Language="0x0409" SCode="0x00131197">META: Attempt to define an object that already exists in valid scenerios.</Message>
+  <!--<Message Language="0x0419" SCode="0x800a0006">Результат слишком велик для представления в возвращаемом типе функции.</Message>-->
+</Messages>

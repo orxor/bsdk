@@ -15,10 +15,16 @@ namespace DllResources
         static void Main(string[] args) {
             var culture = CultureInfo.GetCultureInfo("ru-RU");
             Console.OutputEncoding = Encoding.UTF8;
+
+            //foreach (var name in Enum.GetNames(typeof(FACILITY))) {
+            //    var value = (Int32)(FACILITY)Enum.Parse(typeof(FACILITY),name);
+            //    Console.WriteLine($"\"{name}\"=0x{value.ToString("x4")}");
+            //    }
+
             foreach (var name in Enum.GetNames(typeof(HResult))) {
-                var scode = unchecked((UInt32)(Int32)(HResult)Enum.Parse(typeof(HResult),name));
-                var value = HResultException.FormatMessage(scode,culture);
-                //Console.Error.WriteLine($"{{{name}}}:{{{value}}}");
+                var scode = unchecked((UInt32)(Int32)(HResult)Enum.Parse(typeof(HResult), name));
+                var value = HResultException.FormatMessage(scode, culture);
+                Console.Error.WriteLine($"{{{name}}}:{{{value}}}");
                 }
             if (args.Length == 0) {
                 Console.WriteLine($"USAGE: {{this.exe}} {{full-library-path}}");
