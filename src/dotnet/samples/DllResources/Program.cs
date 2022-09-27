@@ -21,8 +21,8 @@ namespace DllResources
             //    Console.WriteLine($"\"{name}\"=0x{value.ToString("x4")}");
             //    }
 
-            foreach (var name in Enum.GetNames(typeof(HResult))) {
-                var scode = unchecked((UInt32)(Int32)(HResult)Enum.Parse(typeof(HResult), name));
+            foreach (var name in Enum.GetNames(typeof(Win32ErrorCode))) {
+                var scode = unchecked((UInt32)(Int32)(Win32ErrorCode)Enum.Parse(typeof(Win32ErrorCode), name));
                 var value = HResultException.FormatMessage(scode, culture);
                 Console.Error.WriteLine($"{{{name}}}:{{{value}}}");
                 }

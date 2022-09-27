@@ -108,12 +108,6 @@ namespace BinaryStudio.PlatformComponents.Win32
                         break;
                     case FACILITY_URT:         { r = LoadString("mscorrc.dll",(SCode & 0xffff) + 0x6000,Culture); } break;
                     }
-                if (SCode >= 0xffff) {
-                    if (HResultMappings.TryGetValue(SCodeE,out var SCodeM)) {
-                        SCode = unchecked((UInt32)(Int32)SCodeM);
-                        continue;
-                        }
-                    }
                 r = r ?? Properties.Resources.ResourceManager.GetString(((HResult)SCode).ToString(),Culture);
                 r = r ?? FormatMessage(SCode,assembly, Culture);
                 r = r ?? FormatMessage(SCode,assembly, English);
@@ -270,8 +264,5 @@ namespace BinaryStudio.PlatformComponents.Win32
 
         private static readonly IDictionary<String,IntPtr> Libraries = new ConcurrentDictionary<String,IntPtr>(StringComparer.OrdinalIgnoreCase);
         private static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
-        private static readonly IDictionary<HRESULT,HRESULT> HResultMappings = new Dictionary<HResult,HResult>{
-            //{ HRESULT.ERROR_GRAPHICS_OPM_PARAMETER_ARRAY_TOO_SMALL, HRESULT.ERROR_GRAPHICS_PARAMETER_ARRAY_TOO_SMALL }
-            };
         }
     }
