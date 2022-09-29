@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
@@ -12,20 +13,25 @@ namespace DllResources
     {
     class Program
         {
-        static void Main(string[] args) {
-            var culture = CultureInfo.GetCultureInfo("ru-RU");
-            Console.OutputEncoding = Encoding.UTF8;
-
-            //foreach (var name in Enum.GetNames(typeof(FACILITY))) {
-            //    var value = (Int32)(FACILITY)Enum.Parse(typeof(FACILITY),name);
-            //    Console.WriteLine($"\"{name}\"=0x{value.ToString("x4")}");
-            //    }
-
-            foreach (var name in Enum.GetNames(typeof(Win32ErrorCode))) {
-                var scode = unchecked((UInt32)(Int32)(Win32ErrorCode)Enum.Parse(typeof(Win32ErrorCode), name));
+        private static void EnumReport<T>(CultureInfo culture)
+            where T: Enum
+            {
+            foreach (var name in Enum.GetNames(typeof(T)).OrderBy(i=>{
+                    return unchecked((UInt32)(Int32)(Enum.Parse(typeof(T), i)));
+                    }))
+                {
+                var scode = unchecked((UInt32)(Int32)(Enum.Parse(typeof(T), name)));
                 var value = HResultException.FormatMessage(scode, culture);
-                Console.Error.WriteLine($"{{{name}}}:{{{value}}}");
+                Console.Out.WriteLine($"{{{scode.ToString("x8")}}}:{{{name}}}:{{{value}}}");
+                //Console.Out.WriteLine($"  <Message Language=\"0x0409\" SCode=\"{scode.ToString("x8")}\">{value}</Message>");
                 }
+            }
+
+        static void Main(string[] args) {
+            var culture = CultureInfo.GetCultureInfo("en-US");
+            Console.OutputEncoding = Encoding.UTF8;
+            EnumReport<HResult>(culture);
+            EnumReport<Win32ErrorCode>(culture);
             if (args.Length == 0) {
                 Console.WriteLine($"USAGE: {{this.exe}} {{full-library-path}}");
                 return;

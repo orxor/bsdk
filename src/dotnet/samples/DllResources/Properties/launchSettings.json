@@ -2,6 +2,7 @@
   "profiles": {
     "DllResources": {
       "commandName": "Project",
+      "commandLineArgs": ".\\BinaryStudio.PlatformComponents.dll",
       "nativeDebugging": true
     }
   }

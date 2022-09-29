@@ -30,3 +30,5 @@
 /src/dotnet/samples/DllResources/bin
 /src/dotnet/samples/DllResources/obj
 *.user
+/src/dotnet/samples/HResultSample/bin
+/src/dotnet/samples/HResultSample/obj

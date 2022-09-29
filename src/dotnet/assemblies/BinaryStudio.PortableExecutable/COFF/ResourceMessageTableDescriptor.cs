@@ -44,27 +44,42 @@ namespace BinaryStudio.PortableExecutable
         internal ResourceMessageTableDescriptor(ResourceDescriptor owner, ResourceIdentifier identifier, Byte[] source)
             :base(owner, identifier, source)
             {
-            values = new SortedDictionary<UInt32, String>();
-            unsafe
+            try
                 {
-                fixed (Byte* r = source) {
-                    if (*(Int32*)r > 0) {
-                        var src = (MESSAGE_RESOURCE_BLOCK*)(r + 4);
-                        for (var i = 0; i < *(Int32*)r; i++) {
-                            var blocks = (MESSAGE_RESOURCE_ENTRY*)(r + src->OffsetToEntries);
-                            for (var j = src->LowId; j <= src->HighId; j++) {
-                                var sz = blocks->Length - 4;
-                                var encoding = (blocks->Flags == MESSAGE_RESOURCE_ENTRY_ENCODING.UNICODE)
-                                        ? Encoding.Unicode
-                                        : Encoding.ASCII;
-                                blocks++;
-                                values.Add(j, encoding.GetString((Byte*)blocks, sz).Trim('\0').Trim('\r','\n'));
-                                blocks = (MESSAGE_RESOURCE_ENTRY*)(((Byte*)blocks) + sz);
+                values = new SortedDictionary<UInt32, String>();
+                unsafe
+                    {
+                    fixed (Byte* r = source) {
+                        var ANSICodePage = CultureInfo.GetCultureInfo(Identifier.Identifier.Value).TextInfo.OEMCodePage;
+                        var NumberOfBlocks = *(UInt32*)r; /* MESSAGE_RESOURCE_DATA.NumberOfBlocks */
+                        if (NumberOfBlocks > 0) {
+                            var block = (MESSAGE_RESOURCE_BLOCK*)(r + sizeof(UInt32));
+                            for (var i = 0U; i < NumberOfBlocks; i++) {
+                                var entry = (MESSAGE_RESOURCE_ENTRY*)(r + block->OffsetToEntries);
+                                for (var j = block->LowId; j <= block->HighId; j++) {
+                                    if (entry->Length > 0) {
+                                        var Size = entry->Length - 4;
+                                        var encoding = (entry->Flags == MESSAGE_RESOURCE_ENTRY_ENCODING.UNICODE)
+                                                ? Encoding.Unicode
+                                                : Encoding.GetEncoding(ANSICodePage);
+                                        entry++;
+                                        values.Add(j, encoding.GetString((Byte*)entry, Size).Trim('\0').Trim('\r','\n'));
+                                        entry = (MESSAGE_RESOURCE_ENTRY*)(((Byte*)entry) + Size);
+                                        }
+                                    else
+                                        {
+                                        entry = (MESSAGE_RESOURCE_ENTRY*)(((Byte*)entry) + entry->Length);
+                                        }
+                                    }
+                                block++;
                                 }
-                            src++;
                             }
                         }
                     }
+                }
+            catch (Exception e)
+                {
+                throw;
                 }
             }
 

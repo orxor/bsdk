@@ -1,5 +1,7 @@
 ﻿using System;
+#if !NET35
 using System.Collections.Concurrent;
+#endif
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -65,7 +67,11 @@ namespace BinaryStudio.PlatformComponents.Win32
         #region M:FormatMessage(UInt32,String,CultureInfo):String
         protected internal static String FormatMessage(UInt32 SCode, String Module, CultureInfo Culture) {
             if (Module == null) { throw new ArgumentNullException(nameof(Module)); }
+            #if NET35
+            if (String.IsNullOrEmpty(Module)) { throw new ArgumentOutOfRangeException(nameof(Module)); }
+            #else
             if (String.IsNullOrWhiteSpace(Module)) { throw new ArgumentOutOfRangeException(nameof(Module)); }
+            #endif
             lock(Libraries) {
                 if (!Libraries.TryGetValue(Module,out var Library)) {
                     Library = LoadLibrary(Module);
@@ -108,13 +114,15 @@ namespace BinaryStudio.PlatformComponents.Win32
                         break;
                     case FACILITY_URT:         { r = LoadString("mscorrc.dll",(SCode & 0xffff) + 0x6000,Culture); } break;
                     }
+                if (r != null) {  return r; }
                 r = r ?? Properties.Resources.ResourceManager.GetString(((HResult)SCode).ToString(),Culture);
                 r = r ?? FormatMessage(SCode,assembly, Culture);
                 r = r ?? FormatMessage(SCode,assembly, English);
                 if (r == null) {
                     r = (SCode >= 0xffff) || (SCode < 0)
                         ? $"HRESULT:{{{SCodeE}}},Facility:{{{FacilityE}}}"
-                        : $"{{WIN32:{(Win32ErrorCode)SCode}}}";
+                        : $"WIN32:{{{(Win32ErrorCode)SCode}}}";
+                    Console.Error.WriteLine($"{{{SCode.ToString("x8")}}}:{r}");
                     }
                 return r;
                 }
@@ -184,7 +192,11 @@ namespace BinaryStudio.PlatformComponents.Win32
         #region M:LoadString(String,UInt32,CultureInfo):String
         private static String LoadString(String Module,UInt32 Identifier,CultureInfo Culture) {
             if (Module == null) { throw new ArgumentNullException(nameof(Module)); }
+            #if NET35
+            if (String.IsNullOrEmpty(Module)) { throw new ArgumentOutOfRangeException(nameof(Module)); }
+            #else
             if (String.IsNullOrWhiteSpace(Module)) { throw new ArgumentOutOfRangeException(nameof(Module)); }
+            #endif
             lock(Libraries) {
                 if (!Libraries.TryGetValue(Module,out var Library)) {
                     Library = LoadLibrary(Module);
@@ -209,10 +221,12 @@ namespace BinaryStudio.PlatformComponents.Win32
         #endregion
         #region M:LoadLibrary(String,String[],CultureInfo):IntPtr
         private static IntPtr LoadLibrary(String Module,String[] Modules,CultureInfo Culture) {
-            #if NET40
+            #if NET40 || NET35
             Culture = Culture ?? CultureInfo.CurrentCulture;
             #else
-            Culture = Culture ?? CultureInfo.DefaultThreadCurrentCulture;
+            Culture = Culture
+                ?? CultureInfo.DefaultThreadCurrentCulture
+                ?? CultureInfo.CurrentCulture;
             #endif
             var IetfLanguageTag = Culture.IetfLanguageTag;
             var TwoLetterISOLanguageName = Culture.TwoLetterISOLanguageName;
@@ -228,8 +242,8 @@ namespace BinaryStudio.PlatformComponents.Win32
                     }
                 if (Library == IntPtr.Zero) {
                     for (var i = 0; i < Modules.Length; i++) {
-                                                    Library = LoadLibrary(Path.Combine(Path.GetDirectoryName(Modules[i]),IetfLanguageTag,Module));
-                        if (Library == IntPtr.Zero) Library = LoadLibrary(Path.Combine(Path.GetDirectoryName(Modules[i]),TwoLetterISOLanguageName,Module));
+                                                    Library = LoadLibrary(Path.Combine(Path.Combine(Path.GetDirectoryName(Modules[i]),IetfLanguageTag),Module));
+                        if (Library == IntPtr.Zero) Library = LoadLibrary(Path.Combine(Path.Combine(Path.GetDirectoryName(Modules[i]),TwoLetterISOLanguageName),Module));
                         if (Library == IntPtr.Zero) Library = LoadLibrary(Path.Combine(Path.GetDirectoryName(Modules[i]),Module));
                         if (Library != IntPtr.Zero) {
                             break;
@@ -262,7 +276,11 @@ namespace BinaryStudio.PlatformComponents.Win32
             return new HResultException(scode, culture);
             }
 
+        #if !NET35
         private static readonly IDictionary<String,IntPtr> Libraries = new ConcurrentDictionary<String,IntPtr>(StringComparer.OrdinalIgnoreCase);
+        #else
+        private static readonly IDictionary<String,IntPtr> Libraries = new Dictionary<String,IntPtr>(StringComparer.OrdinalIgnoreCase);
+        #endif
         private static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
         }
     }

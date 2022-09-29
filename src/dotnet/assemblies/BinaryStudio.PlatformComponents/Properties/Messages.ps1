@@ -312,6 +312,7 @@ Try
             $Writer.WriteLine($Message.Value.Trim())
             $Writer.WriteLine(".")
             }
+        $Writer.WriteLine([String]::Empty)
         }
     }
 Finally
@@ -327,7 +328,8 @@ $KitRoot10 = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Kits\Inst
 $MessageCompiler  = [Path]::Combine($KitRoot10,"bin\x86\mc.exe")
 $ResourceCompiler = [Path]::Combine($KitRoot10,"bin\x86\rc.exe")
 
-& $MessageCompiler  -u $Target
-& $ResourceCompiler $TargetResourceFile
+& $MessageCompiler  -u -A -b $Target
+Write-Host "RC: Compiling $TargetResourceFile" -ForegroundColor Gray
+& $ResourceCompiler /nologo $TargetResourceFile
 
 Set-Location -Path $StoredCurrentFolder
