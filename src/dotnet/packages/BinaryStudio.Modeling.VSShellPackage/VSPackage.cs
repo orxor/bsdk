@@ -31,6 +31,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid(PackageGuidString)]
     [ProvideToolWindow(typeof(ModelBrowserToolWindow))]
+    [ProvideToolWindow(typeof(MetadataScopeBrowserToolWindow))]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideEditorExtension(typeof(ModelEditorFactory), ".emx", 32000, EditorFactoryNotify = true, ProjectGuid = "{9049afb9-2d13-4270-83ba-fbacf999114a}")]
     [ProvideEditorLogicalView(typeof(ModelEditorFactory), "{d2f13359-2c06-401b-a2f9-818d2b73a1e1}")]
@@ -57,6 +58,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await UpdateMRUCommandsAsync(cancellationToken,GetGlobalService(typeof(SVsMRUItemsStore)) as IVsMRUItemsStore);
             await ModelBrowserToolWindowCommand.InitializeAsync(this);
+            await MetadataScopeBrowserToolWindowCommand.InitializeAsync(this);
             }
         #endregion
         #region M:UpdateMRUCommandsAsync(CancellationToken,IVsMRUItemsStore):Task

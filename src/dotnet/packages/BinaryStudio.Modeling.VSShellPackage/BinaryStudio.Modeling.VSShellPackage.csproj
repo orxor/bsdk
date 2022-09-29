@@ -45,8 +45,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MetadataScopeBrowserToolWindowCommand.cs" />
     <Compile Include="EEditorFactory.cs" />
     <Compile Include="EEditorWindow.cs" />
+    <Compile Include="EToolWindowCommand.cs" />
+    <Compile Include="MetadataScopeBrowserToolWindow.cs" />
     <Compile Include="ModelBrowserToolWindow.cs" />
     <Compile Include="ModelBrowserControl.xaml.cs">
       <DependentUpon>ModelBrowserControl.xaml</DependentUpon>

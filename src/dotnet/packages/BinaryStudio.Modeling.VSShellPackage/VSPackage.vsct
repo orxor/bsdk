@@ -60,6 +60,14 @@
           <ButtonText>Invoke ModelBrowserToolWindowCommand</ButtonText>
         </Strings>
       </Button>
+      <Button guid="guidVSPackageCmdSet" id="MetadataScopeBrowserToolWindowCommandId" priority="0x0101" type="Button">
+        <!--<Parent guid="guidVSPackageCmdSet" id="MyMenuGroup"/>-->
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Invoke MetadataScopeBrowserToolWindowCommand</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
 
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -81,6 +89,7 @@
     <GuidSymbol name="guidVSPackageCmdSet" value="{fdc929a3-8dfd-4def-b927-43ab6a8b7f8b}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="ModelBrowserToolWindowCommandId" value="0x0100" />
+      <IDSymbol name="MetadataScopeBrowserToolWindowCommandId" value="0x0101" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{430db996-37ad-4619-8edb-d1305e9eb8d7}" >
