@@ -45,6 +45,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EEditorFactory.cs" />
+    <Compile Include="EEditorWindow.cs" />
     <Compile Include="ModelBrowserToolWindow.cs" />
     <Compile Include="ModelBrowserControl.xaml.cs">
       <DependentUpon>ModelBrowserControl.xaml</DependentUpon>
