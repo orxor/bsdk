@@ -426,7 +426,6 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
 
         private void OnSelectionRectangleChanged() {
             var Source = SelectionRectangle;
-            Debug.Print($"SelectionRectangle:{{{Source}}}");
             if (SelectionRectangleAdorner == null) {
                 var layer = AdornerLayer.GetAdornerLayer(this);
                 if (layer != null) {
@@ -578,36 +577,31 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <param name="e">The event data.</param>
         protected internal virtual void OnSelectionChanged(SelectionChangedEventArgs e) {
             if (e == null) { throw new ArgumentNullException(nameof(e)); }
-            //var StaticSelectionAdornerVisibility = Visibility.Visible;
-            //XYViewportNodeSizeDecorator SelectionDecorator = null;
-            //switch (e.AddedItems.Count) {
-            //    case 0:
-            //        {
-            //        StaticSelectionAdornerVisibility = Visibility.Hidden;
-            //        }
-            //        break;
-            //    case 1:
-            //        {
-            //        SelectionDecorator = new XYViewportNodeSizeDecorator
-            //            {
-            //            };
-            //        }
-            //        break;
-            //    default:
-            //        {
-            //        }
-            //        break;
-            //    }
-            //if (StaticSelectionAdorner == null) {
-            //    var layer = AdornerLayer.GetAdornerLayer(this);
-            //    if (layer != null) {
-            //        layer.Add(StaticSelectionAdorner = new AdornerContainer(this));
-            //        }
-            //    }
-            //if (StaticSelectionAdorner != null) {
-            //    StaticSelectionAdorner.Visibility = StaticSelectionAdornerVisibility;
-            //    StaticSelectionAdorner.Child = SelectionDecorator;
-            //    }
+            var SelectionAdornerVisibility = Visibility.Visible;
+            switch (e.AddedItems.Count) {
+                case 0:
+                    {
+                    SelectionAdornerVisibility = Visibility.Hidden;
+                    }
+                    break;
+                case 1:
+                    {
+                    }
+                    break;
+                default:
+                    {
+                    }
+                    break;
+                }
+            if (SelectionAdorner == null) {
+                var layer = AdornerLayer.GetAdornerLayer(this);
+                if (layer != null) {
+                    layer.Add(SelectionAdorner = new XYViewportNodeSizeAdorner(this));
+                    }
+                }
+            if (SelectionAdorner != null) {
+                SelectionAdorner.Visibility = SelectionAdornerVisibility;
+                }
             }
         #endregion
         #region M:MeasureOverride(Size):Size
@@ -777,6 +771,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         #endregion
 
         private GeometrySelectionAdorner SelectionRectangleAdorner;
+        private XYViewportNodeSizeAdorner SelectionAdorner;
         private Boolean IsSelecting;
         private Point OriginSelectingPoint;
         }

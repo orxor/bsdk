@@ -16,11 +16,6 @@ namespace XYViewportSample
         {
         protected override void OnStartup(StartupEventArgs e)
             {
-            var writer = new JsonTextWriter(Console.Out){
-                    Formatting = Formatting.Indented,
-                    Indentation = 2,
-                    IndentChar = ' '
-                    };
             base.OnStartup(e);
             }
         }
