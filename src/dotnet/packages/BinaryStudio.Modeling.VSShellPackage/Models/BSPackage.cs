@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BinaryStudio.Modeling.UnifiedModelingLanguage;
+using BinaryStudio.PlatformUI.Models;
 
 namespace BinaryStudio.Modeling.VSShellPackage.Models
     {

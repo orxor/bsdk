@@ -1,4 +1,5 @@
 ﻿using BinaryStudio.Modeling.UnifiedModelingLanguage;
+using BinaryStudio.PlatformUI.Models;
 
 namespace BinaryStudio.Modeling.VSShellPackage.Models
     {
