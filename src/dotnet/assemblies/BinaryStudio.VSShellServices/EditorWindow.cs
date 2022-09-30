@@ -31,14 +31,13 @@ namespace BinaryStudio.VSShellServices
         protected String FileName { get;private set; }
         protected abstract Int32 FormatIndex { get; }
         protected abstract String FormatList { get; }
-        protected Guid FactoryClassId { get; }
+        protected internal Guid FactoryClassId { get;set; }
         protected Object DataContext { get;private set; }
         protected Object ModelContext { get;private set; }
         protected ContentControl ElementHostControl { get;private set; }
 
-        protected EditorWindow(Guid FactoryClassId)
+        protected EditorWindow()
             {
-            this.FactoryClassId = FactoryClassId;
             PrivateInit();
             }
 

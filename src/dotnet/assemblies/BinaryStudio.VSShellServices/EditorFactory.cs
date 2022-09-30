@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -12,7 +13,16 @@ namespace BinaryStudio.VSShellServices
         private ServiceProvider VSServiceProvider;
 
         /// <summary>Used by the editor factory architecture to create editors that support data/view separation.</summary>
-        protected abstract EditorWindow CreateEditorInstance();
+        protected virtual EditorWindow CreateEditorInstance() {
+            var type = GetType();
+            var EditorWindowType = ((ProvideEditorWindowAttribute)type.GetCustomAttributes(typeof(ProvideEditorWindowAttribute), false).FirstOrDefault())?.EditorWindowType;
+            if (EditorWindowType != null) {
+                var r = (EditorWindow)Activator.CreateInstance(EditorWindowType);
+                r.FactoryClassId = type.GUID;
+                return r;
+                }
+            return null;
+            }
 
         #region M:IVsEditorFactory.CreateEditorInstance:Int32
         /// <summary>Used by the editor factory architecture to create editors that support data/view separation.</summary>

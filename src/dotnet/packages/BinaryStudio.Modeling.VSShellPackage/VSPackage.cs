@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using BinaryStudio.VSShellServices;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
@@ -35,7 +34,11 @@ namespace BinaryStudio.Modeling.VSShellPackage
     [ProvideToolWindow(typeof(MetadataScopeBrowserToolWindow))]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideEditorExtension(typeof(ModelEditorFactory), ".emx", 32000, EditorFactoryNotify = true, ProjectGuid = "{9049afb9-2d13-4270-83ba-fbacf999114a}")]
+    [ProvideEditorExtension(typeof(MetadataObjectEditorFactory), ".dll", 32000, EditorFactoryNotify = true, ProjectGuid = "{2f5851e8-7c17-485a-85e1-ac6757c3f277}")]
+    [ProvideEditorExtension(typeof(MetadataObjectEditorFactory), ".ocx", 32000, EditorFactoryNotify = true, ProjectGuid = "{2f5851e8-7c17-485a-85e1-ac6757c3f277}")]
+    [ProvideEditorExtension(typeof(MetadataObjectEditorFactory), ".exe", 32000, EditorFactoryNotify = true, ProjectGuid = "{2f5851e8-7c17-485a-85e1-ac6757c3f277}")]
     [ProvideEditorLogicalView(typeof(ModelEditorFactory), "{d2f13359-2c06-401b-a2f9-818d2b73a1e1}")]
+    [ProvideEditorLogicalView(typeof(MetadataObjectEditorFactory), "{c6718f2b-c1e1-462f-86db-6cdd5c92dc81}")]
     public sealed class VSPackage : ToolPackage
         {
          /// <summary>
@@ -54,38 +57,9 @@ namespace BinaryStudio.Modeling.VSShellPackage
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress) {
             await base.InitializeAsync(cancellationToken,progress);
             RegisterEditorFactory(new ModelEditorFactory());
+            RegisterEditorFactory(new MetadataObjectEditorFactory());
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await UpdateMRUCommandsAsync(cancellationToken,GetGlobalService(typeof(SVsMRUItemsStore)) as IVsMRUItemsStore);
-            }
-        #endregion
-        #region M:UpdateMRUCommandsAsync(CancellationToken,IVsMRUItemsStore):Task
-        private async Task UpdateMRUCommandsAsync(CancellationToken cancellationToken,IVsMRUItemsStore MRUItemsStore) {
-            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            if (MRUItemsStore != null) {
-                var EditorFactoryGuid = typeof(ModelEditorFactory).GUID.ToString("B");
-                var MruFiles = new String[VSConstants.VSStd97CmdID.MRUFile25 - VSConstants.VSStd97CmdID.MRUFile1 + 1];
-                var MruFilesGuid = VSConstants.MruList.Files;
-                MRUItemsStore.GetMRUItems(ref MruFilesGuid,String.Empty,(UInt32)MruFiles.Length,MruFiles);
-                for (var i = 0; i < MruFiles.Length; i++) {
-                    if (MruFiles[i] != null) {
-                        var Entries = MruFiles[i].Split(new []{ '|' }, StringSplitOptions.None);
-                        if (Entries.Length >= 2) {
-                            switch (Path.GetExtension(Entries[0]).ToLowerInvariant()) {
-                                case ".emx":
-                                    {
-                                    Entries[1] = EditorFactoryGuid;
-                                    }
-                                    break;
-                                }
-                            MruFiles[i] = String.Join("|", Entries);
-                            }
-                        }
-                    }
-                MRUItemsStore.DeleteMRUItems(ref MruFilesGuid);
-                foreach (var i in MruFiles.Where(i => i != null)) {
-                    MRUItemsStore.AddMRUItem(ref MruFilesGuid, i);
-                    }
-                }
             }
         #endregion
 

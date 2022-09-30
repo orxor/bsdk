@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio;
@@ -80,6 +82,35 @@ namespace BinaryStudio.VSShellServices
                 if ((null != window) && (null != window.Frame)) {
                     var windowFrame = (IVsWindowFrame)window.Frame;
                     ErrorHandler.ThrowOnFailure(windowFrame.Show());
+                    }
+                }
+            }
+        #endregion
+        #region M:UpdateMRUCommandsAsync(CancellationToken,IVsMRUItemsStore):Task
+        protected async Task UpdateMRUCommandsAsync(CancellationToken cancellationToken,IVsMRUItemsStore MRUItemsStore) {
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            if (MRUItemsStore != null) {
+                var MruExtns = new Dictionary<String,Guid>();
+                foreach (var attribute in GetType().GetCustomAttributes(typeof(ProvideEditorExtensionAttribute),false).OfType<ProvideEditorExtensionAttribute>()) {
+                    MruExtns[attribute.Extension] = attribute.Factory;
+                    }
+                var MruFiles = new String[VSConstants.VSStd97CmdID.MRUFile25 - VSConstants.VSStd97CmdID.MRUFile1 + 1];
+                var MruFilesGuid = VSConstants.MruList.Files;
+                MRUItemsStore.GetMRUItems(ref MruFilesGuid,String.Empty,(UInt32)MruFiles.Length,MruFiles);
+                for (var i = 0; i < MruFiles.Length; i++) {
+                    if (MruFiles[i] != null) {
+                        var Entries = MruFiles[i].Split(new []{ '|' }, StringSplitOptions.None);
+                        if (Entries.Length >= 2) {
+                            if (MruExtns.TryGetValue(Path.GetExtension(Entries[0]).ToLowerInvariant(), out var EditorFactoryGuid)) {
+                                Entries[1] = EditorFactoryGuid.ToString("B");
+                                }
+                            MruFiles[i] = String.Join("|", Entries);
+                            }
+                        }
+                    }
+                MRUItemsStore.DeleteMRUItems(ref MruFilesGuid);
+                foreach (var i in MruFiles.Where(i => i != null)) {
+                    MRUItemsStore.AddMRUItem(ref MruFilesGuid, i);
                     }
                 }
             }

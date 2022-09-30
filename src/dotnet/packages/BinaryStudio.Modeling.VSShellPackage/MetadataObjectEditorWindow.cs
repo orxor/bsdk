@@ -2,19 +2,18 @@
 using BinaryStudio.VSShellServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
-using Module = BinaryStudio.Modeling.UnifiedModelingLanguage.Module;
 
 namespace BinaryStudio.Modeling.VSShellPackage
     {
-    public class ModelEditorWindow : EditorWindow
+    public class MetadataObjectEditorWindow : EditorWindow
         {
         protected override Int32 FormatIndex { get { return 0; }}
-        protected override String FormatList { get { return "Model Files(*.emx)\n*.emx"; }}
+        protected override String FormatList { get { return "Executable Files(*.dll)\n*.dll"; }}
 
         #region M:LoadDataContext:Object
         protected override Object LoadDataContext()
             {
-            return (new Module()).LoadModel(FileName);
+            return MetadataObjectEditorFactory.Scope.Load(FileName);
             }
         #endregion
         #region M:Load(String,UInt32,Int32):Int32
