@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
-using BinaryStudio.Modeling.VSShellPackage.Models;
+using BinaryStudio.PlatformUI.Models;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
@@ -14,9 +14,9 @@ using Constants = Microsoft.VisualStudio.OLE.Interop.Constants;
 using IDataObject = Microsoft.VisualStudio.OLE.Interop.IDataObject;
 using Type = System.Type;
 
-namespace BinaryStudio.Modeling.VSShellPackage
+namespace BinaryStudio.VSShellServices
     {
-    public abstract class EEditorWindow : WindowPane,
+    public abstract class EditorWindow : WindowPane,
         IOleCommandTarget,
         IVsPersistDocData,
         IPersistFileFormat,
@@ -36,7 +36,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
         protected Object ModelContext { get;private set; }
         protected ContentControl ElementHostControl { get;private set; }
 
-        protected EEditorWindow(Guid FactoryClassId)
+        protected EditorWindow(Guid FactoryClassId)
             {
             this.FactoryClassId = FactoryClassId;
             PrivateInit();
@@ -363,7 +363,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
             }
         #endregion
 
-        static EEditorWindow()
+        static EditorWindow()
             {
             foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(i => i.IsSubclassOf(typeof(NotifyPropertyChangedDispatcherObject)) && !i.IsAbstract)) {
                 foreach (var attribute in type.GetCustomAttributes(typeof(ModelAttribute), false).OfType<ModelAttribute>()) {

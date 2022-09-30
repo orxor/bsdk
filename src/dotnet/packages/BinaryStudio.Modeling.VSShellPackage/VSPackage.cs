@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using BinaryStudio.VSShellServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -31,11 +32,10 @@ namespace BinaryStudio.Modeling.VSShellPackage
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid(PackageGuidString)]
     [ProvideToolWindow(typeof(ModelBrowserToolWindow))]
-    [ProvideToolWindow(typeof(MetadataScopeBrowserToolWindow))]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideEditorExtension(typeof(ModelEditorFactory), ".emx", 32000, EditorFactoryNotify = true, ProjectGuid = "{9049afb9-2d13-4270-83ba-fbacf999114a}")]
     [ProvideEditorLogicalView(typeof(ModelEditorFactory), "{d2f13359-2c06-401b-a2f9-818d2b73a1e1}")]
-    public sealed class VSPackage : AsyncPackage
+    public sealed class VSPackage : ToolPackage
         {
          /// <summary>
         /// BinaryStudio.Modeling.VSShellPackagePackage GUID string.
@@ -50,15 +50,13 @@ namespace BinaryStudio.Modeling.VSShellPackage
         /// <param name="cancellationToken">A cancellation token to monitor for initialization cancellation, which can occur when VS is shutting down.</param>
         /// <param name="progress">A provider for progress updates.</param>
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
-        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
-            {
-            // When initialized asynchronously, the current thread may be a background thread at this point.
-            // Do any initialization that requires the UI thread after switching to the UI thread.
+        protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress) {
+            await base.InitializeAsync(cancellationToken,progress);
             RegisterEditorFactory(new ModelEditorFactory());
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await UpdateMRUCommandsAsync(cancellationToken,GetGlobalService(typeof(SVsMRUItemsStore)) as IVsMRUItemsStore);
-            await ModelBrowserToolWindowCommand.InitializeAsync(this);
-            await MetadataScopeBrowserToolWindowCommand.InitializeAsync(this);
+            //await ModelBrowserToolWindowCommand.InitializeAsync(this);
+            //await MetadataScopeBrowserToolWindowCommand.InitializeAsync(this);
             }
         #endregion
         #region M:UpdateMRUCommandsAsync(CancellationToken,IVsMRUItemsStore):Task

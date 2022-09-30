@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using BinaryStudio.VSShellServices;
 
 namespace BinaryStudio.Modeling.VSShellPackage
     {
-    //[ProvideToolboxControl("BinaryStudio.Modeling.VSShellPackage.ModelBrowserToolboxControl", true)]
     public partial class ModelBrowserControl : UserControl
         {
         public ModelBrowserControl()

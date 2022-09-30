@@ -23,6 +23,8 @@
 /src/dotnet/assemblies/BinaryStudio.IO/obj
 /src/dotnet/assemblies/BinaryStudio.Serialization/bin
 /src/dotnet/assemblies/BinaryStudio.Serialization/obj
+/src/dotnet/assemblies/BinaryStudio.VSShellServices/bin
+/src/dotnet/assemblies/BinaryStudio.VSShellServices/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/samples/XYViewportSample/bin

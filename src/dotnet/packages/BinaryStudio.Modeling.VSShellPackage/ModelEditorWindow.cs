@@ -1,12 +1,13 @@
 ﻿using System;
 using BinaryStudio.Modeling.VSShellPackage.Models;
+using BinaryStudio.VSShellServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Module = BinaryStudio.Modeling.UnifiedModelingLanguage.Module;
 
 namespace BinaryStudio.Modeling.VSShellPackage
     {
-    public class ModelEditorWindow : EEditorWindow
+    public class ModelEditorWindow : EditorWindow
         {
         protected override Int32 FormatIndex { get { return 0; }}
         protected override String FormatList { get { return "Model Files(*.emx)\n*.emx"; }}
@@ -33,7 +34,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
             var r = base.Load(filename, Mode, ReadOnly);
             if (r != VSConstants.S_OK)
                 {
-                ModelBrowserToolWindowCommand.Instance.DataContext = new BSModelCollection { ModelContext ?? DataContext };
+                //ModelBrowserToolWindowCommand.Instance.DataContext = new BSModelCollection { ModelContext ?? DataContext };
                 }
             return r;
             }

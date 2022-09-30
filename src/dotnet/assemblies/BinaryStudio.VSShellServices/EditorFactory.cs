@@ -5,14 +5,14 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 
-namespace BinaryStudio.Modeling.VSShellPackage
+namespace BinaryStudio.VSShellServices
     {
-    public abstract class EEditorFactory : IVsEditorFactory, IDisposable
+    public abstract class EditorFactory : IVsEditorFactory, IDisposable
         {
         private ServiceProvider VSServiceProvider;
 
         /// <summary>Used by the editor factory architecture to create editors that support data/view separation.</summary>
-        protected abstract EEditorWindow CreateEditorInstance();
+        protected abstract EditorWindow CreateEditorInstance();
 
         #region M:IVsEditorFactory.CreateEditorInstance:Int32
         /// <summary>Used by the editor factory architecture to create editors that support data/view separation.</summary>
@@ -79,7 +79,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
         #endregion
         #region M:Finalize
         /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
-        ~EEditorFactory()
+        ~EditorFactory()
             {
             Dispose(false);
             }
