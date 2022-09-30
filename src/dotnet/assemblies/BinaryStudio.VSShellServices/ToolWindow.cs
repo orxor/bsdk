@@ -34,6 +34,7 @@ namespace BinaryStudio.VSShellServices
         public ToolWindow()
             :base(typeof(T))
             {
+            return;
             }
         }
     }

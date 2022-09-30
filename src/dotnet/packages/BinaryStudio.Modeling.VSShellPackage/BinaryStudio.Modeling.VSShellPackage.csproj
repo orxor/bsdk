@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Controls\MetadataScopeBrowserControl.xaml.cs">
+      <DependentUpon>MetadataScopeBrowserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MetadataScopeBrowserToolWindow.cs" />
     <Compile Include="ModelBrowserToolWindow.cs" />
     <Compile Include="ModelBrowserControl.xaml.cs">
@@ -84,6 +87,10 @@
     <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.11.66" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\MetadataScopeBrowserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ModelBrowserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
