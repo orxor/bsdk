@@ -362,13 +362,17 @@ namespace BinaryStudio.VSShellServices
             }
         #endregion
 
-        static EditorWindow()
-            {
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(i => i.IsSubclassOf(typeof(NotifyPropertyChangedDispatcherObject)) && !i.IsAbstract)) {
+        public static void RegisterModelTypes(Assembly assembly) {
+            if (assembly == null) { throw new ArgumentNullException(nameof(assembly)); }
+            foreach (var type in assembly.GetTypes().Where(i => i.IsSubclassOf(typeof(NotifyPropertyChangedDispatcherObject)) && !i.IsAbstract)) {
                 foreach (var attribute in type.GetCustomAttributes(typeof(ModelAttribute), false).OfType<ModelAttribute>()) {
                     Types[attribute.Type] = type;
                     }
                 }
+            }
+
+        static EditorWindow()
+            {
             }
 
         #region M:CreateElementHostControl:ContentControl

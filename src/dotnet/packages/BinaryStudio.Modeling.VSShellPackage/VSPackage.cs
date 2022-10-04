@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using BinaryStudio.PortableExecutable.PlatformUI.Models;
 using BinaryStudio.VSShellServices;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -60,6 +61,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
             RegisterEditorFactory(new MetadataObjectEditorFactory());
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await UpdateMRUCommandsAsync(cancellationToken,GetGlobalService(typeof(SVsMRUItemsStore)) as IVsMRUItemsStore);
+            EditorWindow.RegisterModelTypes(typeof(EMZMetadataObject).Assembly);
             }
         #endregion
 

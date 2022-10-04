@@ -19,6 +19,8 @@
 /src/dotnet/assemblies/BinaryStudio.PlatformComponents/obj
 /src/dotnet/assemblies/BinaryStudio.PortableExecutable/bin
 /src/dotnet/assemblies/BinaryStudio.PortableExecutable/obj
+/src/dotnet/assemblies/BinaryStudio.PortableExecutable.PlatformUI/bin
+/src/dotnet/assemblies/BinaryStudio.PortableExecutable.PlatformUI/obj
 /src/dotnet/assemblies/BinaryStudio.IO/bin
 /src/dotnet/assemblies/BinaryStudio.IO/obj
 /src/dotnet/assemblies/BinaryStudio.Serialization/bin

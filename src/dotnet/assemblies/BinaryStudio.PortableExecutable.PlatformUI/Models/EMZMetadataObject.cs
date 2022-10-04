@@ -1,7 +1,6 @@
 ﻿using BinaryStudio.PlatformUI.Models;
-using BinaryStudio.PortableExecutable;
 
-namespace BinaryStudio.Modeling.VSShellPackage.Models
+namespace BinaryStudio.PortableExecutable.PlatformUI.Models
     {
     [Model(typeof(MZMetadataObject))]
     public class EMZMetadataObject : NotifyPropertyChangedDispatcherObject<MZMetadataObject>

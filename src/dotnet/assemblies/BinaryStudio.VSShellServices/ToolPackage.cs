@@ -33,6 +33,7 @@ namespace BinaryStudio.VSShellServices
                     ToolWindowId++;
                     }
                 }
+            EditorWindow.RegisterModelTypes(GetType().Assembly);
             }
         #endregion
         #region M:CreateToolWindow(Type,Int32,Object):WindowPane
