@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using BinaryStudio.PlatformUI;
 using BinaryStudio.PortableExecutable.PlatformUI.Models;
 using BinaryStudio.VSShellServices;
 using Microsoft.VisualStudio;
@@ -62,6 +63,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await UpdateMRUCommandsAsync(cancellationToken,GetGlobalService(typeof(SVsMRUItemsStore)) as IVsMRUItemsStore);
             EditorWindow.RegisterModelTypes(typeof(EMZMetadataObject).Assembly);
+            Theme.Apply(Theme.Themes[3]);
             }
         #endregion
 

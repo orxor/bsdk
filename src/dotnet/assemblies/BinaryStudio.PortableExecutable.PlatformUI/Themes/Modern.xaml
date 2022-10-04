@@ -2,5 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Classic;component/Themes/Classic.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/Templates.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
