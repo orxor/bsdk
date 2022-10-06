@@ -3,6 +3,7 @@
 ################################################################################
 
 /.vs
+*.user
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/bin
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
 /src/dotnet/packages/BinaryStudio.Modeling.VSShellPackage/bin
@@ -33,6 +34,9 @@
 /src/dotnet/samples/XYViewportSample/obj
 /src/dotnet/samples/DllResources/bin
 /src/dotnet/samples/DllResources/obj
-*.user
 /src/dotnet/samples/HResultSample/bin
 /src/dotnet/samples/HResultSample/obj
+/src/dotnet/samples/PEView/bin
+/src/dotnet/samples/PEView/obj
+/src/dotnet/samples/PlatformUISample/bin
+/src/dotnet/samples/PlatformUISample/obj

@@ -57,6 +57,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
         /// <param name="progress">A provider for progress updates.</param>
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress) {
+            Instance = this;
             await base.InitializeAsync(cancellationToken,progress);
             RegisterEditorFactory(new ModelEditorFactory());
             RegisterEditorFactory(new MetadataObjectEditorFactory());
@@ -66,6 +67,8 @@ namespace BinaryStudio.Modeling.VSShellPackage
             Theme.Apply(Theme.Themes[3]);
             }
         #endregion
+
+        public static VSPackage Instance;
 
         public VSPackage()
             {

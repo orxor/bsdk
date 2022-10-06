@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,7 @@ using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI
     {
-    public class Theme : DependencyObject
+    public partial class Theme : DependencyObject
         {
         #region P:CurrentTheme:Theme
         public static Theme CurrentTheme { get; private set; }
@@ -24,6 +25,9 @@ namespace BinaryStudio.PlatformUI
         public ResourceDictionary Source {get; }
         public String Name { get; }
 
+        private static readonly Guid ControlStyleCategory = new Guid("3e635bf2-7305-43dc-b316-26d5cdfe6351");
+        private static readonly Guid SystemColorCategory = new Guid("38c7be46-1216-45b8-9070-3ef4332772aa");
+
         public static Theme[] Themes = {
             new Theme("NormalColor",        "Modern.NormalColor.xaml"),
             new Theme("Dark",               "Modern.Dark.xaml"),
@@ -33,8 +37,19 @@ namespace BinaryStudio.PlatformUI
 
         private Theme(String name, String source) {
             Name = name;
-            Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"PresentationFramework.Classic.dll"));
             Source = LoadResourceDictionary(source);
+            }
+
+        static Theme()
+            {
+            try
+                {
+                Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"PresentationFramework.Classic.dll"));
+                }
+            catch
+                {
+                /* do nothing */
+                }
             }
 
         #region M:Apply
@@ -46,9 +61,16 @@ namespace BinaryStudio.PlatformUI
         public static void Apply(Theme source) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             CurrentTheme = source;
-            if (Application != null) {
-                Application.Resources.MergedDictionaries.Add(source.Source);
+            var application = Application;
+            if (application != null) {
+                application.Resources = source.Source;
+                //application.Resources.BeginInit();
+                //application.Resources.MergedDictionaries.Clear();
+                //application.Resources.Clear();
+                //application.Resources.MergedDictionaries.Add(source.Source);
+                //Apply(source.Source);
                 OnApply(source.Name);
+                //application.Resources.EndInit();
                 }
             }
         #endregion
@@ -65,6 +87,21 @@ namespace BinaryStudio.PlatformUI
             throw new ArgumentOutOfRangeException(nameof(source));
             }
         #endregion
+        #region M:Apply(ResourceDictionary)
+        private static void Apply(ResourceDictionary source) {
+            var application = Application;
+            if (application != null) {
+                foreach (var i in source.MergedDictionaries) {
+                    Apply(i);
+                    }
+                foreach (var i in source.Keys) {
+                    application.Resources[i] = null;
+                    application.Resources[i] = source[i];
+                    }
+                }
+            return;
+            }
+        #endregion
         #region M:LoadResourceDictionary(String):ResourceDictionary
         private static ResourceDictionary LoadResourceDictionary(String source) {
             return LoadResourceDictionary("BinaryStudio.PlatformUI", source);
@@ -79,8 +116,9 @@ namespace BinaryStudio.PlatformUI
             return r;
             }
         #endregion
-
+        #region M:OnApply(String)
         private static void OnApply(String source) {
+            return;
             try
                 {
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -113,6 +151,14 @@ namespace BinaryStudio.PlatformUI
                 Debug.Print(Exceptions.ToString(e));
                 throw;
                 }
+            }
+        #endregion
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override String ToString()
+            {
+            return Name;
             }
         }
     }

@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="http://schemas.helix.global">
+  <ControlTemplate x:Key="TabControl">
+    <GroupBox Margin="5" Header="TabControl">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Rectangle Fill="Transparent" Margin="10" Grid.Column="1"
+                   Stroke="{DynamicResource {x:Static u:Theme.ControlDarkBrushResourceKey}}"
+                   StrokeThickness="1"
+                   StrokeDashArray="4 2"
+                   UseLayoutRounding="True"/>
+        <TabControl Name="Target" Grid.Column="1" Margin="20">
+          <TabItem Header="Item0"/>
+          <TabItem Header="Item1"/>
+          <TabItem Header="Item2 {Disabled}" IsEnabled="False"/>
+          <TabItem Header="Item3"/>
+          <TabItem Header="Item4"/>
+          <TabItem Header="Item5"/>
+        </TabControl>
+        <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top" Margin="10">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+            </Grid.RowDefinitions>
+            <CheckBox  Grid.Row="0" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsEnabled,Mode=TwoWay}">IsEnabled</CheckBox>
+            <CheckBox  Grid.Row="1" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsFocused,Mode=OneWay}" IsEnabled="False">IsFocused</CheckBox>
+            <CheckBox  Grid.Row="2" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocused,Mode=OneWay}" IsEnabled="False">IsKeyboardFocused</CheckBox>
+            <CheckBox  Grid.Row="3" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocusWithin,Mode=OneWay}" IsEnabled="False">IsKeyboardFocusWithin</CheckBox>
+            <TextBlock Grid.Row="4" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">TabStripPlacement:</TextBlock>
+            <ComboBox  Grid.Row="4" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=TabStripPlacement,Mode=TwoWay}" VerticalAlignment="Center">
+              <Dock>Left</Dock>
+              <Dock>Top</Dock>
+              <Dock>Right</Dock>
+              <Dock>Bottom</Dock>
+            </ComboBox>
+          </Grid>
+        </StackPanel>
+      </Grid>
+    </GroupBox>
+  </ControlTemplate>
+</ResourceDictionary>

@@ -1,6 +1,39 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="clr-namespace:BinaryStudio.PlatformUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern.xaml"/>
   </ResourceDictionary.MergedDictionaries>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushResourceKey}"                       Color="#ffcccedb"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushResourceKey}"                      Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionTextBrushResourceKey}"                  Color="#ff525252"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.AppWorkspaceBrushResourceKey}"                       Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlBrushResourceKey}"                            Color="#ffcccedb"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlDarkBrushResourceKey}"                        Color="#ffd8d8e0"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlDarkDarkBrushResourceKey}"                    Color="#bcbcc4"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlLightBrushResourceKey}"                       Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlLightLightBrushResourceKey}"                  Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlTextBrushResourceKey}"                        Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.DesktopBrushResourceKey}"                            Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GradientActiveCaptionBrushResourceKey}"              Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GradientInactiveCaptionBrushResourceKey}"            Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GrayTextBrushResourceKey}"                           Color="#ff717171"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightBrushResourceKey}"                          Color="#ff3399ff"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightTextBrushResourceKey}"                      Color="#ffffffff"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HotTrackBrushResourceKey}"                           Color="#ff0054e3"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveBorderBrushResourceKey}"                     Color="#ffcccedb"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionBrushResourceKey}"                    Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionTextBrushResourceKey}"                Color="#ffa2a4a5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InfoBrushResourceKey}"                               Color="#fffdfbac"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InfoTextBrushResourceKey}"                           Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBrushResourceKey}"                               Color="#fff6f6f6"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBarBrushResourceKey}"                            Color="#fff6f6f6"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushResourceKey}"                      Color="#ffc9def5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushResourceKey}"                           Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ScrollBarBrushResourceKey}"                          Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushResourceKey}"                             Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushResourceKey}"                        Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushResourceKey}"                         Color="#ff1e1e1e"/>
+  <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
+  <Style x:Key="{x:Type TabItem}"    TargetType="{x:Type TabItem}"    BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
 </ResourceDictionary>

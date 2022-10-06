@@ -4,9 +4,34 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:u="http://schemas.helix.global"
+             xmlns:shell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.Framework"
+             xmlns:controls="clr-namespace:BinaryStudio.Modeling.VSShellPackage.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             u:ToolWindow.Caption="Metadata Scope">
+             u:ToolWindow.Caption="Metadata Scope" Loaded="UserControl_Loaded">
   <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+    <TextBox Name="Box" IsReadOnly="True" IsReadOnlyCaretVisible="True" FontFamily="Consolas"/>
+    <DataGrid Grid.Row="1" Name="Colors" AutoGenerateColumns="False">
+      <DataGrid.Columns>
+        <DataGridTextColumn Header="Name" Binding="{Binding Name}" FontFamily="Consolas"/>
+        <DataGridTextColumn Header="Category" Binding="{Binding Category}" FontFamily="Consolas" IsReadOnly="True"/>
+        <DataGridTextColumn Header="Color{Text}" Binding="{Binding Key}" FontFamily="Consolas"/>
+        <DataGridTemplateColumn Header="Color{Value}">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate DataType="{x:Type controls:ColorInfo}">
+              <Border>
+                <Border.Background>
+                  <SolidColorBrush Color="{Binding Color}"/>
+                </Border.Background>
+              </Border>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
   </Grid>
 </UserControl>
