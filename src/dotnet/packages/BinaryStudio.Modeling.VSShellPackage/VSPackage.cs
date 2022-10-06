@@ -64,7 +64,7 @@ namespace BinaryStudio.Modeling.VSShellPackage
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await UpdateMRUCommandsAsync(cancellationToken,GetGlobalService(typeof(SVsMRUItemsStore)) as IVsMRUItemsStore);
             EditorWindow.RegisterModelTypes(typeof(EMZMetadataObject).Assembly);
-            Theme.Apply(Theme.Themes[3]);
+            //Theme.Apply(Theme.Themes[3]);
             }
         #endregion
 

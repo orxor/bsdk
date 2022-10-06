@@ -18,7 +18,7 @@
     <DataGrid Grid.Row="1" Name="Colors" AutoGenerateColumns="False">
       <DataGrid.Columns>
         <DataGridTextColumn Header="Name" Binding="{Binding Name}" FontFamily="Consolas"/>
-        <DataGridTextColumn Header="Category" Binding="{Binding Category}" FontFamily="Consolas" IsReadOnly="True"/>
+        <DataGridTextColumn Header="Type" Binding="{Binding Type}" FontFamily="Consolas"/>
         <DataGridTextColumn Header="Color{Text}" Binding="{Binding Key}" FontFamily="Consolas"/>
         <DataGridTemplateColumn Header="Color{Value}">
           <DataGridTemplateColumn.CellTemplate>

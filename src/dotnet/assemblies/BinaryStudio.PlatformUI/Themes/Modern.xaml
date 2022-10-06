@@ -34,4 +34,12 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushResourceKey}"                         Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushResourceKey}"                    Color="{DynamicResource {x:Static SystemColors.WindowFrameColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushResourceKey}"                     Color="{DynamicResource {x:Static SystemColors.WindowTextColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedBrushKey}"                      Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedTextBrushKey}"                  Color="{DynamicResource {x:Static SystemColors.ControlTextColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverBrushKey}"             Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverTextBrushKey}"         Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedBrushKey}"                        Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedTextBrushKey}"                    Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedMouseOverBrushKey}"               Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedMouseOverTextBrushKey}"           Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
 </ResourceDictionary>

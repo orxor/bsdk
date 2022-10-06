@@ -66,11 +66,13 @@ namespace BinaryStudio.Modeling.VSShellPackage.Controls
         public Color Color { get; }
         public String Key { get;set; }
         public Guid Category { get;set; }
+        public String Type { get;set; }
         public ColorInfo(ThemeResourceKey key, Color color)
             {
             Name = key.Name;
             Category = key.Category;
             Key = color.ToString().ToLower();
+            Type = key.KeyType.ToString();
             Color = color;
             }
         }

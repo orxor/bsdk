@@ -5,36 +5,44 @@ namespace BinaryStudio.PlatformUI
     {
     public partial class Theme
         {
-        public static Object ActiveBorderBrushResourceKey            { get { return CreateInstance(ref FieldActiveBorderBrushKey           ,SystemColorCategory,nameof(ActiveBorderBrushResourceKey));            }}
-        public static Object ActiveCaptionBrushResourceKey           { get { return CreateInstance(ref FieldActiveCaptionBrushKey          ,SystemColorCategory,nameof(ActiveCaptionBrushResourceKey));           }}
-        public static Object ActiveCaptionTextBrushResourceKey       { get { return CreateInstance(ref FieldActiveCaptionTextBrushKey      ,SystemColorCategory,nameof(ActiveCaptionTextBrushResourceKey));       }}
-        public static Object AppWorkspaceBrushResourceKey            { get { return CreateInstance(ref FieldAppWorkspaceBrushKey           ,SystemColorCategory,nameof(AppWorkspaceBrushResourceKey));            }}
-        public static Object ControlBrushResourceKey                 { get { return CreateInstance(ref FieldControlBrushKey                ,SystemColorCategory,nameof(ControlBrushResourceKey));                 }}
-        public static Object ControlDarkBrushResourceKey             { get { return CreateInstance(ref FieldControlDarkBrushKey            ,SystemColorCategory,nameof(ControlDarkBrushResourceKey));             }}
-        public static Object ControlDarkDarkBrushResourceKey         { get { return CreateInstance(ref FieldControlDarkDarkBrushKey        ,SystemColorCategory,nameof(ControlDarkDarkBrushResourceKey));         }}
-        public static Object ControlLightBrushResourceKey            { get { return CreateInstance(ref FieldControlLightBrushKey           ,SystemColorCategory,nameof(ControlLightBrushResourceKey));            }}
-        public static Object ControlLightLightBrushResourceKey       { get { return CreateInstance(ref FieldControlLightLightBrushKey      ,SystemColorCategory,nameof(ControlLightLightBrushResourceKey));       }}
-        public static Object ControlTextBrushResourceKey             { get { return CreateInstance(ref FieldControlTextBrushKey            ,SystemColorCategory,nameof(ControlTextBrushResourceKey));             }}
-        public static Object DesktopBrushResourceKey                 { get { return CreateInstance(ref FieldDesktopBrushKey                ,SystemColorCategory,nameof(DesktopBrushResourceKey));                 }}
-        public static Object GradientActiveCaptionBrushResourceKey   { get { return CreateInstance(ref FieldGradientActiveCaptionBrushKey  ,SystemColorCategory,nameof(GradientActiveCaptionBrushResourceKey));   }}
-        public static Object GradientInactiveCaptionBrushResourceKey { get { return CreateInstance(ref FieldGradientInactiveCaptionBrushKey,SystemColorCategory,nameof(GradientInactiveCaptionBrushResourceKey)); }}
-        public static Object GrayTextBrushResourceKey                { get { return CreateInstance(ref FieldGrayTextBrushKey               ,SystemColorCategory,nameof(GrayTextBrushResourceKey));                }}
-        public static Object HighlightBrushResourceKey               { get { return CreateInstance(ref FieldHighlightBrushKey              ,SystemColorCategory,nameof(HighlightBrushResourceKey));               }}
-        public static Object HighlightTextBrushResourceKey           { get { return CreateInstance(ref FieldHighlightTextBrushKey          ,SystemColorCategory,nameof(HighlightTextBrushResourceKey));           }}
-        public static Object HotTrackBrushResourceKey                { get { return CreateInstance(ref FieldHotTrackBrushKey               ,SystemColorCategory,nameof(HotTrackBrushResourceKey));                }}
-        public static Object InactiveBorderBrushResourceKey          { get { return CreateInstance(ref FieldInactiveBorderBrushKey         ,SystemColorCategory,nameof(InactiveBorderBrushResourceKey));          }}
-        public static Object InactiveCaptionBrushResourceKey         { get { return CreateInstance(ref FieldInactiveCaptionBrushKey        ,SystemColorCategory,nameof(InactiveCaptionBrushResourceKey));         }}
-        public static Object InactiveCaptionTextBrushResourceKey     { get { return CreateInstance(ref FieldInactiveCaptionTextBrushKey    ,SystemColorCategory,nameof(InactiveCaptionTextBrushResourceKey));     }}
-        public static Object InfoBrushResourceKey                    { get { return CreateInstance(ref FieldInfoBrushKey                   ,SystemColorCategory,nameof(InfoBrushResourceKey));                    }}
-        public static Object InfoTextBrushResourceKey                { get { return CreateInstance(ref FieldInfoTextBrushKey               ,SystemColorCategory,nameof(InfoTextBrushResourceKey));                }}
-        public static Object MenuBrushResourceKey                    { get { return CreateInstance(ref FieldMenuBrushKey                   ,SystemColorCategory,nameof(MenuBrushResourceKey));                    }}
-        public static Object MenuBarBrushResourceKey                 { get { return CreateInstance(ref FieldMenuBarBrushKey                ,SystemColorCategory,nameof(MenuBarBrushResourceKey));                 }}
-        public static Object MenuHighlightBrushResourceKey           { get { return CreateInstance(ref FieldMenuHighlightBrushKey          ,SystemColorCategory,nameof(MenuHighlightBrushResourceKey));           }}
-        public static Object MenuTextBrushResourceKey                { get { return CreateInstance(ref FieldMenuTextBrushKey               ,SystemColorCategory,nameof(MenuTextBrushResourceKey));                }}
-        public static Object ScrollBarBrushResourceKey               { get { return CreateInstance(ref FieldScrollBarBrushKey              ,SystemColorCategory,nameof(ScrollBarBrushResourceKey));               }}
-        public static Object WindowBrushResourceKey                  { get { return CreateInstance(ref FieldWindowBrushKey                 ,SystemColorCategory,nameof(WindowBrushResourceKey));                  }}
-        public static Object WindowFrameBrushResourceKey             { get { return CreateInstance(ref FieldWindowFrameBrushKey            ,SystemColorCategory,nameof(WindowFrameBrushResourceKey));             }}
-        public static Object WindowTextBrushResourceKey              { get { return CreateInstance(ref FieldWindowTextBrushKey             ,SystemColorCategory,nameof(WindowTextBrushResourceKey));              }}
+        public static Object ActiveBorderBrushResourceKey            { get { return CreateInstance(ref FieldActiveBorderBrushKey                  ,SystemColorCategory,nameof(ActiveBorderBrushResourceKey));            }}
+        public static Object ActiveCaptionBrushResourceKey           { get { return CreateInstance(ref FieldActiveCaptionBrushKey                 ,SystemColorCategory,nameof(ActiveCaptionBrushResourceKey));           }}
+        public static Object ActiveCaptionTextBrushResourceKey       { get { return CreateInstance(ref FieldActiveCaptionTextBrushKey             ,SystemColorCategory,nameof(ActiveCaptionTextBrushResourceKey));       }}
+        public static Object AppWorkspaceBrushResourceKey            { get { return CreateInstance(ref FieldAppWorkspaceBrushKey                  ,SystemColorCategory,nameof(AppWorkspaceBrushResourceKey));            }}
+        public static Object ControlBrushResourceKey                 { get { return CreateInstance(ref FieldControlBrushKey                       ,SystemColorCategory,nameof(ControlBrushResourceKey));                 }}
+        public static Object ControlDarkBrushResourceKey             { get { return CreateInstance(ref FieldControlDarkBrushKey                   ,SystemColorCategory,nameof(ControlDarkBrushResourceKey));             }}
+        public static Object ControlDarkDarkBrushResourceKey         { get { return CreateInstance(ref FieldControlDarkDarkBrushKey               ,SystemColorCategory,nameof(ControlDarkDarkBrushResourceKey));         }}
+        public static Object ControlLightBrushResourceKey            { get { return CreateInstance(ref FieldControlLightBrushKey                  ,SystemColorCategory,nameof(ControlLightBrushResourceKey));            }}
+        public static Object ControlLightLightBrushResourceKey       { get { return CreateInstance(ref FieldControlLightLightBrushKey             ,SystemColorCategory,nameof(ControlLightLightBrushResourceKey));       }}
+        public static Object ControlTextBrushResourceKey             { get { return CreateInstance(ref FieldControlTextBrushKey                   ,SystemColorCategory,nameof(ControlTextBrushResourceKey));             }}
+        public static Object DesktopBrushResourceKey                 { get { return CreateInstance(ref FieldDesktopBrushKey                       ,SystemColorCategory,nameof(DesktopBrushResourceKey));                 }}
+        public static Object GradientActiveCaptionBrushResourceKey   { get { return CreateInstance(ref FieldGradientActiveCaptionBrushKey         ,SystemColorCategory,nameof(GradientActiveCaptionBrushResourceKey));   }}
+        public static Object GradientInactiveCaptionBrushResourceKey { get { return CreateInstance(ref FieldGradientInactiveCaptionBrushKey       ,SystemColorCategory,nameof(GradientInactiveCaptionBrushResourceKey)); }}
+        public static Object GrayTextBrushResourceKey                { get { return CreateInstance(ref FieldGrayTextBrushKey                      ,SystemColorCategory,nameof(GrayTextBrushResourceKey));                }}
+        public static Object HighlightBrushResourceKey               { get { return CreateInstance(ref FieldHighlightBrushKey                     ,SystemColorCategory,nameof(HighlightBrushResourceKey));               }}
+        public static Object HighlightTextBrushResourceKey           { get { return CreateInstance(ref FieldHighlightTextBrushKey                 ,SystemColorCategory,nameof(HighlightTextBrushResourceKey));           }}
+        public static Object HotTrackBrushResourceKey                { get { return CreateInstance(ref FieldHotTrackBrushKey                      ,SystemColorCategory,nameof(HotTrackBrushResourceKey));                }}
+        public static Object InactiveBorderBrushResourceKey          { get { return CreateInstance(ref FieldInactiveBorderBrushKey                ,SystemColorCategory,nameof(InactiveBorderBrushResourceKey));          }}
+        public static Object InactiveCaptionBrushResourceKey         { get { return CreateInstance(ref FieldInactiveCaptionBrushKey               ,SystemColorCategory,nameof(InactiveCaptionBrushResourceKey));         }}
+        public static Object InactiveCaptionTextBrushResourceKey     { get { return CreateInstance(ref FieldInactiveCaptionTextBrushKey           ,SystemColorCategory,nameof(InactiveCaptionTextBrushResourceKey));     }}
+        public static Object InfoBrushResourceKey                    { get { return CreateInstance(ref FieldInfoBrushKey                          ,SystemColorCategory,nameof(InfoBrushResourceKey));                    }}
+        public static Object InfoTextBrushResourceKey                { get { return CreateInstance(ref FieldInfoTextBrushKey                      ,SystemColorCategory,nameof(InfoTextBrushResourceKey));                }}
+        public static Object MenuBrushResourceKey                    { get { return CreateInstance(ref FieldMenuBrushKey                          ,SystemColorCategory,nameof(MenuBrushResourceKey));                    }}
+        public static Object MenuBarBrushResourceKey                 { get { return CreateInstance(ref FieldMenuBarBrushKey                       ,SystemColorCategory,nameof(MenuBarBrushResourceKey));                 }}
+        public static Object MenuHighlightBrushResourceKey           { get { return CreateInstance(ref FieldMenuHighlightBrushKey                 ,SystemColorCategory,nameof(MenuHighlightBrushResourceKey));           }}
+        public static Object MenuTextBrushResourceKey                { get { return CreateInstance(ref FieldMenuTextBrushKey                      ,SystemColorCategory,nameof(MenuTextBrushResourceKey));                }}
+        public static Object ScrollBarBrushResourceKey               { get { return CreateInstance(ref FieldScrollBarBrushKey                     ,SystemColorCategory,nameof(ScrollBarBrushResourceKey));               }}
+        public static Object WindowBrushResourceKey                  { get { return CreateInstance(ref FieldWindowBrushKey                        ,SystemColorCategory,nameof(WindowBrushResourceKey));                  }}
+        public static Object WindowFrameBrushResourceKey             { get { return CreateInstance(ref FieldWindowFrameBrushKey                   ,SystemColorCategory,nameof(WindowFrameBrushResourceKey));             }}
+        public static Object WindowTextBrushResourceKey              { get { return CreateInstance(ref FieldWindowTextBrushKey                    ,SystemColorCategory,nameof(WindowTextBrushResourceKey));              }}
+        public static Object TabItemUnselectedBrushKey               { get { return CreateInstance(ref FieldTabItemUnselectedBrushKey             ,SystemColorCategory,nameof(TabItemUnselectedBrushKey));               }}
+        public static Object TabItemUnselectedTextBrushKey           { get { return CreateInstance(ref FieldTabItemUnselectedTextBrushKey         ,SystemColorCategory,nameof(TabItemUnselectedTextBrushKey));           }}
+        public static Object TabItemUnselectedMouseOverBrushKey      { get { return CreateInstance(ref FieldTabItemUnselectedMouseOverBrushKey    ,SystemColorCategory,nameof(TabItemUnselectedMouseOverBrushKey));      }}
+        public static Object TabItemUnselectedMouseOverTextBrushKey  { get { return CreateInstance(ref FieldTabItemUnselectedMouseOverTextBrushKey,SystemColorCategory,nameof(TabItemUnselectedMouseOverTextBrushKey));  }}
+        public static Object TabItemSelectedBrushKey                 { get { return CreateInstance(ref FieldTabItemSelectedBrushKey               ,SystemColorCategory,nameof(TabItemSelectedBrushKey));                 }}
+        public static Object TabItemSelectedTextBrushKey             { get { return CreateInstance(ref FieldTabItemSelectedTextBrushKey           ,SystemColorCategory,nameof(TabItemSelectedTextBrushKey));             }}
+        public static Object TabItemSelectedMouseOverBrushKey        { get { return CreateInstance(ref FieldTabItemSelectedMouseOverBrushKey      ,SystemColorCategory,nameof(TabItemSelectedMouseOverBrushKey));        }}
+        public static Object TabItemSelectedMouseOverTextBrushKey    { get { return CreateInstance(ref FieldTabItemSelectedMouseOverTextBrushKey  ,SystemColorCategory,nameof(TabItemSelectedMouseOverTextBrushKey));    }}
 
         private static Object FieldActiveBorderBrushKey;
         private static Object FieldActiveCaptionBrushKey;
@@ -66,6 +74,14 @@ namespace BinaryStudio.PlatformUI
         private static Object FieldWindowBrushKey;
         private static Object FieldWindowFrameBrushKey;
         private static Object FieldWindowTextBrushKey;
+        private static Object FieldTabItemUnselectedBrushKey;
+        private static Object FieldTabItemUnselectedTextBrushKey;
+        private static Object FieldTabItemUnselectedMouseOverBrushKey;
+        private static Object FieldTabItemUnselectedMouseOverTextBrushKey;
+        private static Object FieldTabItemSelectedBrushKey;
+        private static Object FieldTabItemSelectedTextBrushKey;
+        private static Object FieldTabItemSelectedMouseOverBrushKey;
+        private static Object FieldTabItemSelectedMouseOverTextBrushKey;
 
         #region M:CreateInstance({ref}Object,Guid,String):Object
         [MethodImpl(MethodImplOptions.NoInlining)]

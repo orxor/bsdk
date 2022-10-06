@@ -20,6 +20,13 @@
           <TabItem Header="Item3"/>
           <TabItem Header="Item4"/>
           <TabItem Header="Item5"/>
+          <TabItem Header="Item6 {Disabled}" IsEnabled="False"/>
+          <TabItem Header="Item7"/>
+          <TabItem Header="Item8 {Disabled}" IsEnabled="False"/>
+          <TabItem Header="Item9"/>
+          <TabItem Header="Item10"/>
+          <TabItem Header="Item11"/>
+          <TabItem Header="Item12"/>
         </TabControl>
         <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top" Margin="10">
           <Grid>

@@ -34,6 +34,14 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushResourceKey}"                             Color="#ff252526"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushResourceKey}"                        Color="#ff2d2d30"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushResourceKey}"                         Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedBrushKey}"                          Color="#ff3f3f46"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedTextBrushKey}"                      Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverBrushKey}"                 Color="#ff1c97ea"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverTextBrushKey}"             Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedBrushKey}"                            Color="#ff007acc"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedTextBrushKey}"                        Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedMouseOverBrushKey}"                   Color="#ff007acc"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedMouseOverTextBrushKey}"               Color="#fff1f1f1"/>
   <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
   <Style x:Key="{x:Type TabItem}"    TargetType="{x:Type TabItem}"    BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
 </ResourceDictionary>
