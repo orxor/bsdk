@@ -14,19 +14,45 @@
                    StrokeDashArray="4 2"
                    UseLayoutRounding="True"/>
         <TabControl Name="Target" Grid.Column="1" Margin="20">
-          <TabItem Header="Item0"/>
-          <TabItem Header="Item1"/>
-          <TabItem Header="Item2 {Disabled}" IsEnabled="False"/>
-          <TabItem Header="Item3"/>
-          <TabItem Header="Item4"/>
-          <TabItem Header="Item5"/>
-          <TabItem Header="Item6 {Disabled}" IsEnabled="False"/>
-          <TabItem Header="Item7"/>
-          <TabItem Header="Item8 {Disabled}" IsEnabled="False"/>
-          <TabItem Header="Item9"/>
-          <TabItem Header="Item10"/>
-          <TabItem Header="Item11"/>
-          <TabItem Header="Item12"/>
+          <TabItem Header="Item0">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item0</TextBlock>
+          </TabItem>
+          <TabItem Header="Item1">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item1</TextBlock>
+          </TabItem>
+          <TabItem Header="Item2 {Disabled}" IsEnabled="False">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item2</TextBlock>
+          </TabItem>
+          <TabItem Header="Item3">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item3</TextBlock>
+          </TabItem>
+          <TabItem Header="Item4">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item4</TextBlock>
+          </TabItem>
+          <TabItem Header="Item5">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item5</TextBlock>
+          </TabItem>
+          <TabItem Header="Item6 {Disabled}" IsEnabled="False">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item6</TextBlock>
+          </TabItem>
+          <TabItem Header="Item7">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item7</TextBlock>
+          </TabItem>
+          <TabItem Header="Item8 {Disabled}" IsEnabled="False">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item8</TextBlock>
+          </TabItem>
+          <TabItem Header="Item9">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item9</TextBlock>
+          </TabItem>
+          <TabItem Header="Item10">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item10</TextBlock>
+          </TabItem>
+          <TabItem Header="Item11">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item11</TextBlock>
+          </TabItem>
+          <TabItem Header="Item12">
+            <TextBlock Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">Item12</TextBlock>
+          </TabItem>
         </TabControl>
         <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top" Margin="10">
           <Grid>
