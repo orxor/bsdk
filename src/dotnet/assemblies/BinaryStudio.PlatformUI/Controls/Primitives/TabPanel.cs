@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +11,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
     public class TabPanel : Panel
         {
         private Int32 SelectedGroup = 0;
-        private Int32 NumberOfRows,NumberOfItems;
+        private Int32 NumberOfGroups,NumberOfItems;
         private Size ItemSize;
 
         #region P:TabStripPlacement:Dock
@@ -55,7 +54,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         protected override Size MeasureOverride(Size constraint) {
             var result = default(Size);
             NumberOfItems = 0;
-            NumberOfRows = 0;
+            NumberOfGroups = 0;
             ItemSize = default;
             var i = 0;
             Double α = 0.0, β = 0.0;
@@ -74,7 +73,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                                 β = (β < α) ? α : β;
                                 α = Size.Width;
                                 i = 1;
-                                NumberOfRows++;
+                                NumberOfGroups++;
                                 }
                             else
                                 {
@@ -84,17 +83,42 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                             }
                         }
                     β = (β < α) ? α : β;
-                    result.Height = ItemSize.Height * (NumberOfRows + 1);
+                    result.Height = ItemSize.Height * (NumberOfGroups + 1);
                     result.Width = (Double.IsInfinity(result.Width) || DoubleUtil.IsNaN(result.Width) || (β < constraint.Width))
                         ? β
                         : constraint.Width;
-                    NumberOfRows++;
+                    NumberOfGroups++;
                     }
                     break;
                 case Dock.Left:
                 case Dock.Right:
                     {
-
+                    foreach (UIElement Child in InternalChildren) {
+                        if (Child.Visibility != Visibility.Collapsed) {
+                            NumberOfItems++;
+                            Child.Measure(constraint);
+                            var Size = Child.DesiredSize;
+                            ItemSize.Height += Size.Height;
+                            ItemSize.Width = (ItemSize.Width < Size.Width) ? Size.Width : ItemSize.Width;
+                            if (((α + Size.Height) > constraint.Height) && (i > 0)) {
+                                β = (β < α) ? α : β;
+                                α = Size.Height;
+                                i = 1;
+                                NumberOfGroups++;
+                                }
+                            else
+                                {
+                                α += Size.Height;
+                                i++;
+                                }
+                            }
+                        }
+                    β = (β < α) ? α : β;
+                    result.Width = ItemSize.Width * (NumberOfGroups + 1);
+                    result.Height = (Double.IsInfinity(result.Height) || DoubleUtil.IsNaN(result.Height) || (β < constraint.Height))
+                        ? β
+                        : constraint.Height;
+                    NumberOfGroups++;
                     }
                     break;
                 }
@@ -125,17 +149,16 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 }
             }
 
-        private IEnumerable<GroupInfo> PrepareHorizontal(Double Constraint) {
-            var α = (Constraint*NumberOfRows)/ItemSize.Width;
+        private IEnumerable<GroupInfo> PrepareHorizontal(Double constraint) {
+            SelectedGroup = -1;
+            var α = (constraint*NumberOfGroups)/ItemSize.Width;
             var β = new GroupInfo();
             var x = 0.0;
             Int32 i = 0, j = 0;
             foreach (UIElement Child in InternalChildren) {
                 if (Child.Visibility != Visibility.Collapsed) {
-                    β.IsSelected |= (Boolean)Child.GetValue(Selector.IsSelectedProperty);
-                    if (β.IsSelected) { SelectedGroup = j; }
                     var Size = Child.DesiredSize;
-                    if (((x + α*Size.Width) > Constraint) && (i > 0) && (j < NumberOfRows - 1)) {
+                    if (((x + α*Size.Width) > constraint) && (i > 0) && (j < NumberOfGroups - 1)) {
                         yield return β;
                         β = new GroupInfo(Child) {Size = {Width = Size.Width}};
                         x = α*Size.Width;
@@ -149,6 +172,38 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                         β.Children.Add(Child);
                         i++;
                         }
+                    β.IsSelected |= (Boolean)Child.GetValue(Selector.IsSelectedProperty);
+                    if (β.IsSelected) { SelectedGroup = j; }
+                    }
+                }
+            yield return β;
+            }
+
+        private IEnumerable<GroupInfo> PrepareVertical(Double constraint) {
+            SelectedGroup = -1;
+            var α = (constraint*NumberOfGroups)/ItemSize.Height;
+            var β = new GroupInfo();
+            var y = 0.0;
+            Int32 i = 0, j = 0;
+            foreach (UIElement Child in InternalChildren) {
+                if (Child.Visibility != Visibility.Collapsed) {
+                    var Size = Child.DesiredSize;
+                    if (((y + α*Size.Height) > constraint) && (i > 0) && (j < NumberOfGroups - 1)) {
+                        yield return β;
+                        β = new GroupInfo(Child) {Size = {Height = Size.Height}};
+                        y = α*Size.Height;
+                        i = 1;
+                        j++;
+                        }
+                    else
+                        {
+                        y += α*Size.Height;
+                        β.Size.Height += Size.Height;
+                        β.Children.Add(Child);
+                        i++;
+                        }
+                    β.IsSelected |= (Boolean)Child.GetValue(Selector.IsSelectedProperty);
+                    if (β.IsSelected) { SelectedGroup = j; }
                     }
                 }
             yield return β;
@@ -158,13 +213,12 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <param name="finalSize">The final area within the parent that this element should use to arrange itself and its children.</param>
         /// <returns>The actual size used.</returns>
         protected override Size ArrangeOverride(Size finalSize) {
-            Debug.Print("ArrangeOverride");
             var placement = TabStripPlacement;
             switch (placement) {
                 case Dock.Top:
                 case Dock.Bottom:
                     {
-                    if (NumberOfRows == 1) {
+                    if (NumberOfGroups == 1) {
                         var α = 0.0;
                         foreach (UIElement Child in InternalChildren) {
                             if (Child.Visibility != Visibility.Collapsed) {
@@ -179,7 +233,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                         var y = 0.0;
                         var groups = PrepareHorizontal(finalSize.Width).ToArray();
                         var i = (placement == Dock.Top)
-                            ? NumberOfRows - 1
+                            ? NumberOfGroups - 1
                             : 0;
                         var β = groups[i];
                         groups[i] = groups[SelectedGroup];
@@ -200,7 +254,37 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
                 case Dock.Left:
                 case Dock.Right:
                     {
-
+                    if (NumberOfGroups == 1) {
+                        var α = 0.0;
+                        foreach (UIElement Child in InternalChildren) {
+                            if (Child.Visibility != Visibility.Collapsed) {
+                                var Size = Child.DesiredSize;
+                                Child.Arrange(new Rect(0, α, ItemSize.Width, Size.Height));
+                                α += Size.Height;
+                                }
+                            }
+                        }
+                    else
+                        {
+                        var x = 0.0;
+                        var groups = PrepareVertical(finalSize.Height).ToArray();
+                        var i = (placement == Dock.Left)
+                            ? NumberOfGroups - 1
+                            : 0;
+                        var β = groups[i];
+                        groups[i] = groups[SelectedGroup];
+                        groups[SelectedGroup] = β;
+                        foreach (var g in groups) {
+                            var α = finalSize.Height/g.Size.Height;
+                            var y = 0.0;
+                            foreach (var Child in g.Children) {
+                                var Size = Child.DesiredSize;
+                                Child.Arrange(new Rect(x, y,ItemSize.Width, α*Size.Height));
+                                y += α*Size.Height;
+                                }
+                            x += ItemSize.Width;
+                            }
+                        }
                     }
                     break;
                 }
