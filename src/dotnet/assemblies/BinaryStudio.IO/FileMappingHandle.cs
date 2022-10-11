@@ -45,5 +45,6 @@ namespace BinaryStudio.IO
 
         public static implicit operator IntPtr(FileMappingHandle source) { return source.handle; }
         public static unsafe implicit operator void*(FileMappingHandle source) { return (void*)source.handle; }
+        public static unsafe implicit operator byte*(FileMappingHandle source) { return (byte*)source.handle; }
         }
     }
