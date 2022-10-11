@@ -42,6 +42,10 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedTextBrushKey}"                        Color="#fff1f1f1"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedMouseOverBrushKey}"                   Color="#ff007acc"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedMouseOverTextBrushKey}"               Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveSelectionHighlightBrushKey}"                 Color="#ff1d1d20"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveSelectionHighlightTextBrushKey}"             Color="#ff656565"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.DataGridColumnHeaderBackgroundBrushKey}"             Color="#ff1d1d20"/>
   <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
   <Style x:Key="{x:Type TabItem}"    TargetType="{x:Type TabItem}"    BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
+  <Style x:Key="{x:Type DataGrid}"   TargetType="{x:Type DataGrid}"   BasedOn="{StaticResource {x:Static u:Theme.DataGridStyleKey}}"/>
 </ResourceDictionary>

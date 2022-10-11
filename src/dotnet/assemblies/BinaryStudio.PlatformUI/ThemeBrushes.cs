@@ -43,6 +43,9 @@ namespace BinaryStudio.PlatformUI
         public static Object TabItemSelectedTextBrushKey             { get { return CreateInstance(ref FieldTabItemSelectedTextBrushKey           ,SystemColorCategory,nameof(TabItemSelectedTextBrushKey));             }}
         public static Object TabItemSelectedMouseOverBrushKey        { get { return CreateInstance(ref FieldTabItemSelectedMouseOverBrushKey      ,SystemColorCategory,nameof(TabItemSelectedMouseOverBrushKey));        }}
         public static Object TabItemSelectedMouseOverTextBrushKey    { get { return CreateInstance(ref FieldTabItemSelectedMouseOverTextBrushKey  ,SystemColorCategory,nameof(TabItemSelectedMouseOverTextBrushKey));    }}
+        public static Object InactiveSelectionHighlightBrushKey      { get { return CreateInstance(ref FieldInactiveSelectionHighlightBrushKey    ,SystemColorCategory,nameof(InactiveSelectionHighlightBrushKey));      }}
+        public static Object InactiveSelectionHighlightTextBrushKey  { get { return CreateInstance(ref FieldInactiveSelectionHighlightTextBrushKey,SystemColorCategory,nameof(InactiveSelectionHighlightTextBrushKey));  }}
+        public static Object DataGridColumnHeaderBackgroundBrushKey  { get { return CreateInstance(ref FieldDataGridColumnHeaderBackgroundBrushKey,SystemColorCategory,nameof(DataGridColumnHeaderBackgroundBrushKey));  }}
 
         private static Object FieldActiveBorderBrushKey;
         private static Object FieldActiveCaptionBrushKey;
@@ -82,6 +85,9 @@ namespace BinaryStudio.PlatformUI
         private static Object FieldTabItemSelectedTextBrushKey;
         private static Object FieldTabItemSelectedMouseOverBrushKey;
         private static Object FieldTabItemSelectedMouseOverTextBrushKey;
+        private static Object FieldInactiveSelectionHighlightBrushKey;
+        private static Object FieldInactiveSelectionHighlightTextBrushKey;
+        private static Object FieldDataGridColumnHeaderBackgroundBrushKey;
 
         #region M:CreateInstance({ref}Object,Guid,String):Object
         [MethodImpl(MethodImplOptions.NoInlining)]

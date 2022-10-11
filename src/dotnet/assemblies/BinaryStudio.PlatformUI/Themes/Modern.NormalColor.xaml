@@ -6,5 +6,6 @@
   </ResourceDictionary.MergedDictionaries>
   <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
   <Style x:Key="{x:Type TabItem}"    TargetType="{x:Type TabItem}"    BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
+  <Style x:Key="{x:Type DataGrid}"   TargetType="{x:Type DataGrid}"   BasedOn="{StaticResource {x:Static u:Theme.DataGridStyleKey}}"/>
 </ResourceDictionary>
   
