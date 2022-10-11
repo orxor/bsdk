@@ -28,6 +28,12 @@
 /src/dotnet/assemblies/BinaryStudio.Serialization/obj
 /src/dotnet/assemblies/BinaryStudio.VSShellServices/bin
 /src/dotnet/assemblies/BinaryStudio.VSShellServices/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Certificates/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Certificates/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/samples/XYViewportSample/bin
