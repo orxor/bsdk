@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public abstract class Asn1Object : IServiceProvider,IDisposable
+    public abstract class Asn1Object : IServiceProvider,IDisposable,IList<Asn1Object>
         {
         [Flags]
         protected internal enum ObjectState : ushort
@@ -32,30 +31,52 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 offset;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 size;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 length;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private ObjectState state;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected ObjectState State;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected ReadOnlyMappingStream content;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private List<Asn1Object> sequence = new List<Asn1Object>();
 
         public abstract Asn1ObjectClass Class { get; }
         #if NET35
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return ((state & ObjectState.Decoded)==ObjectState.Decoded); }}
-        [Browsable(false)] public virtual Boolean IsFailed  { get { return ((state & ObjectState.Failed)==ObjectState.Failed);  }}
-        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return ((state & ObjectState.ExplicitConstructed)==ObjectState.ExplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return ((state & ObjectState.ImplicitConstructed)==ObjectState.ImplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return ((state & ObjectState.Indefinite)==ObjectState.Indefinite); }}
-        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return ((state & ObjectState.Disposed)==ObjectState.Disposed);     }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return ((State & ObjectState.Decoded)==ObjectState.Decoded); }}
+        [Browsable(false)] public virtual Boolean IsFailed  { get { return ((State & ObjectState.Failed)==ObjectState.Failed);  }}
+        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return ((State & ObjectState.ExplicitConstructed)==ObjectState.ExplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return ((State & ObjectState.ImplicitConstructed)==ObjectState.ImplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return ((State & ObjectState.Indefinite)==ObjectState.Indefinite); }}
+        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return ((State & ObjectState.Disposed)==ObjectState.Disposed);     }}
         #else
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return state.HasFlag(ObjectState.Decoded); }}
-        [Browsable(false)] public virtual Boolean IsFailed  { get { return state.HasFlag(ObjectState.Failed);  }}
-        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return state.HasFlag(ObjectState.ExplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return state.HasFlag(ObjectState.ImplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return state.HasFlag(ObjectState.Indefinite);          }}
-        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return state.HasFlag(ObjectState.Disposed);            }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return State.HasFlag(ObjectState.Decoded); }}
+        [Browsable(false)] public virtual Boolean IsFailed  { get { return State.HasFlag(ObjectState.Failed);  }}
+        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return State.HasFlag(ObjectState.ExplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return State.HasFlag(ObjectState.ImplicitConstructed); }}
+        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return State.HasFlag(ObjectState.Indefinite);          }}
+        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return State.HasFlag(ObjectState.Disposed);            }}
         #endif
+
         public virtual ReadOnlyMappingStream Content { get { return content; }}
+        public virtual Int64 Offset { get{ return offset; }}
         public virtual Int64 Size   { get {
-            if (state.HasFlag(ObjectState.SealedSize)) { return size; }
+            if (State.HasFlag(ObjectState.SealedSize)) { return size; }
             return size;
+            }}
+
+        public virtual Int64 Length { get {
+            if (State.HasFlag(ObjectState.SealedLength)) { return length; }
+            var c = Count;
+            var r = 0L;
+            if (c > 0)
+                {
+                foreach (var i in this)
+                    {
+                    r += i.Size;
+                    }
+                }
+            else
+                {
+                r = content.Length;
+                }
+            length = r;
+            State |= ObjectState.SealedLength;
+            return length;
             }}
 
         #region M:IServiceProvider.GetService(Type):Object
@@ -144,7 +165,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 source.Seek(p, SeekOrigin.Begin);
                 return null;
                 }
-            o.state |= state;
+            o.State |= state;
             if (o.IsIndefiniteLength) {
                 if (!o.Decode()) {
                     source.Seek(p, SeekOrigin.Begin);
@@ -191,25 +212,25 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         size   = sz;
                         length = ln;
                         if ((offset + length) > content.Length) {
-                            state |= ObjectState.Failed;
+                            State |= ObjectState.Failed;
                             return false;
                             }
                         content = content.Clone(offset, length);
-                        state |= ObjectState.DisposeContent;
+                        State |= ObjectState.DisposeContent;
                         if (Decode(r))
                             {
                             sequence.AddRange(r);
-                            state |= ObjectState.Decoded;
+                            State |= ObjectState.Decoded;
                             if (!IsExplicitConstructed)
                                 {
-                                state |= ObjectState.ImplicitConstructed;
+                                State |= ObjectState.ImplicitConstructed;
                                 }
                             return true;
                             }
                         }
                     if (!IsExplicitConstructed)
                         {
-                        state |= ObjectState.Decoded;
+                        State |= ObjectState.Decoded;
                         return true;
                         }
                     }
@@ -240,17 +261,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         if (Decode(r))
                             {
                             sequence.AddRange(r);
-                            state |= ObjectState.Decoded;
+                            State |= ObjectState.Decoded;
                             if (!IsExplicitConstructed)
                                 {
-                                state |= ObjectState.ImplicitConstructed;
+                                State |= ObjectState.ImplicitConstructed;
                                 }
                             return true;
                             }
                         }
                     if (!IsExplicitConstructed)
                         {
-                        state |= ObjectState.Decoded;
+                        State |= ObjectState.Decoded;
                         return true;
                         }
                     else
@@ -265,16 +286,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             return true;
                             }
                         #endif
-                        state |= ObjectState.Failed;
+                        State |= ObjectState.Failed;
                         return false;
                         }
                     }
-                state |= ObjectState.Failed;
+                State |= ObjectState.Failed;
                 return false;
                 }
             catch
                 {
-                state |= ObjectState.Failed;
+                State |= ObjectState.Failed;
                 return false;
                 }
             }
@@ -314,16 +335,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #endregion
         #region M:Load(ReadOnlyMappingStream,Int64)
         protected virtual void Load(ReadOnlyMappingStream source, Int64 forceoffset) {
-            state |= ObjectState.Failed | ObjectState.SealedLength | ObjectState.SealedSize;
+            State |= ObjectState.Failed | ObjectState.SealedLength | ObjectState.SealedSize;
             offset = source.Position - 1;
             length = DecodeLength(source);
                  if (length == -1) { return; }
             else if (length == -2) {
-                state |= ObjectState.Indefinite;
+                State |= ObjectState.Indefinite;
                 size = 2;
                 offset += forceoffset;
                 content = source;
-                state &= ~ObjectState.Failed;
+                State &= ~ObjectState.Failed;
                 }
             else
                 {
@@ -332,7 +353,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 offset += forceoffset;
                 content = source.Clone(length);
                 source.Seek(length, SeekOrigin.Current);
-                state &= ~ObjectState.Failed;
+                State &= ~ObjectState.Failed;
                 }
             }
         #endregion
@@ -359,14 +380,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:Dispose(Boolean)
-        /// <summary>
-        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
-        /// </summary>
+        /// <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected virtual void Dispose(Boolean disposing) {
             if (!IsDisposed) {
                 lock(this) {
-                    state |= ObjectState.Disposed;
+                    State |= ObjectState.Disposed;
                     if (sequence != null) {
                         for (var i = 0; i < sequence.Count; i++) {
                             sequence[i].Dispose();
@@ -393,6 +412,177 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         ~Asn1Object()
             {
             Dispose(false);
+            }
+        #endregion
+
+        #region M:IEnumerable<Asn1Object>.GetEnumerator:IEnumerator<Asn1Object>
+        /**
+         * <summary>Returns an enumerator that iterates through the collection.</summary>
+         * <returns>A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.</returns>
+         * <filterpriority>1</filterpriority>
+         * */
+        public virtual IEnumerator<Asn1Object> GetEnumerator() { return sequence.GetEnumerator(); }
+        #endregion
+        #region M:IEnumerable.GetEnumerator:IEnumerator
+        /**
+         * <summary>Returns an enumerator that iterates through a collection.</summary>
+         * <returns>An <see cref="IEnumerator"/> object that can be used to iterate through the collection.</returns>
+         * <filterpriority>2</filterpriority>
+         * */
+        IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
+        #endregion
+        #region M:ICollection<Asn1Object>.Add(Asn1Object)
+        protected void Add(Asn1Object item)
+            {
+            if (IsReadOnly) { throw new InvalidOperationException(); }
+            sequence.Add(item);
+            }
+
+        /**
+         * <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
+         * <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+         * <exception cref="NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+         * */
+        void ICollection<Asn1Object>.Add(Asn1Object item)
+            {
+            Add(item);
+            }
+        #endregion
+        #region M:ICollection<Asn1Object>.Clear
+        protected void Clear() {
+            if (IsReadOnly) { throw new InvalidOperationException(); }
+            sequence.Clear();
+            }
+
+        /**
+         * <summary>Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
+         * <exception cref="NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+         * */
+        void ICollection<Asn1Object>.Clear()
+            {
+            Clear();
+            }
+        #endregion
+        #region M:ICollection<Asn1Object>.Contains(IAsn1Object):Boolean
+        /**
+         * <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.</summary>
+         * <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+         * <returns>true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.</returns>
+         * */
+        Boolean ICollection<Asn1Object>.Contains(Asn1Object item)
+            {
+            return sequence.Contains(item);
+            }
+        #endregion
+        #region M:ICollection<Asn1Object>.CopyTo(IAsn1Object[],Int32)
+        /**
+         * <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="Array"/>, starting at a particular <see cref="Array"/> index.</summary>
+         * <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="Array"/> must have zero-based indexing.</param>
+         * <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
+         * <exception cref="ArgumentNullException"><paramref name="array"/> is null.</exception>
+         * <exception cref="ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception>
+         * <exception cref="ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</exception>
+         * */
+        void ICollection<Asn1Object>.CopyTo(Asn1Object[] array, Int32 arrayIndex)
+            {
+            sequence.CopyTo(array, arrayIndex);
+            }
+        #endregion
+        #region M:ICollection<Asn1Object>.Remove(IAsn1Object):Boolean
+        /**
+         * <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</summary>
+         * <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+         * <returns>true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.</returns>
+         * <exception cref="NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+         * */
+        Boolean ICollection<Asn1Object>.Remove(Asn1Object item)
+            {
+            if (IsReadOnly) { throw new NotSupportedException(); }
+            return sequence.Remove(item);
+            }
+        #endregion
+        #region P:ICollection<Asn1Object>.Count:Int32
+        /**
+         * <summary>Gets the number of elements in the collection.</summary>
+         * <returns>The number of elements in the collection.</returns>
+         * */
+        public virtual Int32 Count { get {
+            if (IsDisposed) { throw new ObjectDisposedException("this"); }
+            return sequence.Count;
+            }}
+        #endregion
+        #region P:ICollection<Asn1Object>.IsReadOnly:Boolean
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Boolean IsReadOnly { get;set; }
+
+        /**
+         * <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</summary>
+         * <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.</returns>
+         * */
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] Boolean ICollection<Asn1Object>.IsReadOnly { get {
+            return IsReadOnly;
+            }}
+        #endregion
+        #region M:IList<Asn1Object>.IndexOf(IAsn1Object):Int32
+        /**
+         * <summary>Determines the index of a specific item in the <see cref="T:System.Collections.Generic.IList`1"/>.</summary>
+         * <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+         * <returns>The index of <paramref name="item"/> if found in the list; otherwise, -1.</returns>
+         * */
+        Int32 IList<Asn1Object>.IndexOf(Asn1Object item)
+            {
+            return sequence.IndexOf(item);
+            }
+        #endregion
+        #region M:IList<Asn1Object>.Insert(Int32,IAsn1Object)
+        /**
+         * <summary>Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at the specified index.</summary>
+         * <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
+         * <param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
+         * <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
+         * <exception cref="NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
+         * */
+        void IList<Asn1Object>.Insert(Int32 index, Asn1Object item)
+            {
+            if (IsReadOnly) { throw new NotSupportedException(); }
+            sequence.Insert(index, item);
+            }
+        #endregion
+        #region M:IList<Asn1Object>.RemoveAt(Int32)
+        /**
+         * <summary>Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.</summary>
+         * <param name="index">The zero-based index of the item to remove.</param>
+         * <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
+         * <exception cref="NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1" /> is read-only.</exception>
+         * */
+        void IList<Asn1Object>.RemoveAt(Int32 index)
+            {
+            if (IsReadOnly) { throw new NotSupportedException(); }
+            sequence.RemoveAt(index);
+            State &= ~ObjectState.SealedSize;
+            State &= ~ObjectState.SealedLength;
+            }
+        #endregion
+        #region P:IList<Asn1Object>.this[Int32]:IAsn1Object
+        /**
+         * <summary>Gets or sets the element at the specified index.</summary>
+         * <param name="index">The zero-based index of the element to get or set.</param>
+         * <returns>The element at the specified index.</returns>
+         * <exception cref="ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
+         * <exception cref="NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
+         * */
+        public virtual Asn1Object this[Int32 index] {
+            get
+                {
+                if (IsDisposed) { throw new ObjectDisposedException("this"); }
+                return sequence[index];
+                }
+            set
+                {
+                if (IsReadOnly) { throw new NotSupportedException(); }
+                sequence[index] = value;
+                State &= ~ObjectState.SealedSize;
+                State &= ~ObjectState.SealedLength;
+                }
             }
         #endregion
         }

@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Security.Crypt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Security.Cryptography", "src\dotnet\assemblies\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj", "{9D80A974-3E3C-44BF-AA94-EB361C491278}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BinaryStudio.Security.Cryptography.Certificates", "src\dotnet\tests\UnitTests.BinaryStudio.Security.Cryptography.Certificates\UnitTests.BinaryStudio.Security.Cryptography.Certificates.csproj", "{9CEBE5EF-3845-4DBF-8058-AD9E0401B016}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +141,10 @@ Global
 		{9D80A974-3E3C-44BF-AA94-EB361C491278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D80A974-3E3C-44BF-AA94-EB361C491278}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D80A974-3E3C-44BF-AA94-EB361C491278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CEBE5EF-3845-4DBF-8058-AD9E0401B016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CEBE5EF-3845-4DBF-8058-AD9E0401B016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CEBE5EF-3845-4DBF-8058-AD9E0401B016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CEBE5EF-3845-4DBF-8058-AD9E0401B016}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{CB2A778D-C4F7-47DF-8F1C-55E59B22F2F0} = {BDAD0FA5-BBDF-4F6B-B117-4A222B60CB83}
 		{6FF8B5E4-B68D-4CD1-BCC4-6BDDC5A6B99D} = {BDAD0FA5-BBDF-4F6B-B117-4A222B60CB83}
 		{7B35F5C5-1CCD-43C5-B3A1-F885625D80DC} = {BDAD0FA5-BBDF-4F6B-B117-4A222B60CB83}
+		{9CEBE5EF-3845-4DBF-8058-AD9E0401B016} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D635BC8-0B0E-4835-9367-310A2779B655}
