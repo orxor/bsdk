@@ -18,13 +18,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         private Asn1Certificate Source;
 
         public override IntPtr Handle { get { return Context; }}
-        public Int32 Version { get; }
+        public Int32 Version       { get { return Source.Version;      }}
+        public String SerialNumber { get { return Source.SerialNumber; }}
+        public DateTime NotBefore  { get { return Source.NotBefore;    }}
+        public DateTime NotAfter   { get { return Source.NotAfter;     }}
 
         public X509Certificate(IntPtr context) {
             if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
             Context = CertDuplicateCertificateContext(context);
             Source = BuildSource(Context);
-            Version = Source.Version;
             }
 
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCertificateContext([In] IntPtr pCertContext);
@@ -78,6 +80,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Version),Version);
+                writer.WriteValue(nameof(NotBefore),NotBefore);
+                writer.WriteValue(nameof(NotAfter),NotAfter);
+                writer.WriteValue(nameof(SerialNumber),SerialNumber);
                 writer.WriteValue(nameof(Source),Source);
                 }
             }

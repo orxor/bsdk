@@ -275,6 +275,13 @@ namespace BinaryStudio.Serialization
             }
         #endregion
 
+        #region M:IsNullOrEmpty(ICollection):Boolean
+        private static Boolean IsNullOrEmpty(ICollection value) {
+            return (value == null) || (value.Count == 0);
+            }
+        #endregion
+        #endif
+
         #region M:ToString(Byte[],String):String
         public static String ToString(this Byte[] source, String format) {
             if (source == null) { return null; }
@@ -302,16 +309,16 @@ namespace BinaryStudio.Serialization
                         ? $"{source[0]:X2}{source[c - 1]:X2}"
                         : String.Join(String.Empty, source.Select(i => i.ToString("X2")));
                     }
+                case "fl":
+                    {
+                    return (c > 1)
+                        ? $"{source[0]:x2}{source[c - 1]:x2}"
+                        : String.Join(String.Empty, source.Select(i => i.ToString("x2")));
+                    }
                 }
             #endif
             return source.ToString();
             }
         #endregion
-        #region M:IsNullOrEmpty(ICollection):Boolean
-        private static Boolean IsNullOrEmpty(ICollection value) {
-            return (value == null) || (value.Count == 0);
-            }
-        #endregion
-        #endif
         }
     }

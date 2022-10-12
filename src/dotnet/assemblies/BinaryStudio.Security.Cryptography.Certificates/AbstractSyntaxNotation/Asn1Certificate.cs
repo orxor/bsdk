@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
     {
@@ -69,6 +72,17 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
         public String SerialNumber { get; }
         public DateTime NotBefore { get; }
         public DateTime NotAfter  { get; }
+        public String Thumbprint { get {
+            if (thumbprint == null) {
+                using (var engine = SHA1.Create())
+                using(var output = new MemoryStream()) {
+                    UnderlyingObject.WriteTo(output);
+                    output.Seek(0, SeekOrigin.Begin);
+                    thumbprint = engine.ComputeHash(output).ToString("x");
+                    }
+                }
+            return thumbprint;
+            }}
 
         public Asn1Certificate(Asn1Object o)
             : base(o)
@@ -106,5 +120,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
                     }
                 }
             }
+
+        private String thumbprint;
         }
     }

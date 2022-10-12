@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -14,6 +15,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public override Asn1ObjectType Type { get { return Asn1ObjectType.BitString; }}
         public Int32 UnusedBits { get; private set; }
 
+        #region M:Decode:Boolean
         protected override Boolean Decode() {
             if (IsDecoded) { return true; }
             if (IsIndefiniteLength) { return base.Decode(); }
@@ -29,7 +31,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             State |= ObjectState.DisposeContent;
             return true;
             }
-
+        #endregion
         #region M:WriteTo(IJsonWriter)
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
@@ -52,6 +54,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     writer.WriteValue(nameof(Content),Convert.ToBase64String(Content.ToArray(), Base64FormattingOptions.InsertLineBreaks).Split('\n'));
                     }
                 }
+            }
+        #endregion
+        #region M:WriteContent(Stream)
+        protected override void WriteContent(Stream target)
+            {
+            target.WriteByte((Byte)UnusedBits);
+            base.WriteContent(target);
             }
         #endregion
         }

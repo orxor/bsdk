@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using BinaryStudio.Serialization;
+using System.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -163,5 +163,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// </summary>
         public abstract Asn1ObjectType Type { get; }
         protected internal override Object TypeCode { get { return Type; }}
+
+        #region M:WriteHeader(Stream)
+        protected internal override void WriteHeader(Stream target) {
+            WriteHeader(target, IsExplicitConstructed, Class, (SByte)Type,
+                IsIndefiniteLength
+                 ? - 1
+                 : Length);
+            }
+        #endregion
         }
     }

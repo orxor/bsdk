@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 
@@ -62,7 +63,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 if (c > 0) {
                     writer.WritePropertyName("{Self}");
                     using (writer.ArrayObject()) {
-                        foreach (var Value in U) {
+                        foreach (var Value in UnderlyingObject) {
                             Value.WriteTo(writer);
                             }
                         }
@@ -72,6 +73,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     writer.WriteValue(nameof(Content),Convert.ToBase64String(Content.ToArray(), Base64FormattingOptions.InsertLineBreaks).Split('\n'));
                     }
                 }
+            }
+        #endregion
+        #region M:WriteTo(Stream)
+        public override void WriteTo(Stream target) {
+            UnderlyingObject.WriteTo(target);
+            }
+        #endregion
+        #region M:WriteHeader(Stream)
+        protected internal override void WriteHeader(Stream target) {
+            UnderlyingObject.WriteHeader(target);
             }
         #endregion
         }

@@ -610,5 +610,66 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
         #endregion
+        #region M:WriteTo(Stream)
+        public virtual void WriteTo(Stream target) {
+            if (IsIndefiniteLength)
+                {
+                Content.Seek(0, SeekOrigin.Begin);
+                Content.CopyTo(target);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                }
+            else
+                {
+                WriteHeader(target);
+                WriteContent(target);
+                }
+            }
+        #endregion
+        #region M:WriteContent(Stream)
+        protected virtual void WriteContent(Stream target) {
+            Content.Seek(0, SeekOrigin.Begin);
+            Content.CopyTo(target);
+            if (IsIndefiniteLength)
+                {
+                target.WriteByte(0);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                target.WriteByte(0);
+                }
+            }
+        #endregion
+        #region M:WriteHeader(Stream target,Boolean,Asn1ObjectClass,SByte,Int64)
+        protected static void WriteHeader(Stream target, Boolean constructed, Asn1ObjectClass @class, SByte type, Int64 length)
+            {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            var r = constructed ? 0x20 : 0x00;
+            r |= ((Byte)@class) << 6;
+            r |= (Byte)type;
+            target.WriteByte((Byte)r);
+            if (length < 0)     {
+                target.WriteByte((Byte)0x80);
+                return;
+                }
+            if (length < 0x80) { target.WriteByte((Byte)length); }
+            else
+                {
+                var n = new List<Byte>();
+                while (length > 0) {
+                    n.Add((Byte)(length & 0xFF));
+                    length >>= 8;
+                    }
+                var c = n.Count;
+                target.WriteByte((Byte)(c | 0x80));
+                for (var i = c - 1;i >= 0; i--) {
+                    target.WriteByte(n[i]);
+                    }
+                }
+            }
+        #endregion
+
+        protected internal abstract void WriteHeader(Stream target);
         }
     }

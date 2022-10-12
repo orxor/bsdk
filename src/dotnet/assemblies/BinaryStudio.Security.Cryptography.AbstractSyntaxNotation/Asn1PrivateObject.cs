@@ -1,5 +1,5 @@
 ﻿using System;
-using BinaryStudio.Serialization;
+using System.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -16,5 +16,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             Type = type;
             }
+
+        #region M:WriteHeader(Stream)
+        protected internal override void WriteHeader(Stream target) {
+            WriteHeader(target, IsExplicitConstructed, Class, Type,
+                IsIndefiniteLength
+                 ? - 1
+                 : Length);
+            }
+        #endregion
         }
     }
