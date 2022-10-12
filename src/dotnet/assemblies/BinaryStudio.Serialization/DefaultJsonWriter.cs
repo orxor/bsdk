@@ -92,6 +92,16 @@ namespace BinaryStudio.Serialization
             Writer.WritePropertyName(name);
             }
 
+        void IJsonWriter.WriteValue(Object value) {
+            if (value != null) {
+                WriteValue(value);
+                }
+            else
+                {
+                Writer.WriteNull();
+                }
+            }
+
         #region M:WriteValue(Object):Boolean
         private Boolean WriteValue(Object value) {
             if (value == null) { return false; }

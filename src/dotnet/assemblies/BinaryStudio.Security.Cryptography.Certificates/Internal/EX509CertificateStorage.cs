@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.Internal
     {
@@ -43,7 +45,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                     if (Store != IntPtr.Zero) {
                         try
                             {
-                            Validate(CertCloseStore(Store, CERT_CLOSE_STORE_CHECK_FLAG|CERT_CLOSE_STORE_FORCE_FLAG));
+                            Validate(CertCloseStore(Store, CERT_CLOSE_STORE_CHECK_FLAG));
                             }
                         catch (Exception e)
                             {
@@ -54,6 +56,19 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                             Store = IntPtr.Zero;
                             }
                         }
+                    }
+                }
+            }
+        #endregion
+        #region M:WriteTo(IJsonWriter)
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            var certificates = Certificates.ToArray();
+            using (writer.ScopeObject()) {
+                writer.WritePropertyName(nameof(Certificates));
+                using (writer.ScopeObject()) {
+                    writer.WriteValue("Count", certificates.Length);
+                    writer.WriteValue("{Self}", certificates);
                     }
                 }
             }

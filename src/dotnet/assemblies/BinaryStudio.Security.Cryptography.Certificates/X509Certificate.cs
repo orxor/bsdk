@@ -8,6 +8,7 @@ using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
@@ -70,6 +71,14 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                         Context = IntPtr.Zero;
                         }
                     }
+                }
+            }
+        #endregion
+        #region M:WriteTo(IJsonWriter)
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Source),Source);
                 }
             }
         #endregion

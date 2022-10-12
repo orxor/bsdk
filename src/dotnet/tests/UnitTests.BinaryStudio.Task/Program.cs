@@ -11,7 +11,7 @@ namespace UnitTests.BinaryStudio.Task
         {
         private static void Main(string[] args)
             {
-            Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
+            Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.JsonS));
             }
 
         #region M:Execute(Action)

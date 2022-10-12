@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -138,5 +139,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             State |= ObjectState.Decoded;
             return true;
             }
+
+        #region M:WriteTo(IJsonWriter)
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Type), TypeCode);
+                if (Offset >= 0) { writer.WriteValue(nameof(Offset), Offset); }
+                writer.WriteValue("Value", ToString());
+                }
+            }
+        #endregion
         }
     }

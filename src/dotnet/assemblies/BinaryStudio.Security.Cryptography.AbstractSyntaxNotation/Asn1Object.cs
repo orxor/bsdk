@@ -588,8 +588,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:WriteTo(IJsonWriter)
-        public virtual void WriteTo(IJsonWriter writer)
-            {
+        public virtual void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             using (writer.ScopeObject()) {
                 writer.WriteValue(nameof(Class), Class.ToString());
@@ -597,7 +596,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 if (Offset >= 0) { writer.WriteValue(nameof(Offset), Offset); }
                 var c = Count;
                 if (c > 0) {
-                    writer.WritePropertyName("(Self)");
+                    writer.WritePropertyName("{Self}");
                     using (writer.ArrayObject()) {
                         foreach (var Value in this) {
                             Value.WriteTo(writer);

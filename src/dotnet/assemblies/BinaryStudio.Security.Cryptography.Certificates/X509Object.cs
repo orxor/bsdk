@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    public abstract class X509Object : IDisposable,IServiceProvider
+    public abstract class X509Object : IDisposable,IServiceProvider,IJsonSerializable
         {
         protected Boolean Disposed;
         public abstract IntPtr Handle { get; }
@@ -88,5 +89,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             #endif
             }
         #endregion
+
+        public abstract void WriteTo(IJsonWriter writer);
         }
     }

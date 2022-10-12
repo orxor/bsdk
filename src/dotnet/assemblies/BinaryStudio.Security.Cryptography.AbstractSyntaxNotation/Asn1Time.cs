@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -149,5 +150,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             return null;
             }
+
+        #region M:WriteTo(IJsonWriter)
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Type), TypeCode);
+                if (Offset >= 0) { writer.WriteValue(nameof(Offset), Offset); }
+                writer.WriteValue(nameof(Value), ToString());
+                }
+            }
+        #endregion
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates.Internal;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
@@ -160,6 +161,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     Dispose(ref Store);
                     }
                 }
+            }
+        #endregion
+        #region M:WriteTo(IJsonWriter)
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            Store.WriteTo(writer);
             }
         #endregion
         }
