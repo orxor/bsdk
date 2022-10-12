@@ -6,10 +6,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using BinaryStudio.IO;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public abstract class Asn1Object : IServiceProvider,IDisposable,IList<Asn1Object>
+    public abstract class Asn1Object : IServiceProvider,IDisposable,IList<Asn1Object>,IJsonSerializable
         {
         [Flags]
         protected internal enum ObjectState : ushort
@@ -30,7 +31,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 offset;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 size;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 length;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Int64 length;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected ObjectState State;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected ReadOnlyMappingStream content;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private List<Asn1Object> sequence = new List<Asn1Object>();
@@ -52,6 +53,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return State.HasFlag(ObjectState.Disposed);            }}
         #endif
 
+        protected internal abstract Object TypeCode { get; }
         public virtual ReadOnlyMappingStream Content { get { return content; }}
         public virtual Int64 Offset { get{ return offset; }}
         public virtual Int64 Size   { get {
@@ -176,7 +178,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:Decode:Boolean
-        protected internal virtual Boolean Decode()
+        protected virtual Boolean Decode()
             {
             if (IsDecoded) { return true;  }
             if (IsFailed)  { return false; }
@@ -582,6 +584,30 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 sequence[index] = value;
                 State &= ~ObjectState.SealedSize;
                 State &= ~ObjectState.SealedLength;
+                }
+            }
+        #endregion
+        #region M:WriteTo(IJsonWriter)
+        public virtual void WriteTo(IJsonWriter writer)
+            {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Class), Class.ToString());
+                writer.WriteValue(nameof(Type), TypeCode);
+                if (Offset >= 0) { writer.WriteValue(nameof(Offset), Offset); }
+                var c = Count;
+                if (c > 0) {
+                    writer.WritePropertyName("(Self)");
+                    using (writer.ArrayObject()) {
+                        foreach (var Value in this) {
+                            Value.WriteTo(writer);
+                            }
+                        }
+                    }
+                else
+                    {
+                    writer.WriteValue(nameof(Content),Convert.ToBase64String(Content.ToArray(), Base64FormattingOptions.InsertLineBreaks).Split('\n'));
+                    }
                 }
             }
         #endregion

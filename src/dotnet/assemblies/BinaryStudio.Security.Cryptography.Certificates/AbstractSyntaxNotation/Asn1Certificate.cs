@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
@@ -65,16 +66,43 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
     public class Asn1Certificate : Asn1LinkObject
         {
         public Int32 Version { get; }
+        public String SerialNumber { get; }
+        public DateTime NotBefore { get; }
+        public DateTime NotAfter  { get; }
 
         public Asn1Certificate(Asn1Object o)
             : base(o)
             {
             State |= ObjectState.Failed;
-            if (o is Asn1Sequence U) {
-                if ((U[0] is Asn1Sequence) &&
-                    (U[1] is Asn1Sequence) &&
-                    (U[2] is Asn1BitString))
+            if (o is Asn1Sequence u) {
+                if ((u[0] is Asn1Sequence) &&
+                    (u[1] is Asn1Sequence) &&
+                    (u[2] is Asn1BitString))
                     {
+                    var j = 0;
+                    if (u[0][0] is Asn1ContextSpecificObject) {
+                        Version = (Int32)(Asn1Integer)u[0][0][0];
+                        j++;
+                        }
+                    else
+                        {
+                        Version = 1;
+                        }
+                    SerialNumber = String.Join(String.Empty,((Asn1Integer)u[0][j]).Value.ToByteArray().Reverse().Select(i => i.ToString("x2")));
+                    #region Validity
+                    if (u[0][j + 3] is Asn1Sequence)
+                        {
+                        NotBefore = (Asn1Time)u[0][j + 3][0];
+                        NotAfter  = (Asn1Time)u[0][j + 3][1];
+                        }
+                    else
+                        {
+                        State |= ObjectState.Failed;
+                        return;
+                        }
+                    #endregion
+
+                    State &= ~ObjectState.Failed;
                     }
                 }
             }

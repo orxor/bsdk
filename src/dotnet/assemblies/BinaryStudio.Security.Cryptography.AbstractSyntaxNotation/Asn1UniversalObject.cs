@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -160,5 +162,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// ASN.1 universal type.
         /// </summary>
         public abstract Asn1ObjectType Type { get; }
+        protected internal override Object TypeCode { get { return Type; }}
         }
     }

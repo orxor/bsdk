@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using BinaryStudio.IO;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -15,10 +16,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [Browsable(false)] public sealed override Int64 Size   { get { return UnderlyingObject.Size;   }}
         [Browsable(false)] public sealed override Int32 Count  { get { return UnderlyingObject.Count;  }}
         [Browsable(false)] public sealed override ReadOnlyMappingStream Content { get { return UnderlyingObject?.Content; }}
+        protected internal override Object TypeCode { get { return $"Complex{{{U.TypeCode}}}"; }}
 
         protected Asn1LinkObject(T o)
             {
             if (ReferenceEquals(o, null)) { throw new ArgumentNullException(nameof(o)); }
+            if (o.IsFailed) { throw new ArgumentException(nameof(o)); }
             U = o;
             }
 

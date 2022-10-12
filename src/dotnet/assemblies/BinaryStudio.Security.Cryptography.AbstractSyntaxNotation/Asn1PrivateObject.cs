@@ -1,4 +1,5 @@
 ﻿using System;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -9,6 +10,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// </summary>
         public override Asn1ObjectClass Class { get { return Asn1ObjectClass.Private; }}
         public SByte Type { get; }
+        protected internal override Object TypeCode { get { return Type; }}
 
         public Asn1PrivateObject(SByte type)
             {

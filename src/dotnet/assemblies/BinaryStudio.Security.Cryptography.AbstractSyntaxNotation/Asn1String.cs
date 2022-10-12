@@ -1,4 +1,7 @@
-﻿namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
+﻿using System;
+using System.Text;
+
+namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     /// <summary>
     /// Represents a string types:
@@ -95,5 +98,18 @@
     /// </summary>
     public abstract class Asn1String : Asn1UniversalObject
         {
+        public abstract Encoding Encoding { get; }
+        public String Value { get;protected set; }
+
+        protected override Boolean Decode()
+            {
+            if (IsDecoded) { return true; }
+            if (IsIndefiniteLength) { return base.Decode(); }
+            var r = new Byte[Length];
+            Content.Read(r, 0, r.Length);
+            Value = Encoding.GetString(r);
+            State |= ObjectState.Decoded;
+            return true;
+            }
         }
     }

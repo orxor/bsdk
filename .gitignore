@@ -38,6 +38,8 @@
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/obj
+/src/dotnet/tests/UnitTests.BinaryStudio.Task/bin
+/src/dotnet/tests/UnitTests.BinaryStudio.Task/obj
 /src/dotnet/samples/XYViewportSample/bin
 /src/dotnet/samples/XYViewportSample/obj
 /src/dotnet/samples/DllResources/bin

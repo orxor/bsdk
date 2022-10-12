@@ -1,4 +1,6 @@
-﻿namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
+﻿using System.Text;
+
+namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     /// <summary>
     /// Represents a <see langword="GENERALSTRING"/> type.
@@ -9,5 +11,6 @@
         /// ASN.1 universal type. Always returns <see cref="Asn1ObjectType.GeneralString"/>.
         /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.GeneralString; }}
+        public override Encoding Encoding { get { return Encoding.ASCII; }}
         }
     }

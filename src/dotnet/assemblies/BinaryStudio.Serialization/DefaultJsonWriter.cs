@@ -86,6 +86,12 @@ namespace BinaryStudio.Serialization
                 }
             }
 
+        public void WritePropertyName(String name) {
+            if (name == null) { throw new ArgumentNullException(nameof(name)); }
+            if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
+            Writer.WritePropertyName(name);
+            }
+
         #region M:WriteValue(Object):Boolean
         private Boolean WriteValue(Object value) {
             if (value == null) { return false; }
