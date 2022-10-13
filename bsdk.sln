@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.DirectoryServi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Security.Cryptography.PlatformUI", "src\dotnet\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj", "{3FE0D8D2-AF2E-4510-B81E-230D325147F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Security.Cryptography.CryptographicMessageSyntax", "src\dotnet\assemblies\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj", "{4C6B0688-F528-41FA-A137-AF5AD15AEFEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,10 @@ Global
 		{3FE0D8D2-AF2E-4510-B81E-230D325147F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FE0D8D2-AF2E-4510-B81E-230D325147F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FE0D8D2-AF2E-4510-B81E-230D325147F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C6B0688-F528-41FA-A137-AF5AD15AEFEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6B0688-F528-41FA-A137-AF5AD15AEFEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C6B0688-F528-41FA-A137-AF5AD15AEFEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C6B0688-F528-41FA-A137-AF5AD15AEFEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,4 +10,17 @@
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\OID.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OID.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\OID.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>OID.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

@@ -38,10 +38,12 @@
 /src/dotnet/assemblies/BinaryStudio.DirectoryServices/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/bin
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/obj
-/src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/bin
-/src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/obj
+/src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/bin
+/src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Task/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.Task/obj
 /src/dotnet/samples/XYViewportSample/bin

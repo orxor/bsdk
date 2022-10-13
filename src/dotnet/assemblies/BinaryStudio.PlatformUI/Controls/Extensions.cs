@@ -28,6 +28,13 @@ namespace BinaryStudio.PlatformUI.Controls
             return Descendants<T>(source).FirstOrDefault();
             }
         #endregion
+        #region M:FindAncestor<T>({this}DependencyObject):T
+        public static T FindAncestor<T>(this DependencyObject source)
+            where T : class
+            {
+            return Ancestors<T>(source,GetVisualOrLogicalParent).FirstOrDefault();
+            }
+        #endregion
         #region M:Descendants<T>({this}DependencyObject):IEnumerable<T>
         public static IEnumerable<T> Descendants<T>(this DependencyObject source)
             where T : class
@@ -65,11 +72,11 @@ namespace BinaryStudio.PlatformUI.Controls
                 }
             }
         #endregion
-        #region M:FindAncestor<T>({this}DependencyObject):T
-        public static T FindAncestor<T>(this DependencyObject source)
-            where T : class
+        #region M:Ancestors<T>({this}DependencyObject):IEnumerable<T>
+        public static IEnumerable<T> Ancestors<T>(this DependencyObject source)
+            where T: class
             {
-            return Ancestors<T>(source,GetVisualOrLogicalParent).FirstOrDefault();
+            return Ancestors<T>(source,GetVisualOrLogicalParent);
             }
         #endregion
 
