@@ -16,6 +16,7 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Controls/TabControl.xaml"/>
+        <ResourceDictionary Source="Controls/Asn1Control.xaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Window.Resources>
@@ -48,6 +49,9 @@
             </DataGridTemplateColumn>
           </DataGrid.Columns>
         </DataGrid>
+      </TabItem>
+      <TabItem Header="ASN.1" Name="TabItemAsn1">
+        <ContentControl Template="{StaticResource Asn1Control}"/>
       </TabItem>
     </TabControl>
   </Grid>

@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
-
-[assembly: System.Windows.ThemeInfo(System.Windows.ResourceDictionaryLocation.None, System.Windows.ResourceDictionaryLocation.SourceAssembly)]
+using System.Windows;
+using System.Windows.Markup;
 
 // In SDK-style projects such as this one, several assembly attributes that were historically
 // defined in this file are now automatically added during build and populated with
@@ -17,3 +17,6 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM.
 
 [assembly: Guid("f6c35db9-44f6-4670-bd5e-07be5bb42bcf")]
+[assembly: ThemeInfo(ResourceDictionaryLocation.SourceAssembly, ResourceDictionaryLocation.SourceAssembly)]
+[assembly: XmlnsPrefix("http://schemas.helix.global", "u")]
+[assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.Security.Cryptography.Controls")]

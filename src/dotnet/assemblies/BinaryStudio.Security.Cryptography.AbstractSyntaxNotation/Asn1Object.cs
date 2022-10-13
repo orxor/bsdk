@@ -416,6 +416,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             Dispose(false);
             }
         #endregion
+        #region M:ToString:String
+        /**
+         * <summary>Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</summary>
+         * <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</returns>
+         */
+        public override String ToString()
+            {
+            return Count > 0
+                ? $"Count = {Count}"
+                : $"Size  = {Length}";
+            }
+        #endregion
 
         #region M:IEnumerable<Asn1Object>.GetEnumerator:IEnumerator<Asn1Object>
         /**
