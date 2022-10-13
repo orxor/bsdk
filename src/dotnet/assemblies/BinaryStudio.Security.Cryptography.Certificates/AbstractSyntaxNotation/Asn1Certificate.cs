@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
 
@@ -70,6 +71,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
         {
         public Int32 Version { get; }
         public String SerialNumber { get; }
+        public String Country { get; }
         public DateTime NotBefore { get; }
         public DateTime NotAfter  { get; }
         public String Thumbprint { get {
@@ -83,6 +85,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
                 }
             return thumbprint;
             }}
+        public X509RelativeDistinguishedNameSequence Issuer  { get; }
+        public X509RelativeDistinguishedNameSequence Subject { get; }
 
         public Asn1Certificate(Asn1Object o)
             : base(o)
@@ -103,6 +107,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
                         Version = 1;
                         }
                     SerialNumber = String.Join(String.Empty,((Asn1Integer)u[0][j]).Value.ToByteArray().Reverse().Select(i => i.ToString("x2")));
+                    Issuer  = X509RelativeDistinguishedNameSequence.Build(u[0][j + 2]);
+                    Subject = X509RelativeDistinguishedNameSequence.Build(u[0][j + 4]);
                     #region Validity
                     if (u[0][j + 3] is Asn1Sequence)
                         {
@@ -115,10 +121,37 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
                         return;
                         }
                     #endregion
-
+                    Country = GetCountry(Subject) ?? GetCountry(Issuer);
                     State &= ~ObjectState.Failed;
                     }
                 }
+            }
+
+        #region M:WriteTo(IJsonWriter)
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Version),Version);
+                writer.WriteValueIfNotNull(nameof(Country),Country);
+                writer.WriteValue(nameof(NotBefore),NotBefore);
+                writer.WriteValue(nameof(NotAfter),NotAfter);
+                writer.WriteValue(nameof(SerialNumber),SerialNumber);
+                writer.WriteValue(nameof(Subject),Subject);
+                writer.WriteValue(nameof(Issuer),Issuer);
+                writer.WriteValue(nameof(Thumbprint),Thumbprint);
+                }
+            }
+        #endregion
+        private static String GetCountry(X509RelativeDistinguishedNameSequence source) {
+            var o = source.TryGetValue("2.5.4.6", out var r)
+                ? r.ToString().ToLower()
+                : null;
+            if (o != null) {
+                if (o.Length == 3) {
+                    o = IcaoCountry.ThreeLetterCountries[o];
+                    }
+                }
+            return o;
             }
 
         private String thumbprint;

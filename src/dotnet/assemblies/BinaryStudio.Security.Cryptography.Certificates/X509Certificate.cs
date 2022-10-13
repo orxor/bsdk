@@ -20,8 +20,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public override IntPtr Handle { get { return Context; }}
         public Int32 Version       { get { return Source.Version;      }}
         public String SerialNumber { get { return Source.SerialNumber; }}
+        public String Thumbprint   { get { return Source.Thumbprint;   }}
         public DateTime NotBefore  { get { return Source.NotBefore;    }}
         public DateTime NotAfter   { get { return Source.NotAfter;     }}
+        public String Issuer       { get { return Source.Issuer.ToString();  }}
+        public String Subject      { get { return Source.Subject.ToString(); }}
 
         public X509Certificate(IntPtr context) {
             if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
@@ -84,6 +87,9 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 writer.WriteValue(nameof(NotBefore),NotBefore);
                 writer.WriteValue(nameof(NotAfter),NotAfter);
                 writer.WriteValue(nameof(SerialNumber),SerialNumber);
+                writer.WriteValue(nameof(Subject),Subject);
+                writer.WriteValue(nameof(Issuer),Issuer);
+                writer.WriteValue(nameof(Thumbprint),Thumbprint);
                 writer.WriteValue(nameof(Source),Source);
                 }
             }

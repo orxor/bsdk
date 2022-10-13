@@ -54,6 +54,12 @@ namespace BinaryStudio.Serialization
             }
         #endregion
 
+        public Formatting Formatting
+            {
+            get { return Writer.Formatting; }
+            set { Writer.Formatting = value; }
+            }
+
         public IDisposable ScopeObject()
             {
             return new ObjectScopeObject(Writer);

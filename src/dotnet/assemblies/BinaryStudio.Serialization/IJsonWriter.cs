@@ -1,9 +1,11 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.Serialization
     {
     public interface IJsonWriter
         {
+        Formatting Formatting { get;set; }
         IDisposable ScopeObject();
         IDisposable ArrayObject();
         void WriteValue(String name, Object value);

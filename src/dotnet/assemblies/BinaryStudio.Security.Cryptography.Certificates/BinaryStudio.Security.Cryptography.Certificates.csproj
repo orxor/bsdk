@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
+    <ProjectReference Include="..\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />

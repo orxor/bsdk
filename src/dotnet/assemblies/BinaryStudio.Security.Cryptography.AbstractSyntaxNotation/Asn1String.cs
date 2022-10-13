@@ -102,6 +102,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public abstract Encoding Encoding { get; }
         public String Value { get;protected set; }
 
+        #region M:ToString:String
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        /// <filterpriority>2</filterpriority>
+        public override String ToString()
+            {
+            return Value;
+            }
+        #endregion
+        #region M:Decode:Boolean
         protected override Boolean Decode()
             {
             if (IsDecoded) { return true; }
@@ -112,7 +122,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             State |= ObjectState.Decoded;
             return true;
             }
-
+        #endregion
         #region M:WriteTo(IJsonWriter)
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }

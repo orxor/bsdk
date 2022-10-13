@@ -34,6 +34,10 @@
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.AbstractSyntaxNotation/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Certificates/bin
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.Certificates/obj
+/src/dotnet/assemblies/BinaryStudio.DirectoryServices/bin
+/src/dotnet/assemblies/BinaryStudio.DirectoryServices/obj
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/bin
+/src/dotnet/assemblies/BinaryStudio.Security.Cryptography.PlatformUI/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/bin
