@@ -13,15 +13,19 @@ namespace BinaryStudio.PlatformUI
         public static Object DataGridColumnHeaderStyleKey           { get { return FieldDataGridColumnHeaderStyleKey           = FieldDataGridColumnHeaderStyleKey           ?? new ThemeResourceKey(ControlStyleCategory,nameof(DataGridColumnHeaderStyleKey));           }}
         public static Object DataGridColumnHeadersPresenterStyleKey { get { return FieldDataGridColumnHeadersPresenterStyleKey = FieldDataGridColumnHeadersPresenterStyleKey ?? new ThemeResourceKey(ControlStyleCategory,nameof(DataGridColumnHeadersPresenterStyleKey)); }}
         public static Object DataGridStyleKey                       { get { return FieldDataGridStyleKey                       = FieldDataGridStyleKey                       ?? new ThemeResourceKey(ControlStyleCategory,nameof(DataGridStyleKey));                       }}
+        public static Object MenuStyleKey                           { get { return CreateInstance(ref FieldMenuStyleKey,ControlStyleCategory,nameof(MenuStyleKey)); }}
+        public static Object ContextMenuStyleKey                    { get { return CreateInstance(ref FieldContextMenuStyleKey,ControlStyleCategory,nameof(ContextMenuStyleKey)); }}
 
-        private static ThemeResourceKey FieldTabControlStyleKey;
-        private static ThemeResourceKey FieldTabItemStyleKey;
-        private static ThemeResourceKey FieldDataGridCellStyleKey;
-        private static ThemeResourceKey FieldDataGridRowHeaderStyleKey;
-        private static ThemeResourceKey FieldDataGridCellsPresenterStyleKey;
-        private static ThemeResourceKey FieldDataGridRowStyleKey;
-        private static ThemeResourceKey FieldDataGridColumnHeaderStyleKey;
-        private static ThemeResourceKey FieldDataGridColumnHeadersPresenterStyleKey;
-        private static ThemeResourceKey FieldDataGridStyleKey;
+        private static Object FieldTabControlStyleKey;
+        private static Object FieldTabItemStyleKey;
+        private static Object FieldDataGridCellStyleKey;
+        private static Object FieldDataGridRowHeaderStyleKey;
+        private static Object FieldDataGridCellsPresenterStyleKey;
+        private static Object FieldDataGridRowStyleKey;
+        private static Object FieldDataGridColumnHeaderStyleKey;
+        private static Object FieldDataGridColumnHeadersPresenterStyleKey;
+        private static Object FieldDataGridStyleKey;
+        private static Object FieldMenuStyleKey;
+        private static Object FieldContextMenuStyleKey;
         }
     }

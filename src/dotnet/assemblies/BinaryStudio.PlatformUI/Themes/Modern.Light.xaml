@@ -3,6 +3,7 @@
                     xmlns:u="clr-namespace:BinaryStudio.PlatformUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/Menu.xaml"/>
   </ResourceDictionary.MergedDictionaries>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushResourceKey}"                       Color="#ffcccedb"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushResourceKey}"                      Color="#fff5f5f5"/>
@@ -48,4 +49,5 @@
   <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
   <Style x:Key="{x:Type TabItem}"    TargetType="{x:Type TabItem}"    BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
   <Style x:Key="{x:Type DataGrid}"   TargetType="{x:Type DataGrid}"   BasedOn="{StaticResource {x:Static u:Theme.DataGridStyleKey}}"/>
+  <Style x:Key="{x:Type Menu}"       TargetType="{x:Type Menu}"       BasedOn="{StaticResource {x:Static u:Theme.MenuStyleKey}}"/>
 </ResourceDictionary>

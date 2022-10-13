@@ -6,6 +6,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="GrayscaleEffect.ps" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
     <PackageReference Include="AvalonEdit" Version="6.1.3.50" />
   </ItemGroup>
@@ -24,5 +27,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="GrayscaleEffect.ps" />
   </ItemGroup>
 </Project>
