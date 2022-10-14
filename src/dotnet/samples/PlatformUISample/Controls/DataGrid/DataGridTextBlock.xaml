@@ -1,23 +1,38 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="pack://application:,,,/Data/TreeDataProvider.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/Data/GridDataProvider.xaml"/>
   </ResourceDictionary.MergedDictionaries>
-  <ControlTemplate x:Key="TreeView">
-    <GroupBox Margin="5" Header="TreeView">
+  <ControlTemplate x:Key="DataGridTextBlock">
+    <GroupBox Margin="5" Header="DataGrid{TextBlock}">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto"/>
           <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TreeView Name="Target" Grid.Column="1" Margin="20" ItemsSource="{Binding Source={StaticResource TreeDataProvider},XPath=*}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
-          <TreeView.ItemTemplate>
-            <HierarchicalDataTemplate ItemsSource="{Binding XPath=*}">
-              <TextBlock Text="{Binding XPath=@Name}"/>
-            </HierarchicalDataTemplate>
-          </TreeView.ItemTemplate>
-        </TreeView>
+        <DataGrid Name="Target" Grid.Column="1" Margin="20" ItemsSource="{Binding Source={StaticResource GridDataProvider},XPath=*}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                  AutoGenerateColumns="False" >
+          <DataGrid.Columns>
+            <DataGridTextColumn Header="ProductID" Binding="{Binding XPath=@ProductID}"/>
+            <DataGridTextColumn Header="Name" Binding="{Binding XPath=@Name}"/>
+            <DataGridTextColumn Header="ProductNumber" Binding="{Binding XPath=@ProductNumber}"/>
+            <DataGridTextColumn Header="Color" Binding="{Binding XPath=@Color}"/>
+            <DataGridTextColumn Header="SafetyStockLevel" Binding="{Binding XPath=@SafetyStockLevel}"/>
+            <DataGridTextColumn Header="ReorderPoint" Binding="{Binding XPath=@ReorderPoint}"/>
+            <DataGridTextColumn Header="StandardCost" Binding="{Binding XPath=@StandardCost}"/>
+            <DataGridTextColumn Header="ListPrice" Binding="{Binding XPath=@ListPrice}"/>
+            <DataGridTextColumn Header="Size" Binding="{Binding XPath=@Size}"/>
+            <DataGridTextColumn Header="SizeUnitMeasureCode" Binding="{Binding XPath=@SizeUnitMeasureCode}"/>
+            <DataGridTextColumn Header="WeightUnitMeasureCode" Binding="{Binding XPath=@WeightUnitMeasureCode}"/>
+            <DataGridTextColumn Header="Weight" Binding="{Binding XPath=@Weight}"/>
+            <DataGridTextColumn Header="ProductLine" Binding="{Binding XPath=@ProductLine}"/>
+            <DataGridTextColumn Header="Class" Binding="{Binding XPath=@Class}"/>
+            <DataGridTextColumn Header="Style" Binding="{Binding XPath=@Header}"/>
+            <DataGridTextColumn Header="ProductSubcategory" Binding="{Binding XPath=@ProductSubcategory}"/>
+            <DataGridTextColumn Header="ProductModel" Binding="{Binding XPath=@ProductModel}"/>
+          </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top" Margin="10">
           <Grid>
             <Grid.ColumnDefinitions>
@@ -33,14 +48,14 @@
               <RowDefinition/>
             </Grid.RowDefinitions>
             <CheckBox  Grid.Row="0" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsEnabled,Mode=TwoWay}">IsEnabled</CheckBox>
-            <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">ScrollViewer.VerticalScrollBarVisibility:</TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">(ScrollViewer.VerticalScrollBarVisibility):</TextBlock>
             <ComboBox  Grid.Row="1" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=(ScrollViewer.VerticalScrollBarVisibility),Mode=TwoWay}" VerticalAlignment="Center">
               <ScrollBarVisibility>Auto</ScrollBarVisibility>
               <ScrollBarVisibility>Disabled</ScrollBarVisibility>
               <ScrollBarVisibility>Hidden</ScrollBarVisibility>
               <ScrollBarVisibility>Visible</ScrollBarVisibility>
             </ComboBox>
-            <TextBlock Grid.Row="2" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">ScrollViewer.HorizontalScrollBarVisibility:</TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">(ScrollViewer.HorizontalScrollBarVisibility):</TextBlock>
             <ComboBox  Grid.Row="2" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=(ScrollViewer.HorizontalScrollBarVisibility),Mode=TwoWay}" VerticalAlignment="Center">
               <ScrollBarVisibility>Auto</ScrollBarVisibility>
               <ScrollBarVisibility>Disabled</ScrollBarVisibility>
