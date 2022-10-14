@@ -12,7 +12,7 @@
         </Grid.ColumnDefinitions>
         <DataGrid Name="Target" Grid.Column="1" Margin="20" ItemsSource="{Binding Source={StaticResource GridDataProvider},XPath=*}"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                  AutoGenerateColumns="False" >
+                  AutoGenerateColumns="False">
           <DataGrid.Columns>
             <DataGridTextColumn Header="ProductID" Binding="{Binding XPath=@ProductID}"/>
             <DataGridTextColumn Header="Name" Binding="{Binding XPath=@Name}"/>
@@ -46,25 +46,33 @@
               <RowDefinition/>
               <RowDefinition/>
               <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
             </Grid.RowDefinitions>
             <CheckBox  Grid.Row="0" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsEnabled,Mode=TwoWay}">IsEnabled</CheckBox>
-            <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">(ScrollViewer.VerticalScrollBarVisibility):</TextBlock>
-            <ComboBox  Grid.Row="1" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=(ScrollViewer.VerticalScrollBarVisibility),Mode=TwoWay}" VerticalAlignment="Center">
+            <CheckBox  Grid.Row="1" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=CanUserResizeColumns,Mode=TwoWay}">CanUserResizeColumns</CheckBox>
+            <CheckBox  Grid.Row="2" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=CanUserResizeRows,Mode=TwoWay}">CanUserResizeRows</CheckBox>
+            <CheckBox  Grid.Row="3" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=CanUserReorderColumns,Mode=TwoWay}">CanUserReorderColumns</CheckBox>
+            <CheckBox  Grid.Row="4" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=CanUserSortColumns,Mode=TwoWay}">CanUserSortColumns</CheckBox>
+            <TextBlock Grid.Row="5" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">(ScrollViewer.VerticalScrollBarVisibility):</TextBlock>
+            <ComboBox  Grid.Row="5" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=(ScrollViewer.VerticalScrollBarVisibility),Mode=TwoWay}" VerticalAlignment="Center">
               <ScrollBarVisibility>Auto</ScrollBarVisibility>
               <ScrollBarVisibility>Disabled</ScrollBarVisibility>
               <ScrollBarVisibility>Hidden</ScrollBarVisibility>
               <ScrollBarVisibility>Visible</ScrollBarVisibility>
             </ComboBox>
-            <TextBlock Grid.Row="2" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">(ScrollViewer.HorizontalScrollBarVisibility):</TextBlock>
-            <ComboBox  Grid.Row="2" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=(ScrollViewer.HorizontalScrollBarVisibility),Mode=TwoWay}" VerticalAlignment="Center">
+            <TextBlock Grid.Row="6" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">(ScrollViewer.HorizontalScrollBarVisibility):</TextBlock>
+            <ComboBox  Grid.Row="6" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=(ScrollViewer.HorizontalScrollBarVisibility),Mode=TwoWay}" VerticalAlignment="Center">
               <ScrollBarVisibility>Auto</ScrollBarVisibility>
               <ScrollBarVisibility>Disabled</ScrollBarVisibility>
               <ScrollBarVisibility>Hidden</ScrollBarVisibility>
               <ScrollBarVisibility>Visible</ScrollBarVisibility>
             </ComboBox>
-            <CheckBox  Grid.Row="3" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsFocused,Mode=OneWay}" IsEnabled="False">IsFocused</CheckBox>
-            <CheckBox  Grid.Row="4" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocused,Mode=OneWay}" IsEnabled="False">IsKeyboardFocused</CheckBox>
-            <CheckBox  Grid.Row="5" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocusWithin,Mode=OneWay}" IsEnabled="False">IsKeyboardFocusWithin</CheckBox>
+            <CheckBox  Grid.Row="7" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsFocused,Mode=OneWay}" IsEnabled="False">IsFocused</CheckBox>
+            <CheckBox  Grid.Row="8" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocused,Mode=OneWay}" IsEnabled="False">IsKeyboardFocused</CheckBox>
+            <CheckBox  Grid.Row="9" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocusWithin,Mode=OneWay}" IsEnabled="False">IsKeyboardFocusWithin</CheckBox>
           </Grid>
         </StackPanel>
       </Grid>
