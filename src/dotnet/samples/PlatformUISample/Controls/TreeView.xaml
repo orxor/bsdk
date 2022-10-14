@@ -1,0 +1,443 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ControlTemplate x:Key="TreeView">
+    <ControlTemplate.Resources>
+      <XmlDataProvider x:Key="DataProvider" XPath="*">
+        <x:XData>
+          <DataItem>
+            <Product Name="Accessories">
+              <Product Name="Bike Racks">
+                <Product Name="Hitch Rack - 4-Bike" />
+              </Product>
+              <Product Name="Bike Stands">
+                <Product Name="All-Purpose Bike Stand" />
+              </Product>
+              <Product Name="Bottles and Cages">
+                <Product Name="Water Bottle - 30 oz." />
+                <Product Name="Mountain Bottle Cage" />
+                <Product Name="Road Bottle Cage" />
+              </Product>
+              <Product Name="Cleaners">
+                <Product Name="Bike Wash - Dissolver" />
+              </Product>
+              <Product Name="Fenders">
+                <Product Name="Fender Set - Mountain" />
+              </Product>
+              <Product Name="Helmets">
+                <Product Name="Sport-100 Helmet, Red" />
+                <Product Name="Sport-100 Helmet, Black" />
+                <Product Name="Sport-100 Helmet, Blue" />
+              </Product>
+              <Product Name="Hydration Packs">
+                <Product Name="Hydration Pack - 70 oz." />
+              </Product>
+              <Product Name="Lights">
+                <Product Name="Taillights - Battery-Powered" />
+                <Product Name="Headlights - Dual-Beam" />
+                <Product Name="Headlights - Weatherproof" />
+              </Product>
+              <Product Name="Locks">
+                <Product Name="Cable Lock" />
+              </Product>
+              <Product Name="Panniers">
+                <Product Name="Touring-Panniers, Large" />
+              </Product>
+              <Product Name="Pumps">
+                <Product Name="Minipump" />
+                <Product Name="Mountain Pump" />
+              </Product>
+              <Product Name="Tires and Tubes">
+                <Product Name="Patch Kit/8 Patches" />
+                <Product Name="Mountain Tire Tube" />
+                <Product Name="Road Tire Tube" />
+                <Product Name="Touring Tire Tube" />
+                <Product Name="LL Mountain Tire" />
+                <Product Name="ML Mountain Tire" />
+                <Product Name="HL Mountain Tire" />
+                <Product Name="LL Road Tire" />
+                <Product Name="ML Road Tire" />
+                <Product Name="HL Road Tire" />
+                <Product Name="Touring Tire" />
+              </Product>
+            </Product>
+            <Product Name="Bikes">
+              <Product Name="Mountain Bikes">
+                <Product Name="Mountain-100 Silver, 38" />
+                <Product Name="Mountain-100 Silver, 42" />
+                <Product Name="Mountain-100 Silver, 44" />
+                <Product Name="Mountain-100 Silver, 48" />
+                <Product Name="Mountain-100 Black, 38" />
+                <Product Name="Mountain-100 Black, 42" />
+                <Product Name="Mountain-100 Black, 44" />
+                <Product Name="Mountain-100 Black, 48" />
+                <Product Name="Mountain-200 Silver, 38" />
+                <Product Name="Mountain-200 Silver, 42" />
+                <Product Name="Mountain-200 Silver, 46" />
+                <Product Name="Mountain-200 Black, 38" />
+                <Product Name="Mountain-200 Black, 42" />
+                <Product Name="Mountain-200 Black, 46" />
+                <Product Name="Mountain-300 Black, 38" />
+                <Product Name="Mountain-300 Black, 40" />
+                <Product Name="Mountain-300 Black, 44" />
+                <Product Name="Mountain-300 Black, 48" />
+                <Product Name="Mountain-400-W Silver, 38" />
+                <Product Name="Mountain-400-W Silver, 40" />
+                <Product Name="Mountain-400-W Silver, 42" />
+                <Product Name="Mountain-400-W Silver, 46" />
+                <Product Name="Mountain-500 Silver, 40" />
+                <Product Name="Mountain-500 Silver, 42" />
+                <Product Name="Mountain-500 Silver, 44" />
+                <Product Name="Mountain-500 Silver, 48" />
+                <Product Name="Mountain-500 Silver, 52" />
+                <Product Name="Mountain-500 Black, 40" />
+                <Product Name="Mountain-500 Black, 42" />
+                <Product Name="Mountain-500 Black, 44" />
+                <Product Name="Mountain-500 Black, 48" />
+                <Product Name="Mountain-500 Black, 52" />
+              </Product>
+              <Product Name="Road Bikes">
+                <Product Name="Road-150 Red, 62" />
+                <Product Name="Road-150 Red, 44" />
+                <Product Name="Road-150 Red, 48" />
+                <Product Name="Road-150 Red, 52" />
+                <Product Name="Road-150 Red, 56" />
+                <Product Name="Road-450 Red, 58" />
+                <Product Name="Road-450 Red, 60" />
+                <Product Name="Road-450 Red, 44" />
+                <Product Name="Road-450 Red, 48" />
+                <Product Name="Road-450 Red, 52" />
+                <Product Name="Road-650 Red, 58" />
+                <Product Name="Road-650 Red, 60" />
+                <Product Name="Road-650 Red, 62" />
+                <Product Name="Road-650 Red, 44" />
+                <Product Name="Road-650 Red, 48" />
+                <Product Name="Road-650 Red, 52" />
+                <Product Name="Road-650 Black, 58" />
+                <Product Name="Road-650 Black, 60" />
+                <Product Name="Road-650 Black, 62" />
+                <Product Name="Road-650 Black, 44" />
+                <Product Name="Road-650 Black, 48" />
+                <Product Name="Road-650 Black, 52" />
+                <Product Name="Road-250 Red, 44" />
+                <Product Name="Road-250 Red, 48" />
+                <Product Name="Road-250 Red, 52" />
+                <Product Name="Road-250 Red, 58" />
+                <Product Name="Road-250 Black, 44" />
+                <Product Name="Road-250 Black, 48" />
+                <Product Name="Road-250 Black, 52" />
+                <Product Name="Road-250 Black, 58" />
+                <Product Name="Road-550-W Yellow, 38" />
+                <Product Name="Road-550-W Yellow, 40" />
+                <Product Name="Road-550-W Yellow, 42" />
+                <Product Name="Road-550-W Yellow, 44" />
+                <Product Name="Road-550-W Yellow, 48" />
+                <Product Name="Road-350-W Yellow, 40" />
+                <Product Name="Road-350-W Yellow, 42" />
+                <Product Name="Road-350-W Yellow, 44" />
+                <Product Name="Road-350-W Yellow, 48" />
+                <Product Name="Road-750 Black, 58" />
+                <Product Name="Road-750 Black, 44" />
+                <Product Name="Road-750 Black, 48" />
+                <Product Name="Road-750 Black, 52" />
+              </Product>
+              <Product Name="Touring Bikes">
+                <Product Name="Touring-2000 Blue, 60" />
+                <Product Name="Touring-1000 Yellow, 46" />
+                <Product Name="Touring-1000 Yellow, 50" />
+                <Product Name="Touring-1000 Yellow, 54" />
+                <Product Name="Touring-1000 Yellow, 60" />
+                <Product Name="Touring-3000 Blue, 54" />
+                <Product Name="Touring-3000 Blue, 58" />
+                <Product Name="Touring-3000 Blue, 62" />
+                <Product Name="Touring-3000 Yellow, 44" />
+                <Product Name="Touring-3000 Yellow, 50" />
+                <Product Name="Touring-3000 Yellow, 54" />
+                <Product Name="Touring-3000 Yellow, 58" />
+                <Product Name="Touring-3000 Yellow, 62" />
+                <Product Name="Touring-1000 Blue, 46" />
+                <Product Name="Touring-1000 Blue, 50" />
+                <Product Name="Touring-1000 Blue, 54" />
+                <Product Name="Touring-1000 Blue, 60" />
+                <Product Name="Touring-2000 Blue, 46" />
+                <Product Name="Touring-2000 Blue, 50" />
+                <Product Name="Touring-2000 Blue, 54" />
+                <Product Name="Touring-3000 Blue, 44" />
+                <Product Name="Touring-3000 Blue, 50" />
+              </Product>
+            </Product>
+            <Product Name="Clothing">
+              <Product Name="Bib-Shorts">
+                <Product Name="Men's Bib-Shorts, S" />
+                <Product Name="Men's Bib-Shorts, M" />
+                <Product Name="Men's Bib-Shorts, L" />
+              </Product>
+              <Product Name="Caps">
+                <Product Name="AWC Logo Cap" />
+              </Product>
+              <Product Name="Gloves">
+                <Product Name="Half-Finger Gloves, S" />
+                <Product Name="Half-Finger Gloves, M" />
+                <Product Name="Half-Finger Gloves, L" />
+                <Product Name="Full-Finger Gloves, S" />
+                <Product Name="Full-Finger Gloves, M" />
+                <Product Name="Full-Finger Gloves, L" />
+              </Product>
+              <Product Name="Jerseys">
+                <Product Name="Long-Sleeve Logo Jersey, S" />
+                <Product Name="Long-Sleeve Logo Jersey, M" />
+                <Product Name="Long-Sleeve Logo Jersey, L" />
+                <Product Name="Long-Sleeve Logo Jersey, XL" />
+                <Product Name="Short-Sleeve Classic Jersey, S" />
+                <Product Name="Short-Sleeve Classic Jersey, M" />
+                <Product Name="Short-Sleeve Classic Jersey, L" />
+                <Product Name="Short-Sleeve Classic Jersey, XL" />
+              </Product>
+              <Product Name="Shorts">
+                <Product Name="Men's Sports Shorts, S" />
+                <Product Name="Men's Sports Shorts, M" />
+                <Product Name="Men's Sports Shorts, L" />
+                <Product Name="Men's Sports Shorts, XL" />
+                <Product Name="Women's Mountain Shorts, S" />
+                <Product Name="Women's Mountain Shorts, M" />
+                <Product Name="Women's Mountain Shorts, L" />
+              </Product>
+              <Product Name="Socks">
+                <Product Name="Mountain Bike Socks, M" />
+                <Product Name="Mountain Bike Socks, L" />
+                <Product Name="Racing Socks, M" />
+                <Product Name="Racing Socks, L" />
+              </Product>
+              <Product Name="Tights">
+                <Product Name="Women's Tights, S" />
+                <Product Name="Women's Tights, M" />
+                <Product Name="Women's Tights, L" />
+              </Product>
+              <Product Name="Vests">
+                <Product Name="Classic Vest, S" />
+                <Product Name="Classic Vest, M" />
+                <Product Name="Classic Vest, L" />
+              </Product>
+            </Product>
+            <Product Name="Components">
+              <Product Name="Handlebars">
+                <Product Name="LL Mountain Handlebars" />
+                <Product Name="ML Mountain Handlebars" />
+                <Product Name="HL Mountain Handlebars" />
+                <Product Name="LL Road Handlebars" />
+                <Product Name="ML Road Handlebars" />
+                <Product Name="HL Road Handlebars" />
+                <Product Name="LL Touring Handlebars" />
+                <Product Name="HL Touring Handlebars" />
+              </Product>
+              <Product Name="Bottom Brackets">
+                <Product Name="LL Bottom Bracket" />
+                <Product Name="ML Bottom Bracket" />
+                <Product Name="HL Bottom Bracket" />
+              </Product>
+              <Product Name="Brakes">
+                <Product Name="Rear Brakes" />
+                <Product Name="Front Brakes" />
+              </Product>
+              <Product Name="Chains">
+                <Product Name="Chain" />
+              </Product>
+              <Product Name="Cranksets">
+                <Product Name="LL Crankset" />
+                <Product Name="ML Crankset" />
+                <Product Name="HL Crankset" />
+              </Product>
+              <Product Name="Derailleurs">
+                <Product Name="Rear Derailleur" />
+                <Product Name="Front Derailleur" />
+              </Product>
+              <Product Name="Forks">
+                <Product Name="LL Fork" />
+                <Product Name="ML Fork" />
+                <Product Name="HL Fork" />
+              </Product>
+              <Product Name="Headsets">
+                <Product Name="LL Headset" />
+                <Product Name="ML Headset" />
+                <Product Name="HL Headset" />
+              </Product>
+              <Product Name="Mountain Frames">
+                <Product Name="HL Mountain Frame - Silver, 42" />
+                <Product Name="HL Mountain Frame - Silver, 44" />
+                <Product Name="HL Mountain Frame - Silver, 48" />
+                <Product Name="HL Mountain Frame - Silver, 46" />
+                <Product Name="HL Mountain Frame - Black, 42" />
+                <Product Name="HL Mountain Frame - Black, 44" />
+                <Product Name="HL Mountain Frame - Black, 48" />
+                <Product Name="HL Mountain Frame - Black, 46" />
+                <Product Name="HL Mountain Frame - Black, 38" />
+                <Product Name="HL Mountain Frame - Silver, 38" />
+                <Product Name="ML Mountain Frame - Black, 38" />
+                <Product Name="ML Mountain Frame - Black, 40" />
+                <Product Name="ML Mountain Frame - Black, 44" />
+                <Product Name="ML Mountain Frame - Black, 48" />
+                <Product Name="ML Mountain Frame-W - Silver, 40" />
+                <Product Name="ML Mountain Frame-W - Silver, 42" />
+                <Product Name="ML Mountain Frame-W - Silver, 46" />
+                <Product Name="LL Mountain Frame - Silver, 42" />
+                <Product Name="LL Mountain Frame - Silver, 44" />
+                <Product Name="LL Mountain Frame - Silver, 48" />
+                <Product Name="LL Mountain Frame - Silver, 52" />
+                <Product Name="LL Mountain Frame - Black, 42" />
+                <Product Name="LL Mountain Frame - Black, 44" />
+                <Product Name="LL Mountain Frame - Black, 48" />
+                <Product Name="LL Mountain Frame - Black, 52" />
+                <Product Name="ML Mountain Frame-W - Silver, 38" />
+                <Product Name="LL Mountain Frame - Black, 40" />
+                <Product Name="LL Mountain Frame - Silver, 40" />
+              </Product>
+              <Product Name="Pedals">
+                <Product Name="LL Mountain Pedal" />
+                <Product Name="ML Mountain Pedal" />
+                <Product Name="HL Mountain Pedal" />
+                <Product Name="LL Road Pedal" />
+                <Product Name="ML Road Pedal" />
+                <Product Name="HL Road Pedal" />
+                <Product Name="Touring Pedal" />
+              </Product>
+              <Product Name="Road Frames">
+                <Product Name="HL Road Frame - Black, 58" />
+                <Product Name="HL Road Frame - Red, 58" />
+                <Product Name="HL Road Frame - Red, 62" />
+                <Product Name="HL Road Frame - Red, 44" />
+                <Product Name="HL Road Frame - Red, 48" />
+                <Product Name="HL Road Frame - Red, 52" />
+                <Product Name="HL Road Frame - Red, 56" />
+                <Product Name="LL Road Frame - Black, 58" />
+                <Product Name="LL Road Frame - Black, 60" />
+                <Product Name="LL Road Frame - Black, 62" />
+                <Product Name="LL Road Frame - Red, 44" />
+                <Product Name="LL Road Frame - Red, 48" />
+                <Product Name="LL Road Frame - Red, 52" />
+                <Product Name="LL Road Frame - Red, 58" />
+                <Product Name="LL Road Frame - Red, 60" />
+                <Product Name="LL Road Frame - Red, 62" />
+                <Product Name="ML Road Frame - Red, 44" />
+                <Product Name="ML Road Frame - Red, 48" />
+                <Product Name="ML Road Frame - Red, 52" />
+                <Product Name="ML Road Frame - Red, 58" />
+                <Product Name="ML Road Frame - Red, 60" />
+                <Product Name="LL Road Frame - Black, 44" />
+                <Product Name="LL Road Frame - Black, 48" />
+                <Product Name="LL Road Frame - Black, 52" />
+                <Product Name="ML Road Frame-W - Yellow, 38" />
+                <Product Name="ML Road Frame-W - Yellow, 40" />
+                <Product Name="ML Road Frame-W - Yellow, 42" />
+                <Product Name="ML Road Frame-W - Yellow, 44" />
+                <Product Name="ML Road Frame-W - Yellow, 48" />
+                <Product Name="HL Road Frame - Black, 62" />
+                <Product Name="HL Road Frame - Black, 44" />
+                <Product Name="HL Road Frame - Black, 48" />
+                <Product Name="HL Road Frame - Black, 52" />
+              </Product>
+              <Product Name="Saddles">
+                <Product Name="LL Mountain Seat/Saddle" />
+                <Product Name="ML Mountain Seat/Saddle" />
+                <Product Name="HL Mountain Seat/Saddle" />
+                <Product Name="LL Road Seat/Saddle" />
+                <Product Name="ML Road Seat/Saddle" />
+                <Product Name="HL Road Seat/Saddle" />
+                <Product Name="LL Touring Seat/Saddle" />
+                <Product Name="ML Touring Seat/Saddle" />
+                <Product Name="HL Touring Seat/Saddle" />
+              </Product>
+              <Product Name="Touring Frames">
+                <Product Name="HL Touring Frame - Yellow, 60" />
+                <Product Name="LL Touring Frame - Yellow, 62" />
+                <Product Name="HL Touring Frame - Yellow, 46" />
+                <Product Name="HL Touring Frame - Yellow, 50" />
+                <Product Name="HL Touring Frame - Yellow, 54" />
+                <Product Name="HL Touring Frame - Blue, 46" />
+                <Product Name="HL Touring Frame - Blue, 50" />
+                <Product Name="HL Touring Frame - Blue, 54" />
+                <Product Name="HL Touring Frame - Blue, 60" />
+                <Product Name="LL Touring Frame - Blue, 50" />
+                <Product Name="LL Touring Frame - Blue, 54" />
+                <Product Name="LL Touring Frame - Blue, 58" />
+                <Product Name="LL Touring Frame - Blue, 62" />
+                <Product Name="LL Touring Frame - Yellow, 44" />
+                <Product Name="LL Touring Frame - Yellow, 50" />
+                <Product Name="LL Touring Frame - Yellow, 54" />
+                <Product Name="LL Touring Frame - Yellow, 58" />
+                <Product Name="LL Touring Frame - Blue, 44" />
+              </Product>
+              <Product Name="Wheels">
+                <Product Name="LL Mountain Front Wheel" />
+                <Product Name="ML Mountain Front Wheel" />
+                <Product Name="HL Mountain Front Wheel" />
+                <Product Name="LL Road Front Wheel" />
+                <Product Name="ML Road Front Wheel" />
+                <Product Name="HL Road Front Wheel" />
+                <Product Name="Touring Front Wheel" />
+                <Product Name="LL Mountain Rear Wheel" />
+                <Product Name="ML Mountain Rear Wheel" />
+                <Product Name="HL Mountain Rear Wheel" />
+                <Product Name="LL Road Rear Wheel" />
+                <Product Name="ML Road Rear Wheel" />
+                <Product Name="HL Road Rear Wheel" />
+                <Product Name="Touring Rear Wheel" />
+              </Product>
+            </Product>
+          </DataItem>
+        </x:XData>
+      </XmlDataProvider>
+    </ControlTemplate.Resources>
+    <GroupBox Margin="5" Header="TreeView">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TreeView Name="Target" Grid.Column="1" Margin="20" ItemsSource="{Binding Source={StaticResource DataProvider},XPath=*}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto">
+          <TreeView.ItemTemplate>
+            <HierarchicalDataTemplate ItemsSource="{Binding XPath=*}">
+              <TextBlock Text="{Binding XPath=@Name}"/>
+            </HierarchicalDataTemplate>
+          </TreeView.ItemTemplate>
+        </TreeView>
+        <StackPanel Orientation="Vertical" Grid.Column="0" VerticalAlignment="Top" Margin="10">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+              <RowDefinition/>
+            </Grid.RowDefinitions>
+            <CheckBox  Grid.Row="0" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsEnabled,Mode=TwoWay}">IsEnabled</CheckBox>
+            <TextBlock Grid.Row="4" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">ScrollViewer.VerticalScrollBarVisibility:</TextBlock>
+            <ComboBox  Grid.Row="4" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=(ScrollViewer.VerticalScrollBarVisibility),Mode=TwoWay}" VerticalAlignment="Center">
+              <ScrollBarVisibility>Auto</ScrollBarVisibility>
+              <ScrollBarVisibility>Disabled</ScrollBarVisibility>
+              <ScrollBarVisibility>Hidden</ScrollBarVisibility>
+              <ScrollBarVisibility>Visible</ScrollBarVisibility>
+            </ComboBox>
+            <TextBlock Grid.Row="5" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">ScrollViewer.HorizontalScrollBarVisibility:</TextBlock>
+            <ComboBox  Grid.Row="5" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=(ScrollViewer.HorizontalScrollBarVisibility),Mode=TwoWay}" VerticalAlignment="Center">
+              <ScrollBarVisibility>Auto</ScrollBarVisibility>
+              <ScrollBarVisibility>Disabled</ScrollBarVisibility>
+              <ScrollBarVisibility>Hidden</ScrollBarVisibility>
+              <ScrollBarVisibility>Visible</ScrollBarVisibility>
+            </ComboBox>
+            <CheckBox  Grid.Row="6" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsFocused,Mode=OneWay}" IsEnabled="False">IsFocused</CheckBox>
+            <CheckBox  Grid.Row="7" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocused,Mode=OneWay}" IsEnabled="False">IsKeyboardFocused</CheckBox>
+            <CheckBox  Grid.Row="8" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocusWithin,Mode=OneWay}" IsEnabled="False">IsKeyboardFocusWithin</CheckBox>
+          </Grid>
+        </StackPanel>
+      </Grid>
+    </GroupBox>
+  </ControlTemplate>
+</ResourceDictionary>

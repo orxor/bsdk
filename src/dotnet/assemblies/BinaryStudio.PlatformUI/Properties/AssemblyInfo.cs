@@ -9,3 +9,4 @@ using System.Windows.Markup;
 [assembly: XmlnsPrefix("http://schemas.helix.global", "u")]
 [assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.PlatformUI")]
 [assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.PlatformUI.Controls.Primitives")]
+[assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.PlatformUI.Models")]

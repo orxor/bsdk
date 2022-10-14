@@ -14,5 +14,8 @@
     <Page Update="Themes\Controls\Primitives\XYViewport.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes\Modern\TextBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>

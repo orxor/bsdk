@@ -68,16 +68,16 @@
               <RowDefinition/>
             </Grid.RowDefinitions>
             <CheckBox  Grid.Row="0" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsEnabled,Mode=TwoWay}">IsEnabled</CheckBox>
-            <CheckBox  Grid.Row="1" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsFocused,Mode=OneWay}" IsEnabled="False">IsFocused</CheckBox>
-            <CheckBox  Grid.Row="2" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocused,Mode=OneWay}" IsEnabled="False">IsKeyboardFocused</CheckBox>
-            <CheckBox  Grid.Row="3" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocusWithin,Mode=OneWay}" IsEnabled="False">IsKeyboardFocusWithin</CheckBox>
-            <TextBlock Grid.Row="4" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">TabStripPlacement:</TextBlock>
-            <ComboBox  Grid.Row="4" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=TabStripPlacement,Mode=TwoWay}" VerticalAlignment="Center">
+            <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,0,5,0" VerticalAlignment="Center">TabStripPlacement:</TextBlock>
+            <ComboBox  Grid.Row="1" Grid.Column="1" SelectedItem="{Binding ElementName=Target,Path=TabStripPlacement,Mode=TwoWay}" VerticalAlignment="Center">
               <Dock>Left</Dock>
               <Dock>Top</Dock>
               <Dock>Right</Dock>
               <Dock>Bottom</Dock>
             </ComboBox>
+            <CheckBox  Grid.Row="2" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsFocused,Mode=OneWay}" IsEnabled="False">IsFocused</CheckBox>
+            <CheckBox  Grid.Row="3" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocused,Mode=OneWay}" IsEnabled="False">IsKeyboardFocused</CheckBox>
+            <CheckBox  Grid.Row="4" Grid.Column="1" IsChecked="{Binding ElementName=Target,Path=IsKeyboardFocusWithin,Mode=OneWay}" IsEnabled="False">IsKeyboardFocusWithin</CheckBox>
           </Grid>
         </StackPanel>
       </Grid>

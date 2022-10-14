@@ -8,4 +8,10 @@
     <ProjectReference Include="..\..\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
     <ProjectReference Include="..\..\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\ListBox\ListBoxTextBlock.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 </Project>
