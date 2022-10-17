@@ -4,10 +4,13 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/Menu.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/ScrollViewer.xaml"/>
   </ResourceDictionary.MergedDictionaries>
-  <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}" BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
-  <Style x:Key="{x:Type TabItem}"    TargetType="{x:Type TabItem}"    BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
-  <Style x:Key="{x:Type DataGrid}"   TargetType="{x:Type DataGrid}"   BasedOn="{StaticResource {x:Static u:Theme.DataGridStyleKey}}"/>
-  <Style x:Key="{x:Type Menu}"       TargetType="{x:Type Menu}"       BasedOn="{StaticResource {x:Static u:Theme.MenuStyleKey}}"/>
+  <Style x:Key="{x:Type TabControl}"   TargetType="{x:Type TabControl}"   BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
+  <Style x:Key="{x:Type TabItem}"      TargetType="{x:Type TabItem}"      BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
+  <Style x:Key="{x:Type DataGrid}"     TargetType="{x:Type DataGrid}"     BasedOn="{StaticResource {x:Static u:Theme.DataGridStyleKey}}"/>
+  <Style x:Key="{x:Type Menu}"         TargetType="{x:Type Menu}"         BasedOn="{StaticResource {x:Static u:Theme.MenuStyleKey}}"/>
+  <Style x:Key="{x:Type ScrollViewer}" TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Static u:Theme.ScrollViewerStyleKey}}"/>
+  <Style x:Key="{x:Type ListBox}"      TargetType="{x:Type ListBox}"      BasedOn="{StaticResource {x:Static u:Theme.ListBoxStyleKey}}"/>
+  <Style x:Key="{x:Type ListBoxItem}"  TargetType="{x:Type ListBoxItem}"  BasedOn="{StaticResource {x:Static u:Theme.ListBoxItemStyleKey}}"/>
 </ResourceDictionary>
-  

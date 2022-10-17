@@ -3,6 +3,7 @@
                     xmlns:u="http://schemas.helix.global">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="pack://application:,,,/Data/OneLevelDataProvider.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/BinaryStudio.PlatformUI;component/Themes/Modern/ListBox.xaml"/>
   </ResourceDictionary.MergedDictionaries>
   <ControlTemplate x:Key="ListBoxTextBlock">
     <GroupBox Margin="5" Header="ListBox{TextBlock}">
@@ -86,6 +87,20 @@
                  ItemTemplate="{Binding ElementName=Templates,Path=SelectedItem.(u:DataItem.Content),Mode=OneWay}"
                  VirtualizingStackPanel.IsVirtualizing="True"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+          <ListBox.Resources>
+            <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Static u:Theme.ListBoxItemStyleKey}}" x:Key="{x:Type ListBoxItem}">
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static u:Theme.ControlDarkBrushResourceKey}}"/>
+              <Setter Property="BorderThickness" Value="0,0,0,1"/>
+              <Setter Property="Margin" Value="0"/>
+              <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                  <Setter Property="BorderThickness" Value="0"/>
+                  <Setter Property="Margin" Value="0,-1,0,0"/>
+                  <Setter Property="Padding" Value="4,2,4,1"/>
+                </Trigger>
+              </Style.Triggers>
+            </Style>
+          </ListBox.Resources>
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <VirtualizingStackPanel Orientation="Vertical"

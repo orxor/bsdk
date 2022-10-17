@@ -10,7 +10,7 @@
         Background="{DynamicResource {x:Static u:Theme.WindowBrushResourceKey}}"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized"
         Loaded="MainWindow_OnLoaded">
   <Window.Resources>
     <ResourceDictionary>
@@ -22,6 +22,7 @@
         <ResourceDictionary Source="pack://application:,,,/Controls/TreeView.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/ListBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/DataGrid.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Controls/Effects.xaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Window.Resources>
@@ -38,11 +39,14 @@
       </MenuItem>
     </Menu>
     <TabControl Grid.Row="2">
-      <TabItem Header="DataGrid">
-        <ContentControl Template="{StaticResource DataGrid}"/>
+      <TabItem Header="Effects">
+        <ContentControl Template="{StaticResource Effects}"/>
       </TabItem>
       <TabItem Header="ListBox">
         <ContentControl Template="{StaticResource ListBox}"/>
+      </TabItem>
+      <TabItem Header="DataGrid">
+        <ContentControl Template="{StaticResource DataGrid}"/>
       </TabItem>
       <TabItem Header="TreeView">
         <ContentControl Template="{StaticResource TreeView}"/>

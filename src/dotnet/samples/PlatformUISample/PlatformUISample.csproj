@@ -5,8 +5,16 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Data\Colors1.jpg" />
+    <None Remove="Data\Colors2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
     <ProjectReference Include="..\..\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\Colors1.jpg" />
+    <Resource Include="Data\Colors2.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\DataGrid\DataGridTextBlock.xaml">

@@ -5,6 +5,12 @@
     <Page Update="Themes\Modern\DataGrid.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes\Modern\ListBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern\ScrollViewer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Themes\Modern\TabControl.xaml">
       <SubType>Designer</SubType>
     </Page>

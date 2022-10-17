@@ -15,6 +15,10 @@ namespace BinaryStudio.PlatformUI
         public static Object DataGridStyleKey                       { get { return FieldDataGridStyleKey                       = FieldDataGridStyleKey                       ?? new ThemeResourceKey(ControlStyleCategory,nameof(DataGridStyleKey));                       }}
         public static Object MenuStyleKey                           { get { return CreateInstance(ref FieldMenuStyleKey,ControlStyleCategory,nameof(MenuStyleKey)); }}
         public static Object ContextMenuStyleKey                    { get { return CreateInstance(ref FieldContextMenuStyleKey,ControlStyleCategory,nameof(ContextMenuStyleKey)); }}
+        public static Object ScrollViewerStyleKey                   { get { return CreateInstance(ref FieldScrollViewerStyleKey,ControlStyleCategory,nameof(ScrollViewerStyleKey)); }}
+        public static Object ScrollBarStyleKey                      { get { return CreateInstance(ref FieldScrollBarStyleKey,ControlStyleCategory,nameof(ScrollBarStyleKey)); }}
+        public static Object ListBoxStyleKey                        { get { return CreateInstance(ref FieldListBoxStyleKey,ControlStyleCategory,nameof(ListBoxStyleKey)); }}
+        public static Object ListBoxItemStyleKey                    { get { return CreateInstance(ref FieldListBoxItemStyleKey,ControlStyleCategory,nameof(ListBoxItemStyleKey)); }}
 
         private static Object FieldTabControlStyleKey;
         private static Object FieldTabItemStyleKey;
@@ -27,5 +31,9 @@ namespace BinaryStudio.PlatformUI
         private static Object FieldDataGridStyleKey;
         private static Object FieldMenuStyleKey;
         private static Object FieldContextMenuStyleKey;
+        private static Object FieldScrollViewerStyleKey;
+        private static Object FieldScrollBarStyleKey;
+        private static Object FieldListBoxStyleKey;
+        private static Object FieldListBoxItemStyleKey;
         }
     }

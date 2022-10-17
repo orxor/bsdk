@@ -6,6 +6,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="BrightnessEffect.ps" />
     <None Remove="GrayscaleEffect.ps" />
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +30,7 @@
     <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="BrightnessEffect.ps" />
     <Resource Include="GrayscaleEffect.ps" />
   </ItemGroup>
 </Project>
