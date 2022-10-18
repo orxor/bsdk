@@ -6,8 +6,8 @@
   <Style x:Key="{x:Static u:Theme.MenuStyleKey}" TargetType="{x:Type Menu}">
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="BorderBrush" Value="{x:Null}"/>
-    <Setter Property="Background" Value="{DynamicResource {x:Static u:Theme.MenuBarBrushResourceKey}}"/>
-    <Setter Property="Foreground" Value="{DynamicResource {x:Static u:Theme.MenuTextBrushResourceKey}}"/>
+    <Setter Property="Background" Value="{DynamicResource MenuBarBrushKey}"/>
+    <Setter Property="Foreground" Value="{DynamicResource MenuTextBrushKey}"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type Menu}">
@@ -29,7 +29,7 @@
                HorizontalOffset="2">
           <c:SystemDropShadowChrome Margin="0">
             <Grid Grid.IsSharedSizeScope="True" Margin="0,0,2,2">
-              <Border x:Name="SubmenuBorder" SnapsToDevicePixels="True" BorderThickness="1,1,1,1" Background="{DynamicResource {x:Static u:Theme.WindowBrushResourceKey}}" BorderBrush="{DynamicResource {x:Static u:Theme.ControlDarkDarkBrushResourceKey}}">
+              <Border x:Name="SubmenuBorder" SnapsToDevicePixels="True" BorderThickness="1,1,1,1" Background="{DynamicResource WindowBrushKey}" BorderBrush="{DynamicResource ControlDarkDarkBrushKey}">
                 <ScrollViewer CanContentScroll="True"
                               VerticalScrollBarVisibility="Auto"
                               Margin="2">
@@ -42,11 +42,11 @@
         <Popup Placement="Bottom" IsOpen="{TemplateBinding IsSubmenuOpen}" StaysOpen="True"
                HorizontalOffset="-1"
                Width="{Binding ElementName=InnerBorder,Path=ActualWidth,Converter={StaticResource SubtractionConverter}}">
-          <Border BorderBrush="{DynamicResource {x:Static u:Theme.WindowBrushResourceKey}}"
+          <Border BorderBrush="{DynamicResource WindowBrushKey}"
                   BorderThickness="0,1,0,0"/>
         </Popup>
         <Border Name="InnerBorder" BorderThickness="1,1,1,0" BorderBrush="Transparent" Background="Transparent" Margin="0,0,0,0">
-          <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" TextBlock.Foreground="{DynamicResource {x:Static u:Theme.MenuTextBrushResourceKey}}" Margin="6,3,6,3"/>
+          <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" TextBlock.Foreground="{DynamicResource MenuTextBrushKey}" Margin="6,3,6,3"/>
         </Border>
       </Grid>
     </Decorator>
@@ -55,16 +55,16 @@
         <Setter TargetName="Popup" Property="PopupAnimation" Value="None" />
       </Trigger>
       <Trigger Property="IsHighlighted" Value="true">
-        <Setter Property="Background" Value="{DynamicResource {x:Static u:Theme.MenuHighlightBrushResourceKey}}" TargetName="InnerBorder"/>
+        <Setter Property="Background" Value="{DynamicResource MenuHighlightBrushKey}" TargetName="InnerBorder"/>
       </Trigger>
       <Trigger Property="IsSubmenuOpen" Value="true">
-        <Setter Property="Background"  Value="{DynamicResource {x:Static u:Theme.WindowBrushResourceKey}}"          TargetName="InnerBorder"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource {x:Static u:Theme.ControlDarkDarkBrushResourceKey}}" TargetName="InnerBorder"/>
+        <Setter Property="Background"  Value="{DynamicResource WindowBrushKey}"          TargetName="InnerBorder"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkDarkBrushKey}" TargetName="InnerBorder"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
   <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}" TargetType="{x:Type MenuItem}">
-    <Border x:Name="Border" TextBlock.Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}">
+    <Border x:Name="Border" TextBlock.Foreground="{DynamicResource ControlTextBrushKey}">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
@@ -78,7 +78,7 @@
         </Decorator>
         <Border Grid.Column="0" Margin="6,0,6,0" Visibility="Collapsed" x:Name="Mark">
           <Border Background="{DynamicResource MenuCheckMarkBackgroundBrushKey}" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="CheckMark" Visibility="Hidden">
-            <Path Stroke="{DynamicResource {x:Static u:Theme.WindowTextBrushResourceKey}}"
+            <Path Stroke="{DynamicResource WindowTextBrushKey}"
                   Margin="4"
                   Opacity="0.5"
                   Width="8"
@@ -94,8 +94,8 @@
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="IsHighlighted" Value="True">
-        <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static u:Theme.MenuHighlightBrushResourceKey}}"/>
-        <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static u:Theme.MenuHighlightBrushResourceKey}}"/>
+        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
+        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
       </Trigger>
       <Trigger Property="IsCheckable" Value="True">
         <Setter TargetName="Mark" Property="Visibility" Value="Visible"/>
@@ -104,7 +104,7 @@
         <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="TextBlock.Foreground" Value="{DynamicResource {x:Static u:Theme.GrayTextBrushResourceKey}}" TargetName="Border"/>
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource GrayTextBrushKey}" TargetName="Border"/>
         <Setter TargetName="Icon" Property="Opacity" Value="0.5"/>
         <Setter TargetName="Icon" Property="Effect">
           <Setter.Value>
@@ -129,7 +129,7 @@
         </Decorator>
         <Border Grid.Column="0" Margin="6,0,6,0" Visibility="Collapsed" x:Name="Mark">
           <Border Background="{DynamicResource MenuCheckMarkBackgroundBrushKey}" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="CheckMark" Visibility="Hidden">
-            <Path Stroke="{DynamicResource {x:Static u:Theme.WindowTextBrushResourceKey}}"
+            <Path Stroke="{DynamicResource WindowTextBrushKey}"
                   Margin="4"
                   Opacity="0.5"
                   Width="8"
@@ -139,12 +139,12 @@
                   Data="M 0 4 L 3 7 L 7 0"/>
           </Border>
         </Border>
-        <ContentPresenter x:Name="HeaderHost" Grid.Column="1" ContentSource="Header" RecognizesAccessKey="True" TextBlock.Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}"
+        <ContentPresenter x:Name="HeaderHost" Grid.Column="1" ContentSource="Header" RecognizesAccessKey="True" TextBlock.Foreground="{DynamicResource ControlTextBrushKey}"
                           VerticalAlignment="Center" Margin="5,0,5,0"/>
-        <TextBlock x:Name="InputGestureText" Grid.Column="2" Text="{TemplateBinding InputGestureText}" Margin="5,2,0,2" Foreground="{DynamicResource {x:Static u:Theme.ControlTextBrushResourceKey}}"
+        <TextBlock x:Name="InputGestureText" Grid.Column="2" Text="{TemplateBinding InputGestureText}" Margin="5,2,0,2" Foreground="{DynamicResource ControlTextBrushKey}"
                    VerticalAlignment="Center"/>
         <Border Grid.Column="3">
-          <Path Data="M 0 0 L 0 7 L 4 3.5 Z" Fill="{DynamicResource {x:Static u:Theme.WindowTextBrushResourceKey}}" VerticalAlignment="Center"/>
+          <Path Data="M 0 0 L 0 7 L 4 3.5 Z" Fill="{DynamicResource WindowTextBrushKey}" VerticalAlignment="Center"/>
         </Border>
         <Popup Placement="Right" IsOpen="{TemplateBinding IsSubmenuOpen}" Focusable="False" PopupAnimation="Fade"
                SnapsToDevicePixels="True"
@@ -153,8 +153,8 @@
           <c:SystemDropShadowChrome>
             <Grid Margin="0,0,3,3">
               <Border x:Name="SubmenuBorder"
-                  Background="{DynamicResource {x:Static u:Theme.WindowBrushResourceKey}}"
-                  BorderBrush="{DynamicResource {x:Static u:Theme.ControlDarkDarkBrushResourceKey}}"
+                  Background="{DynamicResource WindowBrushKey}"
+                  BorderBrush="{DynamicResource ControlDarkDarkBrushKey}"
                   BorderThickness="1">
                 <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
                   <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
@@ -167,8 +167,8 @@
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="IsHighlighted" Value="True">
-        <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static u:Theme.MenuHighlightBrushResourceKey}}"/>
-        <Setter TargetName="Border" Property="Background" Value="{DynamicResource {x:Static u:Theme.MenuHighlightBrushResourceKey}}"/>
+        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
+        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
       </Trigger>
       <Trigger Property="IsCheckable" Value="True">
         <Setter TargetName="Mark" Property="Visibility" Value="Visible"/>
@@ -177,7 +177,7 @@
         <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static u:Theme.GrayTextBrushResourceKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GrayTextBrushKey}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -189,10 +189,10 @@
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="IsHighlighted" Value="true">
-        <Setter Property="Background" TargetName="Border" Value="{DynamicResource {x:Static u:Theme.MenuHighlightBrushResourceKey}}"/>
+        <Setter Property="Background" TargetName="Border" Value="{DynamicResource MenuHighlightBrushKey}"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static u:Theme.GrayTextBrushResourceKey}}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GrayTextBrushKey}"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -201,7 +201,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ContextMenu}">
           <c:SystemDropShadowChrome>
-            <Border x:Name="Border" Background="{DynamicResource {x:Static u:Theme.WindowBrushResourceKey}}" BorderThickness="1" BorderBrush="{DynamicResource {x:Static u:Theme.ControlDarkDarkBrushResourceKey}}"
+            <Border x:Name="Border" Background="{DynamicResource WindowBrushKey}" BorderThickness="1" BorderBrush="{DynamicResource ControlDarkDarkBrushKey}"
                     Margin="0,0,3,3">
               <ScrollViewer CanContentScroll="True" VerticalScrollBarVisibility="Auto">
                 <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle"/>

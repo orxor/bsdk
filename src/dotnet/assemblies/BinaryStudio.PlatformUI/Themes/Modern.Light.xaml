@@ -6,36 +6,38 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/Menu.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/ScrollViewer.xaml"/>
   </ResourceDictionary.MergedDictionaries>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushResourceKey}"                       Color="#ffcccedb"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushResourceKey}"                      Color="#fff5f5f5"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionTextBrushResourceKey}"                  Color="#ff525252"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.AppWorkspaceBrushResourceKey}"                       Color="#ffeeeef2"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ControlBrushResourceKey}"                            Color="#fff0f0f0"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ControlDarkBrushResourceKey}"                        Color="#ffbcbcbc"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ControlDarkDarkBrushResourceKey}"                    Color="#ffacacac"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ControlLightBrushResourceKey}"                       Color="#ffeeeef2"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ControlLightLightBrushResourceKey}"                  Color="#fff5f5f5"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ControlTextBrushResourceKey}"                        Color="#ff1e1e1e"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.DesktopBrushResourceKey}"                            Color="#ffeeeef2"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.GradientActiveCaptionBrushResourceKey}"              Color="#fff5f5f5"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.GradientInactiveCaptionBrushResourceKey}"            Color="#ffeeeef2"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.GrayTextBrushResourceKey}"                           Color="#ff717171"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightBrushResourceKey}"                          Color="#ff3399ff"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightTextBrushResourceKey}"                      Color="#ffffffff"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.HotTrackBrushResourceKey}"                           Color="#ff0054e3"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveBorderBrushResourceKey}"                     Color="#ffcccedb"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionBrushResourceKey}"                    Color="#ffeeeef2"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionTextBrushResourceKey}"                Color="#ffa2a4a5"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.InfoBrushResourceKey}"                               Color="#fffdfbac"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.InfoTextBrushResourceKey}"                           Color="#ff1e1e1e"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBrushResourceKey}"                               Color="#fff6f6f6"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBarBrushResourceKey}"                            Color="#fff6f6f6"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushResourceKey}"                      Color="#ffc9def5"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushResourceKey}"                           Color="#ff1e1e1e"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.ScrollBarBrushResourceKey}"                          Color="#fff5f5f5"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushResourceKey}"                             Color="#fff5f5f5"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushResourceKey}"                        Color="#ffeeeef2"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushResourceKey}"                         Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushKey}"                       Color="#ffcccedb"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushKey}"                      Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionTextBrushKey}"                  Color="#ff525252"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.AppWorkspaceBrushKey}"                       Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlBrushKey}"                            Color="#fff0f0f0"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlDarkBrushKey}"                        Color="#ffbcbcbc"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlDarkDarkBrushKey}"                    Color="#ffacacac"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlLightBrushKey}"                       Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlLightLightBrushKey}"                  Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlTextBrushKey}"                        Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.DesktopBrushKey}"                            Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GradientActiveCaptionBrushKey}"              Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GradientInactiveCaptionBrushKey}"            Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GrayTextBrushKey}"                           Color="#ff717171"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightBrushKey}"                          Color="#ff3399ff"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightLightBrushKey}"                     Color="#ff54adff"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightTextBrushKey}"                      Color="#ffdddddd"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightLightTextBrushKey}"                 Color="#ffffffff"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HotTrackBrushKey}"                           Color="#ff0054e3"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveBorderBrushKey}"                     Color="#ffcccedb"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionBrushKey}"                    Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionTextBrushKey}"                Color="#ffa2a4a5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InfoBrushKey}"                               Color="#fffdfbac"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InfoTextBrushKey}"                           Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBrushKey}"                               Color="#fff6f6f6"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBarBrushKey}"                            Color="#fff6f6f6"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushKey}"                      Color="#ffc9def5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushKey}"                           Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ScrollBarBrushKey}"                          Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushKey}"                             Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushKey}"                        Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushKey}"                         Color="#ff1e1e1e"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedBrushKey}"                          Color="#fff0f0f0"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedTextBrushKey}"                      Color="#ff717171"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverBrushKey}"                 Color="#ff1c97ea"/>

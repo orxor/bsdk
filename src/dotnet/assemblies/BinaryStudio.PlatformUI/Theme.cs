@@ -122,7 +122,7 @@ namespace BinaryStudio.PlatformUI
         private static void OnApply(String source) {
             if (String.Equals(source,"NormalColor",StringComparison.OrdinalIgnoreCase)) {
                 var c = new SolidColorBrush(AdjustBrightness(SystemColors.HighlightColor,+0.1f));
-                Application.Resources[HighlightLightBrushResourceKey] = c;
+                Application.Resources[HighlightLightBrushKey] = c;
                 }
             return;
             try

@@ -89,7 +89,7 @@
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
           <ListBox.Resources>
             <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Static u:Theme.ListBoxItemStyleKey}}" x:Key="{x:Type ListBoxItem}">
-              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static u:Theme.ControlDarkBrushResourceKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
               <Setter Property="BorderThickness" Value="0,0,0,1"/>
               <Setter Property="Margin" Value="0"/>
               <Style.Triggers>
