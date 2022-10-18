@@ -21,7 +21,7 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.GradientInactiveCaptionBrushResourceKey}"        Color="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.GrayTextBrushResourceKey}"                       Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.HighlightBrushResourceKey}"                      Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightLightBrushResourceKey}"                 Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}" Opacity="0.1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightLightBrushResourceKey}"                 Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.HighlightTextBrushResourceKey}"                  Color="{DynamicResource {x:Static SystemColors.HighlightTextColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.HotTrackBrushResourceKey}"                       Color="{DynamicResource {x:Static SystemColors.HotTrackColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.InactiveBorderBrushResourceKey}"                 Color="{DynamicResource {x:Static SystemColors.InactiveBorderColorKey}}"/>

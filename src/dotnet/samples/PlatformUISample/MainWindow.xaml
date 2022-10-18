@@ -27,6 +27,11 @@
     </ResourceDictionary>
   </Window.Resources>
   <Grid>
+    <Grid.Resources>
+      <u:ColorConverter x:Key="ColorConverter"/>
+      <u:HSLColorConverter x:Key="HSL"/>
+      <u:CopyTo x:Key="CopyTo"/>
+    </Grid.Resources>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
@@ -60,8 +65,82 @@
       <TabItem Header="TabControl">
         <ContentControl Template="{StaticResource TabControl}"/>
       </TabItem>
-      <TabItem Header="Colors">
-        <DataGrid Name="Colors" AutoGenerateColumns="False" d:DataContext="{d:DesignData ColorInfo}">
+      <TabItem Header="Colors" IsSelected="True">
+        <GroupBox Header="RGB2HSL">
+          <Grid>
+            <Grid.Resources>
+              <Style x:Key="{x:Type ListBox}" TargetType="{x:Type ListBox}">
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBox}">
+                      <UniformGrid Rows="1" IsItemsHost="True" Height="40"/>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                  <Setter.Value>
+                    <DataTemplate DataType="{x:Type e:ColorInfo}">
+                      <Grid SnapsToDevicePixels="True">
+                        <Grid.RowDefinitions>
+                          <RowDefinition/>
+                          <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Rectangle Grid.Row="0" Fill="{Binding Color,Mode=OneWay,Converter={StaticResource CopyTo}}"/>
+                        <!--<TextBlock Text="{Binding Description,Mode=OneWay}" Grid.Row="1"/>-->
+                      </Grid>
+                    </DataTemplate>
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="ItemContainerStyle">
+                  <Setter.Value>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                      <Setter Property="UseLayoutRounding" Value="True"/>
+                      <Setter Property="SnapsToDevicePixels" Value="True"/>
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Border BorderThickness="{Binding BorderThickness,Mode=OneWay}" BorderBrush="Black" Background="White" Margin="2"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                              <ContentPresenter/>
+                            </Border>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                    </Style>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ListBox Grid.Row="2" Grid.Column="1" Name="HSLAxisH"/>
+            <ListBox Grid.Row="3" Grid.Column="1" Name="HSLAxisS"/>
+            <ListBox Grid.Row="4" Grid.Column="1" Name="HSLAxisL"/>
+            <ListBox Grid.Row="5" Grid.Column="1" Name="HSVAxisH"/>
+            <ListBox Grid.Row="6" Grid.Column="1" Name="HSVAxisS"/>
+            <ListBox Grid.Row="7" Grid.Column="1" Name="HSVAxisV"/>
+            <ListBox Grid.Row="8" Grid.Column="1" Name="RGBAxisO"/>
+            <TextBlock Grid.Row="0" Grid.Column="0">RGB:</TextBlock>
+            <TextBox Grid.Row="0" Grid.Column="1" Name="RGBTextBox" TextChanged="RGBTextBox_TextChanged"/>
+            <TextBlock Grid.Row="1" Grid.Column="0">HSL:</TextBlock>
+            <u:BridgeReference Source="{Binding ElementName=RGBTextBox,Path=Text,Converter={StaticResource ColorConverter},Mode=OneWay}" Name="HSL"/>
+            <TextBox Grid.Row="1" Grid.Column="1" IsReadOnly="True" Text="{Binding ElementName=HSL,Path=Target,Mode=OneWay,Converter={StaticResource HSL}}"/>
+          </Grid>
+        </GroupBox>
+        <!--<DataGrid Name="Colors" AutoGenerateColumns="False" d:DataContext="{d:DesignData ColorInfo}">
           <DataGrid.Columns>
             <DataGridTextColumn Header="Name" Binding="{Binding Source.Name,Mode=OneWay}" FontFamily="Consolas" IsReadOnly="True"/>
             <DataGridTemplateColumn Header="Color{Value}">
@@ -72,7 +151,7 @@
               </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
           </DataGrid.Columns>
-        </DataGrid>
+        </DataGrid>-->
       </TabItem>
       <TabItem Header="ASN.1" Name="TabItemAsn1">
         <ContentControl Template="{StaticResource Asn1Control}"/>

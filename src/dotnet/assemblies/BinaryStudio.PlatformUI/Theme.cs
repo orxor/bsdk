@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Windows;
+using System.Windows.Media;
 using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI
@@ -118,6 +119,10 @@ namespace BinaryStudio.PlatformUI
         #endregion
         #region M:OnApply(String)
         private static void OnApply(String source) {
+            if (String.Equals(source,"NormalColor",StringComparison.OrdinalIgnoreCase)) {
+                var c = new SolidColorBrush(AdjustBrightness(SystemColors.HighlightColor,100));
+                Application.Resources[HighlightLightBrushResourceKey] = c;
+                }
             return;
             try
                 {
@@ -159,6 +164,10 @@ namespace BinaryStudio.PlatformUI
         public override String ToString()
             {
             return Name;
+            }
+
+        private static Color AdjustBrightness(Color value, Byte factor) {
+            return value + Color.FromRgb(factor,factor,factor);
             }
         }
     }

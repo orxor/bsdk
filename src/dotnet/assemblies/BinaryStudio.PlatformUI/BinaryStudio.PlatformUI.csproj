@@ -27,9 +27,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="BrightnessEffect.ps" />
     <Resource Include="GrayscaleEffect.ps" />
   </ItemGroup>

@@ -15,7 +15,6 @@
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type ListBoxItem}">
           <Grid>
-            <Rectangle Fill="White" IsHitTestVisible="False"/>
             <Border BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"
                     BorderThickness="{TemplateBinding BorderThickness}"
                     Background="{TemplateBinding Background}"
@@ -35,8 +34,8 @@
                 <Condition Property="IsMouseOver" Value="True"/>
                 <Condition Property="IsSelected"  Value="False"/>
               </MultiTrigger.Conditions>
-              <Setter TargetName="OuterBorder" Property="Background"  Value="{DynamicResource {x:Static u:Theme.HighlightBrushResourceKey}}"/>
-              <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static u:Theme.HighlightBrushResourceKey}}"/>
+              <Setter TargetName="OuterBorder" Property="Background"  Value="{DynamicResource {x:Static u:Theme.HighlightLightBrushResourceKey}}"/>
+              <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static u:Theme.HighlightLightBrushResourceKey}}"/>
               <Setter Property="Foreground" Value="{DynamicResource {x:Static u:Theme.HighlightTextBrushResourceKey}}"/>
             </MultiTrigger>
             <MultiTrigger>
@@ -51,6 +50,7 @@
             <MultiTrigger>
               <MultiTrigger.Conditions>
                 <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                <Condition Property="IsMouseOver" Value="False"/>
                 <Condition Property="IsSelected" Value="True"/>
               </MultiTrigger.Conditions>
               <Setter TargetName="OuterBorder" Property="BorderBrush"     Value="{DynamicResource {x:Static u:Theme.ControlDarkBrushResourceKey}}"/>
@@ -62,6 +62,7 @@
               <MultiTrigger.Conditions>
                 <Condition Property="Selector.IsSelectionActive" Value="True"/>
                 <Condition Property="IsSelected" Value="True"/>
+                <Condition Property="IsMouseOver" Value="False"/>
               </MultiTrigger.Conditions>
               <Setter TargetName="OuterBorder" Property="Background"  Value="{DynamicResource {x:Static u:Theme.HighlightBrushResourceKey}}"/>
               <Setter TargetName="OuterBorder" Property="BorderBrush" Value="{DynamicResource {x:Static u:Theme.HighlightBrushResourceKey}}"/>
