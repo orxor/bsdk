@@ -8,6 +8,7 @@ using System.Resources;
 using System.Windows;
 using System.Windows.Media;
 using BinaryStudio.DiagnosticServices;
+using BinaryStudio.PlatformUI.Media;
 
 namespace BinaryStudio.PlatformUI
     {
@@ -120,7 +121,7 @@ namespace BinaryStudio.PlatformUI
         #region M:OnApply(String)
         private static void OnApply(String source) {
             if (String.Equals(source,"NormalColor",StringComparison.OrdinalIgnoreCase)) {
-                var c = new SolidColorBrush(AdjustBrightness(SystemColors.HighlightColor,100));
+                var c = new SolidColorBrush(AdjustBrightness(SystemColors.HighlightColor,+0.1f));
                 Application.Resources[HighlightLightBrushResourceKey] = c;
                 }
             return;
@@ -166,8 +167,8 @@ namespace BinaryStudio.PlatformUI
             return Name;
             }
 
-        private static Color AdjustBrightness(Color value, Byte factor) {
-            return value + Color.FromRgb(factor,factor,factor);
+        private static Color AdjustBrightness(Color value, Single factor) {
+            return ColorConverter.AdjustBrightness(value,factor);
             }
         }
     }

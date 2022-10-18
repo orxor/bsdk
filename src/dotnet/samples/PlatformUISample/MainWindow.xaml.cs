@@ -107,6 +107,8 @@ namespace PlatformUISample
             var HSVAxisSValues = new List<ColorInfo>();
             var HSVAxisVValues = new List<ColorInfo>();
             var RGBAxisOValues = new List<ColorInfo>();
+            var RGBAxisPValues = new List<ColorInfo>();
+            var RGBAxisBValues = new List<ColorInfo>();
             var Count = 100;
             var Step = 1f/Count;
             for (var i = 0; i <= Count; i++) {
@@ -141,6 +143,13 @@ namespace PlatformUISample
                     ScV = i*Step
                     }));
                 RGBAxisOValues.Add(new ColorInfo(ColorConverter.PerformOpacity(rgb,i*Step)));
+                RGBAxisBValues.Add(new ColorInfo(ColorConverter.AdjustBrightness(rgb,-1f + 2*i*Step)));
+                RGBAxisPValues.Add(new ColorInfo(new Color{
+                    A = 0xff,
+                    ScR = rgb.ScR*i*Step,
+                    ScG = rgb.ScG*i*Step,
+                    ScB = rgb.ScB*i*Step
+                    }));
                 }
             HSLAxisH.ItemsSource = MarkSame(HSLAxisHValues,rgb);
             HSLAxisS.ItemsSource = MarkSame(HSLAxisSValues,rgb);
@@ -149,6 +158,8 @@ namespace PlatformUISample
             HSVAxisS.ItemsSource = MarkSame(HSVAxisSValues,rgb);
             HSVAxisV.ItemsSource = MarkSame(HSVAxisVValues,rgb);
             RGBAxisO.ItemsSource = MarkSame(RGBAxisOValues,rgb);
+            RGBAxisP.ItemsSource = MarkSame(RGBAxisPValues,rgb);
+            RGBAxisB.ItemsSource = MarkSame(RGBAxisBValues,rgb);
             }
         }
     }

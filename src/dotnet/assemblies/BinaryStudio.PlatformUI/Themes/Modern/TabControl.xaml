@@ -24,9 +24,9 @@
           <ControlTemplate.Triggers>
             <Trigger Property="IsSelected" Value="true">
               <Setter Property="Panel.ZIndex" Value="1"/>
-              <Setter Property="Background"  Value="{DynamicResource {x:Static u:Theme.TabItemSelectedBrushKey}}"/>
-              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static u:Theme.TabItemSelectedBrushKey}}"/>
-              <Setter Property="Foreground"  Value="{DynamicResource {x:Static u:Theme.TabItemSelectedTextBrushKey}}"/>
+              <Setter Property="Background"  Value="{DynamicResource {x:Static u:Theme.HighlightBrushResourceKey}}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource {x:Static u:Theme.HighlightBrushResourceKey}}"/>
+              <Setter Property="Foreground"  Value="{DynamicResource {x:Static u:Theme.HighlightTextBrushResourceKey}}"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="true">
               <Setter Property="Background"  Value="{DynamicResource {x:Static u:Theme.TabItemSelectedMouseOverBrushKey}}"/>

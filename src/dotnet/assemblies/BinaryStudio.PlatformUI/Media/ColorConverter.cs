@@ -62,5 +62,14 @@ namespace BinaryStudio.PlatformUI
         public static Color PerformOpacity(Color Source, Single opacity) {
             return PerformOpacity(Colors.White,Source,opacity);
             }
+
+        public static Color AdjustBrightness(Color value, Single factor) {
+            return new Color{
+                A = value.A,
+                ScR = Math.Min(Math.Max(value.ScR + factor,0),1),
+                ScG = Math.Min(Math.Max(value.ScG + factor,0),1),
+                ScB = Math.Min(Math.Max(value.ScB + factor,0),1)
+                };
+            }
         }
     }

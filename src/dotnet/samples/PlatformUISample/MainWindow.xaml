@@ -125,14 +125,18 @@
               <RowDefinition Height="Auto"/>
               <RowDefinition Height="Auto"/>
               <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ListBox Grid.Row="2" Grid.Column="1" Name="HSLAxisH"/>
-            <ListBox Grid.Row="3" Grid.Column="1" Name="HSLAxisS"/>
-            <ListBox Grid.Row="4" Grid.Column="1" Name="HSLAxisL"/>
-            <ListBox Grid.Row="5" Grid.Column="1" Name="HSVAxisH"/>
-            <ListBox Grid.Row="6" Grid.Column="1" Name="HSVAxisS"/>
-            <ListBox Grid.Row="7" Grid.Column="1" Name="HSVAxisV"/>
-            <ListBox Grid.Row="8" Grid.Column="1" Name="RGBAxisO"/>
+            <ListBox Grid.Row="2"  Grid.Column="1" Name="HSLAxisH"/>
+            <ListBox Grid.Row="3"  Grid.Column="1" Name="HSLAxisS"/>
+            <ListBox Grid.Row="4"  Grid.Column="1" Name="HSLAxisL"/>
+            <ListBox Grid.Row="5"  Grid.Column="1" Name="HSVAxisH"/>
+            <ListBox Grid.Row="6"  Grid.Column="1" Name="HSVAxisS"/>
+            <ListBox Grid.Row="7"  Grid.Column="1" Name="HSVAxisV"/>
+            <ListBox Grid.Row="8"  Grid.Column="1" Name="RGBAxisO"/>
+            <ListBox Grid.Row="9"  Grid.Column="1" Name="RGBAxisP"/>
+            <ListBox Grid.Row="10" Grid.Column="1" Name="RGBAxisB"/>
             <TextBlock Grid.Row="0" Grid.Column="0">RGB:</TextBlock>
             <TextBox Grid.Row="0" Grid.Column="1" Name="RGBTextBox" TextChanged="RGBTextBox_TextChanged"/>
             <TextBlock Grid.Row="1" Grid.Column="0">HSL:</TextBlock>
