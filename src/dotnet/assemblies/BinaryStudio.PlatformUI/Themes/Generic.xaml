@@ -4,6 +4,8 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/Primitives/XYViewport.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/Primitives/Thumb.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/Primitives/RangeSelectionTrackingControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/HexBox.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
 

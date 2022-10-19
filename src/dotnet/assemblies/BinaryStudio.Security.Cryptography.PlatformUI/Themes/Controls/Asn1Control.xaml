@@ -653,11 +653,11 @@
                 <GridSplitter Grid.Row="0" Grid.Column="4" Grid.RowSpan="2"/>
                 <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Background="Transparent" Margin="0,8,0,0"
                         BorderThickness="1" Visibility="Visible">
-                  <!--<u:HexBox Source="{Binding ElementName=ItemsHost,Path=SelectedItem.Content,Mode=OneWay}"
+                  <u:HexBox Source="{Binding ElementName=ItemsHost,Path=SelectedItem.Content,Mode=OneWay}"
                             Background="Transparent" Name="HexBox"
                             Margin="2"
                             BorderBrush="{DynamicResource ControlDarkBrushKey}"
-                            BorderThickness="0"/>-->
+                            BorderThickness="0"/>
                 </Border>
                 <GridSplitter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" ResizeDirection="Rows" Width="Auto" Height="Auto"
                             VerticalAlignment="Top"

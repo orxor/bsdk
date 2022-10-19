@@ -42,6 +42,8 @@
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/obj
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/bin
 /src/dotnet/assemblies/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/obj
+/src/dotnet/assemblies/BinaryStudio.DataProcessing/bin
+/src/dotnet/assemblies/BinaryStudio.DataProcessing/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Task/bin
