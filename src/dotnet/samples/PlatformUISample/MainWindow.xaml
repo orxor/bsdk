@@ -23,6 +23,7 @@
         <ResourceDictionary Source="pack://application:,,,/Controls/ListBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/DataGrid.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/Effects.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Controls/Certificates.xaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Window.Resources>
@@ -65,7 +66,7 @@
       <TabItem Header="TabControl">
         <ContentControl Template="{StaticResource TabControl}"/>
       </TabItem>
-      <TabItem Header="Colors" IsSelected="True">
+      <TabItem Header="Colors">
         <GroupBox Header="RGB2HSL">
           <Grid>
             <Grid.Resources>
@@ -159,6 +160,9 @@
       </TabItem>
       <TabItem Header="ASN.1" Name="TabItemAsn1">
         <ContentControl Template="{StaticResource Asn1Control}"/>
+      </TabItem>
+      <TabItem Header="Certificates" IsSelected="True">
+        <ContentControl Template="{StaticResource Certificates}"/>
       </TabItem>
     </TabControl>
   </Grid>

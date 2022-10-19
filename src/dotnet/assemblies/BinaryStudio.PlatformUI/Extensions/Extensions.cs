@@ -30,5 +30,10 @@ namespace BinaryStudio.PlatformUI.Extensions
             source.LayoutUpdated += handler;
             }
         #endregion
+        #region M:IsConnectedToPresentationSource({this}DependencyObject):Boolean
+        public static Boolean IsConnectedToPresentationSource(this DependencyObject obj) {
+            return PresentationSource.FromDependencyObject(obj) != null;
+            }
+        #endregion
         }
     }

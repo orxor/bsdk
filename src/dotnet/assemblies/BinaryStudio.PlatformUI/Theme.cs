@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -8,7 +7,6 @@ using System.Resources;
 using System.Windows;
 using System.Windows.Media;
 using BinaryStudio.DiagnosticServices;
-using BinaryStudio.PlatformUI.Media;
 
 namespace BinaryStudio.PlatformUI
     {
