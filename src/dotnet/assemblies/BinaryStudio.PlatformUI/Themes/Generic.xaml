@@ -6,6 +6,7 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/Primitives/Thumb.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/Primitives/RangeSelectionTrackingControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/HexBox.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/PropertyGridControl.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
 

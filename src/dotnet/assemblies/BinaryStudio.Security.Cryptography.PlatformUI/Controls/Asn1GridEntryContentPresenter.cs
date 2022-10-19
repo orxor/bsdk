@@ -11,6 +11,7 @@ using BinaryStudio.PlatformUI.Extensions;
 
 namespace BinaryStudio.Security.Cryptography.Controls
     {
+    using TextBox=System.Windows.Controls.TextBox;
     public class Asn1GridEntryContentPresenter : Control, INotifyPropertyChanged
         {
         static Asn1GridEntryContentPresenter()
