@@ -1,5 +1,78 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="http://schemas.helix.global">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/BinaryStudio.PlatformUI;component/Themes/Modern/ListBox.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
   <ControlTemplate x:Key="Certificates">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="3*"/>
+      </Grid.ColumnDefinitions>
+      <Border Grid.Column="0" BorderThickness="1" BorderBrush="{DynamicResource ControlDarkBrushKey}" UseLayoutRounding="True">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+          <Grid Grid.Row="0">
+            <Border Background="{DynamicResource HighlightBrushKey}"/>
+            <Rectangle Height="6" Margin="8,1,4,0" VerticalAlignment="Center" Opacity="1" DockPanel.Dock="Left" UseLayoutRounding="True">
+              <Rectangle.Fill>
+                <DrawingBrush TileMode="Tile" Stretch="None" Viewport="1,1,4,4" ViewportUnits="Absolute" Viewbox="0,0,4,5"  ViewboxUnits="Absolute">
+                  <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                      <DrawingGroup.GuidelineSet>
+                        <GuidelineSet GuidelinesX="0.1"/>
+                      </DrawingGroup.GuidelineSet>
+                      <DrawingGroup.Children>
+                        <GeometryDrawing Geometry="M 0 0 L 1 0 M 2 2 L 3 2 M 0 4 L 1 4">
+                          <GeometryDrawing.Pen>
+                            <Pen Brush="{DynamicResource HighlightTextBrushKey}" Thickness="1"/>
+                          </GeometryDrawing.Pen>
+                        </GeometryDrawing>
+                      </DrawingGroup.Children>
+                    </DrawingGroup>
+                  </DrawingBrush.Drawing>
+                </DrawingBrush>
+              </Rectangle.Fill>
+            </Rectangle>
+            <TextBlock Padding="5,1,5,1" Background="{DynamicResource HighlightBrushKey}" Foreground="{DynamicResource HighlightTextBrushKey}" HorizontalAlignment="Left">Certificates {My}</TextBlock>
+          </Grid>
+          <ListBox Grid.Row="1" ItemsSource="{Binding Certificates,Mode=OneWay}"
+                   VirtualizingStackPanel.IsVirtualizing="True"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.Resources>
+              <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Static u:Theme.ListBoxItemStyleKey}}" x:Key="{x:Type ListBoxItem}">
+                <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                <Setter Property="Margin" Value="0"/>
+                <Style.Triggers>
+                  <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Margin" Value="0,-1,0,0"/>
+                    <Setter Property="Padding" Value="4,2,4,1"/>
+                  </Trigger>
+                </Style.Triggers>
+              </Style>
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="{x:Type u:X509Certificate}">
+                <TextBlock Text="{Binding Subject,Mode=OneWay}" TextWrapping="Wrap"/>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel Orientation="Vertical"
+                                        CanHorizontallyScroll="False"
+                                        HorizontalAlignment="Stretch"/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+          </ListBox>
+        </Grid>
+      </Border>
+      <GridSplitter Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="5" Background="Transparent"/>
+    </Grid>
   </ControlTemplate>
 </ResourceDictionary>

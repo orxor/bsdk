@@ -161,7 +161,7 @@
       <TabItem Header="ASN.1" Name="TabItemAsn1">
         <ContentControl Template="{StaticResource Asn1Control}"/>
       </TabItem>
-      <TabItem Header="Certificates" IsSelected="True">
+      <TabItem Header="Certificates" Name="Certificates" IsSelected="True">
         <ContentControl Template="{StaticResource Certificates}"/>
       </TabItem>
     </TabControl>
