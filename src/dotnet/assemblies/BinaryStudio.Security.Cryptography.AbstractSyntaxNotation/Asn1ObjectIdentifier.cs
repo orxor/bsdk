@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -15,6 +17,19 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.ObjectIdentifier; }}
         public Int64[] Sequence { get;private set; }
+        public String FriendlyName { get {
+            var value = ToString();
+            var r = OID.ResourceManager.GetString(value);
+            #if NET35
+            return (!String.IsNullOrEmpty(r))
+                    ? r
+                    : (new Oid(value)).FriendlyName;
+            #else
+            return (!String.IsNullOrWhiteSpace(r))
+                    ? r
+                    : (new Oid(value)).FriendlyName;
+            #endif
+            }}
 
         #region M:CreateSequence(Byte[]):Int64[]
         private static Int64[] CreateSequence(Byte[] source) {

@@ -3,6 +3,7 @@
                     xmlns:u="http://schemas.helix.global">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="pack://application:,,,/BinaryStudio.PlatformUI;component/Themes/Modern/ListBox.xaml"/>
+    <ResourceDictionary Source="pack://application:,,,/BinaryStudio.Security.Cryptography.PlatformUI;component/Themes/Templates.xaml"/>
   </ResourceDictionary.MergedDictionaries>
   <ControlTemplate x:Key="Certificates">
     <Grid>
@@ -40,9 +41,9 @@
             </Rectangle>
             <TextBlock Padding="5,1,5,1" Background="{DynamicResource HighlightBrushKey}" Foreground="{DynamicResource HighlightTextBrushKey}" HorizontalAlignment="Left">Certificates {My}</TextBlock>
           </Grid>
-          <ListBox Grid.Row="1" ItemsSource="{Binding Certificates,Mode=OneWay}"
+          <ListBox Grid.Row="1" ItemsSource="{Binding Path=.,Mode=OneWay}"
                    VirtualizingStackPanel.IsVirtualizing="True"
-                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="ListBox">
             <ListBox.Resources>
               <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Static u:Theme.ListBoxItemStyleKey}}" x:Key="{x:Type ListBoxItem}">
                 <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
@@ -58,8 +59,8 @@
               </Style>
             </ListBox.Resources>
             <ListBox.ItemTemplate>
-              <DataTemplate DataType="{x:Type u:X509Certificate}">
-                <TextBlock Text="{Binding Subject,Mode=OneWay}" TextWrapping="Wrap"/>
+              <DataTemplate DataType="{x:Type u:ECertificate}">
+                <TextBlock Text="{Binding Source.Subject,Mode=OneWay}" TextWrapping="Wrap"/>
               </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ItemsPanel>
@@ -72,6 +73,7 @@
           </ListBox>
         </Grid>
       </Border>
+      <ContentPresenter Grid.Column="1" Content="{Binding ElementName=ListBox,Path=SelectedValue,Mode=OneWay}"/>
       <GridSplitter Grid.Column="0" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="5" Background="Transparent"/>
     </Grid>
   </ControlTemplate>

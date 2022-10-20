@@ -10,6 +10,7 @@ namespace BinaryStudio.DataProcessing
     {
     public class ObjectTypeConverter : TypeConverter
         {
+        #region M:CanConvertFrom(ITypeDescriptorContext,Type):Boolean
         /// <summary>Returns whether this converter can convert an object of the given type to the type of this converter, using the specified context.</summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
         /// <param name="sourceType">A <see cref="T:System.Type"/> that represents the type you want to convert from.</param>
@@ -17,7 +18,8 @@ namespace BinaryStudio.DataProcessing
         public override Boolean CanConvertFrom(ITypeDescriptorContext context, Type sourceType) {
             return (sourceType == typeof(String)) || base.CanConvertFrom(context, sourceType);
             }
-
+        #endregion
+        #region M:CanConvertTo(ITypeDescriptorContext,Type):Boolean
         /// <summary>Returns whether this converter can convert the object to the specified type, using the specified context.</summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
         /// <param name="destinationType">A <see cref="T:System.Type"/> that represents the type you want to convert to.</param>
@@ -27,7 +29,7 @@ namespace BinaryStudio.DataProcessing
             if (destinationType == typeof(String)) { return true; }
             return base.CanConvertTo(context, destinationType);
             }
-
+        #endregion
         #region M:ConvertFrom(ITypeDescriptorContext,CultureInfo,Object):Object
         /// <summary>
         /// 
@@ -46,7 +48,7 @@ namespace BinaryStudio.DataProcessing
             return base.ConvertFrom(context, culture, value);
             }
         #endregion
-
+        #region M:ConvertTo(ITypeDescriptorContext,CultureInfo,Object,Type):Object
         /// <summary>Converts the given value object to the specified type, using the specified context and culture information.</summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
         /// <param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If <see langword="null"/> is passed, the current culture is assumed.</param>
@@ -71,6 +73,7 @@ namespace BinaryStudio.DataProcessing
                 }
             return base.ConvertTo(context, culture, value, destinationType);
             }
+        #endregion
 
         /// <summary>Returns a collection of properties for the type of array specified by the value parameter, using the specified context and attributes.</summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
@@ -119,6 +122,7 @@ namespace BinaryStudio.DataProcessing
                 }
             }
 
+        #region M:GetProperties(ITypeDescriptorContext,Object,Attribute[]):PropertyDescriptorCollection
         /// <summary>Returns a collection of properties for the type of array specified by the value parameter, using the specified context and attributes.</summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
         /// <param name="value">An <see cref="T:System.Object"/> that specifies the type of array for which to get properties.</param>
@@ -129,11 +133,10 @@ namespace BinaryStudio.DataProcessing
                     context,
                     value,
                     attributes).
-                OrderBy(i => i, DefaultComparer).
                 ToArray();
             return new PropertyDescriptorCollection(r);
             }
-
+        #endregion
         #region M:GetPropertiesSupported(ITypeDescriptorContext):Boolean
         /// <summary>Returns whether this object supports properties, using the specified context.</summary>
         /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context.</param>
@@ -239,26 +242,5 @@ namespace BinaryStudio.DataProcessing
             }
 
         private static readonly IComparer<PropertyDescriptor> DefaultComparer = new PropertyDescriptorComparer();
-        private class PropertyDescriptorComparer : IComparer<PropertyDescriptor>
-            {
-            /// <summary>Compares two objects and returns a value indicating whether one is less than, equal to, or greater than the other.</summary>
-            /// <param name="x">The first object to compare.</param>
-            /// <param name="y">The second object to compare.</param>
-            /// <returns>A signed integer that indicates the relative values of <paramref name="x"/> and <paramref name="y"/>.</returns>
-            public Int32 Compare(PropertyDescriptor x, PropertyDescriptor y)
-                {
-                if (ReferenceEquals(x, y))    { return 0;  }
-                if (ReferenceEquals(x, null)) { return -1; }
-                if (x is IComparable<PropertyDescriptor> e) { return e.CompareTo(y); }
-                if (y is null) { return +1; }
-                var orderX = (x.Attributes.OfType<OrderAttribute>().FirstOrDefault()?.Order).GetValueOrDefault(0);
-                var orderY = (y.Attributes.OfType<OrderAttribute>().FirstOrDefault()?.Order).GetValueOrDefault(0);
-                var nameX = x.DisplayName;
-                var nameY = y.DisplayName;
-                return (orderX == orderY)
-                    ? nameX.CompareTo(nameY)
-                    : orderX.CompareTo(orderY);
-                }
-            }
         }
     }

@@ -383,19 +383,22 @@ namespace BinaryStudio.PlatformUI.Controls.Internal
                         ? OfType<PropertyDescriptor>(converter.GetProperties(context, source, new Attribute[] { BrowsableAttribute.Yes })).ToArray()
                         : OfType<PropertyDescriptor>(DefaultTypeConverter.GetProperties(context, source, new Attribute[]{ BrowsableAttribute.Yes })).ToArray()
                     : OfType<PropertyDescriptor>(TypeDescriptor.GetProperties(source, new Attribute[]{ BrowsableAttribute.Yes })).ToArray();
-                foreach (var e in descriptors.OrderBy(i => i.DisplayName).Select(i => new GridEntry(i, source, level, owner))) {
+                foreach (var e in descriptors.Select(i => new GridEntry(i, source, level, owner))) {
                     yield return e;
                     }
-                //foreach (var e in descriptors.OrderBy(i => i.DisplayName).Select(i => new GridEntry(i, source, level, owner))) {
-                //    yield return e;
-                //    }
-            }
+                }
             yield break;
             }
 
+        #region M:GetService(Type):Object
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <returns>A service object of type <paramref name="serviceType" />.-or- null if there is no service object of type <paramref name="serviceType" />.</returns>
+        /// <param name="serviceType">An object that specifies the type of service object to get. </param>
+        /// <filterpriority>2</filterpriority>
         public Object GetService(Type serviceType) {
             return null;
             }
+        #endregion
 
         public Boolean OnComponentChanging()
         {

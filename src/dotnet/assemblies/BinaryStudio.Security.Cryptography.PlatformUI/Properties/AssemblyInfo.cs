@@ -20,3 +20,5 @@ using System.Windows.Markup;
 [assembly: ThemeInfo(ResourceDictionaryLocation.SourceAssembly, ResourceDictionaryLocation.SourceAssembly)]
 [assembly: XmlnsPrefix("http://schemas.helix.global", "u")]
 [assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.Security.Cryptography.Controls")]
+[assembly: XmlnsDefinition("http://schemas.helix.global", "BinaryStudio.Security.Cryptography.PlatformUI.Models")]
+

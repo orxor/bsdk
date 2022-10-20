@@ -318,10 +318,10 @@
                 <RowDefinition Name="DescriptionPanelRowDefinition" Height="1*"/>
               </Grid.RowDefinitions>
               <Border Grid.Row="0" Grid.Column="0">
-                <TextBlock Text="{Binding Converter={StaticResource Resources},ConverterParameter='PropertyGridControl.Field',Mode=OneWay}"/>
+                <TextBlock Text="Field"/>
               </Border>
               <Border Grid.Row="0" Grid.Column="1">
-                <TextBlock  Text="{Binding Converter={StaticResource Resources},ConverterParameter='PropertyGridControl.Value',Mode=OneWay}"/>
+                <TextBlock  Text="Value"/>
               </Border>
               <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="1,0,0,0">
                 <ScrollViewer Style="{DynamicResource {x:Type ScrollViewer}}" Margin="-1,0,0,0" BorderThickness="0">
@@ -429,8 +429,7 @@
                                           Grid.Column="0"
                                           BorderThickness="1"
                                           BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                        <ContentPresenter Content="{Binding PaintValueImage}"
-                                                      Width="20" Height="14"/>
+                                        <ContentPresenter Content="{Binding PaintValueImage}" Width="20" Height="14"/>
                                       </Border>
                                     </Grid>
                                   </Border>

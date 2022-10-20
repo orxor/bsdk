@@ -15,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     public class X509Certificate : X509Object
         {
         private IntPtr Context;
-        private Asn1Certificate Source;
+        internal Asn1Certificate Source;
 
         public override IntPtr Handle { get { return Context; }}
         public Int32 Version       { get { return Source.Version;      }}

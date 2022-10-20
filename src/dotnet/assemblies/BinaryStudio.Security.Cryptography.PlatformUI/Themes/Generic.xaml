@@ -3,5 +3,6 @@
                     xmlns:e="clr-namespace:BinaryStudio.Security.Cryptography.Controls">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="/BinaryStudio.Security.Cryptography.PlatformUI;component/Themes/Controls/Asn1Control.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.Security.Cryptography.PlatformUI;component/Themes/Templates.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
