@@ -301,7 +301,7 @@
                 <Style TargetType="{x:Type Border}">
                   <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkDarkBrushKey}"/>
                   <Setter Property="Background"  Value="{DynamicResource ControlDarkBrushKey}"/>
-                  <Setter Property="BorderThickness" Value="1,0,1,0"/>
+                  <Setter Property="BorderThickness" Value="1,1,0,1"/>
                   <Setter Property="SnapsToDevicePixels" Value="True"/>
                 </Style>
                 <Style TargetType="{x:Type TextBlock}">
@@ -318,13 +318,15 @@
                 <RowDefinition Height="2*"/>
                 <RowDefinition Name="DescriptionPanelRowDefinition" Height="1*"/>
               </Grid.RowDefinitions>
-              <Border Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Width="{Binding RelativeSource={RelativeSource TemplatedParent},Path=LeftColumnActualWidth,Mode=OneWay}"
-                      HorizontalAlignment="Left">
-                <TextBlock Text="Field"/>
-              </Border>
-              <Border Grid.Row="0" Grid.Column="1" Margin="0,0,0,0">
-                <TextBlock Text="Value"/>
-              </Border>
+              <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+                <Border Margin="0,0,0,0" Width="{Binding RelativeSource={RelativeSource TemplatedParent},Path=LeftColumnActualWidth,Mode=OneWay}"
+                        DockPanel.Dock="Left">
+                  <TextBlock Text="Field"/>
+                </Border>
+                <Border Margin="0,0,0,0">
+                  <TextBlock Text="Value"/>
+                </Border>
+              </DockPanel>
               <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="1,0,0,0">
                 <ScrollViewer Style="{DynamicResource {x:Type ScrollViewer}}" Margin="-1,0,0,0" BorderThickness="0">
                   <Grid>
