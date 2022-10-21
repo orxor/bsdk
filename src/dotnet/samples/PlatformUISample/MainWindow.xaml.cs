@@ -26,7 +26,7 @@ namespace PlatformUISample
             }
 
         private void MainWindow_OnLoaded(Object sender, RoutedEventArgs e) {
-            Theme.Apply(Theme.Themes[0]);
+            Theme.Apply(Theme.Themes[3]);
             //Colors.ItemsSource = (new[] {
             //    Theme.ActiveBorderBrushKey,
             //    Theme.ActiveCaptionBrushKey,

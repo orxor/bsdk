@@ -41,6 +41,25 @@ namespace BinaryStudio.PlatformUI.Controls
             set { SetValue(LeftColumnWidthProperty, value); }
             }
         #endregion
+        #region P:LeftColumnActualWidth:Double
+        public static readonly DependencyProperty LeftColumnActualWidthProperty = DependencyProperty.Register("LeftColumnActualWidth", typeof(Double), typeof(PropertyGridControl), new PropertyMetadata(default(Double), OnLeftColumnActualWidthChanged));
+        private static void OnLeftColumnActualWidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is PropertyGridControl source) {
+                source.OnLeftColumnActualWidthChanged();
+                }
+            }
+
+        private void OnLeftColumnActualWidthChanged()
+            {
+            return;
+            }
+
+        public Double LeftColumnActualWidth
+            {
+            get { return (Double)GetValue(LeftColumnActualWidthProperty); }
+            set { SetValue(LeftColumnActualWidthProperty, value); }
+            }
+        #endregion
         #region P:RightColumnWidth:GridLength
         public static readonly DependencyProperty RightColumnWidthProperty = DependencyProperty.Register("RightColumnWidth", typeof(GridLength), typeof(PropertyGridControl), new PropertyMetadata(new GridLength(2.0, GridUnitType.Star)));
         public GridLength RightColumnWidth {

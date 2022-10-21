@@ -12,6 +12,7 @@
             <RowDefinition/>
           </Grid.RowDefinitions>
           <u:PropertyGridControl Grid.Row="0" SelectedObject="{Binding Properties,Mode=OneWay}" IsDescriptionPanelVisible="False"
+                                 ReadOnlyForeground="{DynamicResource ControlTextBrushKey}"
                                  Name="Host"/>
           <Border Grid.Row="1" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="1">
             <Border.Resources>

@@ -43,11 +43,14 @@
           </Grid>
           <ListBox Grid.Row="1" ItemsSource="{Binding Path=.,Mode=OneWay}"
                    VirtualizingStackPanel.IsVirtualizing="True"
-                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="ListBox">
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="ListBox"
+                   SelectedIndex="0"
+                   Background="{DynamicResource ControlBrushKey}">
             <ListBox.Resources>
               <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Static u:Theme.ListBoxItemStyleKey}}" x:Key="{x:Type ListBoxItem}">
                 <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
                 <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                <Setter Property="Background" Value="{DynamicResource ControlBrushKey}"/>
                 <Setter Property="Margin" Value="0"/>
                 <Style.Triggers>
                   <Trigger Property="IsSelected" Value="True">

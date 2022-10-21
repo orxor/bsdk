@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
-    public static class Extensions
+    public static partial class Extensions
         {
         #region M:FindDescendant({this}DependencyObject,Predicate<DependencyObject>):DependencyObject
         public static DependencyObject FindDescendant(this DependencyObject source, Predicate<DependencyObject> predicate) {

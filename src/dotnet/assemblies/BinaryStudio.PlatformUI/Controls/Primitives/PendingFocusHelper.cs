@@ -50,7 +50,7 @@ namespace BinaryStudio.PlatformUI
         public static void SetFocusOnLoad(FrameworkElement element, Action<FrameworkElement> focusAction = null)
             {
             Validate.IsNotNull(element, "element");
-            if (element.IsLoaded && Extensions.Extensions.IsConnectedToPresentationSource(element))
+            if (element.IsLoaded && Controls.Extensions.IsConnectedToPresentationSource(element))
                 {
                 PendingFocusElement = null;
                 PendingFocusAction = null;

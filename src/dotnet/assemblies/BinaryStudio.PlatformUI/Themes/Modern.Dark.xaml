@@ -30,8 +30,8 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionTextBrushKey}"                Color="#ff656565"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.InfoBrushKey}"                               Color="#fffefcc8"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.InfoTextBrushKey}"                           Color="#ff1e1e1e"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBrushKey}"                               Color="#ff1b1b1c"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBarBrushKey}"                            Color="#ff1b1b1c"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBrushKey}"                               Color="#ff3f3f46"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBarBrushKey}"                            Color="#ff3f3f46"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushKey}"                      Color="#ff3e3e40"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushKey}"                           Color="#fff1f1f1"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ScrollBarBrushKey}"                          Color="#ff3e3e42"/>

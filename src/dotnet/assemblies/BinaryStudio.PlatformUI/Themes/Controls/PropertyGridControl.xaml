@@ -1,11 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:u="clr-namespace:BinaryStudio.PlatformUI.Controls"
-                    xmlns:n="clr-namespace:BinaryStudio.PlatformUI"
+                    xmlns:o="clr-namespace:BinaryStudio.PlatformUI"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:e="clr-namespace:BinaryStudio.PlatformUI.Controls.Internal">
-  <n:DoubleConverter x:Key="DoubleConverter"/>
-  <n:ToString x:Key="ToString"/>
+  <o:DoubleConverter x:Key="DoubleConverter"/>
+  <o:ToString x:Key="ToString"/>
+  <o:CopyTo x:Key="CopyTo"/>
   
   <Style x:Key="ExpandOrCollapseToggleButtonStyle" TargetType="{x:Type ToggleButton}">
     <Setter Property="UseLayoutRounding" Value="True"/>
@@ -298,9 +299,9 @@
             <Grid>
               <Grid.Resources>
                 <Style TargetType="{x:Type Border}">
-                  <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkDarkBrushKey}"/>
                   <Setter Property="Background"  Value="{DynamicResource ControlDarkBrushKey}"/>
-                  <Setter Property="BorderThickness" Value="1,0,0,1"/>
+                  <Setter Property="BorderThickness" Value="1,0,1,0"/>
                   <Setter Property="SnapsToDevicePixels" Value="True"/>
                 </Style>
                 <Style TargetType="{x:Type TextBlock}">
@@ -317,11 +318,12 @@
                 <RowDefinition Height="2*"/>
                 <RowDefinition Name="DescriptionPanelRowDefinition" Height="1*"/>
               </Grid.RowDefinitions>
-              <Border Grid.Row="0" Grid.Column="0">
+              <Border Grid.Row="0" Grid.Column="0" Margin="0,0,0,0" Width="{Binding RelativeSource={RelativeSource TemplatedParent},Path=LeftColumnActualWidth,Mode=OneWay}"
+                      HorizontalAlignment="Left">
                 <TextBlock Text="Field"/>
               </Border>
-              <Border Grid.Row="0" Grid.Column="1">
-                <TextBlock  Text="Value"/>
+              <Border Grid.Row="0" Grid.Column="1" Margin="0,0,0,0">
+                <TextBlock Text="Value"/>
               </Border>
               <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" UseLayoutRounding="True" SnapsToDevicePixels="True" Background="Transparent" BorderThickness="1,0,0,0">
                 <ScrollViewer Style="{DynamicResource {x:Type ScrollViewer}}" Margin="-1,0,0,0" BorderThickness="0">
@@ -335,12 +337,17 @@
                         </ItemsPanelTemplate>
                       </TreeView.ItemsPanel>
                       <TreeView.Template>
-                        <ControlTemplate>
-                          <Grid>
+                        <ControlTemplate TargetType="{x:Type TreeView}">
+                          <Grid x:Name="HostGrid">
                             <Grid.ColumnDefinitions>
                               <ColumnDefinition Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type u:PropertyGridControl}},Path=LeftColumnWidth,Mode=TwoWay}"/>
                               <ColumnDefinition Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type u:PropertyGridControl}},Path=RightColumnWidth,Mode=TwoWay}"/>
                             </Grid.ColumnDefinitions>
+                            <o:BridgeReference Grid.Column="0"
+                                               HorizontalAlignment="Stretch"
+                                               u:Extensions.IsExtended="True"
+                                               Source="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(u:Extensions.ActualWidth),Mode=OneWay}"
+                                               Target="{Binding RelativeSource={RelativeSource AncestorType={x:Type u:PropertyGridControl}},Path=LeftColumnActualWidth,Mode=OneWayToSource,Converter={StaticResource CopyTo}}"/>
                             <ItemsPresenter TextBlock.Foreground="{TemplateBinding Foreground}" Grid.Column="0" Grid.ColumnSpan="2"/>
                             <GridSplitter Width="5" Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" HorizontalAlignment="Right" Background="Transparent" ShowsPreview="False" Focusable="False" ResizeDirection="Columns"/>
                           </Grid>
