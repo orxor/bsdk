@@ -2,4 +2,10 @@
   <PropertyGroup>
     <TargetFrameworks>net40;net45</TargetFrameworks>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpCompress" Version="0.24.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+  </ItemGroup>
 </Project>

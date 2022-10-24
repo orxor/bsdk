@@ -61,3 +61,7 @@
 /src/dotnet/samples/PlatformUISample/bin
 /src/dotnet/samples/PlatformUISample/obj
 /src/delphi/tests/UnitTests.BinaryStudio.Task/Task.exe
+/src/dotnet/kit/bin
+/src/dotnet/kit/obj
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/bin
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/obj

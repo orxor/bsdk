@@ -17,6 +17,11 @@
     <Resource Include="Data\Colors2.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Data\icaopkd-001-dsccrl-005181.7z">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Controls\DataGrid\DataGridTextBlock.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

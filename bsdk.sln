@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.3.32804.467
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32802.440
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.UnifiedModelingLanguage", "src\dotnet\libraries\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj", "{D3BD5FDA-0CE4-4CC9-BCC9-21CCCBEB61DC}"
 EndProject
@@ -59,7 +59,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Crypt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.CryptographicMessageSyntax", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj", "{4C6B0688-F528-41FA-A137-AF5AD15AEFEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.DataProcessing", "src\dotnet\libraries\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj", "{FABEA7BA-B007-47C0-BC51-97A8A31E1E4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DataProcessing", "src\dotnet\libraries\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj", "{FABEA7BA-B007-47C0-BC51-97A8A31E1E4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kit", "src\dotnet\kit\kit.csproj", "{103218ED-4AA1-413F-99B2-F7C9554C5EE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Security.Cryptography.Interchange", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.Interchange\BinaryStudio.Security.Cryptography.Interchange.csproj", "{4345733E-F46D-4315-9ED6-E5695078FB39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +179,14 @@ Global
 		{FABEA7BA-B007-47C0-BC51-97A8A31E1E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FABEA7BA-B007-47C0-BC51-97A8A31E1E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FABEA7BA-B007-47C0-BC51-97A8A31E1E4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{103218ED-4AA1-413F-99B2-F7C9554C5EE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{103218ED-4AA1-413F-99B2-F7C9554C5EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{103218ED-4AA1-413F-99B2-F7C9554C5EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{103218ED-4AA1-413F-99B2-F7C9554C5EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4345733E-F46D-4315-9ED6-E5695078FB39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4345733E-F46D-4315-9ED6-E5695078FB39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4345733E-F46D-4315-9ED6-E5695078FB39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4345733E-F46D-4315-9ED6-E5695078FB39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
