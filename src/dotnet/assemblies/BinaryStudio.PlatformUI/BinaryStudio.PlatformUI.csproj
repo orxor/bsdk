@@ -1,10 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net40;net45</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Brushes.cs" />
+    <Compile Remove="Controls.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Remove="BrightnessEffect.ps" />
     <None Remove="GrayscaleEffect.ps" />
@@ -32,6 +36,12 @@
   <ItemGroup>
     <Resource Include="BrightnessEffect.ps" />
     <Resource Include="GrayscaleEffect.ps" />
+    <Compile Include="Brushes.cs">
+      <DependentUpon>Theme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls.cs">
+      <DependentUpon>Theme.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
