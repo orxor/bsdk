@@ -62,8 +62,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DataProcessing", "src\dotnet\libraries\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj", "{FABEA7BA-B007-47C0-BC51-97A8A31E1E4E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kit", "src\dotnet\kit\kit.csproj", "{103218ED-4AA1-413F-99B2-F7C9554C5EE4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{376C8728-5301-4A29-B245-126DBCBE6086} = {376C8728-5301-4A29-B245-126DBCBE6086}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Security.Cryptography.Interchange", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.Interchange\BinaryStudio.Security.Cryptography.Interchange.csproj", "{4345733E-F46D-4315-9ED6-E5695078FB39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xhlp", "src\dotnet\tools\xhlp\xhlp.csproj", "{376C8728-5301-4A29-B245-126DBCBE6086}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -187,6 +192,10 @@ Global
 		{4345733E-F46D-4315-9ED6-E5695078FB39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4345733E-F46D-4315-9ED6-E5695078FB39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4345733E-F46D-4315-9ED6-E5695078FB39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{376C8728-5301-4A29-B245-126DBCBE6086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{376C8728-5301-4A29-B245-126DBCBE6086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{376C8728-5301-4A29-B245-126DBCBE6086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{376C8728-5301-4A29-B245-126DBCBE6086}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

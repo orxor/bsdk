@@ -1,6 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net40;net45</TargetFrameworks>
+    <DocumentationFile>$(OutDir)\BinaryStudio.DirectoryServices.xml</DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SharpCompress" Version="0.24.0" />

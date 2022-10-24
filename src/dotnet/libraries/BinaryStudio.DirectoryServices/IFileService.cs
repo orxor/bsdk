@@ -10,7 +10,7 @@ namespace BinaryStudio.DirectoryServices
         //Byte[] ReadAllBytes();
 
         #region M:OpenRead:Stream
-        /// <summary>Opens an this file service for reading.</summary>
+        /// <summary>Opens this file service for reading.</summary>
         /// <returns>A read-only <see cref="T:System.IO.Stream"/> for this file service content.</returns>
         Stream OpenRead();
         #endregion

@@ -11,6 +11,10 @@ namespace BinaryStudio.DirectoryServices
     public abstract class DirectoryService : IDirectoryService
         {
         #region M:GetService(Object,Type):Object
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <param name="Source">An object that host services.</param>
+        /// <param name="Service">An object that specifies the type of service object to get.</param>
+        /// <returns>A service object of type <paramref name="Service"/>.-or- <see langword="null"/> if there is no service object of type <paramref name="Service"/>.</returns>
         public static Object GetService(Object Source, Type Service)
             {
             if (Service == null) { throw new ArgumentNullException(nameof(Service)); }
@@ -70,19 +74,32 @@ namespace BinaryStudio.DirectoryServices
             }
         #endregion
         #region M:GetService<T>(Object):T
-        public static T GetService<T>(Object source)
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <typeparam name="T">An object that specifies the type of service object to get.</typeparam>
+        /// <param name="Source">An object that host services.</param>
+        /// <returns>A service object of type <cref name="T"/>.-or- <see langword="null"/> if there is no service object of type <cref name="T"/>.</returns>
+        public static T GetService<T>(Object Source)
             {
-            return (T)GetService(source, typeof(T));
+            return (T)GetService(Source, typeof(T));
             }
         #endregion
         #region M:GetService<T>(Object,{out}T):Boolean
-        public static Boolean GetService<T>(Object source, out T r)
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <typeparam name="T">An object that specifies the type of service object to get.</typeparam>
+        /// <param name="Source">An object that host services.</param>
+        /// <param name="Target">A service object of type <cref name="T"/>.-or- <see langword="null"/> if there is no service object of type <cref name="T"/>.</param>
+        /// <returns>Returns <see langword="true"/> if specified service resolved;otherwise <see langword="false"/>.</returns>
+        public static Boolean GetService<T>(Object Source, out T Target)
             {
-            r = (T)GetService(source, typeof(T));
-            return r != null;
+            Target = (T)GetService(Source, typeof(T));
+            return (Target != null);
             }
         #endregion
 
+        /// <summary>Returns the names of file services (including their paths) that match the specified search pattern in the specified directory service, using a value to determine whether to search subdirectories.</summary>
+        /// <param name="SearchPattern">The search string to match against the names of file services.</param>
+        /// <param name="SearchOption">One of the <see cref="DirectoryServiceSearchOptions"/> values that specifies whether the search operation should include all subdirectories or only the current directory service.</param>
+        /// <returns>A list containing the names of file services in the specified directory service that match the specified search pattern. File service names include the full path.</returns>
         public abstract IEnumerable<IFileService> GetFiles(String SearchPattern, DirectoryServiceSearchOptions SearchOption);
         }
     }

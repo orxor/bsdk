@@ -6,6 +6,7 @@
 *.user
 *.dcu
 *.~dpr
+*.log
 /src/dotnet/libraries/BinaryStudio.Modeling.UnifiedModelingLanguage/bin
 /src/dotnet/libraries/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
 /src/dotnet/packages/BinaryStudio.Modeling.VSShellPackage/bin
@@ -65,3 +66,6 @@
 /src/dotnet/kit/obj
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/bin
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/obj
+/help/Working
+/src/dotnet/tools/xhlp/bin
+/src/dotnet/tools/xhlp/obj

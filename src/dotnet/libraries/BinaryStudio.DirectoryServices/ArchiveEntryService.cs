@@ -16,7 +16,7 @@ namespace BinaryStudio.DirectoryServices
             FileName = source.Key;
             }
 
-        /// <summary>Opens an this file service for reading.</summary>
+        /// <summary>Opens this file service for reading.</summary>
         /// <returns>A read-only <see cref="T:System.IO.Stream"/> for this file service content.</returns>
         public Stream OpenRead() {
             return ArchiveEntry.OpenEntryStream();

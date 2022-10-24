@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net40</TargetFramework>
+  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="move /Y $(OutDir)BinaryStudio.DirectoryServices.xml $(OutDir)BinaryStudio.DirectoryServices.en-US.xml" />
+  </Target>
+</Project>
