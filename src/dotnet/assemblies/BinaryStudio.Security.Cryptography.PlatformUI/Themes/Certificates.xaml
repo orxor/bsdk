@@ -7,8 +7,8 @@
     <u:DataTemplateSelector.DefaultTemplate>
       <DataTemplate>
         <TextBox Text="{Binding Path=.,Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                 BorderThickness="0"
-                 BorderBrush="{x:Null}" Background="Transparent"/>
+                 Style="{DynamicResource {x:Static u:Theme.TextBoxStyleKey}}"
+                 BorderThickness="0" BorderBrush="{x:Null}" Background="Transparent"/>
       </DataTemplate>
     </u:DataTemplateSelector.DefaultTemplate>
     <DataTemplate DataType="{x:Type e:ERelativeDistinguishedNameSequence}">
@@ -19,8 +19,10 @@
         </Grid.RowDefinitions>
         <TextBox Grid.Row="0" Text="{Binding Path=.,Mode=OneWay}"
                  IsReadOnly="True" IsReadOnlyCaretVisible="True"
+                 Style="{DynamicResource {x:Static u:Theme.TextBoxStyleKey}}"
                  BorderThickness="0"
-                 BorderBrush="{x:Null}" Background="Transparent"/>
+                 BorderBrush="{x:Null}" Background="Transparent"
+                 Margin="0,2,0,2"/>
         <DataGrid Grid.Row="1" ItemsSource="{Binding Source}" AutoGenerateColumns="False">
           <DataGrid.Resources>
             <DataTemplate x:Key="CellTemplate">
@@ -28,7 +30,8 @@
             </DataTemplate>
             <DataTemplate x:Key="CellEditingTemplate">
               <TextBox Text="{Binding Path=.,Mode=OneWay}" IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                        Padding="0,0,0,0" BorderThickness="0" BorderBrush="{x:Null}"/>
+                       Style="{DynamicResource {x:Static u:Theme.TextBoxStyleKey}}"
+                       Padding="0,0,0,0" BorderThickness="0" BorderBrush="{x:Null}"/>
             </DataTemplate>
           </DataGrid.Resources>
           <DataGrid.Columns>

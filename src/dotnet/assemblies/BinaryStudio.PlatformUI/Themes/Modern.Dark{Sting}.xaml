@@ -16,4 +16,5 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.InfoTextBrushKey}"                           Color="#ff1e1e1e"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushKey}"                      Color="#ffcfd219"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushKey}"                           Color="#ff2d2d30"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.SelectionBrushKey}"                          Color="#fffbff1f"/>
 </ResourceDictionary>

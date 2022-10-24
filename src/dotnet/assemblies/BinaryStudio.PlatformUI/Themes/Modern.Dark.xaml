@@ -38,6 +38,7 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushKey}"                             Color="#ff252526"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushKey}"                        Color="#ff2d2d30"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushKey}"                         Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.SelectionBrushKey}"                          Color="#ff007acc"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedBrushKey}"                          Color="#ff3f3f46"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedTextBrushKey}"                      Color="#fff1f1f1"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverBrushKey}"                 Color="#ff1c97ea"/>
@@ -52,6 +53,8 @@
   <Style x:Key="{x:Type TabControl}"   TargetType="{x:Type TabControl}"   BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
   <Style x:Key="{x:Type TabItem}"      TargetType="{x:Type TabItem}"      BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
   <Style x:Key="{x:Type DataGrid}"     TargetType="{x:Type DataGrid}"     BasedOn="{StaticResource {x:Static u:Theme.DataGridStyleKey}}"/>
+  <Style x:Key="{x:Type DataGridRow}"  TargetType="{x:Type DataGridRow}"  BasedOn="{StaticResource {x:Static u:Theme.DataGridRowStyleKey}}"/>
+  <Style x:Key="{x:Type DataGridCell}" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Static u:Theme.DataGridCellStyleKey}}"/>
   <Style x:Key="{x:Type Menu}"         TargetType="{x:Type Menu}"         BasedOn="{StaticResource {x:Static u:Theme.MenuStyleKey}}"/>
   <Style x:Key="{x:Type ScrollViewer}" TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Static u:Theme.ScrollViewerStyleKey}}"/>
   <Style x:Key="{x:Type ListBox}"      TargetType="{x:Type ListBox}"      BasedOn="{StaticResource {x:Static u:Theme.ListBoxStyleKey}}"/>

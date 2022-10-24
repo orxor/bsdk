@@ -5,6 +5,7 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TabControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/DataGrid.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/ListBox.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TextBox.xaml"/>
   </ResourceDictionary.MergedDictionaries>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushKey}"                   Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushKey}"                  Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
@@ -38,6 +39,7 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushKey}"                         Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushKey}"                    Color="{DynamicResource {x:Static SystemColors.WindowFrameColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushKey}"                     Color="{DynamicResource {x:Static SystemColors.WindowTextColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.SelectionBrushKey}"                      Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedBrushKey}"                      Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedTextBrushKey}"                  Color="{DynamicResource {x:Static SystemColors.ControlTextColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverBrushKey}"             Color="{DynamicResource {x:Static SystemColors.HighlightColorKey}}"/>

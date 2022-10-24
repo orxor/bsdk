@@ -38,6 +38,7 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushKey}"                             Color="#fff5f5f5"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushKey}"                        Color="#ffeeeef2"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushKey}"                         Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.SelectionBrushKey}"                          Color="#ff0054e3"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedBrushKey}"                          Color="#fff0f0f0"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedTextBrushKey}"                      Color="#ff717171"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverBrushKey}"                 Color="#ff1c97ea"/>

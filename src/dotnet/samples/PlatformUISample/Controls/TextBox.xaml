@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="http://schemas.helix.global">
   <ControlTemplate x:Key="TextBox">
     <GroupBox Margin="5" Header="TextBox">
       <Grid>
@@ -8,6 +9,7 @@
           <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <TextBox Name="Target" Grid.Column="1" Margin="20" xml:space="preserve" IsReadOnly="True"
+                 Style="{DynamicResource {x:Static u:Theme.TextBoxStyleKey}}"
                  IsReadOnlyCaretVisible="True"
                  VerticalScrollBarVisibility="Auto"
                  HorizontalScrollBarVisibility="Auto">Call me Ishmael. Some years ago—never mind how

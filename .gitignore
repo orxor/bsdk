@@ -4,6 +4,7 @@
 
 /.vs
 *.user
+*.~dpr
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/bin
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
 /src/dotnet/packages/BinaryStudio.Modeling.VSShellPackage/bin
@@ -58,3 +59,4 @@
 /src/dotnet/samples/PEView/obj
 /src/dotnet/samples/PlatformUISample/bin
 /src/dotnet/samples/PlatformUISample/obj
+/src/delphi/tests/UnitTests.BinaryStudio.Task/Task.exe

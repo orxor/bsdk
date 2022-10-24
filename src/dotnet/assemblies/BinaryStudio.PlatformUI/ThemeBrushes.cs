@@ -39,6 +39,7 @@ namespace BinaryStudio.PlatformUI
             public static Object WindowBrushKey                  { get { return CreateInstance(ref FieldWindowBrushKey                        ,SystemColorCategory,nameof(WindowBrushKey));                  }}
             public static Object WindowFrameBrushKey             { get { return CreateInstance(ref FieldWindowFrameBrushKey                   ,SystemColorCategory,nameof(WindowFrameBrushKey));             }}
             public static Object WindowTextBrushKey              { get { return CreateInstance(ref FieldWindowTextBrushKey                    ,SystemColorCategory,nameof(WindowTextBrushKey));              }}
+            public static Object SelectionBrushKey               { get { return CreateInstance(ref FieldSelectionBrushKey                     ,SystemColorCategory,nameof(SelectionBrushKey));               }}
             public static Object TabItemUnselectedBrushKey               { get { return CreateInstance(ref FieldTabItemUnselectedBrushKey             ,SystemColorCategory,nameof(TabItemUnselectedBrushKey));               }}
             public static Object TabItemUnselectedTextBrushKey           { get { return CreateInstance(ref FieldTabItemUnselectedTextBrushKey         ,SystemColorCategory,nameof(TabItemUnselectedTextBrushKey));           }}
             public static Object TabItemUnselectedMouseOverBrushKey      { get { return CreateInstance(ref FieldTabItemUnselectedMouseOverBrushKey    ,SystemColorCategory,nameof(TabItemUnselectedMouseOverBrushKey));      }}
@@ -83,6 +84,7 @@ namespace BinaryStudio.PlatformUI
             private static Object FieldWindowBrushKey;
             private static Object FieldWindowFrameBrushKey;
             private static Object FieldWindowTextBrushKey;
+            private static Object FieldSelectionBrushKey;
             private static Object FieldTabItemUnselectedBrushKey;
             private static Object FieldTabItemUnselectedTextBrushKey;
             private static Object FieldTabItemUnselectedMouseOverBrushKey;
