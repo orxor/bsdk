@@ -4,6 +4,7 @@
 
 /.vs
 *.user
+*.dcu
 *.~dpr
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/bin
 /src/dotnet/assemblies/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
