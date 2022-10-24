@@ -4,7 +4,7 @@
     <IsPackable>false</IsPackable>    
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />

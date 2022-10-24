@@ -9,7 +9,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.Security.Cryptography.Certificates\UnitTests.BinaryStudio.Security.Cryptography.Certificates.csproj" />
   </ItemGroup>
 </Project>

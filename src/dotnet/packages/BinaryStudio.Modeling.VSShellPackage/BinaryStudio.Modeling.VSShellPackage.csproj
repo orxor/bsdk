@@ -131,23 +131,23 @@
     <Content Include="Resources\ModelBrowserToolWindowCommand.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj">
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj">
       <Project>{d3bd5fda-0ce4-4cc9-bcc9-21cccbeb61dc}</Project>
       <Name>BinaryStudio.Modeling.UnifiedModelingLanguage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj">
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj">
       <Project>{851F4AE5-62B5-40CB-BDDB-6B2B2BD7C198}</Project>
       <Name>BinaryStudio.PlatformUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj">
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj">
       <Project>{2ce1f5f0-f79b-4cbf-8f54-3d58187c1787}</Project>
       <Name>BinaryStudio.PortableExecutable.PlatformUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj">
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj">
       <Project>{0b996372-eda2-4ee2-ac3e-f7302f2080a6}</Project>
       <Name>BinaryStudio.PortableExecutable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.VSShellServices\BinaryStudio.VSShellServices.16.csproj">
+    <ProjectReference Include="..\..\libraries\BinaryStudio.VSShellServices\BinaryStudio.VSShellServices.16.csproj">
       <Project>{c16359d0-520a-41f4-91cb-df3c190434bd}</Project>
       <Name>BinaryStudio.VSShellServices.16</Name>
     </ProjectReference>

@@ -9,8 +9,8 @@ using namespace System.Globalization
 
 param
     (
-    #[String]$Source="C:\TFS\bsdk\src\dotnet\assemblies\BinaryStudio.PlatformComponents\Properties\Messages.xml",
-    #[String]$Target="C:\TFS\bsdk\src\dotnet\assemblies\BinaryStudio.PlatformComponents\Properties\Messages.mc"
+    #[String]$Source="C:\TFS\bsdk\src\dotnet\libraries\BinaryStudio.PlatformComponents\Properties\Messages.xml",
+    #[String]$Target="C:\TFS\bsdk\src\dotnet\libraries\BinaryStudio.PlatformComponents\Properties\Messages.mc"
     [String]$Source,
     [String]$Target
     )

@@ -3,63 +3,63 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.UnifiedModelingLanguage", "src\dotnet\assemblies\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj", "{D3BD5FDA-0CE4-4CC9-BCC9-21CCCBEB61DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.UnifiedModelingLanguage", "src\dotnet\libraries\BinaryStudio.Modeling.UnifiedModelingLanguage\BinaryStudio.Modeling.UnifiedModelingLanguage.csproj", "{D3BD5FDA-0CE4-4CC9-BCC9-21CCCBEB61DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.Modeling.VSShellPackage", "src\dotnet\packages\BinaryStudio.Modeling.VSShellPackage\BinaryStudio.Modeling.VSShellPackage.csproj", "{7994C105-8A6E-4DA9-88F1-D1CD867A9EAA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.PlatformUI", "src\dotnet\assemblies\BinaryStudio.Modeling.PlatformUI\BinaryStudio.Modeling.PlatformUI.csproj", "{CF1F7531-1568-40B1-8E2B-59D8829EC6CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling.PlatformUI", "src\dotnet\libraries\BinaryStudio.Modeling.PlatformUI\BinaryStudio.Modeling.PlatformUI.csproj", "{CF1F7531-1568-40B1-8E2B-59D8829EC6CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PlatformUI", "src\dotnet\assemblies\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj", "{851F4AE5-62B5-40CB-BDDB-6B2B2BD7C198}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PlatformUI", "src\dotnet\libraries\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj", "{851F4AE5-62B5-40CB-BDDB-6B2B2BD7C198}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling", "src\dotnet\assemblies\BinaryStudio.Modeling\BinaryStudio.Modeling.csproj", "{9B256AA9-D8A8-4B62-A5EA-4FE375505685}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Modeling", "src\dotnet\libraries\BinaryStudio.Modeling\BinaryStudio.Modeling.csproj", "{9B256AA9-D8A8-4B62-A5EA-4FE375505685}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XYViewportSample", "src\dotnet\samples\XYViewportSample\XYViewportSample.csproj", "{78E586B8-1BB9-4A72-9441-B165FB2030C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DiagnosticServices", "src\dotnet\assemblies\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj", "{C95424F3-2787-497C-8EB7-755F0278C86D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DiagnosticServices", "src\dotnet\libraries\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj", "{C95424F3-2787-497C-8EB7-755F0278C86D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PlatformComponents", "src\dotnet\assemblies\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj", "{FFA2A274-DACF-4B62-99FC-8EE7CF15AFCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PlatformComponents", "src\dotnet\libraries\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj", "{FFA2A274-DACF-4B62-99FC-8EE7CF15AFCE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{23BC9A12-C1DC-4C1C-A799-0AF200780D9C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.PlatformComponents", "src\dotnet\tests\UnitTests.BinaryStudio.PlatformComponents\UnitTests.BinaryStudio.PlatformComponents.csproj", "{EB798EE4-6253-4769-A733-07144EFF94BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PortableExecutable", "src\dotnet\assemblies\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj", "{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PortableExecutable", "src\dotnet\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj", "{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.IO", "src\dotnet\assemblies\BinaryStudio.IO\BinaryStudio.IO.csproj", "{0BAFB00A-AA45-4200-8C45-B4311BE109DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.IO", "src\dotnet\libraries\BinaryStudio.IO\BinaryStudio.IO.csproj", "{0BAFB00A-AA45-4200-8C45-B4311BE109DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BDAD0FA5-BBDF-4F6B-B117-4A222B60CB83}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DllResources", "src\dotnet\samples\DllResources\DllResources.csproj", "{77C459EC-225F-47BF-ADFD-0ABC4A451CAB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Serialization", "src\dotnet\assemblies\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj", "{A565512C-E636-41BF-9FCB-793D4133B73F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Serialization", "src\dotnet\libraries\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj", "{A565512C-E636-41BF-9FCB-793D4133B73F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HResultSample", "src\dotnet\samples\HResultSample\HResultSample.csproj", "{CB2A778D-C4F7-47DF-8F1C-55E59B22F2F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.VSShellServices.16", "src\dotnet\assemblies\BinaryStudio.VSShellServices\BinaryStudio.VSShellServices.16.csproj", "{C16359D0-520A-41F4-91CB-DF3C190434BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.VSShellServices.16", "src\dotnet\libraries\BinaryStudio.VSShellServices\BinaryStudio.VSShellServices.16.csproj", "{C16359D0-520A-41F4-91CB-DF3C190434BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PortableExecutable.PlatformUI", "src\dotnet\assemblies\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj", "{2CE1F5F0-F79B-4CBF-8F54-3D58187C1787}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PortableExecutable.PlatformUI", "src\dotnet\libraries\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj", "{2CE1F5F0-F79B-4CBF-8F54-3D58187C1787}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PEView", "src\dotnet\samples\PEView\PEView.csproj", "{6FF8B5E4-B68D-4CD1-BCC4-6BDDC5A6B99D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlatformUISample", "src\dotnet\samples\PlatformUISample\PlatformUISample.csproj", "{7B35F5C5-1CCD-43C5-B3A1-F885625D80DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.AbstractSyntaxNotation", "src\dotnet\assemblies\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj", "{DE9B959E-C5E1-4D74-8EEF-2C831EF9B464}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.AbstractSyntaxNotation", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj", "{DE9B959E-C5E1-4D74-8EEF-2C831EF9B464}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.Certificates", "src\dotnet\assemblies\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj", "{2CA08DCF-0135-4607-B940-AF65BD4A3473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.Certificates", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj", "{2CA08DCF-0135-4607-B940-AF65BD4A3473}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography", "src\dotnet\assemblies\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj", "{9D80A974-3E3C-44BF-AA94-EB361C491278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography", "src\dotnet\libraries\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj", "{9D80A974-3E3C-44BF-AA94-EB361C491278}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.Security.Cryptography.Certificates", "src\dotnet\tests\UnitTests.BinaryStudio.Security.Cryptography.Certificates\UnitTests.BinaryStudio.Security.Cryptography.Certificates.csproj", "{9CEBE5EF-3845-4DBF-8058-AD9E0401B016}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.Task", "src\dotnet\tests\UnitTests.BinaryStudio.Task\UnitTests.BinaryStudio.Task.csproj", "{397120FD-4B52-4D60-9E67-448E8EFE4FAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DirectoryServices", "src\dotnet\assemblies\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj", "{FD3581D0-72D2-4403-8250-3B1D00BD8465}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DirectoryServices", "src\dotnet\libraries\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj", "{FD3581D0-72D2-4403-8250-3B1D00BD8465}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.PlatformUI", "src\dotnet\assemblies\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj", "{3FE0D8D2-AF2E-4510-B81E-230D325147F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.PlatformUI", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj", "{3FE0D8D2-AF2E-4510-B81E-230D325147F6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.CryptographicMessageSyntax", "src\dotnet\assemblies\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj", "{4C6B0688-F528-41FA-A137-AF5AD15AEFEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.CryptographicMessageSyntax", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj", "{4C6B0688-F528-41FA-A137-AF5AD15AEFEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.DataProcessing", "src\dotnet\assemblies\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj", "{FABEA7BA-B007-47C0-BC51-97A8A31E1E4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryStudio.DataProcessing", "src\dotnet\libraries\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj", "{FABEA7BA-B007-47C0-BC51-97A8A31E1E4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

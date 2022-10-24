@@ -4,6 +4,6 @@
     <TargetFrameworks>net40;net45</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
   </ItemGroup>
 </Project>

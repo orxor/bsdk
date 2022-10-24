@@ -4,6 +4,6 @@
     <TargetFrameworks>net45</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\assemblies\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
   </ItemGroup>
 </Project>
