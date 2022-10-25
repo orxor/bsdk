@@ -15,13 +15,10 @@ namespace BinaryStudio.DirectoryServices
             Archive = archive;
             }
 
-        public override IEnumerable<IFileService> GetFiles(String SearchPattern, DirectoryServiceSearchOptions SearchOption) {
-            SearchPattern = SearchPattern ?? "*.*";
+        public override IEnumerable<IFileService> GetFiles() {
             foreach (var entry in Archive.Entries) {
                 if (!entry.IsDirectory) {
-                    if (PathUtils.IsMatch(SearchPattern, entry.Key)) {
-                        yield return new ArchiveEntryService(FileName, entry);
-                        }
+                    yield return new ArchiveEntryService(FileName, entry);
                     }
                 }
             }

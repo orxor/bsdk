@@ -1,26 +1,27 @@
 ﻿using System;
 using System.IO;
-using SharpCompress.Archives;
+using BinaryStudio.IO;
 
 namespace BinaryStudio.DirectoryServices
     {
-    internal class ArchiveEntryService : IFileService
+    internal class LocalFileService : IFileService
         {
-        public IArchiveEntry ArchiveEntry { get; }
         public String FileName { get; }
         public String FullName { get; }
 
-        public ArchiveEntryService(String filename, IArchiveEntry source) {
-            ArchiveEntry = source;
-            FullName = Path.Combine(filename, source.Key);
-            FileName = source.Key;
+        public LocalFileService(String filename) {
+            FullName = filename;
+            FileName = Path.GetFileName(filename);
             }
 
+        #region M:OpenRead:Stream
         /// <summary>Opens this file service for reading.</summary>
         /// <returns>A read-only <see cref="T:System.IO.Stream"/> for this file service content.</returns>
-        public Stream OpenRead() {
-            return ArchiveEntry.OpenEntryStream();
+        public Stream OpenRead()
+            {
+            return new ReadOnlyFileMappingStream(new FileMapping(FullName));
             }
+        #endregion
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>

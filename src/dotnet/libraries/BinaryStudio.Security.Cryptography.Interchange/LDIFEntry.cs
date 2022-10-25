@@ -18,6 +18,9 @@ namespace BinaryStudio.Security.Cryptography.Interchange
 
         public static readonly LDIFEntry Empty = new LDIFEntry();
 
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        /// <filterpriority>2</filterpriority>
         public override String ToString()
             {
             var r = new StringBuilder();

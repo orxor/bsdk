@@ -3,11 +3,14 @@
     <TargetFrameworks>net40;net45</TargetFrameworks>
     <DocumentationFile>$(OutDir)\BinaryStudio.DirectoryServices.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SharpCompress" Version="0.24.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
     <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
   </ItemGroup>
 </Project>

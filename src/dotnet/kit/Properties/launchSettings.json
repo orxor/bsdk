@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "kit": {
+      "commandName": "Project",
+      "commandLineArgs": "input:C:\\TFS\\icao\\*.crl containers=*.rar;*.7z"
+    }
+  }
+}

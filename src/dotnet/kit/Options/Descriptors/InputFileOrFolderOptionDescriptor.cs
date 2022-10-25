@@ -35,18 +35,18 @@ namespace Options.Descriptors
                                 value.Clear();
                                 }
                                 break;
-                            case ';':
-                                {
-                                if (flags == 1) {
-                                    value.Append(c);
-                                    break;
-                                    }
-                                if (value.Length > 0) {
-                                    values.Add(value.ToString());
-                                    value.Clear();
-                                    }
-                                }
-                                break;
+                            //case '$':
+                            //    {
+                            //    if (flags == 1) {
+                            //        value.Append(c);
+                            //        break;
+                            //        }
+                            //    if (value.Length > 0) {
+                            //        values.Add(value.ToString());
+                            //        value.Clear();
+                            //        }
+                            //    }
+                            //    break;
                             default:
                                 {
                                 value.Append(c);

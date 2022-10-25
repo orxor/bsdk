@@ -43,12 +43,10 @@ namespace BinaryStudio.Security.Cryptography.Interchange
             return r;
             }
 
-        public IEnumerable<IFileService> GetFiles(String searchpattern, DirectoryServiceSearchOptions searchoption) {
+        public IEnumerable<IFileService> GetFiles() {
             foreach (var entry in Entries) {
                 if (entry.IsFile) {
-                    if (PathUtils.IsMatch(searchpattern, entry.FileName)) {
-                        yield return entry;
-                        }
+                    yield return entry;
                     }
                 }
             }

@@ -31,6 +31,7 @@ public class LocalClient : ILocalClient
             if (!HasOption(options, typeof(PinCodeRequestType)))  { options.Add(new PinCodeRequestType(PinCodeRequestTypeKind.Default)); }
             if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
             if (!HasOption(options, typeof(DateTimeOption)))      { options.Add(new DateTimeOption(DateTime.Now));                       }
+            if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new FileOperation(options); }
             operation.Value.ValidatePermission();
             var trace = options.OfType<TraceOption>().FirstOrDefault()?.Values;
             if ((trace != null) && trace.Any(i => String.Equals(i, "suspend",StringComparison.OrdinalIgnoreCase))) {

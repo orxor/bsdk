@@ -115,6 +115,14 @@ namespace BinaryStudio.IO
             Length = length;
             }
 
+        public ReadOnlyFileMappingStream(FileMapping mapping)
+            {
+            if (mapping == null) { throw new ArgumentNullException(nameof(mapping)); }
+            this.mapping = mapping;
+            Offset = 0;
+            Length = mapping.Size;
+            }
+
         internal ReadOnlyFileMappingStream(FileMapping mapping, Int64 offset, Int64 length)
             {
             if (mapping == null) { throw new ArgumentNullException(nameof(mapping)); }

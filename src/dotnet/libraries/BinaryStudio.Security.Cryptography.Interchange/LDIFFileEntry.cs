@@ -199,6 +199,8 @@ namespace BinaryStudio.Security.Cryptography.Interchange
             throw new NotSupportedException();
             }
 
+        /// <summary>Opens this file service for reading.</summary>
+        /// <returns>A read-only <see cref="T:System.IO.Stream"/> for this file service content.</returns>
         public Stream OpenRead()
             {
             return new MemoryStream(ReadAllBytes());

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Text;
+using BinaryStudio.PlatformComponents;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Archives.SevenZip;
 using SharpCompress.Archives.Zip;
@@ -21,52 +23,54 @@ namespace BinaryStudio.DirectoryServices
             if (Source == null) { return null; }
             try
                 {
+                if (Source.GetType() == Service) { return Source; }
+                #region {IDirectoryService}
                 if (Service == typeof(IDirectoryService)) {
-                    if (Source is IDirectoryService folder) { return folder; }
-                    if (Source is Uri uri) {
-                        if (uri.Scheme == "file") {
-                            if (File.Exists(uri.LocalPath)) {
-                                switch (Path.GetExtension(uri.LocalPath).ToLower()) {
-                                    case ".rar": { return new ArchiveService(uri.LocalPath, RarArchive.Open(uri.LocalPath));      }
-                                    case ".jar":
-                                    case ".zip": { return new ArchiveService(uri.LocalPath, ZipArchive.Open(uri.LocalPath));      }
-                                    case ".7z" : { return new ArchiveService(uri.LocalPath, SevenZipArchive.Open(uri.LocalPath)); }
-                                    default:
-                                        {
-                                        return null;
-                                        }
-                                    }
+                    if (Source is Uri Uri) {
+                        switch (Uri.Scheme) {
+                            case "folder": { return new LocalFolderService(Uri.LocalPath); }
+                            case "file"  : { return GetService<IDirectoryService>(GetService<IFileService>(Source)); }
+                            default:
+                                {
+                                throw new NotSupportedException();
                                 }
                             }
                         }
-                    else if (Source is String StringValue) {
-                        if (StringValue.StartsWith("file://")) { StringValue = StringValue.Substring(7); }
-                        if (File.Exists(StringValue)) {
-                            switch (Path.GetExtension(StringValue).ToLower()) {
-                                case ".rar": { return new ArchiveService(StringValue, RarArchive.Open(StringValue));      }
-                                case ".jar":
-                                case ".zip": { return new ArchiveService(StringValue, ZipArchive.Open(StringValue));      }
-                                case ".7z" : { return new ArchiveService(StringValue, SevenZipArchive.Open(StringValue)); }
-                                default:
-                                    {
-                                    return null;
-                                    }
+                    if (Source is IFileService FileService) {
+                        switch (Path.GetExtension(FileService.FileName).ToLowerInvariant()) {
+                            case ".rar": { return new ArchiveService(FileService.FullName, RarArchive.Open(FileService.OpenRead()));      }
+                            case ".jar": { return new ArchiveService(FileService.FullName, ZipArchive.Open(FileService.OpenRead()));      }
+                            case ".zip": { return new ArchiveService(FileService.FullName, ZipArchive.Open(FileService.OpenRead()));      }
+                            case ".7z" : { return new ArchiveService(FileService.FullName, SevenZipArchive.Open(FileService.OpenRead())); }
+                            default:
+                                {
+                                throw new NotSupportedException();
+                                }
+                            }
+                        }
+                    throw new NotSupportedException();
+                    }
+                #endregion
+                #region {IFileService}
+                if (Service == typeof(IFileService)) {
+                    if (Source is Uri Uri) {
+                        switch (Uri.Scheme) {
+                            case "file"  : { return new LocalFileService(Uri.LocalPath); }
+                            default:
+                                {
+                                throw new NotSupportedException();
                                 }
                             }
                         }
                     }
+                #endregion
                 }
             catch(Exception e)
                 {
                 e.Data["Service"] = Service.FullName;
-                if (Source is ISerializable)
-                    {
-                    e.Data["Source"] = Source;
-                    }
-                else
-                    {
-                    e.Data["Source"] = Source.ToString();
-                    }
+                e.Data["Source"] = (Source is ISerializable)
+                    ? Source
+                    : Source.ToString();
                 throw;
                 }
             if (Service == Source.GetType()) { return Source; }
@@ -95,11 +99,36 @@ namespace BinaryStudio.DirectoryServices
             return (Target != null);
             }
         #endregion
+        #region M:GetFiles:IEnumerable<IFileService>
+        /// <summary>Returns the file services (including their paths) in the directory service.</summary>
+        /// <returns>A list of file services.</returns>
+        public abstract IEnumerable<IFileService> GetFiles();
+        #endregion
 
-        /// <summary>Returns the names of file services (including their paths) that match the specified search pattern in the specified directory service, using a value to determine whether to search subdirectories.</summary>
-        /// <param name="SearchPattern">The search string to match against the names of file services.</param>
-        /// <param name="SearchOption">One of the <see cref="DirectoryServiceSearchOptions"/> values that specifies whether the search operation should include all subdirectories or only the current directory service.</param>
-        /// <returns>A list containing the names of file services in the specified directory service that match the specified search pattern. File service names include the full path.</returns>
-        public abstract IEnumerable<IFileService> GetFiles(String SearchPattern, DirectoryServiceSearchOptions SearchOption);
+        public static IEnumerable<IFileService> GetFiles(IDirectoryService Service,String SearchPattern,String ContainerPattern) {
+            if (Service == null) { yield break; }
+            if (SearchPattern == null) { throw new ArgumentNullException(nameof(SearchPattern)); }
+            ContainerPattern = ContainerPattern ?? String.Empty;
+            foreach (var FileService in GetFiles(Service,SearchPattern,ContainerPattern.Split(';'))) {
+                yield return FileService;
+                }
+            }
+
+        public static IEnumerable<IFileService> GetFiles(IDirectoryService Service,String SearchPattern,IList<String> ContainerPatterns) {
+            if (Service == null) { yield break; }
+            if (SearchPattern == null) { throw new ArgumentNullException(nameof(SearchPattern)); }
+            ContainerPatterns = ContainerPatterns ?? EmptyArray<String>.Value;
+            foreach (var FileService in Service.GetFiles()) {
+                if (PathUtils.IsMatch(SearchPattern,FileService.FullName)) { yield return FileService; }
+                if (PathUtils.IsMatch(ContainerPatterns,FileService.FullName)) {
+                    var service = GetService<IDirectoryService>(FileService);
+                    if (service != null) {
+                        foreach (var NestedFileService in GetFiles(service,SearchPattern,ContainerPatterns)) {
+                            yield return NestedFileService;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }

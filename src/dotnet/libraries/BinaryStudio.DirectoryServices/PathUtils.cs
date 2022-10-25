@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
@@ -30,16 +32,30 @@ namespace BinaryStudio.DirectoryServices
 
         public static Boolean IsMatch(String pattern, String filename)
             {
-            if ((pattern == "*.*") || (pattern == "*")) { return true; }
-            var pD = Path.GetDirectoryName(pattern);
-            var pF = Path.GetFileNameWithoutExtension(pattern);
-            var pE = Path.GetExtension(pattern);
-            var iD = Path.GetDirectoryName(filename);
-            var iF = Path.GetFileNameWithoutExtension(filename);
-            var iE = Path.GetExtension(filename);
-            return IsMatchPart(pD,iD)
-                && IsMatchPart(pE,iE)
-                && IsMatchPart(pF,iF);
+            try
+                {
+                if ((pattern == "*.*") || (pattern == "*")) { return true; }
+                var pD = Path.GetDirectoryName(pattern);
+                var pF = Path.GetFileNameWithoutExtension(pattern);
+                var pE = Path.GetExtension(pattern);
+                var iD = Path.GetDirectoryName(filename);
+                var iF = Path.GetFileNameWithoutExtension(filename);
+                var iE = Path.GetExtension(filename);
+                return IsMatchPart(pD,iD)
+                    && IsMatchPart(pE,iE)
+                    && IsMatchPart(pF,iF);
+                }
+            catch (Exception e)
+                {
+                e.Data["Pattern"] = pattern;
+                e.Data["FileName"] = filename;
+                throw;
+                }
+            }
+
+        public static Boolean IsMatch(IList<String> patterns, String filename) {
+            if (patterns == null) { throw new ArgumentNullException(nameof(patterns)); }
+            return patterns.Any(pattern => IsMatch(pattern, filename));
             }
 
         /// <summary>

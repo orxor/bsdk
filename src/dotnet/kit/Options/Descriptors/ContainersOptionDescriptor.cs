@@ -3,16 +3,16 @@ using System.IO;
 
 namespace Options.Descriptors
     {
-    internal class FilterOptionDescriptor : OptionDescriptor
+    internal class ContainersOptionDescriptor : OptionDescriptor
         {
-        public override String OptionName { get { return "filter"; }}
+        public override String OptionName { get { return "containers"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;
             if (!String.IsNullOrWhiteSpace(source)) {
                 source = source.Trim();
-                if (source.StartsWith("filter:")) {
-                    option = new FilterOption(source.Substring(7).Trim());
+                if (source.StartsWith("containers:")) {
+                    option = new ContainersOption(source.Substring(11).Trim().Split(';'));
                     return true;
                     }
                 }
@@ -21,7 +21,7 @@ namespace Options.Descriptors
 
         public override void Usage(TextWriter output)
             {
-            output.Write("filter:{value}");
+            output.Write("containers:{value}");
             }
         }
     }
