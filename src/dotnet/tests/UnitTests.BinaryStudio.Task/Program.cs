@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using BinaryStudio.DiagnosticServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UnitTests.BinaryStudio.PortableExecutable;
 using UnitTests.BinaryStudio.Security.Cryptography.Certificates;
 
 namespace UnitTests.BinaryStudio.Task
@@ -11,7 +12,7 @@ namespace UnitTests.BinaryStudio.Task
         {
         private static void Main(string[] args)
             {
-            Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.JsonS));
+            Execute(typeof(MZMetadataObjectT),nameof(MZMetadataObjectT.JsonS));
             }
 
         #region M:Execute(Action)

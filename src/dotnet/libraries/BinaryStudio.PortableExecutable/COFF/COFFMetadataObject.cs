@@ -7,13 +7,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
-using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable
     {
-    public class CommonObjectFile : MetadataObject
+    public class COFFMetadataObject : MetadataObject
         {
         private const Int32 IMAGE_NT_OPTIONAL_HDR32_MAGIC = 0x10b;
         private const Int32 IMAGE_NT_OPTIONAL_HDR64_MAGIC = 0x20b;
@@ -30,7 +30,7 @@ namespace BinaryStudio.PortableExecutable
         public IList<ResourceDescriptor> Resources { get;private set; }
         public CultureInfo Language { get;private set; }
 
-        internal CommonObjectFile(MetadataScope scope, MetadataObjectIdentity identity)
+        internal COFFMetadataObject(MetadataScope scope, MetadataObjectIdentity identity)
             : base(scope, identity)
             {
             IgnoreOptionalHeaderSize = true;
@@ -65,27 +65,27 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
         /// <summary>Loads COFF content from specified sources.</summary>
-        /// <param name="mapping">Base address of file.</param>
-        /// <param name="source">COFF header(<see cref="IMAGE_FILE_HEADER"/>)</param>
+        /// <param name="Base">Base address of file.</param>
+        /// <param name="ImageFileHeader">COFF header(<see cref="IMAGE_FILE_HEADER"/>)</param>
         /// <param name="size">Length of content.</param>
-        protected unsafe void Load(Byte* mapping, IMAGE_FILE_HEADER* source, Int64 size) {
+        protected unsafe void Load(Byte* Base, IMAGE_FILE_HEADER* ImageFileHeader, Int64 size) {
             if (size > Marshal.SizeOf(typeof(IMAGE_FILE_HEADER))) {
-                if (Enum.IsDefined(typeof(IMAGE_FILE_MACHINE), source->Machine)) {
-                    var machine = source->Machine;
-                    var r = (Byte*)(source + 1);
+                if (Enum.IsDefined(typeof(IMAGE_FILE_MACHINE), ImageFileHeader->Machine)) {
+                    var machine = ImageFileHeader->Machine;
+                    var r = (Byte*)(ImageFileHeader + 1);
                     IMAGE_DATA_DIRECTORY*[] directories = null;
-                    if ((source->SizeOfOptionalHeader > 0) && !IgnoreOptionalHeaderSize) {
+                    if ((ImageFileHeader->SizeOfOptionalHeader > 0) && !IgnoreOptionalHeaderSize) {
                         var magic = *(UInt16*)r;
-                        if ((magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) && (source->SizeOfOptionalHeader == (sizeof(IMAGE_OPTIONAL_HEADER32) + sizeof(IMAGE_DATA_DIRECTORY)*IMAGE_NUMBEROF_DIRECTORY_ENTRIES)))   { directories = Load((IMAGE_OPTIONAL_HEADER32*)r, size); }
-                        if ((magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC) && (source->SizeOfOptionalHeader == (sizeof(IMAGE_OPTIONAL_HEADER64) + sizeof(IMAGE_DATA_DIRECTORY)*IMAGE_NUMBEROF_DIRECTORY_ENTRIES)))   { directories = Load((IMAGE_OPTIONAL_HEADER64*)r, size); Flags |= ImageFlags.Is64Bit; }
-                        if ((magic == IMAGE_ROM_OPTIONAL_HDR_MAGIC)  && (source->SizeOfOptionalHeader == (sizeof(IMAGE_ROM_OPTIONAL_HEADER)))) { directories = Load((IMAGE_ROM_OPTIONAL_HEADER*)r, size); }
-                        r += source->SizeOfOptionalHeader;
+                        if ((magic == IMAGE_NT_OPTIONAL_HDR32_MAGIC) && (ImageFileHeader->SizeOfOptionalHeader == (sizeof(IMAGE_OPTIONAL_HEADER32) + sizeof(IMAGE_DATA_DIRECTORY)*IMAGE_NUMBEROF_DIRECTORY_ENTRIES)))   { directories = Load((IMAGE_OPTIONAL_HEADER32*)r, size); }
+                        if ((magic == IMAGE_NT_OPTIONAL_HDR64_MAGIC) && (ImageFileHeader->SizeOfOptionalHeader == (sizeof(IMAGE_OPTIONAL_HEADER64) + sizeof(IMAGE_DATA_DIRECTORY)*IMAGE_NUMBEROF_DIRECTORY_ENTRIES)))   { directories = Load((IMAGE_OPTIONAL_HEADER64*)r, size); Flags |= ImageFlags.Is64Bit; }
+                        if ((magic == IMAGE_ROM_OPTIONAL_HDR_MAGIC)  && (ImageFileHeader->SizeOfOptionalHeader == (sizeof(IMAGE_ROM_OPTIONAL_HEADER)))) { directories = Load((IMAGE_ROM_OPTIONAL_HEADER*)r, size); }
+                        r += ImageFileHeader->SizeOfOptionalHeader;
                         }
                     var sections = (IMAGE_SECTION_HEADER*)r;
                     var rvami = new RVA((virtualaddress)=>{
-                        for (var i = 0; i < source->NumberOfSections; ++i) {
+                        for (var i = 0; i < ImageFileHeader->NumberOfSections; ++i) {
                             if ((sections[i].VirtualAddress <= virtualaddress) && (virtualaddress <= (sections[i].VirtualAddress + sections[i].VirtualSize))) {
-                                return mapping
+                                return Base
                                     + (Int64)(sections[i].PointerToRawData
                                     - sections[i].VirtualAddress + virtualaddress);
                                 }
@@ -93,15 +93,15 @@ namespace BinaryStudio.PortableExecutable
                         return null;
                         });
                     #if DEBUG
-                    for (var i = 0; i < source->NumberOfSections; ++i) {
+                    for (var i = 0; i < ImageFileHeader->NumberOfSections; ++i) {
                         Debug.Print("section:\"{0}\":{1:X8}:{2:X8}",
                             sections[i],
                             sections[i].VirtualAddress,
                             sections[i].VirtualAddress + sections[i].VirtualSize);
                         }
                     #endif
-                    if ((directories != null) && (source->NumberOfSections > 0)) {
-                        var sz = source->NumberOfSections;
+                    if ((directories != null) && (ImageFileHeader->NumberOfSections > 0)) {
+                        var sz = ImageFileHeader->NumberOfSections;
                         var entries = new List<Tuple<IntPtr,IntPtr,IMAGE_DIRECTORY_ENTRY>>();
                         for (var i = 0; i < directories.Length; i++) {
                             if (directories[i]->Size > 0) {
@@ -120,7 +120,7 @@ namespace BinaryStudio.PortableExecutable
                             }
 
                         foreach(var i in entries) {
-                            Load(mapping,
+                            Load(Base,
                                 (IMAGE_DATA_DIRECTORY*)i.Item1.ToPointer(),
                                 (IMAGE_SECTION_HEADER*)i.Item2.ToPointer(),
                                 i.Item3, machine, rvami);
@@ -161,15 +161,16 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
         #region M:Load(Byte*,IMAGE_DATA_DIRECTORY,IMAGE_SECTION_HEADER,IMAGE_DIRECTORY_ENTRY,IMAGE_FILE_MACHINE,RVA)
-        private unsafe void Load(Byte* source, IMAGE_DATA_DIRECTORY* directory, IMAGE_SECTION_HEADER* section, IMAGE_DIRECTORY_ENTRY index, IMAGE_FILE_MACHINE machine, RVA rvami) {
-            var address = source + (Int64)section->PointerToRawData - (Int64)section->VirtualAddress;
+        private unsafe void Load(Byte* Base, IMAGE_DATA_DIRECTORY* ImageDataDirectory, IMAGE_SECTION_HEADER* ImageSectionHeader, IMAGE_DIRECTORY_ENTRY index, IMAGE_FILE_MACHINE machine, RVA rvami) {
+            var address = Base + (Int64)ImageSectionHeader->PointerToRawData - (Int64)ImageSectionHeader->VirtualAddress;
             switch (index) {
-                case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_IMPORT:    { Load(address, (IMAGE_IMPORT_DIRECTORY*)(address + directory->VirtualAddress));    } break;
-                case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_EXCEPTION: { Load(address, (IMAGE_RUNTIME_FUNCTION_ENTRY*)(address + directory->VirtualAddress), directory->Size, machine, rvami); } break;
-                case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_EXPORT:    { Load(address, (IMAGE_EXPORT_DIRECTORY*)(address + directory->VirtualAddress), section); } break;
+                case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_IMPORT:    { Load(Base,address,ImageSectionHeader,(IMAGE_IMPORT_DIRECTORY*)(address + ImageDataDirectory->VirtualAddress));    } break;
+                case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_DEBUG:     { Load(Base,address,ImageSectionHeader,ImageDataDirectory,(IMAGE_DEBUG_DIRECTORY*)(address + ImageDataDirectory->VirtualAddress));    } break;
+                case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_EXCEPTION: { Load(address, (IMAGE_RUNTIME_FUNCTION_ENTRY*)(address + ImageDataDirectory->VirtualAddress), ImageDataDirectory->Size, machine, rvami); } break;
+                case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_EXPORT:    { Load(address, (IMAGE_EXPORT_DIRECTORY*)(address + ImageDataDirectory->VirtualAddress), ImageSectionHeader); } break;
                 case IMAGE_DIRECTORY_ENTRY.IMAGE_DIRECTORY_ENTRY_RESOURCE:
                     {
-                    var r = Load(source, address + (Int64)directory->VirtualAddress, (IMAGE_RESOURCE_DIRECTORY*)(address + directory->VirtualAddress), section, null);
+                    var r = Load(Base, address + (Int64)ImageDataDirectory->VirtualAddress, (IMAGE_RESOURCE_DIRECTORY*)(address + ImageDataDirectory->VirtualAddress), ImageSectionHeader, null);
                     if (r != null) {
                         var descriptor = r.FirstOrDefault(i => i.Identifier.Identifier == (Int32)IMAGE_RESOURCE_TYPE.RT_STRING);
                         if (descriptor != null) {
@@ -194,16 +195,62 @@ namespace BinaryStudio.PortableExecutable
                         }
                     }
                     break;
+                default:
+                    {
+
+                    }
+                    break;
+                }
+            }
+        #endregion
+        #region M:Load(Byte*,IMAGE_SECTION_HEADER,IMAGE_DEBUG_DIRECTORY)
+        private unsafe void Load(Byte* Base,Byte* VirtualAddress,IMAGE_SECTION_HEADER* ImageSectionHeader,IMAGE_DATA_DIRECTORY* ImageDataDirectory,IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory) {
+            if (ImageDebugDirectory == null) { throw new ArgumentNullException(nameof(ImageDebugDirectory)); }
+            switch (ImageDebugDirectory->Type) {
+                #region {IMAGE_DEBUG_TYPE_UNKNOWN}
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_UNKNOWN:
+                    {
+                    Exception e;
+                    if (ImageDebugDirectory->SizeOfData > sizeof(TD32FileSignature)) {
+                        var status = TD32DebugDirectoryLoader.IsTD32(VirtualAddress,ImageDebugDirectory)
+                                ? (new TD32DebugDirectoryLoader()).Load(out e, VirtualAddress,ImageDebugDirectory,ImageDataDirectory->Size)
+                                : (new COFFDebugDirectoryLoader()).Load(out e, VirtualAddress,ImageDebugDirectory,ImageDataDirectory->Size % sizeof(IMAGE_DEBUG_DIRECTORY));
+                        if (e != null)
+                            {
+                            Debug.Print($"Handled Exception:\n{Exceptions.ToString(e)}");
+                            }
+                        }
+                    }
+                    break;
+                #endregion
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_COFF: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_CODEVIEW: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_FPO: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_MISC: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_EXCEPTION: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_FIXUP: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_OMAP_TO_SRC: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_OMAP_FROM_SRC: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_BORLAND: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_RESERVED10: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_CLSID: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_VC_FEATURE: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_POGO: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_ILTCG: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_MPX: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_REPRO: break;
+                case IMAGE_DEBUG_TYPE.IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS: break;
+                default: throw new ArgumentOutOfRangeException();
                 }
             }
         #endregion
         #region M:Load(Byte*,IMAGE_IMPORT_DIRECTORY*)
-        private unsafe void Load(Byte* address, IMAGE_IMPORT_DIRECTORY* source) {
+        private unsafe void Load(Byte* Base,Byte* address, IMAGE_SECTION_HEADER* ImageSectionHeader,IMAGE_IMPORT_DIRECTORY* ImageImportDirectory) {
             if (ImportLibraryReferences != null) { throw new InvalidOperationException(); }
-            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (ImageImportDirectory == null) { throw new ArgumentNullException(nameof(ImageImportDirectory)); }
             var r = new List<ImportLibraryReference>();
-            var header = source;
-            while ((header->ImportAddressTable != 0) && (header->ImportLookupTable != 0)) {
+            var header = ImageImportDirectory;
+            while ((header->ImportAddressTable != 0) || (header->ImportLookupTable != 0)) {
                 var library = (header->Name != 0)
                     ? GetString(Encoding.ASCII, address + (Int64)header->Name)
                     : null;
@@ -217,13 +264,13 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
         #region M:Load(Byte*,IMAGE_EXPORT_DIRECTORY*,IMAGE_SECTION_HEADER*)
-        private unsafe void Load(Byte* address, IMAGE_EXPORT_DIRECTORY* source, IMAGE_SECTION_HEADER* section) {
+        private unsafe void Load(Byte* address, IMAGE_EXPORT_DIRECTORY* source, IMAGE_SECTION_HEADER* ImageSectionHeader) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             var ordinaltable     = (UInt16*)(address + (Int64)source->OrdinalTableRVA);
             var namepointertable = (UInt32*)(address + (Int64)source->NamePointerRVA);
             var exportaddresses  = (UInt32*)(address + (Int64)source->ExportAddressTableRVA);
-            var left = section->VirtualAddress;
-            var right = section->VirtualAddress + section->VirtualSize;
+            var left = ImageSectionHeader->VirtualAddress;
+            var right = ImageSectionHeader->VirtualAddress + ImageSectionHeader->VirtualSize;
             var r = new ExportSymbolDescriptor[source->AddressTableEntries];
             for (var i = 0; i < source->NumberOfNamePointers; ++i) {
                 var ordinal = ordinaltable[i];
@@ -304,22 +351,22 @@ namespace BinaryStudio.PortableExecutable
             return target;
             }
         #endregion
-        #region M:Load(Byte*,Byte*,IMAGE_RESOURCE_DIRECTORY*,IMAGE_SECTION_HEADER*,ResourceDescriptor):IList<ResourceDescriptor>
-        private unsafe IList<ResourceDescriptor> Load(Byte* baseaddress, Byte* address, IMAGE_RESOURCE_DIRECTORY* directory, IMAGE_SECTION_HEADER* section, ResourceDescriptor owner) {
+        #region M:Load(Byte*,Byte*,IMAGE_RESOURCE_DIRECTORY,IMAGE_SECTION_HEADER,ResourceDescriptor):IList<ResourceDescriptor>
+        private unsafe IList<ResourceDescriptor> Load(Byte* Base, Byte* address, IMAGE_RESOURCE_DIRECTORY* ImageResourceDirectory, IMAGE_SECTION_HEADER* section, ResourceDescriptor owner) {
             var r = new List<ResourceDescriptor>();
-            var source = (IMAGE_DIRECTORY_ENTRY_RESOURCE*)(directory + 1);
-            for (var i = 0; i < directory->NumberOfNamedEntries + directory->NumberOfIdEntries; i++) {
+            var source = (IMAGE_DIRECTORY_ENTRY_RESOURCE*)(ImageResourceDirectory + 1);
+            for (var i = 0; i < ImageResourceDirectory->NumberOfNamedEntries + ImageResourceDirectory->NumberOfIdEntries; i++) {
                 var resource = new ResourceDescriptor(owner, new ResourceIdentifier(address, source));
                 if ((source->DataEntryOffset & 0x80000000) == 0x80000000) {
                     resource.AddRange(Load(
-                        baseaddress,
+                        Base,
                         address,
                         (IMAGE_RESOURCE_DIRECTORY*)(address + (source->DataEntryOffset & 0x7FFFFFFF)),
                         section, resource));
                     }
                 else
                     {
-                    resource = Load(baseaddress, (IMAGE_RESOURCE_DATA_ENTRY*)(address + source->DataEntryOffset), section, resource);
+                    resource = Load(Base, (IMAGE_RESOURCE_DATA_ENTRY*)(address + source->DataEntryOffset), section, resource);
                     }
                 r.Add(resource);
                 source++;
@@ -328,10 +375,10 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
         #region M:Load(Byte*,IMAGE_RESOURCE_DATA_ENTRY*,IMAGE_SECTION_HEADER*,ResourceDescriptor):ResourceDescriptor
-        private unsafe ResourceDescriptor Load(Byte* baseaddress, IMAGE_RESOURCE_DATA_ENTRY* source, IMAGE_SECTION_HEADER* section, ResourceDescriptor descriptor) {
+        private unsafe ResourceDescriptor Load(Byte* Base, IMAGE_RESOURCE_DATA_ENTRY* source, IMAGE_SECTION_HEADER* ImageSectionHeader, ResourceDescriptor descriptor) {
             var bytes = new Byte[source->Size];
             ResourceDescriptor r = null;
-            Marshal.Copy((IntPtr)(void*)(baseaddress + (Int64)source->OffsetToData - (Int64)section->VirtualAddress + (Int64)section->PointerToRawData),bytes, 0, bytes.Length);
+            Marshal.Copy((IntPtr)(void*)(Base + (Int64)source->OffsetToData - (Int64)ImageSectionHeader->VirtualAddress + (Int64)ImageSectionHeader->PointerToRawData),bytes, 0, bytes.Length);
             if (descriptor.Level == IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE) {
                 if (descriptor.Owner.Owner.Identifier.Identifier != null) {
                     switch ((IMAGE_RESOURCE_TYPE)descriptor.Owner.Owner.Identifier.Identifier) {

@@ -8,7 +8,7 @@ namespace BinaryStudio.PortableExecutable.Win32
     [DebuggerDisplay("{VirtualAddress}:{Size}")]
     public struct IMAGE_DATA_DIRECTORY
         {
-        public readonly UInt32 VirtualAddress;
-        public readonly UInt32 Size;
+        public readonly Int32 VirtualAddress;
+        public readonly Int32 Size;
         }
     }

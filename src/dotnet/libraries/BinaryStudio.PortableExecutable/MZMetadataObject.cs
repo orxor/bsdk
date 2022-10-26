@@ -41,7 +41,7 @@ namespace BinaryStudio.PortableExecutable
             if (*magic == IMAGE_NT_SIGNATURE) {
                 size    -= sizeof(UInt32);
                 mapping += sizeof(UInt32);
-                COFFMetadataObject = new CommonObjectFile(Scope,new MetadataObjectIdentity(Identity.LocalName,typeof(CommonObjectFile))){
+                COFFMetadataObject = new COFFMetadataObject(Scope,new MetadataObjectIdentity(Identity.LocalName,typeof(COFFMetadataObject))){
                     IgnoreOptionalHeaderSize = false
                     };
                 COFFMetadataObject.Load(new []{

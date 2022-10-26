@@ -69,3 +69,5 @@
 /help/Working
 /src/dotnet/tools/xhlp/bin
 /src/dotnet/tools/xhlp/obj
+/src/dotnet/tests/UnitTests.BinaryStudio.PortableExecutable/bin
+/src/dotnet/tests/UnitTests.BinaryStudio.PortableExecutable/obj
