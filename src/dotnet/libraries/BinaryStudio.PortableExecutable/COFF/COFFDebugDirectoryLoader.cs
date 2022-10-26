@@ -7,7 +7,7 @@ namespace BinaryStudio.PortableExecutable
     {
     public class COFFDebugDirectoryLoader
         {
-        public virtual unsafe Boolean Load(out Exception e, Byte* VirtualAddress, IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory, Int32 count)
+        public virtual unsafe Boolean Load(out Exception e, Byte* BaseAddress, Byte* VirtualAddress, IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory, Int32 count)
             {
             if (ImageDebugDirectory == null) { throw new ArgumentNullException(nameof(ImageDebugDirectory)); }
             if (VirtualAddress == null) { throw new ArgumentNullException(nameof(VirtualAddress)); }
@@ -18,7 +18,7 @@ namespace BinaryStudio.PortableExecutable
                 for (var i = 0; i < count; i++) {
                     try
                         {
-                        LoadDirectory(VirtualAddress,Header);
+                        LoadDirectory(BaseAddress,VirtualAddress,Header);
                         Header++;
                         }
                     catch (Exception x)
@@ -35,7 +35,7 @@ namespace BinaryStudio.PortableExecutable
             return (e == null);
             }
 
-        protected virtual unsafe void LoadDirectory(Byte* VirtualAddress, IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory)
+        protected virtual unsafe void LoadDirectory(Byte* BaseAddress, Byte* VirtualAddress, IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory)
             {
             if (ImageDebugDirectory == null) { throw new ArgumentNullException(nameof(ImageDebugDirectory)); }
             if (VirtualAddress == null) { throw new ArgumentNullException(nameof(VirtualAddress)); }

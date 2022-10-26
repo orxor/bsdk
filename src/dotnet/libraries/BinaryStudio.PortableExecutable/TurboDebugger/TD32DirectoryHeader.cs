@@ -15,6 +15,6 @@ namespace BinaryStudio.PortableExecutable
         public readonly Int32 DirEntryCount;  // Number of directory entries
         public readonly Int32 lfoNextDir;     // Offset from lfoBase of next directory.
         public readonly Int32 Flags;          // Flags describing directory and subsection tables.
-        //TD32DirectoryEntry DirEntries[DirEntryCount];
+        // TD32DirectoryEntry DirEntries[DirEntryCount];
         }
     }

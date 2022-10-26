@@ -71,3 +71,4 @@
 /src/dotnet/tools/xhlp/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.PortableExecutable/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PortableExecutable/obj
+/src/delphi/tests/UnitTests.BinaryStudio.Task/out

@@ -204,7 +204,7 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
         #region M:Load(Byte*,IMAGE_SECTION_HEADER,IMAGE_DEBUG_DIRECTORY)
-        private unsafe void Load(Byte* Base,Byte* VirtualAddress,IMAGE_SECTION_HEADER* ImageSectionHeader,IMAGE_DATA_DIRECTORY* ImageDataDirectory,IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory) {
+        private unsafe void Load(Byte* BaseAddress,Byte* VirtualAddress,IMAGE_SECTION_HEADER* ImageSectionHeader,IMAGE_DATA_DIRECTORY* ImageDataDirectory,IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory) {
             if (ImageDebugDirectory == null) { throw new ArgumentNullException(nameof(ImageDebugDirectory)); }
             switch (ImageDebugDirectory->Type) {
                 #region {IMAGE_DEBUG_TYPE_UNKNOWN}
@@ -213,8 +213,8 @@ namespace BinaryStudio.PortableExecutable
                     Exception e;
                     if (ImageDebugDirectory->SizeOfData > sizeof(TD32FileSignature)) {
                         var status = TD32DebugDirectoryLoader.IsTD32(VirtualAddress,ImageDebugDirectory)
-                                ? (new TD32DebugDirectoryLoader()).Load(out e, VirtualAddress,ImageDebugDirectory,ImageDataDirectory->Size)
-                                : (new COFFDebugDirectoryLoader()).Load(out e, VirtualAddress,ImageDebugDirectory,ImageDataDirectory->Size % sizeof(IMAGE_DEBUG_DIRECTORY));
+                                ? (new TD32DebugDirectoryLoader()).Load(out e,BaseAddress,VirtualAddress,ImageDebugDirectory,ImageDataDirectory->Size)
+                                : (new COFFDebugDirectoryLoader()).Load(out e,BaseAddress,VirtualAddress,ImageDebugDirectory,ImageDataDirectory->Size % sizeof(IMAGE_DEBUG_DIRECTORY));
                         if (e != null)
                             {
                             Debug.Print($"Handled Exception:\n{Exceptions.ToString(e)}");
