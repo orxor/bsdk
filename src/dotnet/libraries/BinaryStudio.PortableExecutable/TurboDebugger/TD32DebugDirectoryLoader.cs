@@ -98,58 +98,11 @@ namespace BinaryStudio.PortableExecutable
             if (VirtualAddress == null) { throw new ArgumentNullException(nameof(VirtualAddress)); }
             var EntryData = VirtualAddress + Entry->Offset;
             switch (Entry->SubsectionType) {
-                #region sstModule
-                case TD32SubsectionType.SUBSECTION_TYPE_MODULE:
-                    {
-                    LoadModule((TD32ModuleInfo*)EntryData,Entry->Size,out var Module);
-                    Modules.Add(Module);
-                    }
-                    break;
-                #endregion
+                case TD32SubsectionType.SUBSECTION_TYPE_MODULE: { LoadModule((TD32ModuleInfo*)EntryData,Entry->Size,Modules); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_TYPES: break;
                 case TD32SubsectionType.SUBSECTION_TYPE_SYMBOLS: break;
                 case TD32SubsectionType.SUBSECTION_TYPE_ALIGN_SYMBOLS: break;
-                #region sstSrcModule
-                case TD32SubsectionType.SUBSECTION_TYPE_SOURCE_MODULE:
-                    {
-                    var SourceModuleInfo = (TD32SourceModuleInfo*)EntryData;
-                    #if DEBUGG
-                    Debug.Print("FileCount:{0:x4} SegmentCount:{1:x4}",
-                        SourceModuleInfo->FileCount,
-                        SourceModuleInfo->SegmentCount);
-                    #endif
-                    var Address = (Byte*)(SourceModuleInfo + 1);
-                    if (SourceModuleInfo->FileCount > 0) {
-                        #if DEBUGG
-                        Debug.Print("  Files:");
-                        #endif
-                        for (var i = 0; i < SourceModuleInfo->FileCount; i++) {
-                            #if DEBUGG
-                            Debug.Print("    Offset:{0:x8} FileOffset:{1:x8}",
-                                *((Int32*)Address + i),
-                                EntryData-BaseAddress + *((Int32*)Address + i));
-                            #endif
-                            }
-                        Address += sizeof(Int32)*SourceModuleInfo->FileCount;
-                        }
-                    if (SourceModuleInfo->SegmentCount > 0) {
-                        var SegmentAdrss = (OffsetPair*)Address;
-                        var SegmentIndex = (Int16*)(SegmentAdrss + SourceModuleInfo->SegmentCount);
-                        #if DEBUGG
-                        Debug.Print("  Segments:");
-                        #endif
-                        for (var i = 0; i < SourceModuleInfo->SegmentCount; i++) {
-                            #if DEBUGG
-                            Debug.Print("    {0:x4}:{1:x8}-{2:x8}",
-                                *(SegmentIndex + i),
-                                (SegmentAdrss + i)->StartOffset,
-                                (SegmentAdrss + i)->EndOffset);
-                            #endif
-                            }
-                        }
-                    }
-                    break;
-                #endregion
+                case TD32SubsectionType.SUBSECTION_TYPE_SOURCE_MODULE: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_SYMBOLS: break;
                 case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_TYPES:
                     {
@@ -178,16 +131,79 @@ namespace BinaryStudio.PortableExecutable
             return;
             }
 
-        #region M:LoadModule(TD32ModuleInfo,Int32,{out}ModuleInfo)
-        private unsafe void LoadModule(TD32ModuleInfo* Source, Int32 Size, out ModuleInfo Target) {
+        #region M:LoadSourceModule(IntPtr,TD32SourceModuleInfo,Int32)
+        private unsafe void LoadSourceModule(Byte* BaseAddress,TD32SourceModuleInfo* Source, Int32 Size) {
+            var BaseSrcFiles = (Int32*)(Source + 1);
+            var SegmentAdrss = (OffsetPair*)(BaseSrcFiles + Source->FileCount);
+            var SegmentIndex = (Int16*)(SegmentAdrss + Source->SegmentCount);
+            #if TD32DEBUG
+            Debug.Print("FileCount:{0:x4} SegmentCount:{1:x4}",
+                Source->FileCount,
+                Source->SegmentCount);
+            #endif
+            if (Source->SegmentCount > 0) {
+                #if TD32DEBUG
+                Debug.Print("  Segments:");
+                #endif
+                for (var i = 0; i < Source->SegmentCount; i++) {
+                    #if TD32DEBUG
+                    Debug.Print("    {0:x4}:{1:x8}-{2:x8}",
+                        *(SegmentIndex + i),
+                        (SegmentAdrss + i)->StartOffset,
+                        (SegmentAdrss + i)->EndOffset);
+                    #endif
+                    }
+                }
+            if (Source->FileCount > 0) {
+                #if TD32DEBUG
+                Debug.Print("  Files:");
+                #endif
+                for (var i = 0; i < Source->FileCount; i++) {
+                    var SrcFile = (TD32SourceFileEntry*)((Byte*)Source + BaseSrcFiles[i]);
+                    var SrcFileBaseSrcFiles = (Int32*)(SrcFile + 1);
+                    #if TD32DEBUG
+                    Debug.Print("    Offset:{0:x8} FileOffset:{1:x8} FileNameIndex:{2:x8}",
+                        BaseSrcFiles[i],
+                        (Byte*)Source - BaseAddress + BaseSrcFiles[i],
+                        SrcFile->NameIndex);
+                    #endif
+                    for (var j = 0; j < SrcFile->SegmentCount; j++) {
+                        var LineEntry = (TD32LineMappingEntry*)((Byte*)Source + SrcFileBaseSrcFiles[j]);
+                        var LineEntryOffsets = (Int32*)(LineEntry + 1);
+                        var LineEntryLnNmbrs = (Int16*)(LineEntryOffsets + LineEntry->PairCount);
+                        #if TD32DEBUG
+                        var DebugString = new StringBuilder("      Line numbers:\n     ");
+                        #endif
+                        for (var l = 0; l < LineEntry->PairCount; l++) {
+                            #if TD32DEBUG
+                            if ((l % 4 == 0) && (l > 0)) {
+                                DebugString.AppendLine();
+                                DebugString.Append("     ");
+                                }
+                            DebugString.AppendFormat(" {0:d5}:{1:x8}",
+                                LineEntryLnNmbrs[l],
+                                LineEntryOffsets[l]);
+                            #endif
+                            }
+                        #if TD32DEBUG
+                        Debug.Print(DebugString.ToString());
+                        #endif
+                        }
+                    }
+                }
+            return;
+            }
+        #endregion
+        #region M:LoadModule(TD32ModuleInfo,Int32,IList<ModuleInfo>)
+        private unsafe void LoadModule(TD32ModuleInfo* Source, Int32 Size, IList<ModuleInfo> Modules) {
             if (Source == null) { throw new ArgumentNullException(nameof(Source)); }
-            Target = new ModuleInfo {
+            var ModuleInfo = new ModuleInfo {
                 DebuggingStyle = Source->DebuggingStyle,
                 LibraryIndex   = Source->LibraryIndex,
                 NameIndex      = Source->NameIndex,
                 OverlayNumber  = Source->OverlayNumber
                 };
-            #if DEBUGG
+            #if TD32DEBUG
             Debug.Print("OverlayNumber:{0:x4} LibraryIndex:{1:x4} SegmentCount:{2}",
                 Source->OverlayNumber,
                 Source->LibraryIndex,
@@ -195,13 +211,13 @@ namespace BinaryStudio.PortableExecutable
             #endif
             var SegmentInfo = (TD32SegmentInfo*)(Source + 1);
             for (var i = 0; i < Source->SegmentCount; i++) {
-                Target.Segments.Add(new SegmentInfo{
+                ModuleInfo.Segments.Add(new SegmentInfo{
                     Offset  = SegmentInfo->Offset,
                     Size    = SegmentInfo->Size,
                     Flags   = SegmentInfo->Flags,
                     Segment = SegmentInfo->Segment
                     });
-                #if DEBUGG
+                #if TD32DEBUG
                 Debug.Print("  {0:x4}:{1:x8}-{2:x8} Flags:{3:x4}",
                     SegmentInfo->Segment,
                     SegmentInfo->Offset,
@@ -210,6 +226,7 @@ namespace BinaryStudio.PortableExecutable
                 #endif
                 SegmentInfo++;
                 }
+            Modules.Add(ModuleInfo);
             }
         #endregion
         }
