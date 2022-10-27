@@ -98,11 +98,11 @@ namespace BinaryStudio.PortableExecutable
             if (VirtualAddress == null) { throw new ArgumentNullException(nameof(VirtualAddress)); }
             var EntryData = VirtualAddress + Entry->Offset;
             switch (Entry->SubsectionType) {
-                case TD32SubsectionType.SUBSECTION_TYPE_MODULE: { LoadModule((TD32ModuleInfo*)EntryData,Entry->Size,Modules); } break;
+                case TD32SubsectionType.SUBSECTION_TYPE_MODULE:        { LoadModule((TD32ModuleInfo*)EntryData,Entry->Size,Modules); } break;
+                case TD32SubsectionType.SUBSECTION_TYPE_ALIGN_SYMBOLS: { LoadAlignSymbols(BaseAddress,(TD32SymbolInfoList*)EntryData,Entry->Size); } break;
+                case TD32SubsectionType.SUBSECTION_TYPE_SOURCE_MODULE: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_TYPES: break;
                 case TD32SubsectionType.SUBSECTION_TYPE_SYMBOLS: break;
-                case TD32SubsectionType.SUBSECTION_TYPE_ALIGN_SYMBOLS: break;
-                case TD32SubsectionType.SUBSECTION_TYPE_SOURCE_MODULE: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_SYMBOLS: break;
                 case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_TYPES:
                     {
@@ -131,6 +131,22 @@ namespace BinaryStudio.PortableExecutable
             return;
             }
 
+        #region M:LoadAlignSymbols(IntPtr,TD32SymbolInfoList,Int32)
+        private unsafe void LoadAlignSymbols(Byte* BaseAddress,TD32SymbolInfoList* Source, Int32 Size) {
+            var SymbolList = (TD32SymbolInfo*)(Source + 1);
+            Size -= sizeof(TD32SymbolInfo);
+            while (Size > 0) {
+                var Offset = (Byte*)SymbolList - BaseAddress;
+                #if TD32DEBUG
+                Debug.Print("FileOffset:{0:x8} Size:{1:x4} SymbolType:{2}",
+                    Offset,SymbolList->Size,
+                    SymbolList->SymbolType);
+                #endif
+                Size -= SymbolList->Size + 2;
+                SymbolList = (TD32SymbolInfo*)((Byte*)SymbolList + SymbolList->Size + 2);
+                }
+            }
+        #endregion
         #region M:LoadSourceModule(IntPtr,TD32SourceModuleInfo,Int32)
         private unsafe void LoadSourceModule(Byte* BaseAddress,TD32SourceModuleInfo* Source, Int32 Size) {
             var BaseSrcFiles = (Int32*)(Source + 1);
