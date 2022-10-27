@@ -98,23 +98,13 @@ namespace BinaryStudio.PortableExecutable
             if (VirtualAddress == null) { throw new ArgumentNullException(nameof(VirtualAddress)); }
             var EntryData = VirtualAddress + Entry->Offset;
             switch (Entry->SubsectionType) {
-                case TD32SubsectionType.SUBSECTION_TYPE_MODULE:        { LoadModule((TD32ModuleInfo*)EntryData,Entry->Size,Modules); } break;
+                case TD32SubsectionType.SUBSECTION_TYPE_MODULE:        { LoadModule(BaseAddress,(TD32ModuleInfo*)EntryData,Entry->Size,Modules); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_ALIGN_SYMBOLS: { LoadAlignSymbols(BaseAddress,(TD32SymbolInfoList*)EntryData,Entry->Size); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_SOURCE_MODULE: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
+                case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_TYPES:  { LoadGlobalTypes(BaseAddress,(TD32GlobalTypeInfo*)EntryData,Entry->Size); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_TYPES: break;
                 case TD32SubsectionType.SUBSECTION_TYPE_SYMBOLS: break;
                 case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_SYMBOLS: break;
-                case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_TYPES:
-                    {
-                    var Count = ReadInt32(ref EntryData);
-                    //var Size = Entry->Size;
-                    //var Type = (TD32SymbolTypeInfo*)EntryData;
-                    //while (Size > 0) {
-                    //    Size -= Type->Size + sizeof(TD32SymbolTypeInfo);
-                    //    Type = (TD32SymbolTypeInfo*)(((Byte*)(Type + 1)) + Type->Size);
-                    //    }
-                    }
-                    break;
                 #region sstNames 
                 case TD32SubsectionType.SUBSECTION_TYPE_NAMES:
                     {
@@ -127,6 +117,23 @@ namespace BinaryStudio.PortableExecutable
                     break;
                 #endregion
                 default: throw new ArgumentOutOfRangeException();
+                }
+            return;
+            }
+
+        private unsafe void LoadGlobalTypes(Byte* BaseAddress, TD32GlobalTypeInfo* Source, Int32 Size) {
+            var Offsets = (Int32*)(Source + 1);
+            Debug.Print("TypeCount:{0:x4}", Source->TypeCount);
+            for (var i = 0; i < Source->TypeCount;i++) {
+                var SymbolTypeInfo = (TD32SymbolTypeInfo*)((Byte*)Source + Offsets[i]);
+                if (!Enum.IsDefined(typeof(LEAF_ENUM),SymbolTypeInfo->Leaf))
+                    {
+                    Debug.Print("FileOffset:{2:x8} Offset:{0:x8} Size:{1:x4} Type:{4:x4} Leaf:{3}",
+                        Offsets[i],SymbolTypeInfo->Size,
+                        (Byte*)SymbolTypeInfo - BaseAddress,
+                        SymbolTypeInfo->Leaf,
+                        i + 0x1000);
+                    }
                 }
             return;
             }
@@ -164,9 +171,9 @@ namespace BinaryStudio.PortableExecutable
                 for (var i = 0; i < Source->SegmentCount; i++) {
                     #if TD32DEBUG
                     Debug.Print("    {0:x4}:{1:x8}-{2:x8}",
-                        *(SegmentIndex + i),
-                        (SegmentAdrss + i)->StartOffset,
-                        (SegmentAdrss + i)->EndOffset);
+                        SegmentIndex[i],
+                        SegmentAdrss[i].StartOffset,
+                        SegmentAdrss[i].EndOffset);
                     #endif
                     }
                 }
@@ -210,8 +217,8 @@ namespace BinaryStudio.PortableExecutable
             return;
             }
         #endregion
-        #region M:LoadModule(TD32ModuleInfo,Int32,IList<ModuleInfo>)
-        private unsafe void LoadModule(TD32ModuleInfo* Source, Int32 Size, IList<ModuleInfo> Modules) {
+        #region M:LoadModule(IntPtr,TD32ModuleInfo,Int32,IList<ModuleInfo>)
+        private unsafe void LoadModule(Byte* BaseAddress,TD32ModuleInfo* Source, Int32 Size, IList<ModuleInfo> Modules) {
             if (Source == null) { throw new ArgumentNullException(nameof(Source)); }
             var ModuleInfo = new ModuleInfo {
                 DebuggingStyle = Source->DebuggingStyle,

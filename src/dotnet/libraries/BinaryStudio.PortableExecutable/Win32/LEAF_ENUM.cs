@@ -181,5 +181,14 @@
         LF_PAD13            = 0xfd,
         LF_PAD14            = 0xfe,
         LF_PAD15            = 0xff,
+        LF_SET      = 0x30,
+        LF_SUBRANGE = 0x31,
+        LF_PARRAY   = 0x32,
+        LF_PSTRING  = 0x33,
+        LF_CLOSURE  = 0x34,
+        LF_PROPERTY = 0x35,
+        LF_LSTRING  = 0x36,
+        LF_VARIANT  = 0x37,
+        LF_CLASSREF = 0x38,
         }
     }
