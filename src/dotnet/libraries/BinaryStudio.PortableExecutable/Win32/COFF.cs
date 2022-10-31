@@ -29,19 +29,6 @@ namespace Microsoft.Win32
         IMAGE_FILE_BYTES_REVERSED_HI        = 0x8000
         }
     #endregion
-    #region T:IMAGE_FILE_HEADER
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct IMAGE_FILE_HEADER
-        {
-        public readonly IMAGE_FILE_MACHINE Machine;
-        public readonly UInt16 NumberOfSections;
-        public readonly UInt32 TimeDateStamp;
-        public readonly UInt32 PointerToSymbolTable;
-        public readonly UInt32 NumberOfSymbols;
-        public readonly UInt16 SizeOfOptionalHeader;
-        public readonly IMAGE_FILE_CHARACTERISTIC Characteristics;
-        }
-    #endregion
     #region T:IMAGE_DATA_DIRECTORY
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     [DebuggerDisplay("{VirtualAddress}:{Size}")]
