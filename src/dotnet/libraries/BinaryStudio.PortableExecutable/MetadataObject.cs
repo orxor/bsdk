@@ -17,7 +17,6 @@ namespace BinaryStudio.PortableExecutable
         protected MetadataObject(MetadataScope scope, MetadataObjectIdentity identity)
             {
             if (scope == null)    { throw new ArgumentNullException(nameof(scope));    }
-            if (identity == null) { throw new ArgumentNullException(nameof(identity)); }
             Scope = scope;
             Identity = identity;
             }

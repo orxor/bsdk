@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.PortableExecutable.Win32;
@@ -91,11 +92,36 @@ namespace BinaryStudio.PortableExecutable
             #endif
             }
 
+        public ITypeLibraryTypeDescriptor TypeOf(VARTYPE source) {
+            throw new NotImplementedException();
+            }
+
+        public ITypeLibraryTypeDescriptor TypeOf(String source) {
+            throw new NotImplementedException();
+            }
+
+        public ITypeLibraryDescriptor LoadTypeLibrary(Guid g, Version v, SYSKIND o)
+            {
+            throw new NotImplementedException();
+            }
+
+        public ITypeLibraryDescriptor LoadTypeLibrary(String key) {
+            throw new NotImplementedException();
+            }
+
+        internal ITypeLibraryDescriptor LoadTypeLibrary(String key, SYSKIND o) {
+            throw new NotImplementedException();
+            }
+
         private unsafe Type Recognize(FileMappingMemory source) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             var memory = (Byte*)source;
             if (*((UInt16*)source) == IMAGE_DOS_SIGNATURE) { return typeof(MZMetadataObject); }
             return null;
+            }
+
+        public void RegisterType(ITypeLibraryTypeDescriptor type) {
+            throw new NotImplementedException();
             }
 
         private class ReadLockScope : IDisposable
