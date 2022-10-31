@@ -93,7 +93,8 @@ namespace BinaryStudio.PortableExecutable
             return;
             }
         #endregion
-        private unsafe void LoadDirectoryEntry(Byte* BaseAddress,Byte* VirtualAddress,TD32DirectoryEntry* Entry, IList<ModuleInfo> Modules, IList<String> Names) {
+        private unsafe void LoadDirectoryEntry(Byte* BaseAddress,Byte* VirtualAddress,TD32DirectoryEntry* Entry,
+            IList<ModuleInfo> Modules, IList<String> Names) {
             if (Entry == null) { throw new ArgumentNullException(nameof(Entry)); }
             if (VirtualAddress == null) { throw new ArgumentNullException(nameof(VirtualAddress)); }
             var EntryData = VirtualAddress + Entry->Offset;
@@ -102,42 +103,41 @@ namespace BinaryStudio.PortableExecutable
                 case TD32SubsectionType.SUBSECTION_TYPE_ALIGN_SYMBOLS: { LoadAlignSymbols(BaseAddress,(TD32SymbolInfoList*)EntryData,Entry->Size); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_SOURCE_MODULE: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
                 case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_TYPES:  { LoadGlobalTypes(BaseAddress,(TD32GlobalTypeInfo*)EntryData,Entry->Size); } break;
-                case TD32SubsectionType.SUBSECTION_TYPE_TYPES: break;
-                case TD32SubsectionType.SUBSECTION_TYPE_SYMBOLS: break;
+                case TD32SubsectionType.SUBSECTION_TYPE_NAMES:         { LoadNames(BaseAddress,EntryData,Entry->Size,Names); } break;
+                case TD32SubsectionType.SUBSECTION_TYPE_TYPES:
+                case TD32SubsectionType.SUBSECTION_TYPE_SYMBOLS:
                 case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_SYMBOLS: break;
-                #region sstNames 
-                case TD32SubsectionType.SUBSECTION_TYPE_NAMES:
-                    {
-                    var Count = ReadInt32(ref EntryData);
-                    for (var i = 0; i < Count; i++) {
-                        ReadByte(ref EntryData);
-                        Names.Add(ReadZeroTerminatedString(ref EntryData, Encoding.ASCII));
-                        }
-                    }
-                    break;
-                #endregion
                 default: throw new ArgumentOutOfRangeException();
                 }
             return;
             }
 
+        #region M:LoadNames(IntPtr,IntPtr,Int32,IList<String>)
+        private unsafe void LoadNames(Byte* BaseAddress, Byte* EntryData, Int32 Size,IList<String> Names) {
+            var Count = ReadInt32(ref EntryData);
+            for (var i = 0; i < Count; i++) {
+                ReadByte(ref EntryData);
+                Names.Add(ReadZeroTerminatedString(ref EntryData, Encoding.ASCII));
+                }
+            }
+        #endregion
+        #region M:LoadGlobalTypes(IntPtr,TD32GlobalTypeInfo,Size)
         private unsafe void LoadGlobalTypes(Byte* BaseAddress, TD32GlobalTypeInfo* Source, Int32 Size) {
             var Offsets = (Int32*)(Source + 1);
             Debug.Print("TypeCount:{0:x4}", Source->TypeCount);
             for (var i = 0; i < Source->TypeCount;i++) {
                 var SymbolTypeInfo = (TD32SymbolTypeInfo*)((Byte*)Source + Offsets[i]);
-                if (!Enum.IsDefined(typeof(LEAF_ENUM),SymbolTypeInfo->Leaf))
-                    {
-                    Debug.Print("FileOffset:{2:x8} Offset:{0:x8} Size:{1:x4} Type:{4:x4} Leaf:{3}",
-                        Offsets[i],SymbolTypeInfo->Size,
-                        (Byte*)SymbolTypeInfo - BaseAddress,
-                        SymbolTypeInfo->Leaf,
-                        i + 0x1000);
-                    }
+                #if TD32DEBUG
+                Debug.Print("FileOffset:{2:x8} Offset:{0:x8} Size:{1:x4} Type:{4:x4} Leaf:{3}",
+                    Offsets[i],SymbolTypeInfo->Size,
+                    (Byte*)SymbolTypeInfo - BaseAddress,
+                    SymbolTypeInfo->Leaf,
+                    i + 0x1000);
+                #endif
                 }
             return;
             }
-
+        #endregion
         #region M:LoadAlignSymbols(IntPtr,TD32SymbolInfoList,Int32)
         private unsafe void LoadAlignSymbols(Byte* BaseAddress,TD32SymbolInfoList* Source, Int32 Size) {
             var SymbolList = (TD32SymbolInfo*)(Source + 1);

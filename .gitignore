@@ -7,6 +7,7 @@
 *.dcu
 *.~dpr
 *.log
+~$*.*
 /src/dotnet/libraries/BinaryStudio.Modeling.UnifiedModelingLanguage/bin
 /src/dotnet/libraries/BinaryStudio.Modeling.UnifiedModelingLanguage/obj
 /src/dotnet/packages/BinaryStudio.Modeling.VSShellPackage/bin
@@ -72,3 +73,4 @@
 /src/dotnet/tests/UnitTests.BinaryStudio.PortableExecutable/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PortableExecutable/obj
 /src/delphi/tests/UnitTests.BinaryStudio.Task/out
+

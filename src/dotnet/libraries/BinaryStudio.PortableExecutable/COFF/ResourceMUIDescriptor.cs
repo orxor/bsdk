@@ -17,7 +17,7 @@ namespace BinaryStudio.PortableExecutable
         public Boolean IsUltimateFallbackLocationExternal { get; }
         public IList<ResourceIdentifier> LocalIdentifiers { get; }
         public IList<ResourceIdentifier> ExternalIdentifiers { get; }
-        public COFFMetadataObject ExternalSource { get;private set; }
+        public CommonObjectFileSource ExternalSource { get;private set; }
 
         internal unsafe ResourceMUIDescriptor(ResourceDescriptor owner, ResourceIdentifier identifier, Byte[] source)
             : base(owner, identifier, source)
@@ -110,7 +110,7 @@ namespace BinaryStudio.PortableExecutable
         public void AttachExternalResource(MetadataObject source) {
             ExternalSource = null;
             if (source != null) {
-                ExternalSource = ((COFFMetadataObject)source.GetService(typeof(COFFMetadataObject)));
+                ExternalSource = ((CommonObjectFileSource)source.GetService(typeof(CommonObjectFileSource)));
                 }
             }
 
