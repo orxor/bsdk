@@ -2,10 +2,10 @@
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    [CodeViewDirectorySignature(CodeViewDirectorySignature.NB02)]
-    public class CodeViewDirectoryNB02 : CodeViewDirectory
+    [OMFDirectorySignature(OMFDirectorySignature.NB02)]
+    public class CodeViewDirectoryNB02 : OMFDirectory
         {
-        public override CodeViewDirectorySignature Signature { get { return CodeViewDirectorySignature.NB02; }}
+        public override OMFDirectorySignature Signature { get { return OMFDirectorySignature.NB02; }}
         public CodeViewDirectoryNB02(IntPtr BaseAddress, IntPtr BegOfDebugData, IntPtr EndOfDebugData)
             :base(BaseAddress,BegOfDebugData,EndOfDebugData)
             {

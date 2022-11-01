@@ -5,17 +5,17 @@ using System.IO;
 // ReSharper disable LocalVariableHidesMember
 // ReSharper disable ParameterHidesMember
 
-namespace BinaryStudio.PortableExecutable.CodeView
+namespace BinaryStudio.PortableExecutable
     {
-    public abstract class CodeViewDirectory
+    public abstract class OMFDirectory
         {
         protected readonly unsafe Byte* BaseAddress;
         protected readonly unsafe Byte* BegOfDebugData;
         protected readonly unsafe Byte* EndOfDebugData;
         protected Int32 Status;
 
-        public abstract CodeViewDirectorySignature Signature { get; }
-        protected unsafe CodeViewDirectory(IntPtr BaseAddress, IntPtr BegOfDebugData, IntPtr EndOfDebugData)
+        public abstract OMFDirectorySignature Signature { get; }
+        protected unsafe OMFDirectory(IntPtr BaseAddress, IntPtr BegOfDebugData, IntPtr EndOfDebugData)
             {
             this.BaseAddress = (Byte*)BaseAddress;
             this.BegOfDebugData = (Byte*)BegOfDebugData;
@@ -33,7 +33,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             ValidateSignature(Signature = (OMFDirectorySignatureHeader*)BegOfDebugData);
             var Header  = (CodeViewSubsectionDirectoryHeader*)(BegOfDebugData + Signature->Offset);
             var Entries = (CodeViewSubsectionDirectoryEntry*)(Header + 1);
-            #if DEBUG
+            #if OMFDEBUG
             for (var i = 0; i < Header->DirEntryCount; i++) {
                 Debug.Print("ModuleIndex:{0:x4} Offset:{1:x8} FileOffset:{2:x8} Size:{3:x8} Type:{4}",
                     Entries[i].ModuleIndex,
@@ -43,6 +43,9 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 }
             #endif
             Status = 1;
+            for (var i = 0; i < Header->DirEntryCount; i++) {
+
+                }
             return;
             }
 

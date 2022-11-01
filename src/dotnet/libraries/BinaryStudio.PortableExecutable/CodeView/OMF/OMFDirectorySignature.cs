@@ -1,6 +1,6 @@
-﻿namespace BinaryStudio.PortableExecutable.CodeView
+﻿namespace BinaryStudio.PortableExecutable
     {
-    public enum CodeViewDirectorySignature
+    public enum OMFDirectorySignature
         {
         NB00 = 0x3030424e,
         NB01 = 0x3130424e,

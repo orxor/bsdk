@@ -7,8 +7,8 @@ using System.Text;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    [CodeViewDirectorySignature(CodeViewDirectorySignature.NB10)]
-    public class CodeViewDirectoryNB10 : CodeViewDirectory
+    [OMFDirectorySignature(OMFDirectorySignature.NB10)]
+    public class CodeViewDirectoryNB10 : OMFDirectory
         {
         /// <summary>
         /// CodeView NB10 debug information of a PDB 2.00 file (VS 6).
@@ -36,7 +36,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 }
             }
 
-        public override CodeViewDirectorySignature Signature { get { return CodeViewDirectorySignature.NB10; }}
+        public override OMFDirectorySignature Signature { get { return OMFDirectorySignature.NB10; }}
         public String FileName { get;private set; }
         public Int32 Age { get;private set; }
 

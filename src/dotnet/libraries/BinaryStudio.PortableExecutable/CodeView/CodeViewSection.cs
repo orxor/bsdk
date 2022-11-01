@@ -57,11 +57,11 @@ namespace BinaryStudio.PortableExecutable.CodeView
             var EndOfDebugData = BegOfDebugData + ImageDebugDirectory->SizeOfData;
             var Header = (OMFDirectorySignatureHeader*)BegOfDebugData;
             var Signature = Header->Signature;
-            foreach (var type in typeof(CodeViewDirectory).Assembly.GetTypes()) {
-                var key = type.GetCustomAttributes(false).OfType<CodeViewDirectorySignatureAttribute>().FirstOrDefault();
+            foreach (var type in typeof(OMFDirectory).Assembly.GetTypes()) {
+                var key = type.GetCustomAttributes(false).OfType<OMFDirectorySignatureAttribute>().FirstOrDefault();
                 if (key != null) {
                     if (key.Signature == Signature) {
-                        var Directory = (CodeViewDirectory)Activator.CreateInstance(type,
+                        var Directory = (OMFDirectory)Activator.CreateInstance(type,
                             (IntPtr)BaseAddress,
                             (IntPtr)BegOfDebugData,
                             (IntPtr)EndOfDebugData);
