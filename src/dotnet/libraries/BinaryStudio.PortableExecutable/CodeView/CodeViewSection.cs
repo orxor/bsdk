@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
 
@@ -66,6 +67,10 @@ namespace BinaryStudio.PortableExecutable.CodeView
                             (IntPtr)BegOfDebugData,
                             (IntPtr)EndOfDebugData);
                         Directory.Analyze();
+                        using (var writer = new StreamWriter(File.Create("my.dump")))
+                            {
+                            Directory.WriteTo(writer,String.Empty,0);
+                            }
                         break;
                         }
                     }

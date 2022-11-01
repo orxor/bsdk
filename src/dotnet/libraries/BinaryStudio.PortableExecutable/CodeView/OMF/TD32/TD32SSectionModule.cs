@@ -20,6 +20,9 @@ namespace BinaryStudio.PortableExecutable
 
         private unsafe void Analyze(TD32ModuleInfo* Source) {
             if (InitialValue != null) { throw new InvalidOperationException(); }
+            LibraryIndex = Source->LibraryIndex;
+            NameIndex = Source->NameIndex;
+            OverlayNumber = Source->OverlayNumber;
             var ModuleInfo = new ModuleInfo {
                 DebuggingStyle = Source->DebuggingStyle,
                 LibraryIndex   = Source->LibraryIndex,

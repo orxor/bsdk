@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BinaryStudio.PortableExecutable
     {
-    public abstract class OMFDirectory
+    public abstract class OMFDirectory : IFileDumpSupport
         {
         protected readonly unsafe Byte* BaseAddress;
         protected readonly unsafe Byte* BegOfDebugData;
@@ -19,6 +19,7 @@ namespace BinaryStudio.PortableExecutable
 
         public abstract OMFDirectorySignature Signature { get; }
         public IList<String> Names { get;private set; }
+        private IList<OMFSSection> Sections = EmptyList<OMFSSection>.Value;
 
         protected unsafe OMFDirectory(IntPtr BaseAddress, IntPtr BegOfDebugData, IntPtr EndOfDebugData)
             {
@@ -49,11 +50,15 @@ namespace BinaryStudio.PortableExecutable
                 }
             #endif
             Status = 1;
-            var Sections = new List<OMFSSection>();
+            Sections = new List<OMFSSection>();
             for (var i = 0; i < Header->DirEntryCount; i++) {
                 if (TryGetType(Entries[i].SDirectoryIndex, out var Type)) {
                     var Section = (OMFSSection)Activator.CreateInstance(Type,this);
-                    Sections.Add(Section.Analyze(BaseAddress,BegOfDebugData + Entries[i].Offset, Entries->Size));
+                    Section.ModuleIndex = Entries[i].ModuleIndex;
+                    Section.Offset = Entries[i].Offset;
+                    Section.FileOffset = BegOfDebugData + Entries[i].Offset - BaseAddress;
+                    Section.Size = Entries[i].Size;
+                    Sections.Add(Section.Analyze(BaseAddress,BegOfDebugData + Entries[i].Offset, Entries[i].Size));
                     }
                 }
             Names = Sections.OfType<OMFSSectionNames>().FirstOrDefault() ?? EmptyList<String>.Value;
@@ -69,6 +74,29 @@ namespace BinaryStudio.PortableExecutable
         public override String ToString()
             {
             return $"{Signature}:{((Status == 1) ? "Ready" : "Pending...")}";
+            }
+
+        public virtual void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags)
+            {
+            if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
+            Writer.WriteLine("{0}Directory:",LinePrefix);
+            foreach (var section in Sections) {
+                Writer.WriteLine("{0}  ModuleIndex:{1:x4} Offset:{2:x8} FileOffset:{3:x8} Size:{4:x8} Type:sst{5}",
+                    LinePrefix,
+                    section.ModuleIndex, section.Offset,
+                    section.FileOffset, section.Size,
+                    section.SectionIndex);
+                }
+            Writer.WriteLine("{0}Details:",LinePrefix);
+            foreach (var section in Sections) {
+                Writer.WriteLine("{0}  ModuleIndex:{1:x4} Offset:{2:x8} FileOffset:{3:x8} Size:{4:x8} Type:sst{5}",
+                    LinePrefix,
+                    section.ModuleIndex, section.Offset,
+                    section.FileOffset, section.Size,
+                    section.SectionIndex);
+                section.WriteTo(Writer,LinePrefix + "    ", Flags);
+                Writer.WriteLine();
+                }
             }
 
         protected virtual Boolean TryGetType(OMFSSectionIndex Index, out Type Type)

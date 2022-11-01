@@ -8,7 +8,7 @@ namespace BinaryStudio.PortableExecutable
     /// organization of the module.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct TD32SourceModuleInfo
+    public struct OMFSrcModuleInfo
         {
         public readonly Int16 FileCount;    // The number of source files contributing code to segments.
         public readonly Int16 SegmentCount; // The number of code segments receiving code from this module.

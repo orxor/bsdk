@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace BinaryStudio.PortableExecutable
     {
     [OMFSSectionIndex(OMFSSectionIndex.Module)]
     internal class OMFSSectionModule : OMFSSection
         {
+        public Int16 OverlayNumber { get;protected set; }
+        public Int16 LibraryIndex { get;protected set; }
+        protected Int32 NameIndex { get;set; }
+
         protected class SegmentInfo
             {
             public Int16 Segment; // Segment that this structure describes
@@ -42,6 +47,19 @@ namespace BinaryStudio.PortableExecutable
             if (BaseAddress == null) { throw new ArgumentNullException(nameof(BaseAddress)); }
             if (Source == null) { throw new ArgumentNullException(nameof(Source)); }
             return this;
+            }
+
+        public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
+            if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
+            Writer.WriteLine("{0}OverlayNumber:{{{1}}} LibraryIndex:{{{2}}} SegmentCount:{5} Name:{{{3}}}:{{{4}}}",
+                LinePrefix,OverlayNumber.ToString("x4"),LibraryIndex.ToString("x4"),
+                NameIndex.ToString("x8"),Directory.Names[NameIndex-1],
+                InitialValue.Segments.Count.ToString("x4"));
+            foreach (var Segment in InitialValue.Segments) {
+                Writer.WriteLine("  {0}{{{1}}}:{2}-{3}",
+                    LinePrefix,Segment.Segment.ToString("x4"),
+                    Segment.Offset.ToString("x8"),(Segment.Offset+Segment.Size).ToString("x8"));
+                }
             }
         }
     }

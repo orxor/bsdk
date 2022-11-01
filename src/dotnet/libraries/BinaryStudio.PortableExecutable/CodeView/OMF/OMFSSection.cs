@@ -1,11 +1,17 @@
 ﻿using System;
+using System.IO;
 
 namespace BinaryStudio.PortableExecutable
     {
-    public abstract class OMFSSection
+    public abstract class OMFSSection : IFileDumpSupport
         {
         public OMFDirectory Directory { get; }
         public abstract OMFSSectionIndex SectionIndex { get; }
+        public Int16 ModuleIndex { get;internal set; }
+        public Int32 Offset { get;internal set; }
+        public Int64 FileOffset { get;internal set; }
+        public Int32 Size { get;internal set; }
+
         protected OMFSSection(OMFDirectory Directory)
             {
             this.Directory = Directory;
@@ -22,6 +28,10 @@ namespace BinaryStudio.PortableExecutable
         public override String ToString()
             {
             return $"sst{SectionIndex}";
+            }
+
+        public virtual void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags)
+            {
             }
         }
     }

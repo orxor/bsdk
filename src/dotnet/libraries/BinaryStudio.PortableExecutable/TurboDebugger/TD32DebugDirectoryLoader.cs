@@ -101,7 +101,7 @@ namespace BinaryStudio.PortableExecutable
             switch (Entry->SDirectoryIndex) {
                 case OMFSSectionIndex.Module:        { LoadModule(BaseAddress,(TD32ModuleInfo*)EntryData,Entry->Size,Modules); } break;
                 case OMFSSectionIndex.AlignSym: { LoadAlignSymbols(BaseAddress,(TD32SymbolInfoList*)EntryData,Entry->Size); } break;
-                case OMFSSectionIndex.SrcModule: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
+                case OMFSSectionIndex.SrcModule: { LoadSourceModule(BaseAddress,(OMFSrcModuleInfo*)EntryData,Entry->Size); } break;
                 case OMFSSectionIndex.GlobalTypes:  { LoadGlobalTypes(BaseAddress,(TD32GlobalTypeInfo*)EntryData,Entry->Size); } break;
                 case OMFSSectionIndex.Names:         { LoadNames(BaseAddress,EntryData,Entry->Size,Names); } break;
                 case OMFSSectionIndex.Types:
@@ -155,7 +155,7 @@ namespace BinaryStudio.PortableExecutable
             }
         #endregion
         #region M:LoadSourceModule(IntPtr,TD32SourceModuleInfo,Int32)
-        private unsafe void LoadSourceModule(Byte* BaseAddress,TD32SourceModuleInfo* Source, Int32 Size) {
+        private unsafe void LoadSourceModule(Byte* BaseAddress,OMFSrcModuleInfo* Source, Int32 Size) {
             var BaseSrcFiles = (Int32*)(Source + 1);
             var SegmentAdrss = (OffsetPair*)(BaseSrcFiles + Source->FileCount);
             var SegmentIndex = (Int16*)(SegmentAdrss + Source->SegmentCount);
