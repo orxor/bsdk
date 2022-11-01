@@ -103,7 +103,7 @@ namespace BinaryStudio.PortableExecutable
                 case OMFSSectionIndex.AlignSym: { LoadAlignSymbols(BaseAddress,(TD32SymbolInfoList*)EntryData,Entry->Size); } break;
                 case OMFSSectionIndex.SrcModule: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
                 case OMFSSectionIndex.GlobalTypes:  { LoadGlobalTypes(BaseAddress,(TD32GlobalTypeInfo*)EntryData,Entry->Size); } break;
-                case OMFSSectionIndex.TypeNames:         { LoadNames(BaseAddress,EntryData,Entry->Size,Names); } break;
+                case OMFSSectionIndex.Names:         { LoadNames(BaseAddress,EntryData,Entry->Size,Names); } break;
                 case OMFSSectionIndex.Types:
                 case OMFSSectionIndex.Symbols:
                 case OMFSSectionIndex.GlobalSym: break;
@@ -232,7 +232,7 @@ namespace BinaryStudio.PortableExecutable
                 Source->LibraryIndex,
                 Source->SegmentCount);
             #endif
-            var SegmentInfo = (TD32SegmentInfo*)(Source + 1);
+            var SegmentInfo = (TD32SegInfo*)(Source + 1);
             for (var i = 0; i < Source->SegmentCount; i++) {
                 ModuleInfo.Segments.Add(new SegmentInfo{
                     Offset  = SegmentInfo->Offset,

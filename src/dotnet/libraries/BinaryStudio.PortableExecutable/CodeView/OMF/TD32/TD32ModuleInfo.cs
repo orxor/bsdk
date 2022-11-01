@@ -13,7 +13,7 @@ namespace BinaryStudio.PortableExecutable
         public  readonly Int32 NameIndex;      // Name index of module.
         public  readonly Int32 TimeStamp;      // Time stamp from the OBJ file.
         private unsafe fixed Byte Reserved[12];
-        // TD32SegmentInfo Segments[SegmentCount];
+        // SegInfo Segments[SegmentCount];
         // Detailed information about each segment
         // that code is contributed to.
         // This is an array of cSeg count segment

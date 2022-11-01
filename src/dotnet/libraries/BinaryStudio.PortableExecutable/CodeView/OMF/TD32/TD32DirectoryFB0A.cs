@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace BinaryStudio.PortableExecutable.CodeView
+namespace BinaryStudio.PortableExecutable
     {
     [OMFDirectorySignature(OMFDirectorySignature.FB0A)]
-    public class CodeViewDirectoryFB0A : CodeViewDirectoryFB09
+    public class TD32DirectoryFB0A : TD32DirectoryFB09
         {
         public override OMFDirectorySignature Signature { get { return OMFDirectorySignature.FB0A; }}
-        public CodeViewDirectoryFB0A(IntPtr BaseAddress, IntPtr BegOfDebugData, IntPtr EndOfDebugData)
+        public TD32DirectoryFB0A(IntPtr BaseAddress, IntPtr BegOfDebugData, IntPtr EndOfDebugData)
             :base(BaseAddress,BegOfDebugData,EndOfDebugData)
             {
             }

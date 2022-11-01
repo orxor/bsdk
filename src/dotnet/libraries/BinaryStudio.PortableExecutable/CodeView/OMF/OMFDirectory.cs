@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 // ReSharper disable LocalVariableHidesMember
 // ReSharper disable ParameterHidesMember
@@ -15,12 +18,15 @@ namespace BinaryStudio.PortableExecutable
         protected Int32 Status;
 
         public abstract OMFDirectorySignature Signature { get; }
+        public IList<String> Names { get;private set; }
+
         protected unsafe OMFDirectory(IntPtr BaseAddress, IntPtr BegOfDebugData, IntPtr EndOfDebugData)
             {
             this.BaseAddress = (Byte*)BaseAddress;
             this.BegOfDebugData = (Byte*)BegOfDebugData;
             this.EndOfDebugData = (Byte*)EndOfDebugData;
             Status = 0;
+            Names = EmptyList<String>.Value;
             }
 
         protected unsafe void ValidateSignature(OMFDirectorySignatureHeader* Signature) {
@@ -43,9 +49,17 @@ namespace BinaryStudio.PortableExecutable
                 }
             #endif
             Status = 1;
+            var Sections = new List<OMFSSection>();
             for (var i = 0; i < Header->DirEntryCount; i++) {
-
+                if (TryGetType(Entries[i].SDirectoryIndex, out var Type)) {
+                    var Section = (OMFSSection)Activator.CreateInstance(Type,this);
+                    Sections.Add(Section.Analyze(BaseAddress,BegOfDebugData + Entries[i].Offset, Entries->Size));
+                    }
                 }
+            Names = Sections.OfType<OMFSSectionNames>().FirstOrDefault() ?? EmptyList<String>.Value;
+            Sections.Where(i => i.SectionIndex != OMFSSectionIndex.Names).AsParallel().ForAll(i=>{
+                i.ResolveReferences(this);
+                });
             return;
             }
 
@@ -55,6 +69,22 @@ namespace BinaryStudio.PortableExecutable
         public override String ToString()
             {
             return $"{Signature}:{((Status == 1) ? "Ready" : "Pending...")}";
+            }
+
+        protected virtual Boolean TryGetType(OMFSSectionIndex Index, out Type Type)
+            {
+            return SSectionTypes.TryGetValue(Index, out Type);
+            }
+
+        private static readonly IDictionary<OMFSSectionIndex,Type> SSectionTypes = new Dictionary<OMFSSectionIndex,Type>();
+        static OMFDirectory()
+            {
+            foreach (var type in typeof(OMFSSection).Assembly.GetTypes()) {
+                var key = type.GetCustomAttributes(false).OfType<OMFSSectionIndexAttribute>().FirstOrDefault();
+                if (key != null) {
+                    SSectionTypes[key.Index] = type;
+                    }
+                }
             }
         }
     }

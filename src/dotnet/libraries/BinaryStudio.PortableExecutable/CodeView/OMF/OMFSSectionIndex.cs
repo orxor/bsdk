@@ -19,7 +19,7 @@
         SegMap      = 0x012d,
         SegName     = 0x012e,
         PreComp     = 0x012f,
-        TypeNames   = 0x0130,
+        Names       = 0x0130,
         FileIndex   = 0x0133,
         StaticSym   = 0x0134
         }
