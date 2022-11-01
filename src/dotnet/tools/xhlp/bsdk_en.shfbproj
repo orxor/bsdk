@@ -18,8 +18,8 @@
     <HtmlHelpName>bsdk_en</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.DirectoryServices.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.DirectoryServices.en-US.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.PortableExecutable.dll" />
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.PortableExecutable.en-US.xml" /></DocumentationSources>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
     <SyntaxFilters>CSharp</SyntaxFilters>
     <CleanIntermediates>False</CleanIntermediates>

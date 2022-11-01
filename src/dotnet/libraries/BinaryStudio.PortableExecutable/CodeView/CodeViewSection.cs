@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using BinaryStudio.PortableExecutable.Win32;
@@ -52,27 +53,25 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 {
                 Sections = EmptyList<CodeViewPrimarySSection>.Value;
                 }
-            var BegOfDebugData = VirtualAddress + ImageDebugDirectory->AddressOfRawData;
-            var Header = (CodeViewDirectoryHeader*)BegOfDebugData;
-            switch (Header->Signature) {
-                case CodeViewDirectorySignature.NB00:
-                case CodeViewDirectorySignature.NB01:
-                case CodeViewDirectorySignature.NB02:
-                case CodeViewDirectorySignature.NB03:
-                case CodeViewDirectorySignature.NB04:
-                case CodeViewDirectorySignature.NB05:
-                case CodeViewDirectorySignature.NB06:
-                case CodeViewDirectorySignature.NB07:
-                case CodeViewDirectorySignature.NB08:
-                case CodeViewDirectorySignature.NB09:
-                case CodeViewDirectorySignature.FB09:
-                case CodeViewDirectorySignature.FB0A:
-                    {
-
+            var BegOfDebugData = VirtualAddress + ((ImageDebugDirectory->AddressOfRawData == 0) ? ImageDebugDirectory->PointerToRawData : ImageDebugDirectory->AddressOfRawData);
+            var EndOfDebugData = BegOfDebugData + ImageDebugDirectory->SizeOfData;
+            var Header = (OMFDirectorySignatureHeader*)BegOfDebugData;
+            var Signature = Header->Signature;
+            foreach (var type in typeof(CodeViewDirectory).Assembly.GetTypes()) {
+                var key = type.GetCustomAttributes(false).OfType<CodeViewDirectorySignatureAttribute>().FirstOrDefault();
+                if (key != null) {
+                    if (key.Signature == Signature) {
+                        var Directory = (CodeViewDirectory)Activator.CreateInstance(type,
+                            (IntPtr)BaseAddress,
+                            (IntPtr)BegOfDebugData,
+                            (IntPtr)EndOfDebugData);
+                        Directory.Analyze();
+                        break;
+                        }
                     }
-                    break;
-                default: throw new ArgumentOutOfRangeException();
                 }
+            Header = (OMFDirectorySignatureHeader*)(EndOfDebugData - sizeof(OMFDirectorySignatureHeader));
+            if (Header->Signature != Signature) { throw new InvalidDataException(); }
             }
 
         public override void WriteTo(IJsonWriter writer)

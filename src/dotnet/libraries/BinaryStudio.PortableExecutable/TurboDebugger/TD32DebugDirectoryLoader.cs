@@ -69,8 +69,8 @@ namespace BinaryStudio.PortableExecutable
             var BegOfDebugData = VirtualAddress + ImageDebugDirectory->AddressOfRawData;
             var Signature = (TD32FileSignature*)BegOfDebugData;
             if (!IsTD32(Signature)) { throw new ArgumentOutOfRangeException(nameof(ImageDebugDirectory)); }
-            var Header = (TD32DirectoryHeader*)(BegOfDebugData + Signature->Offset);
-            var Entry = (TD32DirectoryEntry*)(Header + 1);
+            var Header = (CodeViewSubsectionDirectoryHeader*)(BegOfDebugData + Signature->Offset);
+            var Entry = (CodeViewSubsectionDirectoryEntry*)(Header + 1);
             var Modules = new List<ModuleInfo>();
             var Names = new List<String>();
             #if DEBUGG
@@ -93,20 +93,20 @@ namespace BinaryStudio.PortableExecutable
             return;
             }
         #endregion
-        private unsafe void LoadDirectoryEntry(Byte* BaseAddress,Byte* VirtualAddress,TD32DirectoryEntry* Entry,
+        private unsafe void LoadDirectoryEntry(Byte* BaseAddress,Byte* VirtualAddress,CodeViewSubsectionDirectoryEntry* Entry,
             IList<ModuleInfo> Modules, IList<String> Names) {
             if (Entry == null) { throw new ArgumentNullException(nameof(Entry)); }
             if (VirtualAddress == null) { throw new ArgumentNullException(nameof(VirtualAddress)); }
             var EntryData = VirtualAddress + Entry->Offset;
-            switch (Entry->SubsectionType) {
-                case TD32SubsectionType.SUBSECTION_TYPE_MODULE:        { LoadModule(BaseAddress,(TD32ModuleInfo*)EntryData,Entry->Size,Modules); } break;
-                case TD32SubsectionType.SUBSECTION_TYPE_ALIGN_SYMBOLS: { LoadAlignSymbols(BaseAddress,(TD32SymbolInfoList*)EntryData,Entry->Size); } break;
-                case TD32SubsectionType.SUBSECTION_TYPE_SOURCE_MODULE: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
-                case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_TYPES:  { LoadGlobalTypes(BaseAddress,(TD32GlobalTypeInfo*)EntryData,Entry->Size); } break;
-                case TD32SubsectionType.SUBSECTION_TYPE_NAMES:         { LoadNames(BaseAddress,EntryData,Entry->Size,Names); } break;
-                case TD32SubsectionType.SUBSECTION_TYPE_TYPES:
-                case TD32SubsectionType.SUBSECTION_TYPE_SYMBOLS:
-                case TD32SubsectionType.SUBSECTION_TYPE_GLOBAL_SYMBOLS: break;
+            switch (Entry->SDirectoryIndex) {
+                case OMFSSectionIndex.Module:        { LoadModule(BaseAddress,(TD32ModuleInfo*)EntryData,Entry->Size,Modules); } break;
+                case OMFSSectionIndex.AlignSym: { LoadAlignSymbols(BaseAddress,(TD32SymbolInfoList*)EntryData,Entry->Size); } break;
+                case OMFSSectionIndex.SrcModule: { LoadSourceModule(BaseAddress,(TD32SourceModuleInfo*)EntryData,Entry->Size); } break;
+                case OMFSSectionIndex.GlobalTypes:  { LoadGlobalTypes(BaseAddress,(TD32GlobalTypeInfo*)EntryData,Entry->Size); } break;
+                case OMFSSectionIndex.TypeNames:         { LoadNames(BaseAddress,EntryData,Entry->Size,Names); } break;
+                case OMFSSectionIndex.Types:
+                case OMFSSectionIndex.Symbols:
+                case OMFSSectionIndex.GlobalSym: break;
                 default: throw new ArgumentOutOfRangeException();
                 }
             return;

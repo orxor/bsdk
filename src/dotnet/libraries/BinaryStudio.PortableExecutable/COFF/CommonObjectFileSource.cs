@@ -212,6 +212,8 @@ namespace BinaryStudio.PortableExecutable
         private unsafe void Load(Byte* BaseAddress,Byte* VirtualAddress,IMAGE_SECTION_HEADER* ImageSectionHeader,IMAGE_DATA_DIRECTORY* ImageDataDirectory,IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory) {
             if (ImageDebugDirectory == null) { throw new ArgumentNullException(nameof(ImageDebugDirectory)); }
             var RowData = BaseAddress + ImageSectionHeader->PointerToRawData;
+            var BegOfDebugData = VirtualAddress + ((ImageDebugDirectory->AddressOfRawData == 0) ? ImageDebugDirectory->PointerToRawData : ImageDebugDirectory->AddressOfRawData);
+            var EndOfDebugData = BegOfDebugData + ImageDebugDirectory->SizeOfData;
             var Signature = *(CV_SIGNATURE*)RowData;
             CodeViewSection Target = null;
             switch (Signature) {

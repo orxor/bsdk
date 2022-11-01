@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PortableExecutable.CodeView
     {
-    internal enum CodeViewDirectorySignature
+    public enum CodeViewDirectorySignature
         {
         NB00 = 0x3030424e,
         NB01 = 0x3130424e,
@@ -12,7 +12,9 @@
         NB07 = 0x3730424e,
         NB08 = 0x3830424e,
         NB09 = 0x3930424e,
+        NB10 = 0x3031424e,
         FB09 = 0x39304246,
-        FB0A = 0x41304246
+        FB0A = 0x41304246,
+        RSDS = 0x53445352
         }
     }

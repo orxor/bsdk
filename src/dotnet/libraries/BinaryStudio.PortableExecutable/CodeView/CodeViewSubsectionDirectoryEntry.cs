@@ -11,9 +11,9 @@ namespace BinaryStudio.PortableExecutable
     /// as well as its type and module number if applicable.
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct TD32DirectoryEntry
+    public struct CodeViewSubsectionDirectoryEntry
         {
-        public readonly TD32SubsectionType SubsectionType; // Subdirectory type
+        public readonly OMFSSectionIndex SDirectoryIndex; // Subdirectory type
         public readonly Int16 ModuleIndex;                 // Module index
         public readonly Int32 Offset;                      // Offset from the base offset lfoBase
         public readonly Int32 Size;                        // Number of bytes in subsection

@@ -17,8 +17,18 @@ namespace BinaryStudio.PortableExecutable.Win32
         private readonly UInt32 BaseOfCode;                             /* The address that is relative to the image base of the beginning-of-code section when it is loaded into memory.                                                                                                                                                                                                                   */
         private readonly UInt32 BaseOfData;                             /* The address that is relative to the image base of the beginning-of-data section when it is loaded into memory.                                                                                                                                                                                                                   */
         private readonly UInt32 ImageBase;                              /* The preferred address of the first byte of image when loaded into memory; must be a multiple of 64 K. The default for DLLs is 0x10000000. The default for Windows CE EXEs is 0x00010000. The default for Windows NT, Windows 2000, Windows XP, Windows 95, Windows 98, and Windows Me is 0x00400000.                             */
-        private readonly UInt32 SectionAlignment;                       /* The alignment (in bytes) of sections when they are loaded into memory. It must be greater than or equal to FileAlignment. The default is the page size for the architecture.                                                                                                                                                     */
-        private readonly UInt32 FileAlignment;                          /* The alignment factor (in bytes) that is used to align the raw data of sections in the image file. The value should be a power of 2 between 512 and 64 K, inclusive. The default is 512. If the [SectionAlignment] is less than the architecture’s page size, then FileAlignment must match [SectionAlignment].                   */
+        /// <summary>
+        /// The alignment (in bytes) of sections when they are loaded into memory.
+        /// It must be greater than or equal to <see cref="FileAlignment"/>.
+        /// The default is the page size for the architecture.
+        /// </summary>
+        public readonly UInt32 SectionAlignment;
+        /// <summary>
+        /// The alignment factor (in bytes) that is used to align the raw data of sections in the image file.
+        /// The value should be a power of 2 between 512 and 64 K, inclusive. The default is 512.
+        /// If the <see cref="SectionAlignment"/> is less than the architecture’s page size, then <see cref="FileAlignment"/> must match <see cref="SectionAlignment"/>.
+        /// </summary>
+        public readonly UInt32 FileAlignment;
         private readonly UInt16 MajorOperatingSystemVersion;            /* The major version number of the required operating system.                                                                                                                                                                                                                                                                       */
         private readonly UInt16 MinorOperatingSystemVersion;            /* The minor version number of the required operating system.                                                                                                                                                                                                                                                                       */
         private readonly UInt16 MajorImageVersion;                      /* The major version number of the image.                                                                                                                                                                                                                                                                                           */
@@ -38,6 +48,10 @@ namespace BinaryStudio.PortableExecutable.Win32
         private readonly UInt32 SizeOfHeapCommit;                       /* The size of the local heap space to commit.                                                                                                                                                                                                                                                                                      */
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private readonly UInt32 LoaderFlags;                            /* Reserved, must be zero.                                                                                                                                                                                                                                                                                                          */
-        public  readonly UInt32 NumberOfRvaAndSizes;                    /* The number of data-directory entries in the remainder of the optional header. Each describes a location and size.                                                                                                                                                                                                                */
+        /// <summary>
+        /// The number of data-directory entries in the remainder of the optional header.
+        /// Each describes a location and size.
+        /// </summary>
+        public  readonly UInt32 NumberOfRvaAndSizes;
         }
     }
