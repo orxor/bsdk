@@ -1,5 +1,8 @@
 ﻿namespace BinaryStudio.PortableExecutable.Win32
     {
+    /// <summary>
+    /// Symbol Indices.
+    /// </summary>
     public enum DEBUG_SYMBOL_INDEX : ushort
         {
         S_NONE                  = 0x0000,
@@ -7,6 +10,14 @@
         S_REGISTER16            = 0x0002,
         S_CONSTANT16            = 0x0003,
         S_UDT16                 = 0x0004,
+        /// <summary>
+        /// Start search.
+        /// These records are always the first symbol records in a module's $$SYMBOL section.
+        /// There is one <b>Start Search</b> symbol for each segment (PE section) to which the module contributes code.
+        /// Each <b>Start Search</b> symbol contains the segment (PE section) number and $$SYMBOL offset of the record of the outermost lexical scope in this module that physically appears first in the specified segment of the load image.
+        /// This referenced symbol is the symbol used to initiate context searches within this module.
+        /// The <b>Start Search</b> symbols are inserted into the $$SYMBOLS table by the CVPACK utility and must not be emitted by the language processor.
+        /// </summary>
         S_SSEARCH               = 0x0005,
         S_END                   = 0x0006,
         S_SKIP                  = 0x0007,

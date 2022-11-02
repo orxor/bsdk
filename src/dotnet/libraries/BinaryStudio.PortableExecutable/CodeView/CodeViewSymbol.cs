@@ -1,59 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    public class CodeViewSymbol : IJsonSerializable
+    public class CodeViewSymbol : IJsonSerializable,IFileDumpSupport
         {
         public CodeViewSymbolsSSection Section { get; }
         public virtual DEBUG_SYMBOL_INDEX Type { get; }
         public virtual Byte[] Content { get; }
         public Int32 Offset { get; }
+        public CodeViewSymbolStatus Status { get;protected set; }
 
-        private static readonly IDictionary<DEBUG_SYMBOL_INDEX,Type> types = new Dictionary<DEBUG_SYMBOL_INDEX, Type>();
+        private static readonly IDictionary<DEBUG_SYMBOL_INDEX,Type> Types = new Dictionary<DEBUG_SYMBOL_INDEX, Type>();
         static CodeViewSymbol() {
             foreach (var type in typeof(CodeViewSymbol).Assembly.GetTypes()) {
                 var key = type.GetCustomAttributes(false).OfType<CodeViewSymbolAttribute>().FirstOrDefault();
                 if (key != null) {
-                    types.Add(key.Key, type);
+                    Types.Add(key.Key, type);
                     }
                 }
             }
 
-        private unsafe CodeViewSymbol(CodeViewSymbolsSSection section, Int32 offset, DEBUG_SYMBOL_INDEX type, Byte* content, Int32 length)
-            :this(section, offset, (IntPtr)content, length)
+        private unsafe CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Type, Byte* Content, Int32 Length)
+            :this(Section, Offset, (IntPtr)Content, Length)
             {
-            Type = type;
+            this.Type = Type;
             }
 
-        protected unsafe CodeViewSymbol(CodeViewSymbolsSSection section, Int32 offset, IntPtr content, Int32 length)
-            {
-            if (content == null) { throw new ArgumentNullException(nameof(content)); }
-            Section = section;
-            Offset = offset;
-            var c = (Byte*)content;
-            var r = new Byte[length];
-            for (var i = 0; i < length; ++i) {
+        protected unsafe CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length) {
+            if (Content == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(Content)); }
+            this.Section = Section;
+            this.Offset = Offset;
+            var c = (Byte*)Content;
+            var r = new Byte[Length];
+            for (var i = 0; i < Length; ++i) {
                 r[i] = c[i];
                 }
-            Content = r;
-            MaxSizeLength = Math.Max(MaxSizeLength, Content.Length.ToString("X").Length);
+            this.Content = r;
+            MaxSizeLength = Math.Max(MaxSizeLength, r.Length.ToString("X").Length);
+            Status = CodeViewSymbolStatus.HasFileDumpWrite;
             }
 
-        public static unsafe CodeViewSymbol From(CodeViewSymbolsSSection section, Int32 offset, DEBUG_SYMBOL_INDEX index, Byte* content, Int32 length) {
-            if (types.TryGetValue(index,out var type)) {
-                return (CodeViewSymbol)Activator.CreateInstance(type,
-                    section,
-                    offset,
-                    (IntPtr)content,
-                    length);
+        public static unsafe CodeViewSymbol From(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Index, Byte* Content, Int32 Length, IDictionary<DEBUG_SYMBOL_INDEX,Type> Mapping = null) {
+            Type type;
+            if (Mapping != null) {
+                if (Mapping.TryGetValue(Index,out type)) {
+                    return (CodeViewSymbol)Activator.CreateInstance(type,
+                        Section,
+                        Offset,
+                        (IntPtr)Content,
+                        Length);
+                    }
                 }
-            Console.Error.WriteLine($"{index}");
-            return new CodeViewSymbol(section, offset, index, content, length);
+            if (Types.TryGetValue(Index,out type)) {
+                return (CodeViewSymbol)Activator.CreateInstance(type,
+                    Section,
+                    Offset,
+                    (IntPtr)Content,
+                    Length);
+                }
+            return new CodeViewSymbol(Section,Offset,Index,Content,Length);
             }
 
         #region M:ToArray(Byte*,Int32):Byte[]
@@ -123,8 +135,35 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return Type.ToString();
             }
 
-        public virtual void WriteTo(IJsonWriter writer)
-            {
+        /// <summary>Writes DUMP with specified flags.</summary>
+        /// <param name="Writer">The <see cref="TextWriter"/> to write to.</param>
+        /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
+        /// <param name="Flags">DUMP flags.</param>
+        public virtual void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
+            Writer.WriteLine("{0}Offset:{1:x8} Type:{2}",
+                LinePrefix,Offset,Type);
+            var builder = new StringBuilder();
+            using (var writer = new DefaultJsonWriter(new JsonTextWriter(new StringWriter(builder)) {
+                Formatting = Formatting.Indented,
+                Indentation = 2,
+                IndentChar = ' '
+                }))
+                {
+                WriteTo(writer);
+                }
+            foreach (var i in builder.ToString().Split('\n')) {
+                Writer.WriteLine("{0}{1}", LinePrefix,i);
+                }
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public virtual void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Offset),Offset.ToString("x8"));
+                writer.WriteValue(nameof(Type),Type);
+                }
             }
 
         private static Int32 MaxSizeLength;

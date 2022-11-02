@@ -13,7 +13,8 @@ namespace BinaryStudio.PortableExecutable
 
         protected override Boolean TryGetType(OMFSSectionIndex Index, out Type Type) {
             switch (Index) {
-                case OMFSSectionIndex.Module : { Type = typeof(TD32SSectionModule); return true; }
+                case OMFSSectionIndex.Module   : { Type = typeof(TD32SSectionModule);   return true; }
+                case OMFSSectionIndex.AlignSym : { Type = typeof(TD32SSectionAlignSym); return true; }
                 }
             return base.TryGetType(Index, out Type);
             }

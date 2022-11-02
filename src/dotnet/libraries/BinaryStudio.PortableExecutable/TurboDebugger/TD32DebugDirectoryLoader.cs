@@ -140,8 +140,8 @@ namespace BinaryStudio.PortableExecutable
         #endregion
         #region M:LoadAlignSymbols(IntPtr,TD32SymbolInfoList,Int32)
         private unsafe void LoadAlignSymbols(Byte* BaseAddress,TD32SymbolInfoList* Source, Int32 Size) {
-            var SymbolList = (TD32SymbolInfo*)(Source + 1);
-            Size -= sizeof(TD32SymbolInfo);
+            var SymbolList = (CODEVIEW_SYMBOL_RECORD_HEADER*)(Source + 1);
+            Size -= sizeof(CODEVIEW_SYMBOL_RECORD_HEADER);
             while (Size > 0) {
                 var Offset = (Byte*)SymbolList - BaseAddress;
                 #if TD32DEBUG
@@ -149,8 +149,8 @@ namespace BinaryStudio.PortableExecutable
                     Offset,SymbolList->Size,
                     SymbolList->SymbolType);
                 #endif
-                Size -= SymbolList->Size + 2;
-                SymbolList = (TD32SymbolInfo*)((Byte*)SymbolList + SymbolList->Size + 2);
+                Size -= SymbolList->Length + 2;
+                SymbolList = (CODEVIEW_SYMBOL_RECORD_HEADER*)((Byte*)SymbolList + SymbolList->Length + 2);
                 }
             }
         #endregion

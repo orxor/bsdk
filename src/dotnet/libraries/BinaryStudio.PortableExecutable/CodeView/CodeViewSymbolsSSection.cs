@@ -23,7 +23,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 {
                 var r = content;
                 while (length > 0) {
-                    var header = (DEBUG_SYMBOL_HEADER*)r;
+                    var header = (CODEVIEW_SYMBOL_RECORD_HEADER*)r;
                     length -= header->Length + sizeof(Int16);
                     Symbols.Add(CodeViewSymbol.From(
                         this,
@@ -31,9 +31,9 @@ namespace BinaryStudio.PortableExecutable.CodeView
                         header->Type,
                         (Byte*)(header + 1),
                         header->Length - sizeof(Int16)));
-                    r += sizeof(DEBUG_SYMBOL_HEADER);
+                    r += sizeof(CODEVIEW_SYMBOL_RECORD_HEADER);
                     r += header->Length - sizeof(Int16);
-                    offset += sizeof(DEBUG_SYMBOL_HEADER) + header->Length - sizeof(Int16);
+                    offset += sizeof(CODEVIEW_SYMBOL_RECORD_HEADER) + header->Length - sizeof(Int16);
                     }
                 }
             finally
