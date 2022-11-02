@@ -7,6 +7,15 @@
         {
         S_NONE                  = 0x0000,
         S_COMPILE               = 0x0001,
+        /// <summary>
+        /// This symbol record describes a symbol that has been placed in a register.
+        /// Provisions for enabling future implementation tracking of a symbol into and out of registers is provided in this symbol.
+        /// When the symbol processor is examining a register symbol, the length field of the symbol is compared with the offset of the byte following the symbol name field.
+        /// If these are the same, there is no register tracking information.
+        /// If the length and offset are different, the byte following the end of the symbol name is examined.
+        /// If the byte is zero, there is no register tracking information following the symbol.
+        /// If the byte is not zero, then the byte is the index into the list of stack machine implementations and styles of register tracking.
+        /// </summary>
         S_REGISTER16            = 0x0002,
         S_CONSTANT16            = 0x0003,
         S_UDT16                 = 0x0004,
@@ -19,6 +28,9 @@
         /// The <b>Start Search</b> symbols are inserted into the $$SYMBOLS table by the CVPACK utility and must not be emitted by the language processor.
         /// </summary>
         S_SSEARCH               = 0x0005,
+        /// <summary>
+        /// Closes the scope of the nearest preceding Block Start, Global Procedure Start, Local Procedure Start, With Start, or Thunk Start definition.
+        /// </summary>
         S_END                   = 0x0006,
         S_SKIP                  = 0x0007,
         S_CVRESERVE             = 0x0008,
@@ -54,6 +66,9 @@
         /// For C and C++, functions that are declared static to a module are emitted as <b>Local Procedure</b> symbols.
         /// </summary>
         S_LPROC32_16            = 0x0204,
+        /// <summary>
+        /// This symbol is used for procedures that are not specifically declared static to a module.
+        /// </summary>
         S_GPROC32_16            = 0x0205,
         S_THUNK32_ST            = 0x0206,
         S_BLOCK32_ST            = 0x0207,
