@@ -11,11 +11,23 @@ namespace BinaryStudio.PortableExecutable.CodeView
     {
     public class CodeViewSymbol : IJsonSerializable,IFileDumpSupport
         {
+        public ICodeViewNameTable NameTable { get;internal set; }
         public CodeViewSymbolsSSection Section { get; }
         public virtual DEBUG_SYMBOL_INDEX Type { get; }
         public virtual Byte[] Content { get; }
         public Int32 Offset { get; }
         public CodeViewSymbolStatus Status { get;protected set; }
+        protected virtual Encoding Encoding { get{
+            return (Section != null)
+                ? Section.Section.Encoding
+                : Encoding.ASCII;
+            }}
+
+        protected virtual Boolean IsLengthPrefixedString { get {
+            return (Section != null)
+                ? Section.Section.IsLengthPrefixedString
+                : true;
+            }}
 
         private static readonly IDictionary<DEBUG_SYMBOL_INDEX,Type> Types = new Dictionary<DEBUG_SYMBOL_INDEX, Type>();
         static CodeViewSymbol() {

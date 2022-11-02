@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using BinaryStudio.PortableExecutable.CodeView;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable LocalVariableHidesMember
@@ -11,7 +12,7 @@ namespace BinaryStudio.PortableExecutable
     {
     using static COFFDataOperations;
     [OMFSSectionIndex(OMFSSectionIndex.Names)]
-    internal class OMFSSectionNames : OMFSSection, IList<String>
+    internal class OMFSSectionNames : OMFSSection, IList<String>,ICodeViewNameTable
         {
         private readonly IList<String> Values = new List<String>();
         public OMFSSectionNames(OMFDirectory Directory)
@@ -154,5 +155,9 @@ namespace BinaryStudio.PortableExecutable
             set { throw new NotSupportedException(); }
             }
         #endregion
+
+        public String this[Int32 Index] { get {
+            return Values[Index];
+            }}
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PortableExecutable.Win32
     {
-    public enum DEBUG_TYPE_ENUM : uint
+    public enum DEBUG_TYPE_ENUM : ushort
         {
         T_NOTYPE        = 0x0000,   // uncharacterized type (no type)
         T_ABS           = 0x0001,   // absolute symbol

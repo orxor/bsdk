@@ -5,6 +5,7 @@ namespace BinaryStudio.PortableExecutable.Win32
     [Flags]
     public enum CV_PFLAG : byte
         {
+        CV_PFLAG_NEAR       = 0x00,
         CV_PFLAG_NOFPO      = 0x01,
         CV_PFLAG_INT        = 0x02,
         CV_PFLAG_FAR        = 0x04,

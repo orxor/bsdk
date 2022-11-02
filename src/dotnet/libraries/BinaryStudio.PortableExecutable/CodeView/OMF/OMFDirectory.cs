@@ -4,13 +4,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BinaryStudio.PortableExecutable.CodeView;
 
 // ReSharper disable LocalVariableHidesMember
 // ReSharper disable ParameterHidesMember
 
 namespace BinaryStudio.PortableExecutable
     {
-    public abstract class OMFDirectory : IFileDumpSupport
+    public abstract class OMFDirectory : IFileDumpSupport,IServiceProvider,ICodeViewNameTable
         {
         protected readonly unsafe Byte* BaseAddress;
         protected readonly unsafe Byte* BegOfDebugData;
@@ -76,6 +77,15 @@ namespace BinaryStudio.PortableExecutable
             return $"{Signature}:{((Status == 1) ? "Ready" : "Pending...")}";
             }
 
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <returns>A service object of type <paramref name="Service"/>.-or- null if there is no service object of type <paramref name="Service"/>.</returns>
+        /// <param name="Service">An object that specifies the type of service object to get.</param>
+        public Object GetService(Type Service) {
+            if (Service == GetType()) { return this; }
+            if (Service == typeof(ICodeViewNameTable)) { return this; }
+            return null;
+            }
+
         public virtual void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags)
             {
             if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
@@ -114,5 +124,9 @@ namespace BinaryStudio.PortableExecutable
                     }
                 }
             }
+
+        String ICodeViewNameTable.this[Int32 Index] { get {
+            return Names[Index];
+            }}
         }
     }

@@ -1,7 +1,7 @@
-﻿using BinaryStudio.PortableExecutable.Win32;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
+using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
@@ -9,9 +9,9 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    internal abstract class S_PROCSYM32 : CodeViewSymbol
+    internal abstract class S_PROCSYM32_16 : CodeViewSymbol
         {
-        public DEBUG_TYPE_ENUM ProcedureType { get; }
+        public DEBUG_TYPE_ENUM TypeIndex { get; }
         public Int16 SegmentIndex { get; }
         public Int32 ProcedureOffset { get; }
         public Int32 ProcedureLength { get; }
@@ -23,11 +23,11 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public Int32 DbgEnd { get; }
         public virtual String Name { get; }
 
-        protected unsafe S_PROCSYM32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+        protected unsafe S_PROCSYM32_16(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
-            var Header = (CODEVIEW_PROCSYM32*)Content;
-            ProcedureType = Header->ProcedureType;
+            var Header = (CODEVIEW_PROCSYM32_16*)Content;
+            TypeIndex = Header->TypeIndex;
             SegmentIndex = Header->Segment;
             Flags     = Header->Flags;
             Parent    = Header->Parent;
@@ -55,7 +55,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 writer.WriteValue(nameof(DbgEnd),DbgEnd.ToString("x8"));
                 writer.WriteValue(nameof(Flags),Flags);
                 writer.WriteValue(nameof(SegmentIndex),SegmentIndex.ToString("x4"));
-                writer.WriteValue(nameof(ProcedureType),ProcedureType);
+                writer.WriteValue(nameof(TypeIndex),TypeIndex);
                 writer.WriteValue(nameof(ProcedureOffset),ProcedureOffset.ToString("x4"));
                 writer.WriteValue(nameof(Name),Name);
                 }
@@ -67,7 +67,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
         /// <param name="Flags">DUMP flags.</param>
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
             Writer.WriteLine("{0}Offset:{1:x8} Type:{2} {3:x4}:{4:x8}-{5:x8}", LinePrefix,Offset,Type,SegmentIndex,ProcedureOffset,ProcedureOffset+ProcedureLength-1);
-            Writer.WriteLine("{0}  Debug:{1:x4}:{2:x8}-{3:x8} ProcedureType:{4}", LinePrefix,SegmentIndex,ProcedureOffset+DbgStart,ProcedureOffset+DbgEnd,ProcedureType);
+            Writer.WriteLine("{0}  Debug:{1:x4}:{2:x8}-{3:x8} TypeIndex:{4}", LinePrefix,SegmentIndex,ProcedureOffset+DbgStart,ProcedureOffset+DbgEnd,TypeIndex);
             var builder = new StringBuilder();
             using (var writer = new DefaultJsonWriter(new JsonTextWriter(new StringWriter(builder)) {
                 Formatting = Formatting.Indented,
