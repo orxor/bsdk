@@ -21,12 +21,18 @@
     <ClInclude Include="hdrstop.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="hdrstop.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="object.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
