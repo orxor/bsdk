@@ -23,7 +23,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>WSL_1_0</PlatformToolset>
+    <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
     <ConfigurationType>DynamicLibrary</ConfigurationType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -45,6 +45,7 @@
     <OutDir>$(ProjectDir)..\..\..\.intermediate\</OutDir>
     <TargetName>$(ProjectName)</TargetName>
     <IntDir>$(ProjectDir).intermediate\linux\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <LibraryPath>$(ProjectDir)..\..\..\.intermediate\</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cc" />
@@ -59,6 +60,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
       <AdditionalOptions>-fPIC %(AdditionalOptions)</AdditionalOptions>
+      <LibraryDependencies>ntx64</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <ShowProgress>true</ShowProgress>
+      <VerboseOutput>true</VerboseOutput>
+      <Trace>true</Trace>
+      <LibraryDependencies>ntx64</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

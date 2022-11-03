@@ -47,7 +47,7 @@ IUnknown
     virtual ULONG STDMETHODCALLTYPE Release() = 0;
     };
 
-LONG InterlockedIncrement(LONG volatile *Addend);
+EXTERN_C LONG InterlockedIncrement(LONG volatile *Addend);
 
 #define ATLTRACE(...)
 #define _ASSERT(...)

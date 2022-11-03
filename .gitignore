@@ -76,3 +76,5 @@
 
 /.intermediate
 /src/cc/clr/.intermediate
+/src/cc/clr/obj
+/src/cc/ntdll/.intermediate
