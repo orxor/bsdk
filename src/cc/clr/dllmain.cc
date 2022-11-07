@@ -14,3 +14,8 @@ BOOL APIENTRY DllMain(HMODULE Module,DWORD ul_reason_for_call,LPVOID) {
     }
 #endif
 
+STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID* r)
+    {
+    if (r == nullptr) { return E_INVALIDARG; }
+    return E_NOINTERFACE;
+    }
