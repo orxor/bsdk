@@ -27,6 +27,9 @@
     <ClInclude Include="codeview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="module.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cc">
@@ -45,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mutex.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="module.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

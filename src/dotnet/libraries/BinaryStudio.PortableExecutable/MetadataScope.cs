@@ -15,6 +15,11 @@ namespace BinaryStudio.PortableExecutable
     {
     public class MetadataScope : IDisposable
         {
+        internal interface IExternalMetadataLibrary
+            {
+
+            }
+
         private const UInt16 IMAGE_DOS_SIGNATURE = 0x5A4D;
         private const UInt32 MSFT_SIGNATURE = 0x5446534D;
         private const UInt32 SLTG_SIGNATURE = 0x47544c53;
@@ -40,6 +45,7 @@ namespace BinaryStudio.PortableExecutable
         #endregion
 
         static MetadataScope() {
+
             foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(i => i.IsSubclassOf(typeof(MetadataObject)) && !i.IsAbstract)) {
                 foreach (var attribute in type.GetCustomAttributes(typeof(MetadataObjectFactoryAttribute), false).OfType<MetadataObjectFactoryAttribute>()) {
                     Factories.Add(attribute);
