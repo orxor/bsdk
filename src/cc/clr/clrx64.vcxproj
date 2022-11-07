@@ -88,16 +88,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="codeview.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="hdrstop.h" />
     <ClInclude Include="object.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="codeview.cc" />
     <ClCompile Include="dllmain.cc" />
     <ClCompile Include="hdrstop.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="metadata.cc" />
+    <ClCompile Include="mutex.cc" />
     <ClCompile Include="object.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
