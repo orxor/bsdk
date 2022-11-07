@@ -93,10 +93,18 @@ private:
 public:
     STDMETHOD(QueryInterface)(REFIID riid,void** r) override {
         if (r == nullptr) { return E_INVALIDARG; }
+        *r = nullptr;
         return (Object<IUnknown>::QueryInterface(riid,r) != S_OK)
             ? QueryInterfaceT<T...>::QueryInterface(this,riid,r)
             : S_OK;
         }
+    ULONG STDMETHODCALLTYPE AddRef()  override { return Object<IUnknown>::AddRef();  }
+    ULONG STDMETHODCALLTYPE Release() override { return Object<IUnknown>::Release(); }
+protected:
+    Object(const Object&) = default;
+    Object(Object&&)      = default;
+    Object& operator=(const Object&) = default;
+    Object& operator=(Object&&)      = default;
     };
 
 template<class T>
@@ -120,6 +128,20 @@ public:
         r(o)
         {
         AddRef();
+        }
+    ComPtr(ComPtr<T>& o):
+        r(o.r)
+        {
+        AddRef();
+        }
+    ComPtr(ComPtr<T>&& o):
+        r(o.r)
+        {
+        AddRef();
+        }
+    ~ComPtr()
+        {
+        Release();
         }
 public:
     bool operator == (T* o) const { return r == o; }
@@ -215,9 +237,23 @@ class MutexLock
     {
 public:
     explicit MutexLock(HANDLE MutexObject);
+    MutexLock(const MutexLock&) = delete;
     ~MutexLock();
 private:
-    MutexLock(const MutexLock&) = delete;
 private:
     HANDLE MutexObject;
     };
+
+
+#define COR_E_NULLREFERENCE         0x80004003
+#define COR_E_ARGUMENT              0x80070057
+#define COR_E_ARGUMENTOUTOFRANGE    0x80131502
+#define COR_E_NOTSUPPORTED          0x80131515
+#define COR_E_INVALIDOPERATION      0x80131509
+#define CORSEC_E_CRYPTO             0x80131430
+#define CORSEC_E_CRYPTO_UNEX_OPER   0x80131431
+#define CORSEC_E_POLICY_EXCEPTION   0x80131416
+#define CORSEC_E_INVALID_STRONGNAME 0x80131415
+#define CORSEC_E_XMLSYNTAX          0x80131419
+#define COR_E_EXCEPTION             0x80131500
+#define COR_E_OVERFLOW              0x80131516

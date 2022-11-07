@@ -30,6 +30,12 @@
     <ClInclude Include="module.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="omf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="td32.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cc">
@@ -51,6 +57,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="module.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="omf.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="td32.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="nbxx.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

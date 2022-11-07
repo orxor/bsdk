@@ -45,6 +45,10 @@ namespace BinaryStudio.PortableExecutable
                 COFFMetadataObject = new CommonObjectFileSource(Scope,new MetadataObjectIdentity(Identity.LocalName,typeof(CommonObjectFileSource))){
                     IgnoreOptionalHeaderSize = false
                     };
+                r.Load(new []{
+                    (IntPtr)source,
+                    (IntPtr)mapping
+                    }, size);
                 COFFMetadataObject.Load(new []{
                     (IntPtr)source,
                     (IntPtr)mapping

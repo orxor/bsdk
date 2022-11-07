@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
+using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.PortableExecutable
     {
@@ -6,5 +8,6 @@ namespace BinaryStudio.PortableExecutable
     [ComImport, Guid("2f857d78-03a7-40fe-9500-cf2d2f235b4c")]
     public interface ICommonObjectFileSource
         {
+        [PreserveSig] HResult Load([MarshalAs(UnmanagedType.SafeArray)] IntPtr[] Source,Int64 Size);
         }
     }

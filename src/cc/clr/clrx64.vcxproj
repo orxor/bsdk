@@ -95,6 +95,8 @@
     <ClInclude Include="hdrstop.h" />
     <ClInclude Include="module.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="omf.h" />
+    <ClInclude Include="td32.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="codeview.cc" />
@@ -106,7 +108,10 @@
     <ClCompile Include="metadata.cc" />
     <ClCompile Include="module.cc" />
     <ClCompile Include="mutex.cc" />
+    <ClCompile Include="nbxx.cc" />
     <ClCompile Include="object.cc" />
+    <ClCompile Include="omf.cc" />
+    <ClCompile Include="td32.cc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="clrx64.def" />
