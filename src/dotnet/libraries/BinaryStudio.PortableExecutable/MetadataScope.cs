@@ -5,11 +5,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.IO;
+using BinaryStudio.PlatformComponents;
+using BinaryStudio.PlatformComponents.Win32;
+using SYSKIND = System.Runtime.InteropServices.ComTypes.SYSKIND;
 
 namespace BinaryStudio.PortableExecutable
     {
@@ -17,7 +20,24 @@ namespace BinaryStudio.PortableExecutable
         {
         internal interface IExternalMetadataLibrary
             {
+            [Import] HResult DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r);
+            }
 
+        internal class ExternalMetadataLibrary : Library,IExternalMetadataLibrary
+            {
+            private delegate HResult MyD(ref Guid rclsid, ref Guid riid, out IntPtr r);
+            private MyD m_value;
+            public ExternalMetadataLibrary(String filepath):
+                base(filepath)
+                {
+                }
+
+            public HResult DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r)
+                {
+                Debug.Print($"{GetType().Name}.DllGetClassObject");
+                EnsureProcedure("DllGetClassObject", ref this.m_value);
+                return this.m_value(ref rclsid, ref riid, out r);
+                }
             }
 
         private const UInt16 IMAGE_DOS_SIGNATURE = 0x5A4D;
@@ -45,7 +65,8 @@ namespace BinaryStudio.PortableExecutable
         #endregion
 
         static MetadataScope() {
-
+            var Location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            MetadataLibrary = new ExternalMetadataLibrary(Path.Combine(Location,(IntPtr.Size == 4) ? "clrx86.dll" : "clrx64.dll"));
             foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(i => i.IsSubclassOf(typeof(MetadataObject)) && !i.IsAbstract)) {
                 foreach (var attribute in type.GetCustomAttributes(typeof(MetadataObjectFactoryAttribute), false).OfType<MetadataObjectFactoryAttribute>()) {
                     Factories.Add(attribute);
@@ -185,6 +206,31 @@ namespace BinaryStudio.PortableExecutable
         private readonly IDictionary<MetadataObjectIdentity,MetadataObject> objects = new ConcurrentDictionary<MetadataObjectIdentity, MetadataObject>();
         private readonly ReaderWriterLockSlim ObjectCacheLock = new ReaderWriterLockSlim();
         private static readonly ISet<MetadataObjectFactoryAttribute> Factories = new HashSet<MetadataObjectFactoryAttribute>();
+        private static readonly dynamic MetadataLibrary;
         public static readonly Guid FileServiceGuid = new Guid("{e34e7255-e143-4573-bb20-22236f17d591}");
+
+        #region M:DllGetClassObject({ref}Guid,{ref}Guid,{out}IntPtr):HResult
+        private static HResult DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r)
+            {
+            var SCode = (HResult)MetadataLibrary.DllGetClassObject(ref rclsid,ref riid, out r);
+            return SCode;
+            }
+        #endregion
+        #region M:DllGetClassObject({out}T)
+        internal static void DllGetClassObject<T>(out T r)
+            where T: class
+            {
+            r = default;
+            var type = typeof(T);
+            if (type.IsImport)
+                {
+                IntPtr o;
+                var rclsid = type.GUID;
+                var riid = new Guid("00000000-0000-0000-C000-000000000046");
+                DllGetClassObject(ref rclsid, ref riid, out o);
+                r = Marshal.GetObjectForIUnknown(o) as T;
+                }
+            }
+        #endregion
         }
     }

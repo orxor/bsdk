@@ -80,12 +80,14 @@ namespace BinaryStudio.PlatformComponents
         #region M:EnsureCore
         protected virtual void EnsureCore() {
             if (SharedObject == null) {
+                Debug.Print($"{GetType().Name}.EnsureCore");
                 SharedObject = SharedObject.Create(FilePath);
                 }
             }
         #endregion
         #region M:EnsureProcedure<T>(String,[Ref]T):T
         protected T EnsureProcedure<T>(String name, ref T value) {
+            Debug.Print($"{GetType().Name}.EnsureProcedure:{{{name}}}");
             if (value == null) {
                 lock(this) {
                     EnsureCore();
@@ -119,8 +121,8 @@ namespace BinaryStudio.PlatformComponents
                 $"{{{index}}}",
                 @delegate,
                 FieldAttributes.Private);
-            var attribute = new CustomAttributeBuilder(typeof(DebuggerBrowsableAttribute).GetConstructor(new Type[]{ typeof(DebuggerBrowsableState)}), new Object[]{ DebuggerBrowsableState.Never });
-            r.SetCustomAttribute(attribute);
+            //var attribute = new CustomAttributeBuilder(typeof(DebuggerBrowsableAttribute).GetConstructor(new Type[]{ typeof(DebuggerBrowsableState)}), new Object[]{ DebuggerBrowsableState.Never });
+            //r.SetCustomAttribute(attribute);
             return r;
             }
         #endregion
@@ -143,7 +145,7 @@ namespace BinaryStudio.PlatformComponents
                 CallingConventions.HasThis, new Type[]{ typeof(String) });
             ctor.DefineParameter(1, ParameterAttributes.None, "filepath");
             ctor.SetImplementationFlags(MethodImplAttributes.Managed);
-            ctor.InitLocals = true;
+            ctor.InitLocals = false;
             var gtor = ctor.GetILGenerator();
             gtor.BeginScope();
             //gtor.DeclareLocal(null);
@@ -154,12 +156,12 @@ namespace BinaryStudio.PlatformComponents
             gtor.Emit(OpCodes.Ret);
             }
         #endregion
-        #region M:BuildMethod(TypeBuilder,MethodInfo,FieldBuilder)
-        private static void BuildMethod(TypeBuilder type, MethodInfo source, FieldBuilder field, MethodBuilder invoke) {
+        #region M:BuildMethod(TypeBuilder,MethodInfo,FieldBuilder,Boolean)
+        private static void BuildMethod(TypeBuilder type, MethodInfo source, FieldBuilder field, MethodBuilder invoke, Boolean IsDerived) {
             var parameters = source.GetParameters();
-            var r = type.DefineMethod(
-                $"{source.DeclaringType.FullName}.{source.Name}",
-                MethodAttributes.HideBySig|MethodAttributes.Private|MethodAttributes.Final|MethodAttributes.Virtual|MethodAttributes.NewSlot);
+            var r = IsDerived
+                ? type.DefineMethod($"{source.DeclaringType.FullName}.{source.Name}",MethodAttributes.HideBySig|MethodAttributes.Private|MethodAttributes.Final|MethodAttributes.Virtual|MethodAttributes.NewSlot)
+                : type.DefineMethod($"{source.Name}",MethodAttributes.Public);
             r.SetSignature(source.ReturnType, null, null, parameters.Select(i => i.ParameterType).ToArray(), null, null);
             r.DefineParameter(0, ParameterAttributes.Retval, String.Empty);
             for (var i = 0; i < parameters.Length; i++) {
@@ -171,6 +173,14 @@ namespace BinaryStudio.PlatformComponents
             var mi = typeof(Library).GetMethod(nameof(EnsureProcedure), BindingFlags.Instance|BindingFlags.NonPublic);
             mi = mi.MakeGenericMethod(field.FieldType);
             gtor.DeclareLocal(source.ReturnType);
+            #if DEBUG
+            gtor.Emit(OpCodes.Ldarg_0);
+            gtor.Emit(OpCodes.Call, typeof(Type).GetMethod("GetType", BindingFlags.Instance|BindingFlags.Public));
+            gtor.Emit(OpCodes.Callvirt, typeof(Type).GetProperty("Name",BindingFlags.Instance|BindingFlags.Public).GetGetMethod());
+            gtor.Emit(OpCodes.Ldstr, source.Name);
+            gtor.Emit(OpCodes.Call, typeof(String).GetMethod("Concat", BindingFlags.Public|BindingFlags.Static, null, CallingConventions.Standard, new Type[]{ typeof(String),typeof(String) },null));
+            gtor.Emit(OpCodes.Call, typeof(Debug).GetMethod("Print", BindingFlags.Public|BindingFlags.Static, null, CallingConventions.Standard, new Type[]{ typeof(String) },null));
+            #endif
             gtor.Emit(OpCodes.Ldarg_0);
             gtor.Emit(OpCodes.Ldstr, source.Name);
             gtor.Emit(OpCodes.Ldarg_0);
@@ -198,7 +208,10 @@ namespace BinaryStudio.PlatformComponents
             gtor.MarkLabel(L);
             gtor.Emit(OpCodes.Ldloc_0);
             gtor.Emit(OpCodes.Ret);
-            type.DefineMethodOverride(r, source);
+            if (IsDerived)
+                {
+                type.DefineMethodOverride(r, source);
+                }
             }
         #endregion
         #region M:BuildDelegate(TypeBuilder,String,MethodInfo,MethodBuilder):TypeBuilder
@@ -281,8 +294,8 @@ namespace BinaryStudio.PlatformComponents
             foreach (var i in y) { yield return i; }
             }
         #endregion
-        #region M:LoadLibrary<T>(String):T
-        public static T LoadLibrary<T>(String filepath)
+        #region M:LoadLibrary<T>(String):Library
+        public static Library LoadLibrary<T>(String filepath, Boolean IsDerived)
             {
             if (filepath == null) { throw new ArgumentNullException(nameof(filepath)); }
             #if NET35
@@ -293,25 +306,27 @@ namespace BinaryStudio.PlatformComponents
             var filename = Path.GetFileNameWithoutExtension(filepath);
             var type = typeof(T);
             var assemblyname = new AssemblyName($"{{{filename}}}"){ Version = GetVersion(filepath) };
-            var assembly = DefineDynamicAssembly(assemblyname, AssemblyBuilderAccess.Run);
-            //var module = assembly.DefineDynamicModule($"{assemblyname.Name}", $"{assemblyname.Name}.dll");
-            var module = assembly.DefineDynamicModule($"{assemblyname.Name}");
-            var target = module.DefineType("{Library}", TypeAttributes.Public|TypeAttributes.BeforeFieldInit, typeof(Library), new Type[]{ type });
-            BuildConstructor(target);
+            var assembly = DefineDynamicAssembly(assemblyname, AssemblyBuilderAccess.RunAndSave);
+            var module = assembly.DefineDynamicModule($"{assemblyname.Name}", $"{assemblyname.Name}.dll");
+            //var module = assembly.DefineDynamicModule($"{assemblyname.Name}");
+            var target = IsDerived
+                ? module.DefineType("{Library}", TypeAttributes.Public|TypeAttributes.BeforeFieldInit, typeof(Library), new Type[]{ type })
+                : module.DefineType("{Library}", TypeAttributes.Public|TypeAttributes.BeforeFieldInit, typeof(Library), Type.EmptyTypes);
             var methods = type.GetMethods();
             var format = "{0:D" + ((Int32)Math.Ceiling(Math.Log10(methods.Length)) + 1) + "}";
             for (var i = 0; i < methods.Length; i++)
                 {
                 var n = String.Format(format, i);
-                var d =
-                BuildDelegate(target, n , methods[i], out var invoke);
+                var d = BuildDelegate(target, n , methods[i], out var invoke);
                 BuildMethod(target, methods[i],
-                BuildField(target, d, n), invoke);
+                BuildField(target, d, n), invoke, IsDerived);
                 }
+            BuildConstructor(target);
             var r = target.CreateType();
+            assembly.Save($"{assemblyname.Name}");
             var ctor = r.GetConstructor(new Type[]{ typeof(String)});
             if (ctor == null) { throw new InvalidOperationException(); }
-            return (T)ctor.Invoke(new Object[]{ filepath });
+            return (Library)ctor.Invoke(new Object[]{ filepath });
             }
         #endregion
         #region M:GetVersion(String)

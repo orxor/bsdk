@@ -24,6 +24,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.PlatformComponents", "src\dotnet\tests\UnitTests.BinaryStudio.PlatformComponents\UnitTests.BinaryStudio.PlatformComponents.csproj", "{EB798EE4-6253-4769-A733-07144EFF94BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PortableExecutable", "src\dotnet\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj", "{0B996372-EDA2-4EE2-AC3E-F7302F2080A6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{41C9100F-371D-49D4-AAD1-B03DD2CC6BD3} = {41C9100F-371D-49D4-AAD1-B03DD2CC6BD3}
+		{CCA2E5EE-3B24-41C8-8D72-28FBE4C07E4F} = {CCA2E5EE-3B24-41C8-8D72-28FBE4C07E4F}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.IO", "src\dotnet\libraries\BinaryStudio.IO\BinaryStudio.IO.csproj", "{0BAFB00A-AA45-4200-8C45-B4311BE109DA}"
 EndProject

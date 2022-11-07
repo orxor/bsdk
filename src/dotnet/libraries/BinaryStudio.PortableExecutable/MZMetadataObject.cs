@@ -39,6 +39,7 @@ namespace BinaryStudio.PortableExecutable
             var mapping = &source[header->e_lfanew];
             var magic = (UInt32*)mapping;
             if (*magic == IMAGE_NT_SIGNATURE) {
+                MetadataScope.DllGetClassObject<ICommonObjectFileSource>(out var r);
                 size    -= sizeof(UInt32);
                 mapping += sizeof(UInt32);
                 COFFMetadataObject = new CommonObjectFileSource(Scope,new MetadataObjectIdentity(Identity.LocalName,typeof(CommonObjectFileSource))){
