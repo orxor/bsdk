@@ -3,8 +3,8 @@
 
 #undef  DEFAULT
 #define DEFAULT(E) \
-CodeViewDirectory##E::CodeViewDirectory##E(const ObjectSource& ObjectSource, const LPBYTE BaseAddress, const LPBYTE BegOfDebugData, const LPBYTE EndOfDebugData): \
-    OMFDirectory(ObjectSource,BaseAddress,BegOfDebugData,EndOfDebugData) \
+CodeViewDirectoryFactory##E::CodeViewDirectoryFactory##E(const ObjectSource& ObjectSource): \
+    OMFDirectoryFactory(ObjectSource) \
     { \
     }
 

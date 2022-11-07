@@ -75,6 +75,3 @@ private:
     STDMETHOD(Load)(LPBYTE BaseAddress,LPBYTE VirtualAddress,PIMAGE_SECTION_HEADER ImageSectionHeader,PIMAGE_DATA_DIRECTORY ImageDataDirectory,PIMAGE_DEBUG_DIRECTORY ImageDebugDirectory);
     };
 
-#define __SHORTFILE__   __FILE__
-#define __EFUNCSIG__    __FUNCSIG__
-#define __EFILESRC__ (::ObjectSource(__SHORTFILE__,__LINE__))

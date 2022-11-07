@@ -1,14 +1,14 @@
 #pragma once
 #include "omf.h"
 
-class TD32DirectoryFB09 : public OMFDirectory
+class TD32DirectoryFactoryFB09 : public OMFDirectoryFactory
     {
 public:
-    TD32DirectoryFB09(const ObjectSource& ObjectSource,LPBYTE BaseAddress,LPBYTE BegOfDebugData,LPBYTE EndOfDebugData);
+    TD32DirectoryFactoryFB09(const ObjectSource& ObjectSource);
     };
 
-class TD32DirectoryFB0A : public TD32DirectoryFB09
+class TD32DirectoryFactoryFB0A : public TD32DirectoryFactoryFB09
     {
 public:
-    TD32DirectoryFB0A(const ObjectSource& ObjectSource,LPBYTE BaseAddress,LPBYTE BegOfDebugData,LPBYTE EndOfDebugData);
+    TD32DirectoryFactoryFB0A(const ObjectSource& ObjectSource);
     };

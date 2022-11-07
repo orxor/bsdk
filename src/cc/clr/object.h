@@ -257,3 +257,7 @@ private:
 #define CORSEC_E_XMLSYNTAX          0x80131419
 #define COR_E_EXCEPTION             0x80131500
 #define COR_E_OVERFLOW              0x80131516
+
+#define __SHORTFILE__   __FILE__
+#define __EFUNCSIG__    __FUNCSIG__
+#define __EFILESRC__ (::ObjectSource(__SHORTFILE__,__LINE__))

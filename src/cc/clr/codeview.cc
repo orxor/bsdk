@@ -98,9 +98,9 @@ CodeViewSection::CodeViewSection(const ObjectSource& ObjectSource, const LPBYTE 
     const auto EndOfDebugData = BegOfDebugData + ImageDebugDirectory->SizeOfData;
     const auto Header = (OMFDirectorySignatureHeader*)BegOfDebugData;
     const auto Signature = Header->Signature;
-    shared_ptr<OMFDirectory> Directory;
+    shared_ptr<OMFDirectoryFactory> Factory;
     switch (Signature) {
-        #define SIGNATURE(E) OMFDirectorySignature::E: { Directory = make_shared<CodeViewDirectory##E>(__EFILESRC__,BaseAddress,BegOfDebugData,EndOfDebugData); } break
+        #define SIGNATURE(E) OMFDirectorySignature::E: { Factory = make_shared<CodeViewDirectoryFactory##E>(__EFILESRC__); } break
         case SIGNATURE(NB00);
         case SIGNATURE(NB01);
         case SIGNATURE(NB02);
@@ -114,9 +114,10 @@ CodeViewSection::CodeViewSection(const ObjectSource& ObjectSource, const LPBYTE 
         case SIGNATURE(NB10);
         case SIGNATURE(RSDS);
         #undef  SIGNATURE
-        #define SIGNATURE(E) OMFDirectorySignature::E: { Directory = make_shared<TD32Directory##E>(__EFILESRC__,BaseAddress,BegOfDebugData,EndOfDebugData); } break
+        #define SIGNATURE(E) OMFDirectorySignature::E: { Factory = make_shared<TD32DirectoryFactory##E>(__EFILESRC__); } break
         case SIGNATURE(FB09);
         case SIGNATURE(FB0A);
         default: break;
         }
+    Factory->Load(BaseAddress,BegOfDebugData,EndOfDebugData);
     }

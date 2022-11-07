@@ -19,6 +19,29 @@ enum class OMFDirectorySignature
     RSDS = 0x53445352
     };
 
+enum class OMFSSectionIndex : short
+    {
+    Module      = 0x0120,
+    Types       = 0x0121,
+    Public      = 0x0122,
+    PublicSym   = 0x0123,
+    Symbols     = 0x0124,
+    AlignSym    = 0x0125,
+    SrcLnSeg    = 0x0126,
+    SrcModule   = 0x0127,
+    Libraries   = 0x0128,
+    GlobalSym   = 0x0129,
+    GlobalPub   = 0x012a,
+    GlobalTypes = 0x012b,
+    MPC         = 0x012c,
+    SegMap      = 0x012d,
+    SegName     = 0x012e,
+    PreComp     = 0x012f,
+    Names       = 0x0130,
+    FileIndex   = 0x0133,
+    StaticSym   = 0x0134
+    };
+
 #pragma pack(push)
 #pragma pack(1)
 struct OMFDirectorySignatureHeader
@@ -26,19 +49,63 @@ struct OMFDirectorySignatureHeader
     OMFDirectorySignature Signature;
     LONG32 Offset;
     };
+
+/// <summary>
+/// The subsection directory is prefixed with a directory header structure
+/// indicating size and number of subsection directory entries that follow.
+/// </summary>
+struct CodeViewSubsectionDirectoryHeader
+    {
+    SHORT  Size;           // Length of this structure
+    SHORT  DirEntrySize;   // Length of each directory entry
+    LONG32 DirEntryCount;  // Number of directory entries
+    LONG32 lfoNextDir;     // Offset from lfoBase of next directory.
+private:
+    DWORD32 Flags;
+    };
+
+/// <summary>
+/// Subsection directory header structure.
+/// The directory header structure is followed by the directory entries
+/// which specify the subsection type, module index, file offset, and size.
+/// The subsection directory gives the location (LFO) and size of each subsection,
+/// as well as its type and module number if applicable.
+/// </summary>
+struct CodeViewSubsectionDirectoryEntry
+    {
+    OMFSSectionIndex SDirectoryIndex; // Subdirectory type
+    SHORT  ModuleIndex;               // Module index
+    LONG32 Offset;                    // Offset from the base offset lfoBase
+    LONG32 Size;                      // Number of bytes in subsection
+    };
+
 #pragma pack(pop)
 
-class OMFDirectory : public Object<IUnknown>
+class OMFSSection : public Object<IUnknown>
     {
 protected:
-    OMFDirectory(const ObjectSource& ObjectSource,LPBYTE BaseAddress, LPBYTE BegOfDebugData,LPBYTE EndOfDebugData);
+    OMFSSection(const ObjectSource& ObjectSource);
+protected:
+    STDMETHOD(Load)(LPBYTE BaseAddress, LPBYTE Source,LONG32 Size) = 0;
+    friend class OMFDirectoryFactory;
+    };
+
+class OMFDirectoryFactory : public Object<IUnknown>
+    {
+public:
+    map<OMFSSectionIndex,shared_ptr<OMFSSection>> Sections;
+protected:
+    OMFDirectoryFactory(const ObjectSource& ObjectSource);
+    virtual shared_ptr<OMFSSection> CreateSection(const CodeViewSubsectionDirectoryEntry& Source);
+public:
+    STDMETHOD(Load)(LPBYTE BaseAddress, LPBYTE BegOfDebugData,LPBYTE EndOfDebugData);
     };
 
 #define DEFAULT(E) \
-class CodeViewDirectory##E : public OMFDirectory \
+class CodeViewDirectoryFactory##E : public OMFDirectoryFactory \
     { \
 public: \
-    CodeViewDirectory##E(const ObjectSource& ObjectSource,LPBYTE BaseAddress, LPBYTE BegOfDebugData,LPBYTE EndOfDebugData); \
+    CodeViewDirectoryFactory##E(const ObjectSource& ObjectSource); \
     };
 
 DEFAULT(NB00)
