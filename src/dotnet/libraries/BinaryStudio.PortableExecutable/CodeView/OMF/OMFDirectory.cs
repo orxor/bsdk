@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BinaryStudio.PortableExecutable.CodeView;
+using BinaryStudio.PortableExecutable.Win32;
 
 // ReSharper disable LocalVariableHidesMember
 // ReSharper disable ParameterHidesMember
@@ -18,6 +19,7 @@ namespace BinaryStudio.PortableExecutable
         protected readonly unsafe Byte* EndOfDebugData;
         protected Int32 Status;
 
+        public CV_CPU_TYPE? CPU { get;internal set; }
         public abstract OMFDirectorySignature Signature { get; }
         public IList<String> Names { get;private set; }
         private IList<OMFSSection> Sections = EmptyList<OMFSSection>.Value;
@@ -59,6 +61,7 @@ namespace BinaryStudio.PortableExecutable
                     Section.Offset = Entries[i].Offset;
                     Section.FileOffset = BegOfDebugData + Entries[i].Offset - BaseAddress;
                     Section.Size = Entries[i].Size;
+                    Section.CPU = CPU;
                     Sections.Add(Section.Analyze(BaseAddress,BegOfDebugData + Entries[i].Offset, Entries[i].Size));
                     }
                 }

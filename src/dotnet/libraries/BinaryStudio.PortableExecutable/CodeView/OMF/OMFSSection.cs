@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
+using BinaryStudio.PortableExecutable.Win32;
 
 namespace BinaryStudio.PortableExecutable
     {
     public abstract class OMFSSection : IFileDumpSupport
         {
+        public CV_CPU_TYPE? CPU { get;internal set; }
         public OMFDirectory Directory { get; }
         public abstract OMFSSectionIndex SectionIndex { get; }
         public Int16 ModuleIndex { get;internal set; }

@@ -7,7 +7,7 @@ using BinaryStudio.PortableExecutable.Win32;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    internal class S_GPROC32_16_TD32 : S_PROCSYM32_16_TD32
+    internal class S_GPROC32_16_TD32 : S_PROCSYM32_16_TD32,ICodeViewProcedureStart
         {
         public String LinkerName { get; }
         public override DEBUG_SYMBOL_INDEX Type { get { return DEBUG_SYMBOL_INDEX.S_GPROC32_16; }}

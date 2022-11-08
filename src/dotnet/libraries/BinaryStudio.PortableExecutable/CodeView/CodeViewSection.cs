@@ -15,11 +15,13 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public virtual Encoding Encoding { get { return Encoding.ASCII; }}
         public virtual Boolean IsLengthPrefixedString { get { return true; }}
         public IList<CodeViewPrimarySSection> Sections { get; }
+        public CV_CPU_TYPE? CPU { get;internal set; }
 
         internal unsafe CodeViewSection(CommonObjectFileSource o, Byte* BaseAddress, Byte* VirtualAddress, IMAGE_SECTION_HEADER* Section, IMAGE_DEBUG_DIRECTORY* ImageDebugDirectory)
             : base(o, BaseAddress, Section)
             {
             Sections = new List<CodeViewPrimarySSection>();
+            CPU = o.CPU;
             try
                 {
                 var r = BaseAddress + Section->PointerToRawData;
@@ -66,6 +68,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
                             (IntPtr)BaseAddress,
                             (IntPtr)BegOfDebugData,
                             (IntPtr)EndOfDebugData);
+                        Directory.CPU = CPU;
                         Directory.Analyze();
                         using (var writer = new StreamWriter(File.Create("my.dump")))
                             {

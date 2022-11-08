@@ -23,7 +23,7 @@ namespace BinaryStudio.PortableExecutable.Win32
         CV_AMD64_EAX      =  17,
         CV_AMD64_ECX      =  18,
         CV_AMD64_EDX      =  19,
-        CV_AMD64_EBX      =  20,
+        [Display(Name="ebx")] CV_AMD64_EBX      =  20,
         CV_AMD64_ESP      =  21,
         CV_AMD64_EBP      =  22,
         CV_AMD64_ESI      =  23,

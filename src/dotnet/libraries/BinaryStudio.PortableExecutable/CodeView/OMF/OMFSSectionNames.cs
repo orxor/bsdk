@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using BinaryStudio.PortableExecutable.CodeView;
 
@@ -159,5 +160,14 @@ namespace BinaryStudio.PortableExecutable
         public String this[Int32 Index] { get {
             return Values[Index];
             }}
+
+        public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
+            if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
+            var i = 1;
+            foreach (var o in Values) {
+                Writer.WriteLine("{0}{1}:{2}",LinePrefix, i.ToString("x8"), o);
+                i++;
+                }
+            }
         }
     }
