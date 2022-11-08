@@ -12,7 +12,11 @@ HRESULT OMFDirectoryFactory::Load(const LPBYTE BaseAddress, const LPBYTE BegOfDe
     const auto Header  = (CodeViewSubsectionDirectoryHeader*)(BegOfDebugData + Signature->Offset);
     const auto Entries = (CodeViewSubsectionDirectoryEntry*)(Header + 1);
     for (auto i = 0; i < Header->DirEntryCount; i++) {
-        auto Section = CreateSection(Entries[i]);
+        auto Section = CreateSection(Entries[i].SDirectoryIndex);
+        Section->FileOffset = BegOfDebugData + Entries[i].Offset - BaseAddress;
+        Section->ModuleIndex = Entries[i].ModuleIndex;
+        Section->Offset = Entries[i].Offset;
+        Section->Size   = Entries[i].Size;
         Sections[Entries[i].SDirectoryIndex] = Section;
         Section->Load(BaseAddress,BegOfDebugData + Entries[i].Offset,Entries[i].Size);
         }
@@ -20,8 +24,14 @@ HRESULT OMFDirectoryFactory::Load(const LPBYTE BaseAddress, const LPBYTE BegOfDe
     }
 
 OMFSSection::OMFSSection(const ObjectSource& ObjectSource):
-    Object<IUnknown>(ObjectSource)
+    Object<IUnknown>(ObjectSource),ModuleIndex(0),
+    Offset(0),FileOffset(0),Size(0)
     {
+    }
+
+HRESULT OMFSSectionModule::Load(LPBYTE BaseAddress, LPBYTE Source, LONG32 Size)
+    {
+    return S_OK;
     }
 
 #undef  DEFAULT
@@ -40,7 +50,6 @@ protected: \
         } \
     }
 
-DEFAULT(Module);
 DEFAULT(Types);
 DEFAULT(Public);
 DEFAULT(PublicSym);
@@ -60,9 +69,10 @@ DEFAULT(Names);
 DEFAULT(FileIndex);
 DEFAULT(StaticSym);
 
-shared_ptr<OMFSSection> OMFDirectoryFactory::CreateSection(const CodeViewSubsectionDirectoryEntry& Source) {
-    switch (Source.SDirectoryIndex) {
-        #define INDEX(E) OMFSSectionIndex::E: { return make_shared<OMFSSection##E>(__EFILESRC__); }
+shared_ptr<OMFSSection> OMFDirectoryFactory::CreateSection(const OMFSSectionIndex Index) {
+    shared_ptr<OMFSSection> Target;
+    switch (Index) {
+        #define INDEX(E) OMFSSectionIndex::E: { Target = make_shared<OMFSSection##E>(__EFILESRC__); } break;
         case INDEX(Module);
         case INDEX(Types);
         case INDEX(Public);
@@ -83,5 +93,5 @@ shared_ptr<OMFSSection> OMFDirectoryFactory::CreateSection(const CodeViewSubsect
         case INDEX(FileIndex);
         case INDEX(StaticSym);
         }
-    return nullptr;
+    return Target;
     }

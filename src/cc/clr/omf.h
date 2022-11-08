@@ -83,6 +83,11 @@ struct CodeViewSubsectionDirectoryEntry
 
 class OMFSSection : public Object<IUnknown>
     {
+public:
+    SHORT ModuleIndex;
+    LONG32 Offset;
+    LONG64 FileOffset;
+    LONG32 Size;
 protected:
     OMFSSection(const ObjectSource& ObjectSource);
 protected:
@@ -96,7 +101,7 @@ public:
     map<OMFSSectionIndex,shared_ptr<OMFSSection>> Sections;
 protected:
     OMFDirectoryFactory(const ObjectSource& ObjectSource);
-    virtual shared_ptr<OMFSSection> CreateSection(const CodeViewSubsectionDirectoryEntry& Source);
+    virtual shared_ptr<OMFSSection> CreateSection(OMFSSectionIndex Index);
 public:
     STDMETHOD(Load)(LPBYTE BaseAddress, LPBYTE BegOfDebugData,LPBYTE EndOfDebugData);
     };
@@ -120,3 +125,15 @@ DEFAULT(NB08)
 DEFAULT(NB09)
 DEFAULT(NB10)
 DEFAULT(RSDS)
+
+class OMFSSectionModule : public OMFSSection
+    {
+public:
+    OMFSSectionModule(const ObjectSource& ObjectSource):
+        OMFSSection(ObjectSource)
+        {
+        }
+protected:
+    STDMETHOD(Load)(LPBYTE BaseAddress, LPBYTE Source,LONG32 Size) override;
+    };
+
