@@ -49,11 +49,11 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public unsafe S_BPREL32_16_TD32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
-            var r = (BPRELSYM32_16_TD32*)Content;
-            TypeIndex = r->TypeIndex;
-            this.Offset = r->Offset;
-            NameIndex = r->NameIndex;
-            BrowserOffset = r->BrowserOffset;
+            var Header = (BPRELSYM32_16_TD32*)Content;
+            TypeIndex = Header->TypeIndex;
+            this.Offset = Header->Offset;
+            NameIndex = Header->NameIndex;
+            BrowserOffset = Header->BrowserOffset;
             }
 
         /// <summary>Writes DUMP with specified flags.</summary>
@@ -65,6 +65,5 @@ namespace BinaryStudio.PortableExecutable.CodeView
             Writer.WriteLine("{0}  NameIndex:{{{1}}}:{{{2}}}", LinePrefix,NameIndex.ToString("x8"),NameTable[NameIndex-1]);
             Writer.WriteLine("{0}  BrowserOffset:{1:x4}", LinePrefix,BrowserOffset);
             }
-
         }
     }

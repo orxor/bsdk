@@ -49,7 +49,9 @@ namespace BinaryStudio.PortableExecutable
             { DEBUG_SYMBOL_INDEX.S_LPROC32_16, typeof(S_LPROC32_16_TD32)},
             { DEBUG_SYMBOL_INDEX.S_GPROC32_16, typeof(S_GPROC32_16_TD32)},
             { DEBUG_SYMBOL_INDEX.S_REGISTER16, typeof(S_REGISTER16_TD32)},
-            {DEBUG_SYMBOL_INDEX.S_BPREL32_16,  typeof(S_BPREL32_16_TD32)}
+            { DEBUG_SYMBOL_INDEX.S_BPREL32_16, typeof(S_BPREL32_16_TD32)},
+            { DEBUG_SYMBOL_INDEX.S_PCONSTANT,  typeof(S_PCONSTANT_TD32) },
+            { DEBUG_SYMBOL_INDEX.S_WITH32_ST,  typeof(S_WITH32_ST_TD32) },
             };
 
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
