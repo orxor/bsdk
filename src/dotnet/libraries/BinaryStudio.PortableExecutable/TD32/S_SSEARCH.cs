@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
+using BinaryStudio.PortableExecutable.CodeView;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
 
-namespace BinaryStudio.PortableExecutable.CodeView
+namespace BinaryStudio.PortableExecutable.TD32
     {
-    /// <summary>{<see cref="DEBUG_SYMBOL_INDEX.S_SSEARCH"/>} TD32 specific <b>Start Search</b>.</summary>
-    internal class S_SSEARCH_TD32 : S_SSEARCH
+    /// <summary>{<see cref="TD32SymbolIndex.S_SSEARCH"/>} TD32 specific <b>Start Search</b>.</summary>
+    [TD32Symbol(TD32SymbolIndex.S_SSEARCH)]
+    internal class S_SSEARCH : TD32Symbol
         {
         /// <summary>
         /// This property is related to <see cref="TD32_SEARCHSYM.CodeSyms"/>.
@@ -20,15 +22,27 @@ namespace BinaryStudio.PortableExecutable.CodeView
         /// This property is related to <see cref="TD32_SEARCHSYM.FirstData"/>.
         /// </summary>
         public Int32 FirstData { get; }
-
-        public unsafe S_SSEARCH_TD32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+        /// <summary>
+        /// $$SYMBOL offset of the procedure or thunk record for this module that has the lowest offset for the specified segment.
+        /// This property is related to <see cref="TD32_SEARCHSYM.ProcedureOrThunkRecordOffset"/>.
+        /// </summary>
+        public Int32 ProcedureOrThunkRecordOffset { get; }
+        /// <summary>
+        /// Segment (PE section) to which this <see cref="S_SSEARCH"/> refers.
+        /// This property is related to <see cref="TD32_SEARCHSYM.SegmentIndex"/>.
+        /// </summary>
+        public Int16 SegmentIndex { get; }
+        public override TD32SymbolIndex Type { get { return TD32SymbolIndex.S_SSEARCH; }}
+        public unsafe S_SSEARCH(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             :base(Section, Offset, Content, Length)
             {
             var Header = (TD32_SEARCHSYM*)Content;
-            if (Header->Type != DEBUG_SYMBOL_INDEX.S_SSEARCH) { throw new ArgumentOutOfRangeException(nameof(Content)); }
+            if (Header->Type != TD32SymbolIndex.S_SSEARCH) { throw new ArgumentOutOfRangeException(nameof(Content)); }
             CodeSyms = Header->CodeSyms;
             DataSyms = Header->DataSyms;
             FirstData = Header->FirstData;
+            ProcedureOrThunkRecordOffset = Header->ProcedureOrThunkRecordOffset;
+            SegmentIndex = Header->SegmentIndex;
             }
 
         /// <summary>Writes the JSON representation of the object.</summary>

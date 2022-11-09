@@ -62,7 +62,7 @@
         /// This symbol record defines local (file static) procedure definition.
         /// For C and C++, functions that are declared static to a module are emitted as <b>Local Procedure</b> symbols.
         /// </summary>
-        S_LPROC32_16            = 0x0204,
+        S_LPROC32            = 0x0204,
         /// <summary>
         /// This symbol is used for procedures that are not specifically declared static to a module.
         /// </summary>
@@ -142,7 +142,6 @@
         S_LDATA32               = 0x110c,  // Module-local symbol
         S_GDATA32               = 0x110d,  // Global data symbol
         S_PUB32                 = 0x110e,  // a public symbol (CV internal reserved)
-        S_LPROC32               = 0x110f,  // Local procedure start
         S_GPROC32               = 0x1110,  // Global procedure start
         S_REGREL32              = 0x1111,  // register relative address
         S_LTHREAD32             = 0x1112,  // local thread storage

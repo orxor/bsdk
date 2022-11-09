@@ -46,7 +46,6 @@ namespace BinaryStudio.PortableExecutable
             }
 
         private static readonly IDictionary<DEBUG_SYMBOL_INDEX,Type> Types = new Dictionary<DEBUG_SYMBOL_INDEX, Type>{
-            { DEBUG_SYMBOL_INDEX.S_SSEARCH,    typeof(S_SSEARCH_TD32)   },
             { DEBUG_SYMBOL_INDEX.S_LPROC32_16, typeof(S_LPROC32_16_TD32)},
             { DEBUG_SYMBOL_INDEX.S_GPROC32_16, typeof(S_GPROC32_16_TD32)},
             { DEBUG_SYMBOL_INDEX.S_REGISTER16, typeof(S_REGISTER16_TD32)},
