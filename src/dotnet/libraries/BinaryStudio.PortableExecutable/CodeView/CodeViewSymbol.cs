@@ -9,12 +9,26 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    public class CodeViewSymbol : IJsonSerializable,IFileDumpSupport
+    public class CodeViewSymbol : CodeViewSymbol<CodeViewSymbolAttribute,DEBUG_SYMBOL_INDEX>
         {
+        protected CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+            : base(Section, Offset, Content, Length)
+            {
+            }
+
+        public new static unsafe CodeViewSymbol From(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Index, Byte* Content, Int32 Length) {
+            return (CodeViewSymbol)CodeViewSymbol<CodeViewSymbolAttribute,DEBUG_SYMBOL_INDEX>.From(Section,Offset,Index,Content,Length);
+            }
+        }
+
+    public class CodeViewSymbol<T,I> : IJsonSerializable,IFileDumpSupport,ICodeViewSymbol
+        where T: ICodeViewSymbolAttribute
+        {
+        UInt16 ICodeViewSymbol.Type { get { return (UInt16)(Object)Type; }}
         public CV_CPU_TYPE? CPU { get;internal set; }
         public ICodeViewNameTable NameTable { get;internal set; }
         public CodeViewSymbolsSSection Section { get; }
-        public virtual DEBUG_SYMBOL_INDEX Type { get; }
+        public virtual I Type { get; }
         public virtual Byte[] Content { get; }
         public Int32 Offset { get; }
         public CodeViewSymbolStatus Status { get;protected set; }
@@ -30,17 +44,17 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 : true;
             }}
 
-        private static readonly IDictionary<DEBUG_SYMBOL_INDEX,Type> Types = new Dictionary<DEBUG_SYMBOL_INDEX, Type>();
+        private static readonly IDictionary<UInt16,Type> Types = new Dictionary<UInt16,Type>();
         static CodeViewSymbol() {
-            foreach (var type in typeof(CodeViewSymbol).Assembly.GetTypes()) {
-                var key = type.GetCustomAttributes(false).OfType<CodeViewSymbolAttribute>().FirstOrDefault();
+            foreach (var type in typeof(CodeViewSymbol<T,I>).Assembly.GetTypes()) {
+                var key = type.GetCustomAttributes(false).OfType<T>().FirstOrDefault();
                 if (key != null) {
                     Types.Add(key.Key, type);
                     }
                 }
             }
 
-        private unsafe CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Type, Byte* Content, Int32 Length)
+        private unsafe CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, I Type, Byte* Content, Int32 Length)
             :this(Section, Offset, (IntPtr)Content, Length)
             {
             this.Type = Type;
@@ -60,25 +74,15 @@ namespace BinaryStudio.PortableExecutable.CodeView
             Status = CodeViewSymbolStatus.HasFileDumpWrite;
             }
 
-        public static unsafe CodeViewSymbol From(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Index, Byte* Content, Int32 Length, IDictionary<DEBUG_SYMBOL_INDEX,Type> Mapping = null) {
-            Type type;
-            if (Mapping != null) {
-                if (Mapping.TryGetValue(Index,out type)) {
-                    return (CodeViewSymbol)Activator.CreateInstance(type,
-                        Section,
-                        Offset,
-                        (IntPtr)Content,
-                        Length);
-                    }
-                }
-            if (Types.TryGetValue(Index,out type)) {
-                return (CodeViewSymbol)Activator.CreateInstance(type,
+        protected static unsafe ICodeViewSymbol From(CodeViewSymbolsSSection Section, Int32 Offset, I Index, Byte* Content, Int32 Length) {
+            if (Types.TryGetValue((UInt16)(Object)Index,out var type)) {
+                return (CodeViewSymbol<T,I>)Activator.CreateInstance(type,
                     Section,
                     Offset,
                     (IntPtr)Content,
                     Length);
                 }
-            return new CodeViewSymbol(Section,Offset,Index,Content,Length);
+            return new CodeViewSymbol<T,I>(Section,Offset,Index,Content,Length);
             }
 
         #region M:ToArray(Byte*,Int32):Byte[]
