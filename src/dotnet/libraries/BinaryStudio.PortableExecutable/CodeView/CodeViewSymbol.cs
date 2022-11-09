@@ -11,13 +11,24 @@ namespace BinaryStudio.PortableExecutable.CodeView
     {
     public class CodeViewSymbol : CodeViewSymbol<CodeViewSymbolAttribute,DEBUG_SYMBOL_INDEX>
         {
+        private class DefaultFactory : CodeViewSymbolFactory<CodeViewSymbolAttribute,DEBUG_SYMBOL_INDEX> {
+            protected override unsafe ICodeViewSymbol CreateDefault(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Index,Byte* Content, Int32 Length) {
+                return new CodeViewSymbol(Section,Offset,Index,Content,Length);
+                }
+            }
+
         protected CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
             }
 
-        public new static unsafe CodeViewSymbol From(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Index, Byte* Content, Int32 Length) {
-            return (CodeViewSymbol)CodeViewSymbol<CodeViewSymbolAttribute,DEBUG_SYMBOL_INDEX>.From(Section,Offset,Index,Content,Length);
+        private unsafe CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Type,Byte* Content, Int32 Length)
+            : base(Section, Offset, Type, Content, Length)
+            {
+            }
+
+        public static unsafe CodeViewSymbol From(CodeViewSymbolsSSection Section, Int32 Offset, DEBUG_SYMBOL_INDEX Index, Byte* Content, Int32 Length) {
+            return (CodeViewSymbol)(new DefaultFactory()).Create(Section,Offset,Index,Content,Length);
             }
         }
 
@@ -54,7 +65,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 }
             }
 
-        private unsafe CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, I Type, Byte* Content, Int32 Length)
+        protected unsafe CodeViewSymbol(CodeViewSymbolsSSection Section, Int32 Offset, I Type, Byte* Content, Int32 Length)
             :this(Section, Offset, (IntPtr)Content, Length)
             {
             this.Type = Type;
@@ -72,17 +83,6 @@ namespace BinaryStudio.PortableExecutable.CodeView
             this.Content = r;
             MaxSizeLength = Math.Max(MaxSizeLength, r.Length.ToString("X").Length);
             Status = CodeViewSymbolStatus.HasFileDumpWrite;
-            }
-
-        protected static unsafe ICodeViewSymbol From(CodeViewSymbolsSSection Section, Int32 Offset, I Index, Byte* Content, Int32 Length) {
-            if (Types.TryGetValue((UInt16)(Object)Index,out var type)) {
-                return (CodeViewSymbol<T,I>)Activator.CreateInstance(type,
-                    Section,
-                    Offset,
-                    (IntPtr)Content,
-                    Length);
-                }
-            return new CodeViewSymbol<T,I>(Section,Offset,Index,Content,Length);
             }
 
         #region M:ToArray(Byte*,Int32):Byte[]
