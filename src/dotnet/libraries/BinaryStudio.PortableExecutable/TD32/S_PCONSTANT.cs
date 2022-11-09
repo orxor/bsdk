@@ -2,18 +2,21 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using BinaryStudio.PortableExecutable.Win32;
+using BinaryStudio.PortableExecutable.CodeView;
+using JetBrains.Annotations;
 
-namespace BinaryStudio.PortableExecutable.CodeView
+namespace BinaryStudio.PortableExecutable.TD32
     {
-    internal class S_PCONSTANT_TD32 : CodeViewSymbol
+    [TD32Symbol(TD32SymbolIndex.S_PCONSTANT)]
+    [UsedImplicitly]
+    internal class S_PCONSTANT : TD32Symbol
         {
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         [DebuggerDisplay(@"\{{Type}\}")]
         private struct HEADER
             {
             private readonly Int16 Length;
-            private readonly DEBUG_SYMBOL_INDEX Type;
+            private readonly TD32SymbolIndex Type;
             public  readonly Int32 TypeIndex;
             public  readonly Int16 BrowserOffset;
             public  readonly Int32 NameIndex;
@@ -21,14 +24,14 @@ namespace BinaryStudio.PortableExecutable.CodeView
             public  readonly Int32 PropertyValue;
             }
 
-        public override DEBUG_SYMBOL_INDEX Type { get { return DEBUG_SYMBOL_INDEX.S_PCONSTANT; }}
+        public override TD32SymbolIndex Type { get { return TD32SymbolIndex.S_PCONSTANT; }}
         public Int32 TypeIndex { get; }
         public Int32 NameIndex { get; }
         public Int16 BrowserOffset { get; }
         public Int32 PropertyIndex { get; }
         public Int32 PropertyValue { get; }
 
-        public unsafe S_PCONSTANT_TD32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+        public unsafe S_PCONSTANT(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
             var Header = (HEADER*)Content;
