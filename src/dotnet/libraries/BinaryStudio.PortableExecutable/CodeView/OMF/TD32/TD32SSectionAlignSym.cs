@@ -45,13 +45,6 @@ namespace BinaryStudio.PortableExecutable
             return this;
             }
 
-        private static readonly IDictionary<DEBUG_SYMBOL_INDEX,Type> Types = new Dictionary<DEBUG_SYMBOL_INDEX, Type>{
-            { DEBUG_SYMBOL_INDEX.S_REGISTER16, typeof(S_REGISTER16_TD32)},
-            { DEBUG_SYMBOL_INDEX.S_BPREL32_16, typeof(S_BPREL32_16_TD32)},
-            { DEBUG_SYMBOL_INDEX.S_PCONSTANT,  typeof(S_PCONSTANT_TD32) },
-            { DEBUG_SYMBOL_INDEX.S_WITH32_ST,  typeof(S_WITH32_ST_TD32) },
-            };
-
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
             if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
             foreach (var o in Symbols) {

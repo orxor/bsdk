@@ -3,21 +3,22 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using BinaryStudio.PortableExecutable.CodeView;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
-namespace BinaryStudio.PortableExecutable.CodeView
+namespace BinaryStudio.PortableExecutable.TD32
     {
-    [CodeViewSymbol(DEBUG_SYMBOL_INDEX.S_OPTVAR32)]
-    internal class S_OPTVAR32 : CodeViewSymbol, ICodeViewBlockElement
+    [TD32Symbol(TD32SymbolIndex.S_OPTVAR32)]
+    internal class S_OPTVAR32 : TD32Symbol, ICodeViewBlockElement
         {
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         [DebuggerDisplay(@"\{{Type}\}")]
         private struct HEADER
             {
-            public readonly Int16 Length;                   // Record length.
-            public readonly DEBUG_SYMBOL_INDEX Type;        // S_REGISTER
+            private readonly Int16 Length;
+            private readonly TD32SymbolIndex Type;
             public readonly Int16 Segment;
             public readonly Int32 Offset;
             public readonly Int32 Size;
@@ -26,7 +27,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
 
         public ICodeViewBlockStart BlockStart { get;set; }
         public ICodeViewProcedureStart ProcedureStart { get { return BlockStart as ICodeViewProcedureStart; }}
-        public override DEBUG_SYMBOL_INDEX Type { get { return DEBUG_SYMBOL_INDEX.S_OPTVAR32; }}
+        public override TD32SymbolIndex Type { get { return TD32SymbolIndex.S_OPTVAR32; }}
         public Int16 Segment { get; }
         public new Int32 Offset { get; }
         public Int32 Size { get; }

@@ -13,7 +13,7 @@
         /// If the byte is zero, there is no register tracking information following the symbol.
         /// If the byte is not zero, then the byte is the index into the list of stack machine implementations and styles of register tracking.
         /// </summary>
-        S_REGISTER16            = 0x0002,
+        S_REGISTER            = 0x0002,
         S_CONSTANT16            = 0x0003,
         S_UDT16                 = 0x0004,
         /// <summary>
@@ -133,7 +133,6 @@
         S_BLOCK32               = 0x1103,  // block start
         S_WITH32                = 0x1104,  // with start
         S_LABEL32               = 0x1105,  // code label
-        S_REGISTER              = 0x1106,  // Register variable
         S_CONSTANT              = 0x1107,  // constant symbol
         S_UDT                   = 0x1108,  // User defined type
         S_COBOLUDT              = 0x1109,  // special UDT for cobol that does not symbol pack

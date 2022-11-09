@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using BinaryStudio.PortableExecutable.TD32;
 
 namespace BinaryStudio.PortableExecutable.Win32
     {
@@ -28,10 +29,10 @@ namespace BinaryStudio.PortableExecutable.Win32
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     [DebuggerDisplay(@"\{{Type}\}")]
-    public struct CODEVIEW_REGSYM16_TD32
+    public struct TD32_REGSYM
         {
         public readonly Int16 Length;                   // Record length.
-        public readonly DEBUG_SYMBOL_INDEX Type;        // S_REGISTER_16
+        public readonly TD32SymbolIndex Type;        // S_REGISTER
         public readonly Int16 TypeIndex;                // Type index.
         public readonly Int16 Register;                 // Register enumerate.
         public readonly Int16 BrowserOffset;
