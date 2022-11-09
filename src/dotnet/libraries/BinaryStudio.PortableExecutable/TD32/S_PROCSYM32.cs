@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
+using BinaryStudio.PortableExecutable.CodeView;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
 
 // ReSharper disable ParameterHidesMember
 
-namespace BinaryStudio.PortableExecutable.CodeView
+namespace BinaryStudio.PortableExecutable.TD32
     {
-    internal abstract class S_PROCSYM32_16_TD32 : CodeViewSymbol
+    internal abstract class S_PROCSYM32 : TD32Symbol
         {
         public Int16 TypeIndex { get; }
         public Int16 SegmentIndex { get; }
@@ -21,10 +22,10 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public Int32 DbgEnd { get; }
         public Int32 NameIndex { get; }
 
-        protected unsafe S_PROCSYM32_16_TD32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+        protected unsafe S_PROCSYM32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
-            var Header = (TD32_PROCSYM32_16*)Content;
+            var Header = (TD32_PROCSYM32*)Content;
             TypeIndex = Header->TypeIndex;
             SegmentIndex = Header->Segment;
             Flags     = Header->Flags;

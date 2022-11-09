@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using BinaryStudio.PortableExecutable.TD32;
 
 namespace BinaryStudio.PortableExecutable.Win32
     {
     /// <summary>
     /// This structure is related to
-    /// <see cref="DEBUG_SYMBOL_INDEX.S_LPROC32_16"/>,
-    /// <see cref="DEBUG_SYMBOL_INDEX.S_GPROC32_16"/>
+    /// <see cref="TD32SymbolIndex.S_LPROC32"/>,
+    /// <see cref="TD32SymbolIndex.S_GPROC32"/>
     /// </summary>
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
     [DebuggerDisplay(@"\{{Type}\}")]
-    public struct TD32_PROCSYM32_16
+    public struct TD32_PROCSYM32
         {
         [FieldOffset(0)] public readonly Int16 Length;
-        [FieldOffset(2)] public readonly DEBUG_SYMBOL_INDEX Type;
+        [FieldOffset(2)] public readonly TD32SymbolIndex Type;
         [FieldOffset(4)] public readonly Int32 Parent;
         [FieldOffset(8)] public readonly Int32 End;
         [FieldOffset(12)] public readonly Int32 Next;

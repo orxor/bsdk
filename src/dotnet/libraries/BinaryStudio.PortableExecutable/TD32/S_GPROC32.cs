@@ -1,20 +1,23 @@
 ﻿using System;
 using System.IO;
+using System.Text;
+using BinaryStudio.PortableExecutable.CodeView;
 using BinaryStudio.PortableExecutable.Win32;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable VirtualMemberCallInConstructor
 
-namespace BinaryStudio.PortableExecutable.CodeView
+namespace BinaryStudio.PortableExecutable.TD32
     {
-    internal class S_GPROC32_16_TD32 : S_PROCSYM32_16_TD32,ICodeViewProcedureStart
+    [TD32Symbol(TD32SymbolIndex.S_GPROC32)]
+    internal class S_GPROC32 : S_PROCSYM32,ICodeViewProcedureStart
         {
         public String LinkerName { get; }
-        public override DEBUG_SYMBOL_INDEX Type { get { return DEBUG_SYMBOL_INDEX.S_GPROC32_16; }}
-        public unsafe S_GPROC32_16_TD32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+        public override TD32SymbolIndex Type { get { return TD32SymbolIndex.S_GPROC32; }}
+        public unsafe S_GPROC32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
-            var Header = (TD32_PROCSYM32_16*)Content;
+            var Header = (TD32_PROCSYM32*)Content;
             LinkerName = ToString(Encoding,(Byte*)(Header + 1),IsLengthPrefixedString);
             }
 

@@ -66,7 +66,7 @@
         /// <summary>
         /// This symbol is used for procedures that are not specifically declared static to a module.
         /// </summary>
-        S_GPROC32_16            = 0x0205,
+        S_GPROC32            = 0x0205,
         S_THUNK32_ST            = 0x0206,
         S_BLOCK32_ST            = 0x0207,
         S_WITH32_ST             = 0x0208,
@@ -142,7 +142,6 @@
         S_LDATA32               = 0x110c,  // Module-local symbol
         S_GDATA32               = 0x110d,  // Global data symbol
         S_PUB32                 = 0x110e,  // a public symbol (CV internal reserved)
-        S_GPROC32               = 0x1110,  // Global procedure start
         S_REGREL32              = 0x1111,  // register relative address
         S_LTHREAD32             = 0x1112,  // local thread storage
         S_GTHREAD32             = 0x1113,  // global thread storage
