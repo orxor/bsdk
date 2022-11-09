@@ -17,6 +17,7 @@ namespace UnitTests.BinaryStudio.PortableExecutable
         [TestMethod]
         public void JsonS() {
             using (var Scope = new MetadataScope()) {
+                //var o = Scope.Load(@"C:\TFS\jcl\Win64\Debug\Project5.exe");
                 var o = Scope.Load(@"C:\TFS\bsdk\src\delphi\tests\UnitTests.BinaryStudio.Task\Task.exe");
                 //var o = Scope.Load(@"C:\Windows\SysWOW64\MFC42D.DLL");
                 if (o != null) {
