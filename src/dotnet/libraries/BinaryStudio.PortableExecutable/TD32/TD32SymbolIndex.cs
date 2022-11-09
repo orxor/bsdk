@@ -69,7 +69,7 @@
         S_GPROC32            = 0x0205,
         S_THUNK32_ST            = 0x0206,
         S_BLOCK32_ST            = 0x0207,
-        S_WITH32_ST             = 0x0208,
+        S_WITH32             = 0x0208,
         S_LABEL32_ST            = 0x0209,
         S_CEXMODEL32            = 0x020a,
         S_VFTPATH32             = 0x020b,
@@ -131,7 +131,6 @@
         S_OBJNAME               = 0x1101,  // path to object file name
         S_THUNK32               = 0x1102,  // Thunk Start
         S_BLOCK32               = 0x1103,  // block start
-        S_WITH32                = 0x1104,  // with start
         S_LABEL32               = 0x1105,  // code label
         S_CONSTANT              = 0x1107,  // constant symbol
         S_UDT                   = 0x1108,  // User defined type
