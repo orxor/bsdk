@@ -15,7 +15,7 @@
         /// </summary>
         S_REGISTER            = 0x0002,
         S_CONSTANT16            = 0x0003,
-        S_UDT16                 = 0x0004,
+        S_UDT                 = 0x0004,
         /// <summary>
         /// Start search.
         /// These records are always the first symbol records in a module's $$SYMBOL section.
@@ -56,7 +56,7 @@
         S_REGREL16              = 0x010c,
         S_BPREL32            = 0x0200,
         S_LDATA32_16            = 0x0201,
-        S_GDATA32_16            = 0x0202,
+        S_GDATA32            = 0x0202,
         S_PUB32_16              = 0x0203,
         /// <summary>
         /// This symbol record defines local (file static) procedure definition.
@@ -133,11 +133,9 @@
         S_BLOCK32               = 0x1103,  // block start
         S_LABEL32               = 0x1105,  // code label
         S_CONSTANT              = 0x1107,  // constant symbol
-        S_UDT                   = 0x1108,  // User defined type
         S_COBOLUDT              = 0x1109,  // special UDT for cobol that does not symbol pack
         S_MANYREG               = 0x110a,  // multiple register variable
         S_LDATA32               = 0x110c,  // Module-local symbol
-        S_GDATA32               = 0x110d,  // Global data symbol
         S_PUB32                 = 0x110e,  // a public symbol (CV internal reserved)
         S_REGREL32              = 0x1111,  // register relative address
         S_LTHREAD32             = 0x1112,  // local thread storage

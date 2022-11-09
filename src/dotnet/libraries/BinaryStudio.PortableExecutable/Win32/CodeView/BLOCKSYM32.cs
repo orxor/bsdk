@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using BinaryStudio.PortableExecutable.TD32;
 
 namespace BinaryStudio.PortableExecutable.Win32
     {
@@ -22,7 +23,7 @@ namespace BinaryStudio.PortableExecutable.Win32
     internal struct BLOCKSYM32_TD32
         {
         private readonly Int16 Length;
-        private readonly DEBUG_SYMBOL_INDEX Type;
+        private readonly TD32SymbolIndex Type;
         public readonly Int32 Parent;    // pointer to the parent
         public readonly Int32 CodeLength; // Code length.
         public readonly Int32 CodeOffset; // Offset in code segment
