@@ -55,7 +55,7 @@
         S_VFTPATH16             = 0x010b,
         S_REGREL16              = 0x010c,
         S_BPREL32            = 0x0200,
-        S_LDATA32_16            = 0x0201,
+        S_LDATA32            = 0x0201,
         S_GDATA32            = 0x0202,
         S_PUB32_16              = 0x0203,
         /// <summary>
@@ -135,7 +135,6 @@
         S_CONSTANT              = 0x1107,  // constant symbol
         S_COBOLUDT              = 0x1109,  // special UDT for cobol that does not symbol pack
         S_MANYREG               = 0x110a,  // multiple register variable
-        S_LDATA32               = 0x110c,  // Module-local symbol
         S_PUB32                 = 0x110e,  // a public symbol (CV internal reserved)
         S_REGREL32              = 0x1111,  // register relative address
         S_LTHREAD32             = 0x1112,  // local thread storage
