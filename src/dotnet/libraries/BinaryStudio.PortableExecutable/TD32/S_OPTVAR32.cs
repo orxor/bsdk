@@ -2,15 +2,14 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using BinaryStudio.PortableExecutable.CodeView;
-using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
-using Newtonsoft.Json;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.PortableExecutable.TD32
     {
     [TD32Symbol(TD32SymbolIndex.S_OPTVAR32)]
+    [UsedImplicitly]
     internal class S_OPTVAR32 : TD32Symbol, ICodeViewBlockElement
         {
         [StructLayout(LayoutKind.Sequential, Pack = 1)]

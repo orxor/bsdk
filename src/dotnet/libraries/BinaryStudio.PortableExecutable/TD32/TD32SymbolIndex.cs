@@ -54,7 +54,7 @@
         S_CEXMODEL16            = 0x010a,
         S_VFTPATH16             = 0x010b,
         S_REGREL16              = 0x010c,
-        S_BPREL32_16            = 0x0200,
+        S_BPREL32            = 0x0200,
         S_LDATA32_16            = 0x0201,
         S_GDATA32_16            = 0x0202,
         S_PUB32_16              = 0x0203,
@@ -137,7 +137,6 @@
         S_UDT                   = 0x1108,  // User defined type
         S_COBOLUDT              = 0x1109,  // special UDT for cobol that does not symbol pack
         S_MANYREG               = 0x110a,  // multiple register variable
-        S_BPREL32               = 0x110b,  // BP-relative
         S_LDATA32               = 0x110c,  // Module-local symbol
         S_GDATA32               = 0x110d,  // Global data symbol
         S_PUB32                 = 0x110e,  // a public symbol (CV internal reserved)
