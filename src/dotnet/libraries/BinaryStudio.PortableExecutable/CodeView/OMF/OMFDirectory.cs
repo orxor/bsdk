@@ -63,12 +63,10 @@ namespace BinaryStudio.PortableExecutable
                     Section.Size = Entries[i].Size;
                     Section.CPU = CPU;
                     Sections.Add(Section.Analyze(BaseAddress,BegOfDebugData + Entries[i].Offset, Entries[i].Size));
+                    Sections.Add(Section);
                     }
                 }
             Names = Sections.OfType<OMFSSectionNames>().FirstOrDefault() ?? EmptyList<String>.Value;
-            Sections.Where(i => i.SectionIndex != OMFSSectionIndex.Names).AsParallel().ForAll(i=>{
-                i.ResolveReferences(this);
-                });
             return;
             }
 

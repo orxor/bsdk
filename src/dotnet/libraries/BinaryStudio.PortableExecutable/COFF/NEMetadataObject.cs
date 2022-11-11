@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,6 +78,11 @@ namespace BinaryStudio.PortableExecutable
                                 (IntPtr)BegOfDebugData,
                                 (IntPtr)EndOfDebugData);
                             Directory.CPU = CPU;
+                            Directory.Analyze();
+                            using (var writer = new StreamWriter(File.Create("my.dump")))
+                                {
+                                Directory.WriteTo(writer,String.Empty,0);
+                                }
                             break;
                             }
                         }
