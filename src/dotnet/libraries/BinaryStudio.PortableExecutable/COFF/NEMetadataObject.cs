@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using System.Threading.Tasks;
 using BinaryStudio.PortableExecutable.Win32;
@@ -13,9 +11,12 @@ namespace BinaryStudio.PortableExecutable
     public class NEMetadataObject : MetadataObject
         {
         public Int32 FileAlignmentUnitSize { get { return 512; }}
+        public CV_CPU_TYPE CPU;
+
         internal NEMetadataObject(MetadataScope scope, MetadataObjectIdentity identity)
             : base(scope, identity)
             {
+            CPU = CV_CPU_TYPE.CV_CFL_PENTIUMIII;
             }
 
         #region M:LoadCore(IntPtr[],Int64)
@@ -64,17 +65,23 @@ namespace BinaryStudio.PortableExecutable
         #region M:LoadDebugInfo(CancellationToken,IntPtr,IMAGE_NE_HEADER,Int64):Task
         private unsafe Task LoadDebugInfo(CancellationToken Cancellation, Byte* BaseAddress, IMAGE_NE_HEADER* ImageFileHeader,Int64 Size) {
             return Task.Factory.StartNew(() => {
-                var Signature = (OMFDirectorySignatureHeader*)(BaseAddress + Size - sizeof(OMFDirectorySignatureHeader) + sizeof(IMAGE_DOS_HEADER));
+                var EndOfDebugData = (Byte*)(BaseAddress + Size - sizeof(OMFDirectorySignatureHeader) + sizeof(IMAGE_DOS_HEADER));
+                var SignatureHeader = (OMFDirectorySignatureHeader*)EndOfDebugData;
                 foreach (var type in typeof(OMFDirectory).Assembly.GetTypes()) {
                     var key = type.GetCustomAttributes(false).OfType<OMFDirectorySignatureAttribute>().FirstOrDefault();
                     if (key != null) {
-                        if (key.Signature == Signature->Signature) {
-
+                        if (key.Signature == SignatureHeader->Signature) {
+                            var BegOfDebugData = EndOfDebugData - SignatureHeader->Offset + sizeof(OMFDirectorySignatureHeader);
+                            var Directory = (OMFDirectory)Activator.CreateInstance(type,
+                                (IntPtr)BaseAddress,
+                                (IntPtr)BegOfDebugData,
+                                (IntPtr)EndOfDebugData);
+                            Directory.CPU = CPU;
                             break;
                             }
                         }
                     }
-                });
+                }, Cancellation);
             }
         #endregion
 
