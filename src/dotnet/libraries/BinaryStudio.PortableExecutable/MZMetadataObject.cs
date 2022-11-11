@@ -9,8 +9,8 @@ namespace BinaryStudio.PortableExecutable
     {
     public class MZMetadataObject : MetadataObject
         {
-        private const UInt32 IMAGE_DOS_SIGNATURE    = 0x5A4D;
-        private const UInt32 IMAGE_OS2_NE_SIGNATURE = 0x454E;
+        private const UInt32 IMAGE_DOS_SIGNATURE    = 0x5A4d;
+        private const UInt32 IMAGE_OS2_NE_SIGNATURE = 0x454e;
         private const UInt32 IMAGE_OS2_LE_SIGNATURE = 0x454c;
         private const UInt32 IMAGE_OS2_LX_SIGNATURE = 0x584c;
         private const UInt32 IMAGE_NT_SIGNATURE     = 0x00004550;
@@ -39,22 +39,23 @@ namespace BinaryStudio.PortableExecutable
             var mapping = &source[header->e_lfanew];
             var magic = (UInt32*)mapping;
             if (*magic == IMAGE_NT_SIGNATURE) {
-                MetadataScope.DllGetClassObject<ICommonObjectFileSource>(out var r);
                 size    -= sizeof(UInt32);
                 mapping += sizeof(UInt32);
                 COFFMetadataObject = new CommonObjectFileSource(Scope,new MetadataObjectIdentity(Identity.LocalName,typeof(CommonObjectFileSource))){
                     IgnoreOptionalHeaderSize = false
                     };
-                r.Load(new []{
-                    (IntPtr)source,
-                    (IntPtr)mapping
-                    }, size);
                 COFFMetadataObject.Load(new []{
                     (IntPtr)source,
                     (IntPtr)mapping
                     }, size);
                 }
-            else if ((*magic & 0xFFFF) == IMAGE_OS2_NE_SIGNATURE) { throw new NotImplementedException(); }
+            else if ((*magic & 0xFFFF) == IMAGE_OS2_NE_SIGNATURE) {
+                NEMetadataObject = new NEMetadataObject(Scope,new MetadataObjectIdentity(Identity.LocalName,typeof(NEMetadataObject)));
+                NEMetadataObject.Load(new []{
+                    (IntPtr)source,
+                    (IntPtr)mapping
+                    }, size);
+                }
             else if ((*magic & 0xFFFF) == IMAGE_OS2_LX_SIGNATURE) { throw new NotImplementedException(); }
             else { throw new NotSupportedException(); }
             }
@@ -82,5 +83,6 @@ namespace BinaryStudio.PortableExecutable
             }
 
         private MetadataObject COFFMetadataObject;
+        private MetadataObject NEMetadataObject;
         }
     }

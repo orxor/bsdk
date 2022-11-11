@@ -89,4 +89,29 @@ namespace BinaryStudio.PortableExecutable.Win32
             return r.ToString();
             }
         }
+
+    [Flags]
+    public enum NE_SECTION_FLAGS : ushort
+        {
+        DATA      = 0x0001,
+        ITERATED  = 0x0008,
+        MOVEABLE  = 0x0010,
+        PURE      = 0x0020,
+        PRELOAD   = 0x0040,
+        READONLY  = 0x0080,
+        RELOCINFO = 0x0100,
+        DEBUGINFO = 0x0200,
+        DISCARD   = 0x1000,
+        BIT32     = 0x2000,
+        HUGE      = 0x4000
+        }
+
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1)]
+    public struct NE_SECTION_HEADER
+        {
+        public readonly UInt16 LogicalOffset;
+        public readonly UInt16 Length;
+        public readonly NE_SECTION_FLAGS Flags;
+        public readonly UInt16 MinimumAllocationSize;
+        }
     }
