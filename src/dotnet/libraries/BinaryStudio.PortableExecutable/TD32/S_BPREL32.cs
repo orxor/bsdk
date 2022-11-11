@@ -31,7 +31,7 @@ namespace BinaryStudio.PortableExecutable.TD32
         /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
         /// <param name="Flags">DUMP flags.</param>
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
-            Writer.WriteLine("{0}Offset:{1:x8} Type:{2} [ebp+{3}]", LinePrefix,base.Offset,Type,this.Offset);
+            Writer.WriteLine("{0}Offset:{1:x8} Type:{2} [ebp+{3:D4}]", LinePrefix,base.Offset,Type,this.Offset);
             Writer.WriteLine("{0}  NameIndex:{{{1}}}:{{{2}}}", LinePrefix,NameIndex.ToString("x8"),NameTable[NameIndex-1]);
             Writer.WriteLine("{0}  BrowserOffset:{1:x4}", LinePrefix,BrowserOffset);
             }

@@ -1,7 +1,5 @@
 ﻿using BinaryStudio.PortableExecutable.Win32;
 using System;
-using System.Drawing;
-using System.IO;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {

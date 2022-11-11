@@ -6,6 +6,12 @@
     public enum DEBUG_SYMBOL_INDEX : ushort
         {
         S_NONE                  = 0x0000,
+        /// <summary>
+        /// This symbol communicates with Microsoft debugger compile-time information,
+        /// such as the language and version number of the language processor,
+        /// the ambient model for code and data, and the target processor,
+        /// on a per-module basis.
+        /// </summary>
         S_COMPILE               = 0x0001,
         /// <summary>
         /// This symbol record describes a symbol that has been placed in a register.
@@ -34,6 +40,9 @@
         S_END                   = 0x0006,
         S_SKIP                  = 0x0007,
         S_CVRESERVE             = 0x0008,
+        /// <summary>
+        /// This symbol specifies the name of the object file for this module.
+        /// </summary>
         S_OBJNAME_ST            = 0x0009,
         S_ENDARG                = 0x000a,
         S_COBOLUDT16            = 0x000b,
@@ -44,11 +53,20 @@
         S_NAMESPACE             = 0x0025,
         S_USING                 = 0x0026,
         S_PCONSTANT             = 0x0027,
+        /// <summary>
+        /// This symbol specifies symbols that are allocated on the stack for a procedure.
+        /// </summary>
         S_BPREL16               = 0x0100,
         S_LDATA16               = 0x0101,
         S_GDATA16               = 0x0102,
         S_PUB16                 = 0x0103,
+        /// <summary>
+        /// This symbol record defines local (file static) procedure definitions.
+        /// </summary>
         S_LPROC16               = 0x0104,
+        /// <summary>
+        /// This symbol is used for procedures that are not specifically declared static to a module.
+        /// </summary>
         S_GPROC16               = 0x0105,
         S_THUNK16               = 0x0106,
         S_BLOCK16               = 0x0107,
