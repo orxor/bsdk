@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PortableExecutable.Win32;
 
 namespace BinaryStudio.PortableExecutable
@@ -68,36 +69,43 @@ namespace BinaryStudio.PortableExecutable
             return Task.Factory.StartNew(() => {
                 var EndOfDebugData = (Byte*)(BaseAddress + Size - sizeof(OMFDirectorySignatureHeader) + sizeof(IMAGE_DOS_HEADER));
                 var SignatureHeader = (OMFDirectorySignatureHeader*)EndOfDebugData;
-                foreach (var type in typeof(OMFDirectory).Assembly.GetTypes()) {
-                    var key = type.GetCustomAttributes(false).OfType<OMFDirectorySignatureAttribute>().FirstOrDefault();
-                    if (key != null) {
-                        if (key.Signature == SignatureHeader->Signature) {
-                            var BegOfDebugData = EndOfDebugData - SignatureHeader->Offset + sizeof(OMFDirectorySignatureHeader);
-                            var Directory = (OMFDirectory)Activator.CreateInstance(type,
-                                (IntPtr)BaseAddress,
-                                (IntPtr)BegOfDebugData,
-                                (IntPtr)EndOfDebugData);
-                            Directory.CPU = CPU;
-                            Directory.Analyze();
-                            using (var writer = new StreamWriter(File.Create("my.dump")))
-                                {
-                                Directory.WriteTo(writer,String.Empty,0);
+                try
+                    {
+                    foreach (var type in typeof(OMFDirectory).Assembly.GetTypes()) {
+                        var key = type.GetCustomAttributes(false).OfType<OMFDirectorySignatureAttribute>().FirstOrDefault();
+                        if (key != null) {
+                            if (key.Signature == SignatureHeader->Signature) {
+                                var BegOfDebugData = EndOfDebugData - SignatureHeader->Offset + sizeof(OMFDirectorySignatureHeader);
+                                var Directory = (OMFDirectory)Activator.CreateInstance(type,
+                                    (IntPtr)BaseAddress,
+                                    (IntPtr)BegOfDebugData,
+                                    (IntPtr)EndOfDebugData);
+                                Directory.CPU = CPU;
+                                Directory.Analyze();
+                                using (var writer = new StreamWriter(File.Create("my.dump")))
+                                    {
+                                    Directory.WriteTo(writer,String.Empty,0);
+                                    }
+                                break;
                                 }
-                            break;
                             }
                         }
                     }
+                catch (Exception e)
+                    {
+                    Debug.Print(Exceptions.ToString(e));
+                    throw;
+                    }
+                Debug.Print("LoadDebugInfo:Complete");
                 }, Cancellation);
             }
         #endregion
 
         protected unsafe void Load(Byte* BaseAddress, IMAGE_NE_HEADER* ImageFileHeader, Int64 Size) {
-            if (ImageFileHeader->SegmentCount != 0) {
-                var Cancellation = default(CancellationToken);
-                Load(Cancellation,BaseAddress,ImageFileHeader,Size,
-                    LoadSections,
-                    LoadDebugInfo).Wait(Cancellation);
-                }
+            var Cancellation = default(CancellationToken);
+            Load(Cancellation,BaseAddress,ImageFileHeader,Size,
+                LoadSections,
+                LoadDebugInfo).Wait(Cancellation);
             return;
             }
 
@@ -112,7 +120,7 @@ namespace BinaryStudio.PortableExecutable
                 #if NET40
                 Task.WaitAll(Tasks.ToArray());
                 #else
-                Task.WhenAll(Tasks);
+                Task.WhenAll(Tasks).Wait(Cancellation);
                 #endif
                 }, Cancellation);
             }

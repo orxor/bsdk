@@ -63,7 +63,6 @@ namespace BinaryStudio.PortableExecutable
                     Section.Size = Entries[i].Size;
                     Section.CPU = CPU;
                     Sections.Add(Section.Analyze(BaseAddress,BegOfDebugData + Entries[i].Offset, Entries[i].Size));
-                    Sections.Add(Section);
                     }
                 }
             Names = Sections.OfType<OMFSSectionNames>().FirstOrDefault() ?? EmptyList<String>.Value;
@@ -87,6 +86,10 @@ namespace BinaryStudio.PortableExecutable
             return null;
             }
 
+        /// <summary>Writes DUMP with specified flags.</summary>
+        /// <param name="Writer">The <see cref="TextWriter"/> to write to.</param>
+        /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
+        /// <param name="Flags">DUMP flags.</param>
         public virtual void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags)
             {
             if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
