@@ -28,7 +28,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
         /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
         /// <param name="Flags">DUMP flags.</param>
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
-            Writer.WriteLine("{0}Offset:{1:x8} Type:{2} Segment:{3:x4}:{4:x8} {5}", LinePrefix,Offset,Type,SegmentIndex,SymbolOffset,Name);
+            Writer.WriteLine("{0}Offset:{1:x8} Type:{2} Segment:{3:x4}:{4:x4} {5}", LinePrefix,Offset,Type,SegmentIndex,SymbolOffset,Name);
             }
         }
     }
