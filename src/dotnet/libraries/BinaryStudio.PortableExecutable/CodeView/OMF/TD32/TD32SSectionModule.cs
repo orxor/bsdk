@@ -6,6 +6,7 @@ namespace BinaryStudio.PortableExecutable
     {
     internal class TD32SSectionModule : OMFSSectionModule
         {
+        protected Int32 NameIndex { get;set; }
         public TD32SSectionModule(OMFDirectory Directory)
             : base(Directory)
             {
@@ -69,6 +70,10 @@ namespace BinaryStudio.PortableExecutable
             #endif
             }
 
+        /// <summary>Writes DUMP with specified flags.</summary>
+        /// <param name="Writer">The <see cref="TextWriter"/> to write to.</param>
+        /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
+        /// <param name="Flags">DUMP flags.</param>
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
             if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
             Writer.WriteLine("{0}OverlayNumber:{{{1}}} LibraryIndex:{{{2}}} SegmentCount:{5} Name:{{{3}}}:{{{4}}}",
