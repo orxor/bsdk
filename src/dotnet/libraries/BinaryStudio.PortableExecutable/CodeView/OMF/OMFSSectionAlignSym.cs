@@ -15,6 +15,20 @@ namespace BinaryStudio.PortableExecutable
             {
             }
 
+        private static T Peek<T>(Stack<T> Source)
+            {
+            return ((Source != null) && (Source.Count > 0))
+                ? Source.Peek()
+                : default;
+            }
+
+        private static T Pop<T>(Stack<T> Source)
+            {
+            return ((Source != null) && (Source.Count > 0))
+                ? Source.Pop()
+                : default;
+            }
+
         public override OMFSSectionIndex SectionIndex { get { return OMFSSectionIndex.AlignSym; }}
         public override unsafe OMFSSection Analyze(Byte* BaseAddress, Byte* Source, Int32 Size)
             {
@@ -23,7 +37,7 @@ namespace BinaryStudio.PortableExecutable
             Symbols = new List<CodeViewSymbol>();
             var Header = (CODEVIEW_SYMBOL_RECORD_HEADER*)(Source + sizeof(Int32));
             Size -= sizeof(CODEVIEW_SYMBOL_RECORD_HEADER);
-            ICodeViewBlockStart Package = null;
+            var PackageStack = new Stack<ICodeViewBlockStart>();
             while (Size > 0) {
                 var Offset = (Byte*)Header - BaseAddress;
                 CodeViewSymbol Target;
@@ -32,9 +46,11 @@ namespace BinaryStudio.PortableExecutable
                     Header->Length + sizeof(Int16)));
                 Target.NameTable = (ICodeViewNameTable)Directory.GetService(typeof(ICodeViewNameTable));
                 Target.CPU = CPU;
-                if (Target is ICodeViewBlockElement PackageableElement) { PackageableElement.BlockStart = Package; }
-                if (Target is ICodeViewBlockEnd) { Package = null; }
-                if (Target is ICodeViewBlockStart LocalPackage) { Package = LocalPackage; }
+                if (Target is ICodeViewBlockElement PackageableElement) { PackageableElement.BlockStart = Peek(PackageStack); }
+                if (Target is ICodeViewBlockEnd) { Pop(PackageStack); }
+                if (Target is ICodeViewBlockStart LocalPackage) {
+                    PackageStack.Push(LocalPackage);
+                    }
                 Size -= Header->Length + sizeof(Int16);
                 Header = (CODEVIEW_SYMBOL_RECORD_HEADER*)((Byte*)Header + Header->Length + sizeof(Int16));
                 }

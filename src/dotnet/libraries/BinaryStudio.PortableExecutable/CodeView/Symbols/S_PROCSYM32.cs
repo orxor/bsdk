@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    internal abstract class S_PROCSYM32 : CodeViewSymbol
+    internal abstract class S_PROCSYM32 : CodeViewSymbol,ICodeViewProcedureStart
         {
         public DEBUG_TYPE_ENUM ProcedureType { get; }
         public Int16 SegmentIndex { get; }
@@ -23,6 +23,8 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public Int32 DbgEnd { get; }
         public virtual String Name { get; }
 
+        Int32 ICodeViewBlockStart.CodeLength { get { return ProcedureLength; }}
+        Int32 ICodeViewBlockStart.CodeOffset { get { return ProcedureOffset; }}
         protected unsafe S_PROCSYM32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {

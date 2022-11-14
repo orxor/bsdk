@@ -6,7 +6,7 @@ using BinaryStudio.PortableExecutable.TD32;
 namespace BinaryStudio.PortableExecutable.Win32
     {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    [DebuggerDisplay(@"\{{Type}\}")]
+    [DebuggerDisplay(@"\{{" + nameof(Type) + @"}\}")]
     internal struct BLOCKSYM32
         {
         public readonly Int16 Length;
@@ -19,7 +19,20 @@ namespace BinaryStudio.PortableExecutable.Win32
         }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    [DebuggerDisplay(@"\{{Type}\}")]
+    [DebuggerDisplay(@"\{{" + nameof(Type) + @"}\}")]
+    internal struct BLOCKSYM16
+        {
+        public readonly Int16 Length;
+        public readonly DEBUG_SYMBOL_INDEX Type;
+        public readonly UInt32 pParent;    // pointer to the parent
+        public readonly UInt32 pEnd;       // pointer to this blocks end
+        public readonly UInt16 len;        // Block length
+        public readonly UInt16 off;        // Offset in code segment
+        public readonly UInt16 seg;        // segment of label
+        }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    [DebuggerDisplay(@"\{{" + nameof(Type) + @"}\}")]
     internal struct BLOCKSYM32_TD32
         {
         private readonly Int16 Length;

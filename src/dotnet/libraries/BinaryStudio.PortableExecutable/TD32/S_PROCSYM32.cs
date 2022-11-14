@@ -8,7 +8,7 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.PortableExecutable.TD32
     {
-    internal abstract class S_PROCSYM32 : TD32Symbol
+    internal abstract class S_PROCSYM32 : TD32Symbol,ICodeViewProcedureStart
         {
         public Int16 TypeIndex { get; }
         public Int16 SegmentIndex { get; }
@@ -22,6 +22,8 @@ namespace BinaryStudio.PortableExecutable.TD32
         public Int32 DbgEnd { get; }
         public Int32 NameIndex { get; }
 
+        Int32 ICodeViewBlockStart.CodeLength { get { return ProcedureLength; }}
+        Int32 ICodeViewBlockStart.CodeOffset { get { return ProcedureOffset; }}
         protected unsafe S_PROCSYM32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {

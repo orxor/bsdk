@@ -69,6 +69,9 @@
         /// </summary>
         S_GPROC16               = 0x0105,
         S_THUNK16               = 0x0106,
+        /// <summary>
+        /// This symbol specifies the start of an inner block of lexically scoped symbols.
+        /// </summary>
         S_BLOCK16               = 0x0107,
         S_WITH16                = 0x0108,
         S_LABEL16               = 0x0109,

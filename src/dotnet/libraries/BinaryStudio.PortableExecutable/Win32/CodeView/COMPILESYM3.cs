@@ -21,4 +21,18 @@ namespace BinaryStudio.PortableExecutable.Win32
         public readonly UInt16 VersionBuild;    // back end build version #
         public readonly UInt16 VersionQFE;      // back end QFE version #
         }
+
+    public enum NEMemoryModel
+        {
+        NEAR,
+        FAR,
+        HUGE
+        }
+
+    public enum NEFloatingPackage
+        {
+        HardwareProcessor,
+        Emulator,
+        Altmath
+        }
     }

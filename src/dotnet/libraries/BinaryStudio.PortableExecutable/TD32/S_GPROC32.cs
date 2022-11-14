@@ -10,7 +10,7 @@ using BinaryStudio.PortableExecutable.Win32;
 namespace BinaryStudio.PortableExecutable.TD32
     {
     [TD32Symbol(TD32SymbolIndex.S_GPROC32)]
-    internal class S_GPROC32 : S_PROCSYM32,ICodeViewProcedureStart
+    internal class S_GPROC32 : S_PROCSYM32
         {
         public String LinkerName { get; }
         public override TD32SymbolIndex Type { get { return TD32SymbolIndex.S_GPROC32; }}

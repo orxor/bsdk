@@ -6,7 +6,7 @@ using BinaryStudio.PortableExecutable.Win32;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    internal class S_PROCSYM16 : CodeViewSymbol
+    internal class S_PROCSYM16 : CodeViewSymbol,ICodeViewProcedureStart
         {
         public Int16 ProcedureTypeIndex { get; }
         public Int16 SegmentIndex { get; }
@@ -20,6 +20,8 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public Int32 DbgEnd { get; }
         public virtual String Name { get; }
 
+        Int32 ICodeViewBlockStart.CodeLength { get { return ProcedureLength; }}
+        Int32 ICodeViewBlockStart.CodeOffset { get { return ProcedureOffset; }}
         protected unsafe S_PROCSYM16(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
