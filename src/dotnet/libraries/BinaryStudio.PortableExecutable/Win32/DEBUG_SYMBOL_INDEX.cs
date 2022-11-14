@@ -71,6 +71,10 @@
         /// For C and C++, symbols that are not specifically declared static are emitted as Global Data Symbols and can be compacted by the CVPACK utility into the global symbol table.
         /// </summary>
         S_GDATA16               = 0x0102,
+        /// <summary>
+        /// This symbol has the same format as the Local Data 16:16 symbol.
+        /// Its use is reserved for symbols in the public table that is emitted by the linker into the Symbol and Type OMF portion of the executable file.
+        /// </summary>
         S_PUB16                 = 0x0103,
         /// <summary>
         /// This symbol record defines local (file static) procedure definitions.

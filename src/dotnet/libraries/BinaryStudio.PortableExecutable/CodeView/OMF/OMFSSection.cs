@@ -36,6 +36,7 @@ namespace BinaryStudio.PortableExecutable
 
         public virtual void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags)
             {
+            return;
             }
 
         #region M:ToString(Encoding,Byte*,Boolean):String
