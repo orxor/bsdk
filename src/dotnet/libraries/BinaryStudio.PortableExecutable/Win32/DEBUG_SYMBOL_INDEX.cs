@@ -97,7 +97,7 @@
         S_BPREL32_16            = 0x0200,
         S_LDATA32_16            = 0x0201,
         S_GDATA32_16            = 0x0202,
-        S_PUB32_16              = 0x0203,
+        S_PUB16_32              = 0x0203,
         /// <summary>
         /// This symbol record defines local (file static) procedure definition.
         /// For C and C++, functions that are declared static to a module are emitted as <b>Local Procedure</b> symbols.

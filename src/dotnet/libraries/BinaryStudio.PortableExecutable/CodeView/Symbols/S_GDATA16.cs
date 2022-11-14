@@ -6,7 +6,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
     {
     [CodeViewSymbol(DEBUG_SYMBOL_INDEX.S_GDATA16)]
     [UsedImplicitly]
-    internal class S_GDATA16 : S_DATASYM16
+    internal class S_GDATA16 : S_DATASYM16_16
         {
         public override DEBUG_SYMBOL_INDEX Type { get { return DEBUG_SYMBOL_INDEX.S_GDATA16; }}
         public S_GDATA16(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
