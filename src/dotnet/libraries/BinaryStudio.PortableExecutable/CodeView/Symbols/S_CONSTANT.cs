@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using BinaryStudio.PortableExecutable.Win32;
+using JetBrains.Annotations;
+
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
@@ -10,7 +14,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
         {
         public override DEBUG_SYMBOL_INDEX Type { get { return DEBUG_SYMBOL_INDEX.S_CONSTANT; }}
         public LEAF_ENUM? FieldValueType { get; }
-        public DEBUG_TYPE_ENUM FieldTypeIndex { get; }
+        public Int16 FieldTypeIndex { get; }
         public String FieldName { get; }
         public Byte[] FieldValue { get; }
 
@@ -107,5 +111,42 @@ namespace BinaryStudio.PortableExecutable.CodeView
             }
 
         private static Int32 FieldTypeIndexLength,FieldValueTypeLength,FieldNameLength;
+        }
+
+    [CodeViewSymbol(DEBUG_SYMBOL_INDEX.S_CONSTANT16)]
+    [UsedImplicitly]
+    internal class S_CONSTANT16 : CodeViewSymbol
+        {
+        public override DEBUG_SYMBOL_INDEX Type { get { return DEBUG_SYMBOL_INDEX.S_CONSTANT16; }}
+        public LEAF_ENUM FieldValueType { get; }
+        public Int16 FieldTypeIndex { get; }
+        public String FieldName { get; }
+        public Byte[] FieldValue { get; }
+
+        public unsafe S_CONSTANT16(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+            : base(Section, Offset, Content, Length)
+            {
+            FieldValue = EmptyArray<Byte>.Value;
+            var r = (DEBUG_S_CONSTANT_HEADER*)Content;
+            FieldTypeIndex = r->FieldTypeIndex;
+            var LeafType = &(r->FieldValue);
+            FieldValueType = *LeafType;
+            var FieldNamePointer = (Byte*)(LeafType + 1);
+            switch (FieldValueType) {
+                case LEAF_ENUM.LF_CHAR:
+                    FieldNamePointer++;
+                    break;
+                }
+            FieldName = ToString(Encoding,FieldNamePointer,IsLengthPrefixedString);
+            }
+
+        /// <summary>Writes DUMP with specified flags.</summary>
+        /// <param name="Writer">The <see cref="TextWriter"/> to write to.</param>
+        /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
+        /// <param name="DumpFlags">DUMP flags.</param>
+        public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags DumpFlags) {
+            Writer.WriteLine("{0}Offset:{1:x8} Type:{2} TypeIndex:{3:x4} ValueType:{4} Name:{5}",
+                LinePrefix,Offset,Type,FieldTypeIndex,FieldValueType,FieldName);
+            }
         }
     }
