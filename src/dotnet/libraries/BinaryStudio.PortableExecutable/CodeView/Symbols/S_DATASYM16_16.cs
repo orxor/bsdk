@@ -16,7 +16,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
         protected unsafe S_DATASYM16_16(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
-            var r = (DATASYM16*)Content;
+            var r = (DATASYM16_16*)Content;
             TypeIndex = r->TypeIndex;
             SegmentIndex = r->Segment;
             SymbolOffset = r->Offset;
@@ -44,7 +44,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
         protected unsafe S_DATASYM16_32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
-            var r = (DATASYM32_16*)Content;
+            var r = (DATASYM16_32*)Content;
             TypeIndex = r->TypeIndex;
             SegmentIndex = r->Segment;
             SymbolOffset = r->Offset;
