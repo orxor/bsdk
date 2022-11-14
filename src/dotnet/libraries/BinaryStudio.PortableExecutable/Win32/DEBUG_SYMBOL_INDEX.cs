@@ -122,6 +122,9 @@
         S_GPROCMIPS16           = 0x0301,
         S_PROCREF_ST            = 0x0400,
         S_DATAREF_ST            = 0x0401,
+        /// <summary>
+        /// This symbol is inserted by the CVPACK utility to pad symbol space so that the next symbol will not cross a page boundary.
+        /// </summary>
         S_ALIGN                 = 0x0402,
         S_LPROCREF_ST           = 0x0403,
         S_OEM                   = 0x0404,
