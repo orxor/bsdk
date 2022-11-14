@@ -24,6 +24,9 @@
         /// </summary>
         S_REGISTER16            = 0x0002,
         S_CONSTANT16            = 0x0003,
+        /// <summary>
+        /// This specifies a C typedef or user-defined type, such as classes, structures, unions, or enums.
+        /// </summary>
         S_UDT16                 = 0x0004,
         /// <summary>
         /// Start search.
