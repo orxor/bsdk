@@ -6,18 +6,20 @@ using BinaryStudio.PortableExecutable.Win32;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    internal abstract class S_BPRELSYM16 : CodeViewSymbol
+    internal abstract class S_DATASYM16 : CodeViewSymbol
         {
-        public Int16 TypeIndex { get; }
-        public new UInt16 Offset { get; }
+        public Int32 TypeIndex { get; }
+        public Int16 SegmentIndex { get; }
+        public Int32 SymbolOffset { get; }
         public String Name { get; }
 
-        protected unsafe S_BPRELSYM16(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+        protected unsafe S_DATASYM16(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
             : base(Section, Offset, Content, Length)
             {
-            var r = (BPRELSYM16*)Content;
+            var r = (DATASYM16*)Content;
             TypeIndex = r->TypeIndex;
-            this.Offset = r->Offset;
+            SegmentIndex = r->Segment;
+            SymbolOffset = r->Offset;
             Name = ToString(Encoding, (Byte*)(r + 1), IsLengthPrefixedString);
             }
 
@@ -26,7 +28,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
         /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
         /// <param name="Flags">DUMP flags.</param>
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
-            Writer.WriteLine("{0}Offset:{1:x8} Type:{2} [ebp+{3:x4}] Type:{4:x4} Name:{5}", LinePrefix,base.Offset,Type,Offset,TypeIndex,Name);
+            Writer.WriteLine("{0}Offset:{1:x8} Type:{2} Segment:{3:x4}:{4:x8} {5}", LinePrefix,Offset,Type,SegmentIndex,SymbolOffset,Name);
             }
         }
     }
