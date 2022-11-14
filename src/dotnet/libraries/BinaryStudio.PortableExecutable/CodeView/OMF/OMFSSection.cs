@@ -59,5 +59,14 @@ namespace BinaryStudio.PortableExecutable
                 }
             }
         #endregion
+        #region M:ToString(Encoding,Byte*,Int32):String
+        protected static unsafe String ToString(Encoding Encoding, Byte* Value, Int32 Length) {
+            var r = new Byte[Length];
+            for (var i = 0;i < Length;++i) {
+                r[i] = Value[i];
+                }
+            return Encoding.GetString(r);
+            }
+        #endregion
         }
     }

@@ -125,6 +125,10 @@ namespace BinaryStudio.PortableExecutable
                 }
             }
 
+        /// <summary>Writes DUMP with specified flags.</summary>
+        /// <param name="Writer">The <see cref="TextWriter"/> to write to.</param>
+        /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
+        /// <param name="Flags">DUMP flags.</param>
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
             if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
             Writer.WriteLine("{0}Segments:",LinePrefix);
