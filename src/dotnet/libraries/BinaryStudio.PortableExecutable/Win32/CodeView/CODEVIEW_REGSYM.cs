@@ -23,7 +23,7 @@ namespace BinaryStudio.PortableExecutable.Win32
         public readonly Int16 Length;                   // Record length.
         public readonly DEBUG_SYMBOL_INDEX Type;        // S_REGISTER_16
         public readonly Int16 TypeIndex;                // Type index.
-        public readonly Int16 Register;                 // Register enumerate.
+        public readonly UInt16 Register;                // Register enumerate.
         /* unsigned char* Name; */                      // Length-prefixed name.
         }
 
@@ -31,10 +31,10 @@ namespace BinaryStudio.PortableExecutable.Win32
     [DebuggerDisplay(@"\{{Type}\}")]
     public struct TD32_REGSYM
         {
-        public readonly Int16 Length;                   // Record length.
+        public readonly Int16 Length;                // Record length.
         public readonly TD32SymbolIndex Type;        // S_REGISTER
-        public readonly Int16 TypeIndex;                // Type index.
-        public readonly Int16 Register;                 // Register enumerate.
+        public readonly Int16 TypeIndex;             // Type index.
+        public readonly UInt16 Register;             // Register enumerate.
         public readonly Int16 BrowserOffset;
         public readonly Int32 NameIndex;
         }

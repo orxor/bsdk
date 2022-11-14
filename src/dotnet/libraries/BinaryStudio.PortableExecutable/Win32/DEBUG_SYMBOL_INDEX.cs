@@ -57,7 +57,16 @@
         /// This symbol specifies symbols that are allocated on the stack for a procedure.
         /// </summary>
         S_BPREL16               = 0x0100,
+        /// <summary>
+        /// These symbols are used for data that is not exported from a module.
+        /// In C and C++, symbols that are declared static are emitted as Local Data symbols.
+        /// Symbols that are emitted as Local Data cannot be moved by the CVPACK utility into the global symbol table for the executable file.
+        /// </summary>
         S_LDATA16               = 0x0101,
+        /// <summary>
+        /// This symbol record has the same format as the Local Data 16:16 except that the record type is S_GDATA16.
+        /// For C and C++, symbols that are not specifically declared static are emitted as Global Data Symbols and can be compacted by the CVPACK utility into the global symbol table.
+        /// </summary>
         S_GDATA16               = 0x0102,
         S_PUB16                 = 0x0103,
         /// <summary>
