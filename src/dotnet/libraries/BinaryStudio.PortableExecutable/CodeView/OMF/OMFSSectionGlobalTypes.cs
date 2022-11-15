@@ -17,7 +17,7 @@ namespace BinaryStudio.PortableExecutable
         internal struct SymbolTypeInfo
             {
             public readonly UInt16 Size;
-            public readonly LEAF_ENUM  Leaf;
+            public readonly LEAF_ENUM Leaf;
             }
 
         public OMFSSectionGlobalTypes(OMFDirectory Directory)
@@ -30,11 +30,11 @@ namespace BinaryStudio.PortableExecutable
             public Int64 FileOffset;
             public Int32 Offset;
             public Int32 TypeIndex;
-            public LEAF_ENUM Leaf;
+            public CodeViewTypeInfo LeafType;
             public Int32 Size;
             }
 
-        private IList<TypeInfo> Types = new List<TypeInfo>();
+        private readonly IList<TypeInfo> Types = new List<TypeInfo>();
         public override OMFSSectionIndex SectionIndex { get { return OMFSSectionIndex.GlobalTypes; }}
         public override unsafe OMFSSection Analyze(Byte* BaseAddress, Byte* Source, Int32 Size)
             {
@@ -51,15 +51,10 @@ namespace BinaryStudio.PortableExecutable
                     Offset = Offsets[i],
                     Size = SymbolTypeInfo->Size,
                     TypeIndex = i + 0x1000,
-                    Leaf = SymbolTypeInfo->Leaf
+                    LeafType = CodeViewTypeInfo.CreateInstance(
+                        SymbolTypeInfo->Leaf,
+                        (IntPtr)(void*)&(SymbolTypeInfo->Leaf),SymbolTypeInfo->Size - sizeof(Int16))
                     });
-                #if TD32DEBUG
-                Debug.Print("FileOffset:{2:x8} Offset:{0:x8} Size:{1:x4} Type:{4:x4} Leaf:{3}",
-                    Offsets[i],SymbolTypeInfo->Size,
-                    (Byte*)SymbolTypeInfo - BaseAddress,
-                    SymbolTypeInfo->Leaf,
-                    i + 0x1000);
-                #endif
                 }
             return this;
             }
@@ -71,8 +66,8 @@ namespace BinaryStudio.PortableExecutable
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
             if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
             foreach (var o in Types) {
-                Writer.WriteLine("{0} FileOffset:{1:x8} Offset:{2:x8} Type:{3:x4} Size:{4:x4} Leaf:{5}",LinePrefix,
-                    o.FileOffset,o.Offset,o.TypeIndex,o.Size,o.Leaf);
+                Writer.WriteLine("{0}FileOffset:{1:x8} Offset:{2:x8} Type:{3:x4} Size:{4:x4}",LinePrefix,o.FileOffset,o.Offset,o.TypeIndex,o.Size);
+                o.LeafType.WriteTo(Writer, LinePrefix + "  ", Flags);
                 }
             }
         }
