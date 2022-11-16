@@ -4,7 +4,7 @@
         {
         LF_NONE             = 0x0000,
         LF_MODIFIER_16T     = 0x0001,
-        LF_POINTER_16t      = 0x0002,
+        LF_POINTER_16       = 0x0002,
         LF_ARRAY_16t        = 0x0003,
         LF_CLASS_16t        = 0x0004,
         LF_STRUCTURE_16t    = 0x0005,
@@ -26,7 +26,7 @@
         LF_OEM_16t          = 0x0015,       // oem definable type string
         LF_TYPESERVER_ST    = 0x0016,       // not referenced from symbol
         LF_SKIP_16t         = 0x0200,
-        LF_ARGLIST_16t      = 0x0201,
+        LF_ARGLIST_16       = 0x0201,
         LF_DEFARG_16t       = 0x0202,
         LF_LIST             = 0x0203,
         LF_FIELDLIST_16t    = 0x0204,

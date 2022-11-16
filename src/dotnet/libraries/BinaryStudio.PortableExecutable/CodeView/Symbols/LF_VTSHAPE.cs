@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
 using JetBrains.Annotations;
-using Newtonsoft.Json;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
@@ -45,6 +43,23 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 }
             }
 
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(LeafIndex),LeafIndex);
+                if (Entries.Count > 0) {
+                    writer.WritePropertyName("Entries");
+                    using (writer.ArrayObject()) {
+                        foreach (var e in Entries) {
+                            writer.WriteValue(Descriptions[e]);
+                            }
+                        }
+                    }
+                }
+            }
+
         /// <summary>Writes DUMP with specified flags.</summary>
         /// <param name="Writer">The <see cref="TextWriter"/> to write to.</param>
         /// <param name="LinePrefix">The line prefix for formatting purposes.</param>
@@ -53,7 +68,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             Writer.WriteLine("{0}LeafIndex:{1} DiscriptorsCount:{2}",LinePrefix,LeafIndex,Entries.Count);
             var i = 0;
             foreach (var e in Entries) {
-                Writer.WriteLine("{0}  {1:x4}:{2}",LinePrefix,i,Descriptions[e]);
+                Writer.WriteLine("{0}  {1:x4}:{{{2}}}",LinePrefix,i,Descriptions[e]);
                 i++;
                 }
             }
