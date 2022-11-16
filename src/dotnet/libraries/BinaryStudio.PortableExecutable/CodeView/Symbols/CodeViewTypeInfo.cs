@@ -69,5 +69,13 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 writer.WriteValue(nameof(LeafIndex),LeafIndex);
                 }
             }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        /// <filterpriority>2</filterpriority>
+        public override String ToString()
+            {
+            return LeafIndex.ToString();
+            }
         }
     }
