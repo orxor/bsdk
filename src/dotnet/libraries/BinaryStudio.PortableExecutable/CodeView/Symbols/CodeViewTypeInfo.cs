@@ -77,5 +77,27 @@ namespace BinaryStudio.PortableExecutable.CodeView
             {
             return LeafIndex.ToString();
             }
+
+        #region M:ToString(Encoding,Byte*,Boolean):String
+        protected static unsafe String ToString(Encoding encoding, Byte* value, Boolean lengthprefixed) {
+            if (lengthprefixed) {
+                var c = (Int32)(*value);
+                var r = new Byte[c];
+                for (var i = 0;i < c;++i) {
+                    r[i] = value[i + 1];
+                    }
+                return encoding.GetString(r);
+                }
+            else
+                {
+                var r = new List<Byte>();
+                while (*value != 0) {
+                    r.Add(*value);
+                    value++;
+                    }
+                return encoding.GetString(r.ToArray());
+                }
+            }
+        #endregion
         }
     }

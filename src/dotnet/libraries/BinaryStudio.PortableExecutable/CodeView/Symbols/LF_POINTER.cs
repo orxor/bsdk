@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
@@ -39,21 +40,21 @@ namespace BinaryStudio.PortableExecutable.CodeView
             CV_PTR_MODE_RESERVED= 0x05  // first unused pointer mode
             }
 
-        private PTR_TYPE PointerType;
-        private PTR_MODE PointerMode;
-        private Boolean IsFlat32;
-        private Boolean IsVolatile;
-        private Boolean IsConst;
-        private Boolean IsUnaligned;
+        private readonly PTR_TYPE PointerType;
+        private readonly PTR_MODE PointerMode;
+        private readonly Boolean IsFlat32;
+        private readonly Boolean IsVolatile;
+        private readonly Boolean IsConst;
+        private readonly Boolean IsUnaligned;
         public unsafe LF_POINTER_16(IntPtr Content, Int32 Size)
             : base(Content, Size)
             {
             var attributes = (UInt16)(*((UInt16*)Content + 1));
             PointerType = (PTR_TYPE)(attributes & 0x001f);
             PointerMode = (PTR_MODE)((attributes >> 5) & 0x0007);
-            IsFlat32 = (attributes & 0x0100) == 0x0100;
-            IsVolatile = (attributes & 0x0200) == 0x0200;
-            IsConst = (attributes & 0x0400) == 0x0400;
+            IsFlat32    = (attributes & 0x0100) == 0x0100;
+            IsVolatile  = (attributes & 0x0200) == 0x0200;
+            IsConst     = (attributes & 0x0400) == 0x0400;
             IsUnaligned = (attributes & 0x0800) == 0x0800;
             }
 
@@ -63,10 +64,14 @@ namespace BinaryStudio.PortableExecutable.CodeView
         /// <param name="Flags">DUMP flags.</param>
         public override void WriteTo(TextWriter Writer, String LinePrefix, FileDumpFlags Flags) {
             Writer.WriteLine("{0}LeafIndex:{1} PointerType:{2} PointerMode:{3}", LinePrefix, LeafIndex, PointerType, PointerMode);
-            Writer.WriteLine("{0}IsFlat32:{1}", LinePrefix, IsFlat32);
-            Writer.WriteLine("{0}IsVolatile:{1}", LinePrefix, IsVolatile);
-            Writer.WriteLine("{0}IsConst:{1}", LinePrefix, IsConst);
-            Writer.WriteLine("{0}IsUnaligned:{1}", LinePrefix, IsUnaligned);
+            var flags = new List<String>();
+            if (IsFlat32)    { flags.Add("flat32");    }
+            if (IsVolatile)  { flags.Add("volatile");  }
+            if (IsConst)     { flags.Add("const");     }
+            if (IsUnaligned) { flags.Add("unaligned"); }
+            if (flags.Count > 0) {
+                Writer.WriteLine("{0}Flags:[{1}]", LinePrefix, String.Join(",",flags));
+                }
             }
 
         /// <summary>Writes the JSON representation of the object.</summary>
