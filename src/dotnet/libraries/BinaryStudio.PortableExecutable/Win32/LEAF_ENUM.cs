@@ -10,7 +10,7 @@
         LF_STRUCTURE_16t    = 0x0005,
         LF_UNION_16t        = 0x0006,
         LF_ENUM_16t         = 0x0007,
-        LF_PROCEDURE_16t    = 0x0008,
+        LF_PROCEDURE_16     = 0x0008,
         LF_MFUNCTION_16t    = 0x0009,
         LF_VTSHAPE          = 0x000a,
         LF_COBOL0_16t       = 0x000b,
