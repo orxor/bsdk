@@ -7,8 +7,8 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    [CodeViewLeafIndex(LEAF_ENUM.LF_POINTER_16)]
     [UsedImplicitly]
+    [CodeViewLeafIndex(LEAF_ENUM.LF_POINTER_16)]
     internal class LF_POINTER_16 : CodeViewTypeInfo
         {
         private enum PTR_TYPE

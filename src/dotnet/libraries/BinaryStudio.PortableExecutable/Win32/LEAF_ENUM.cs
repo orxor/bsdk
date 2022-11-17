@@ -5,7 +5,7 @@
         LF_NONE             = 0x0000,
         LF_MODIFIER_16      = 0x0001,
         LF_POINTER_16       = 0x0002,
-        LF_ARRAY_16t        = 0x0003,
+        LF_ARRAY_16         = 0x0003,
         LF_CLASS_16         = 0x0004,
         LF_STRUCTURE_16     = 0x0005,
         LF_UNION_16t        = 0x0006,

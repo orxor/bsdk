@@ -170,13 +170,25 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return r;
             }
 
-        #region M:ReadByte({ref}IntPtr):Byte
+        protected static unsafe Object ReadNumeric(ref IntPtr source) {
+            var r = (Byte*)source;
+            try
+                {
+                return ReadNumeric(ref r);
+                }
+            finally
+                {
+                source = (IntPtr)r;
+                }
+            }
+
+        #region M:ReadByte({ref}Byte*):Byte
         protected static unsafe Byte ReadByte(ref Byte* source)
             {
             return *source++;
             }
         #endregion
-        #region M:ReadUInt16({ref}IntPtr):UInt16
+        #region M:ReadUInt16({ref}Byte*):UInt16
         protected static unsafe UInt16 ReadUInt16(ref Byte* source)
             {
             var r = (UInt16*)source;
@@ -184,7 +196,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return *r;
             }
         #endregion
-        #region M:ReadUInt32({ref}IntPtr):UInt32
+        #region M:ReadUInt32({ref}Byte*):UInt32
         protected static unsafe UInt32 ReadUInt32(ref Byte* source)
             {
             var r = (UInt32*)source;
@@ -192,7 +204,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return *r;
             }
         #endregion
-        #region M:ReadUInt64({ref}IntPtr):UInt64
+        #region M:ReadUInt64({ref}Byte*):UInt64
         protected static unsafe UInt64 ReadUInt64(ref Byte* source)
             {
             var r = (UInt64*)source;
@@ -200,7 +212,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return *r;
             }
         #endregion
-        #region M:ReadInt16({ref}IntPtr):Int16
+        #region M:ReadInt16({ref}Byte*):Int16
         protected static unsafe Int16 ReadInt16(ref Byte* source)
             {
             var r = (Int16*)source;
@@ -208,7 +220,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return *r;
             }
         #endregion
-        #region M:ReadInt32({ref}IntPtr):Int32
+        #region M:ReadInt32({ref}Byte*):Int32
         protected static unsafe Int32 ReadInt32(ref Byte* source)
             {
             var r = (Int32*)source;
@@ -216,7 +228,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return *r;
             }
         #endregion
-        #region M:ReadInt64({ref}IntPtr):Int64
+        #region M:ReadInt64({ref}Byte*):Int64
         protected static unsafe Int64 ReadInt64(ref Byte* source)
             {
             var r = (Int64*)source;
@@ -224,7 +236,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return *r;
             }
         #endregion
-        #region M:ReadSByte({ref}IntPtr):SByte
+        #region M:ReadSByte({ref}Byte*):SByte
         protected static unsafe SByte ReadSByte(ref Byte* source)
             {
             var r = (SByte*)source;
@@ -232,6 +244,107 @@ namespace BinaryStudio.PortableExecutable.CodeView
             return *r;
             }
         #endregion
+        #region M:ReadByte({ref}IntPtr):Byte
+        protected static unsafe Byte ReadByte(ref IntPtr source)
+            {
+            var r = (Byte*)source;
+            source += sizeof(UInt16);
+            return *r;
+            }
+        #endregion
+        #region M:ReadUInt16({ref}IntPtr):UInt16
+        protected static unsafe UInt16 ReadUInt16(ref IntPtr source)
+            {
+            var r = (UInt16*)source;
+            source += sizeof(UInt16);
+            return *r;
+            }
+        #endregion
+        #region M:ReadUInt32({ref}IntPtr):UInt32
+        protected static unsafe UInt32 ReadUInt32(ref IntPtr source)
+            {
+            var r = (UInt32*)source;
+            source += sizeof(UInt32);
+            return *r;
+            }
+        #endregion
+        #region M:ReadUInt64({ref}IntPtr):UInt64
+        protected static unsafe UInt64 ReadUInt64(ref IntPtr source)
+            {
+            var r = (UInt64*)source;
+            source += sizeof(UInt64);
+            return *r;
+            }
+        #endregion
+        #region M:ReadInt16({ref}IntPtr):Int16
+        protected static unsafe Int16 ReadInt16(ref IntPtr source)
+            {
+            var r = (Int16*)source;
+            source += sizeof(Int16);
+            return *r;
+            }
+        #endregion
+        #region M:ReadInt32({ref}IntPtr):Int32
+        protected static unsafe Int32 ReadInt32(ref IntPtr source)
+            {
+            var r = (Int32*)source;
+            source += sizeof(Int32);
+            return *r;
+            }
+        #endregion
+        #region M:ReadInt64({ref}IntPtr):Int64
+        protected static unsafe Int64 ReadInt64(ref IntPtr source)
+            {
+            var r = (Int64*)source;
+            source += sizeof(Int64);
+            return *r;
+            }
+        #endregion
+        #region M:ReadSByte({ref}IntPtr):SByte
+        protected static unsafe SByte ReadSByte(ref IntPtr source)
+            {
+            var r = (SByte*)source;
+            source += sizeof(SByte);
+            return *r;
+            }
+        #endregion
+        #region M:ReadLengthPrefixedString(Encoding,{Ref}Byte*):String
+        protected static unsafe String ReadLengthPrefixedString(Encoding encoding, ref Byte* value) {
+            var c = (Int32)(*value);
+            var r = new Byte[c];
+            for (var i = 0;i < c;++i) {
+                r[i] = value[i + 1];
+                }
+            value += sizeof(Int32) + c;
+            return encoding.GetString(r);
+            }
+        #endregion
+        #region M:ReadLengthPrefixedString(Encoding,{Ref}IntPtr):String
+        protected static unsafe String ReadLengthPrefixedString(Encoding encoding, ref IntPtr source) {
+            var r = (Byte*)source;
+            try
+                {
+                return ReadLengthPrefixedString(encoding,ref r);
+                }
+            finally
+                {
+                source = (IntPtr)r;
+                }
+            }
+        #endregion
+
+        protected static String ToString(Object value, FileDumpFlags flags) {
+            if (value == null) { return "{nullptr}"; }
+            if (value is SByte I1) { return $"{I1:x2}"; }
+            if (value is Int16 I2) { return $"{I2:x4}"; }
+            if (value is Int32 I4) { return $"{I4:x8}"; }
+            if (value is Int64 I8) { return $"{I8:x16}"; }
+            if (value is Byte   UI1) { return $"{UI1:x2}"; }
+            if (value is UInt16 UI2) { return $"{UI2:x4}"; }
+            if (value is UInt32 UI4) { return $"{UI4:x8}"; }
+            if (value is UInt64 UI8) { return $"{UI8:x16}"; }
+            return value.ToString();
+            }
 
         protected const UInt16 LF_CHAR             = 0x8000;
         protected const UInt16 LF_SHORT            = 0x8001;
