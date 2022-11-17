@@ -32,7 +32,7 @@
         LF_FIELDLIST_16     = 0x0204,
         LF_DERIVED_16t      = 0x0205,
         LF_BITFIELD_16t     = 0x0206,
-        LF_METHODLIST_16t   = 0x0207,
+        LF_METHODLIST_16    = 0x0207,
         LF_DIMCONU_16t      = 0x0208,
         LF_DIMCONLU_16t     = 0x0209,
         LF_DIMVARU_16t      = 0x020a,

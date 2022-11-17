@@ -68,7 +68,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             if ((Attributes & 0x0080) == 0x0080) { flags.Add("noconstruct"); }
             if ((Attributes & 0x0100) == 0x0100) { flags.Add("compgenx");    }
             if ((Attributes & 0x0200) == 0x0200) { flags.Add("sealed");      }
-            Writer.WriteLine("{0}LeafIndex:{1} TypeIndex:{2:x4} Attributes:[{3}] Name:{4}",LinePrefix,LeafIndex,TypeIndex,String.Join(",",flags),Name);
+            Writer.WriteLine("{0}LeafIndex:{1} TypeIndex:{2:x4} Attributes:[{3}] \"{4}\"",LinePrefix,LeafIndex,TypeIndex,String.Join(",",flags),Name);
             }
         }
     }
