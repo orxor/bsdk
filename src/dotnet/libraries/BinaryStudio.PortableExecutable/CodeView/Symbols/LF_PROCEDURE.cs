@@ -8,8 +8,8 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    [CodeViewLeafIndex(LEAF_ENUM.LF_PROCEDURE_16)]
     [UsedImplicitly]
+    [CodeViewLeafIndex(LEAF_ENUM.LF_PROCEDURE_16)]
     internal class LF_PROCEDURE_16 : CodeViewTypeInfo
         {
         private enum CALLTYPE : byte

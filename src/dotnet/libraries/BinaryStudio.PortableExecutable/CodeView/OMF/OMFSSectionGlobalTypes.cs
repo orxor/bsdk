@@ -32,6 +32,10 @@ namespace BinaryStudio.PortableExecutable
             public Int32 TypeIndex;
             public CodeViewTypeInfo LeafType;
             public Int32 Size;
+            public override String ToString()
+                {
+                return $"{TypeIndex:x4}";
+                }
             }
 
         private readonly IList<TypeInfo> Types = new List<TypeInfo>();

@@ -7,8 +7,8 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    [CodeViewLeafIndex(LEAF_ENUM.LF_VTSHAPE)]
     [UsedImplicitly]
+    [CodeViewLeafIndex(LEAF_ENUM.LF_VTSHAPE)]
     internal class LF_VTSHAPE : CodeViewTypeInfo
         {
         private static readonly IDictionary<Byte,String> Descriptions = new Dictionary<Byte,String>{
