@@ -34,6 +34,7 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuBrushKey}"                           Color="{DynamicResource {x:Static SystemColors.MenuColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuBarBrushKey}"                        Color="{DynamicResource {x:Static SystemColors.MenuBarColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushKey}"                  Color="{DynamicResource {x:Static SystemColors.MenuHighlightColorKey}}"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightTextBrushKey}"              Color="{DynamicResource {x:Static SystemColors.MenuTextColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushKey}"                       Color="{DynamicResource {x:Static SystemColors.MenuTextColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ScrollBarBrushKey}"                      Color="{DynamicResource {x:Static SystemColors.ScrollBarColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushKey}"                         Color="{DynamicResource {x:Static SystemColors.WindowColorKey}}"/>

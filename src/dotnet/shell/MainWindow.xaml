@@ -26,6 +26,21 @@
       </DrawingBrush.Drawing>
     </DrawingBrush>
   </u:MainWindow.VectorIcon>
+  <u:MainWindow.Menu>
+    <Menu Grid.Row="0">
+      <MenuItem Header="FILE">
+        <MenuItem Header="Open..." Command="Open"/>
+        <MenuItem Header="Convert to BASE64..."/>
+        <MenuItem Header="Open from BASE64..."/>
+      </MenuItem>
+      <MenuItem Header="WINDOW">
+        <MenuItem Header="Object Identifier Information"/>
+      </MenuItem>
+      <MenuItem Header="HELP">
+        <MenuItem Header="About..."/>
+      </MenuItem>
+    </Menu>
+  </u:MainWindow.Menu>
   <Grid>
   </Grid>
 </u:MainWindow>

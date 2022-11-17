@@ -35,6 +35,7 @@ namespace BinaryStudio.PlatformUI
             public static Object MenuBarBrushKey                 { get { return CreateInstance(ref FieldMenuBarBrushKey                       ,SystemColorCategory,nameof(MenuBarBrushKey));                 }}
             public static Object MenuHighlightBrushKey           { get { return CreateInstance(ref FieldMenuHighlightBrushKey                 ,SystemColorCategory,nameof(MenuHighlightBrushKey));           }}
             public static Object MenuTextBrushKey                { get { return CreateInstance(ref FieldMenuTextBrushKey                      ,SystemColorCategory,nameof(MenuTextBrushKey));                }}
+            public static Object MenuHighlightTextBrushKey       { get { return CreateInstance(ref FieldMenuHighlightTextBrushKey             ,SystemColorCategory,nameof(MenuHighlightTextBrushKey));       }}
             public static Object ScrollBarBrushKey               { get { return CreateInstance(ref FieldScrollBarBrushKey                     ,SystemColorCategory,nameof(ScrollBarBrushKey));               }}
             public static Object WindowBrushKey                  { get { return CreateInstance(ref FieldWindowBrushKey                        ,SystemColorCategory,nameof(WindowBrushKey));                  }}
             public static Object WindowFrameBrushKey             { get { return CreateInstance(ref FieldWindowFrameBrushKey                   ,SystemColorCategory,nameof(WindowFrameBrushKey));             }}
@@ -79,6 +80,7 @@ namespace BinaryStudio.PlatformUI
             private static Object FieldMenuBrushKey;
             private static Object FieldMenuBarBrushKey;
             private static Object FieldMenuHighlightBrushKey;
+            private static Object FieldMenuHighlightTextBrushKey;
             private static Object FieldMenuTextBrushKey;
             private static Object FieldScrollBarBrushKey;
             private static Object FieldWindowBrushKey;

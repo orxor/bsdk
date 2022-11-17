@@ -45,8 +45,9 @@
           <Border BorderBrush="{DynamicResource WindowBrushKey}"
                   BorderThickness="0,1,0,0"/>
         </Popup>
-        <Border Name="InnerBorder" BorderThickness="1,1,1,0" BorderBrush="Transparent" Background="Transparent" Margin="0,0,0,0">
-          <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" TextBlock.Foreground="{DynamicResource MenuTextBrushKey}" Margin="6,3,6,3"/>
+        <Border Name="InnerBorder" BorderThickness="1,1,1,0" BorderBrush="Transparent" Background="Transparent" Margin="0,0,0,0"
+                TextBlock.Foreground="{DynamicResource MenuTextBrushKey}">
+          <ContentPresenter ContentSource="Header" RecognizesAccessKey="True" Margin="6,3,6,3"/>
         </Border>
       </Grid>
     </Decorator>
@@ -56,10 +57,12 @@
       </Trigger>
       <Trigger Property="IsHighlighted" Value="true">
         <Setter Property="Background" Value="{DynamicResource MenuHighlightBrushKey}" TargetName="InnerBorder"/>
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuHighlightTextBrushKey}" TargetName="InnerBorder"/>
       </Trigger>
       <Trigger Property="IsSubmenuOpen" Value="true">
         <Setter Property="Background"  Value="{DynamicResource WindowBrushKey}"          TargetName="InnerBorder"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkDarkBrushKey}" TargetName="InnerBorder"/>
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuTextBrushKey}" TargetName="InnerBorder"/>
       </Trigger>
     </ControlTemplate.Triggers>
   </ControlTemplate>
@@ -94,7 +97,6 @@
     </Border>
     <ControlTemplate.Triggers>
       <Trigger Property="IsHighlighted" Value="True">
-        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
         <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
       </Trigger>
       <Trigger Property="IsCheckable" Value="True">
@@ -168,7 +170,6 @@
     <ControlTemplate.Triggers>
       <Trigger Property="IsHighlighted" Value="True">
         <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
-        <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
       </Trigger>
       <Trigger Property="IsCheckable" Value="True">
         <Setter TargetName="Mark" Property="Visibility" Value="Visible"/>
@@ -190,6 +191,7 @@
     <ControlTemplate.Triggers>
       <Trigger Property="IsHighlighted" Value="true">
         <Setter Property="Background" TargetName="Border" Value="{DynamicResource MenuHighlightBrushKey}"/>
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource MenuHighlightTextBrushKey}" TargetName="Border"/>
       </Trigger>
       <Trigger Property="IsEnabled" Value="False">
         <Setter Property="Foreground" Value="{DynamicResource GrayTextBrushKey}"/>
