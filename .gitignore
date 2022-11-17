@@ -78,3 +78,5 @@
 /src/cc/clr/.intermediate
 /src/cc/clr/obj
 /src/cc/ntdll/.intermediate
+/src/dotnet/shell/bin
+/src/dotnet/shell/obj

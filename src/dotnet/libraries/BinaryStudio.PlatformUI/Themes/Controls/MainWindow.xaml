@@ -18,7 +18,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
-              <c:WindowTitleBar Grid.Row="0" BorderThickness="0" Background="{DynamicResource ActiveCaptionBrushKey}" x:Name="TitleBar">
+              <c:WindowTitleBar Grid.Row="0" BorderThickness="0" Background="Transparent" x:Name="TitleBar">
                 <Grid>
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
