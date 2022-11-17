@@ -3,7 +3,7 @@
     public enum LEAF_ENUM : ushort
         {
         LF_NONE             = 0x0000,
-        LF_MODIFIER_16T     = 0x0001,
+        LF_MODIFIER_16      = 0x0001,
         LF_POINTER_16       = 0x0002,
         LF_ARRAY_16t        = 0x0003,
         LF_CLASS_16         = 0x0004,
