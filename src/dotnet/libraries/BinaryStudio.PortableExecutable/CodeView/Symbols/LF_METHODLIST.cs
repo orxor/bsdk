@@ -6,7 +6,7 @@ using BinaryStudio.PortableExecutable.Win32;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
-    [JetBrains.Annotations.UsedImplicitly]
+    [UsedImplicitly]
     [CodeViewLeafIndex(LEAF_ENUM.LF_METHODLIST_16)]
     internal class LF_METHODLIST_16 : CodeViewTypeInfo
         {
