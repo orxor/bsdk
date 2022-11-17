@@ -7,6 +7,34 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/Primitives/RangeSelectionTrackingControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/HexBox.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/PropertyGridControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/MainWindow.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideChannelControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideGroupControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideRootControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideTabItem.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DockGroupControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DockRootControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/GroupControlTabItem.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/TabGroupControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/ViewHeader.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DragUndockHeader.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/ViewPresenter.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DocumentGroupControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DocumentTabItem.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/FloatingWindow.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/ViewFrame.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DockPreviewWindow.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DockGroupAdorner.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DockSiteAdorner.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideWindow.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/WindowResizeGrip.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/DocumentGroupContainerControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/LayoutSynchronizedContentControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/SystemMenu.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/WindowTitleBarButton.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/GlyphButton.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/ToolWindow.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Templates.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
 
