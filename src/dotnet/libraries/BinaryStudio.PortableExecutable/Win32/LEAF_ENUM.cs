@@ -8,7 +8,7 @@
         LF_ARRAY_16         = 0x0003,
         LF_CLASS_16         = 0x0004,
         LF_STRUCTURE_16     = 0x0005,
-        LF_UNION_16t        = 0x0006,
+        LF_UNION_16         = 0x0006,
         LF_ENUM_16          = 0x0007,
         LF_PROCEDURE_16     = 0x0008,
         LF_MFUNCTION_16     = 0x0009,
