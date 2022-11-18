@@ -32,6 +32,8 @@
         <MenuItem Header="Open..." Command="Open"/>
         <MenuItem Header="Convert to BASE64..."/>
         <MenuItem Header="Open from BASE64..."/>
+        <Separator/>
+        <MenuItem Header="Exit" InputGestureText="Alt+F4"/>
       </MenuItem>
       <MenuItem Header="WINDOW">
         <MenuItem Header="Object Identifier Information"/>
