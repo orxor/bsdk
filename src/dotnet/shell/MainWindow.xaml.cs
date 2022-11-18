@@ -13,10 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BinaryStudio.PlatformUI;
+using BinaryStudio.PlatformUI.Shell;
 using BMainWindow = BinaryStudio.PlatformUI.MainWindow;
 
 public partial class MainWindow : BMainWindow
     {
+    private DocumentGroup dockgroup;
+    private DocumentManager docmanager;
+
     public MainWindow()
         {
         InitializeComponent();
@@ -26,6 +30,34 @@ public partial class MainWindow : BMainWindow
     private void OnLoaded(Object sender, RoutedEventArgs e)
         {
         Theme.Apply(Theme.Themes[3]);
+        var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
+        if (dockgroupcontainer == null) {
+            Profile.DockRoot.Children.Add(new DocumentGroupContainer
+                (
+                dockgroup = new DocumentGroup())
+                );
+            }
+        else
+            {
+            dockgroup = (DocumentGroup)dockgroupcontainer.Children.FirstOrDefault(i => i is DocumentGroup);
+            if (dockgroup == null)
+                {
+                dockgroupcontainer.Children.Add(dockgroup = new DocumentGroup());
+                }
+            }
+        ViewManager.GetViewManager(dockgroup);
+        docmanager = new DocumentManager(dockgroup);
+        Initialize();
+        }
+    #endregion
+    #region M:Initialize
+    private void Initialize()
+        {
+        //LoadFrom(@"C:\TFS\bsdk\mdl\atl30\atl30.emx");
+        //ObjectIdentifierInfoExecuted(null,null);
+        //OpenRegistryKeyExecuted(Registry.CurrentConfig);
+        //LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
+        //docmanager.AddCertificateStoreManagement();
         }
     #endregion
     }

@@ -32,6 +32,7 @@ namespace BinaryStudio.PlatformUI
             new Theme("NormalColor", "Modern.NormalColor.xaml"),
             new Theme("Dark",        "Modern.Dark.xaml"),
             new Theme("Dark{Snow}",  "Modern.Dark{Snow}.xaml"),
+            new Theme("Dark{Sting}", "Modern.Dark{Violet}.xaml"),
             new Theme("Dark{Sting}", "Modern.Dark{Sting}.xaml"),
             new Theme("Light",       "Modern.Light.xaml"),
             new Theme("VStudio",     "Modern.VStudio.xaml"),

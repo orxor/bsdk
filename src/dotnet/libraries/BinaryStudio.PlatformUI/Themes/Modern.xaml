@@ -53,5 +53,5 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.InactiveSelectionHighlightTextBrushKey}"         Color="{DynamicResource {x:Static SystemColors.InactiveCaptionTextColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.DataGridColumnHeaderBackgroundBrushKey}"         Color="{DynamicResource {x:Static SystemColors.ControlLightColorKey}}"/>
   <SolidColorBrush x:Key="AccentPictureBrushKey"                  Color="#FF414141"/>
-  <SolidColorBrush x:Key="AccentPictureOutlineBrushKey"           Color="#FFF5F5F5"/>
+  <SolidColorBrush x:Key="AccentPictureOutlineBrushKey"           Color="#fff5f5f5"/>
 </ResourceDictionary>

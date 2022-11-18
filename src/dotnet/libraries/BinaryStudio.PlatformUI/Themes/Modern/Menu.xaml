@@ -98,6 +98,7 @@
     <ControlTemplate.Triggers>
       <Trigger Property="IsHighlighted" Value="True">
         <Setter TargetName="Border" Property="Background" Value="{DynamicResource MenuHighlightBrushKey}"/>
+        <Setter TargetName="Border" Property="TextBlock.Foreground" Value="{DynamicResource MenuHighlightTextBrushKey}"/>
       </Trigger>
       <Trigger Property="IsCheckable" Value="True">
         <Setter TargetName="Mark" Property="Visibility" Value="Visible"/>

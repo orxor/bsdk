@@ -8,6 +8,9 @@
     <Page Update="Themes\Controls\Primitives\RangeSelectionTrackingControl.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Themes\Modern.Dark{Violet}.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Themes\Modern.Dark{Sting}.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -32,8 +32,9 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.InfoTextBrushKey}"                           Color="#ff1e1e1e"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuBrushKey}"                               Color="#ff3f3f46"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.MenuBarBrushKey}"                            Color="#ff3f3f46"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushKey}"                      Color="#ff3e3e40"/>
-  <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushKey}"                           Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushKey}"                      Color="#ff4a4a4d"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightTextBrushKey}"                  Color="#ffdddddd"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushKey}"                           Color="#ffdddddd"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ScrollBarBrushKey}"                          Color="#ff3e3e42"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushKey}"                             Color="#ff252526"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushKey}"                        Color="#ff2d2d30"/>
