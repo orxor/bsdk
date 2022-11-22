@@ -95,8 +95,8 @@
           </e:DragUndockHeader>
           <ControlTemplate.Triggers>
             <DataTrigger Value="True" Binding="{Binding View.IsActive, RelativeSource={RelativeSource Self}}">
-              <Setter Property="Background" Value="{DynamicResource TabItemHighlightBackgroundBrushKey}"/>
-              <Setter Property="Foreground" Value="{DynamicResource HighlightTextBrushKey}"/>
+              <Setter Property="Background" Value="{DynamicResource TabItemSelectedBrushKey}"/>
+              <Setter Property="Foreground" Value="{DynamicResource TabItemSelectedTextBrushKey}"/>
             </DataTrigger>
             <Trigger Property="e:AutoHideWindow.IsAutoHidden" Value="True">
               <Setter TargetName="AutoHideButton" Property="e:Glyph.Geometry" Value="F1M0,4L3,4 3,1 4,1 4,2 7,2 8,2 8,7 7,7 4,7 4,8 3,8 3,5 0,5 0,4z M7,3L4,3 4,5 7,5 7,3z"/>
