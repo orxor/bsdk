@@ -6,6 +6,7 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/DataGrid.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/ListBox.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/TextBox.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Templates.xaml"/>
   </ResourceDictionary.MergedDictionaries>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushKey}"                   Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushKey}"                  Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>

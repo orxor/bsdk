@@ -34,6 +34,11 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/WindowTitleBarButton.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/GlyphButton.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/ToolWindow.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/RoutedCommandButton.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/SplitterGrip.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/SplitterItem.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/SplitterItemsControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/SplitterResizePreviewWindow.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Templates.xaml"/>
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

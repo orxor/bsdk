@@ -72,7 +72,7 @@
     </c:DragUndockHeader>
   </DataTemplate>
   <DataTemplate x:Key="{DataTemplateKey {x:Type e:DocumentGroupContainer}}" DataType="{x:Type e:DocumentGroupContainer}">
-    <Border BorderBrush="{x:Null}" BorderThickness="0">
+    <Border BorderBrush="Yellow" BorderThickness="1">
       <c:DocumentGroupContainerControl ItemsSource="{Binding VisibleChildren}" e:ViewManager.ViewManager="{Binding ViewManager}"/>
     </Border>
   </DataTemplate>

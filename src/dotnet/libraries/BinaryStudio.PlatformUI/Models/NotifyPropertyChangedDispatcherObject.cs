@@ -305,7 +305,7 @@ namespace BinaryStudio.PlatformUI.Models
         #endregion
         }
 
-    public abstract class NotifyPropertyChangedDispatcherObject<T> : NotifyPropertyChangedDispatcherObject
+    public abstract class NotifyPropertyChangedDispatcherObject<T> : Model
         {
         #region P:Source:T
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private T SourceProperty;

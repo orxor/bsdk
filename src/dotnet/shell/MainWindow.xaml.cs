@@ -46,18 +46,24 @@ public partial class MainWindow : BMainWindow
                 }
             }
         ViewManager.GetViewManager(dockgroup);
-        docmanager = new DocumentManager(dockgroup);
+        docmanager = new DocumentManager(dockgroup,Profile);
         Initialize();
         }
     #endregion
     #region M:Initialize
     private void Initialize()
         {
+        OpenDocument(@"C:\TFS\bsdk\src\dotnet\tests\UnitTestData\dll\mfc250d.dll");
         //LoadFrom(@"C:\TFS\bsdk\mdl\atl30\atl30.emx");
         //ObjectIdentifierInfoExecuted(null,null);
         //OpenRegistryKeyExecuted(Registry.CurrentConfig);
         //LoadFrom(@"C:\TFS\.sqlite3\trace-rtEditor-2022-05-19-18-01-21.db");
         //docmanager.AddCertificateStoreManagement();
+        }
+    #endregion
+    #region M:OpenDocument(String)
+    private void OpenDocument(String filename) {
+        docmanager.OpenDocument(filename);
         }
     #endregion
     }
