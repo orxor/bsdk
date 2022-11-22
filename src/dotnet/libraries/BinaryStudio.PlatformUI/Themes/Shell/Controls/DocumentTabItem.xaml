@@ -11,6 +11,7 @@
     <Setter Property="e:GroupControlTabItem.CornerRadius" Value="0,0,0,0" />
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="Foreground" Value="{DynamicResource ControlTextBrushKey}"/>
+    <Setter Property="e:Glyph.Foreground" Value="{DynamicResource ControlTextBrushKey}"/>
     <Setter Property="BorderBrush" Value="{x:Null}"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Margin" Value="0"/>
@@ -54,31 +55,25 @@
                   <e:GlyphButton x:Name="HideButton" e:ViewPresenter.CanActivateFromLeftClick="False" Command="{x:Static e:ViewCommands.HideViewCommand}"
                                  CommandParameter="{TemplateBinding ContentControl.Content}"
                                  Margin="3,2,0,1"
-                                 Foreground="{TemplateBinding e:Glyph.Foreground}"
-                                 HoverBackground="{DynamicResource HighlightBrushKey}"
                                  Visibility="Hidden"
                                  Grid.Column="2">
-                    <Path Fill="{Binding RelativeSource={RelativeSource Self},Path=(TextElement.Foreground)}" Width="8" Height="8" Stretch="Uniform" Data="{StaticResource HideGeometry}"/>
+                    <Path Fill="{Binding RelativeSource={RelativeSource AncestorType=e:GlyphButton},Path=GlyphForeground}" Width="8" Height="8" Stretch="Uniform" Data="{StaticResource HideGeometry}"/>
                   </e:GlyphButton>
                   <e:GlyphButton e:ViewPresenter.CanActivateFromLeftClick="False"
-                                 HoverBackground="{DynamicResource HighlightBrushKey}"
-                                 Foreground="{TemplateBinding e:Glyph.Foreground}"
                                  Command="{x:Static e:ViewCommands.PromoteCommand}"
                                  CommandParameter="{TemplateBinding ContentControl.Content}"
                                  x:Name="PromoteButton"
                                  Grid.Column="3"
                                  Margin="3,2,0,1" Visibility="{Binding Path=(u:DocumentGroup.IsPreviewView), Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Path Fill="{Binding RelativeSource={RelativeSource Self},Path=(TextElement.Foreground)}" Width="10" Height="10" Stretch="Uniform" Data="F1M9.022,6.667L9.022,2.665C9.022,2.389,8.798,2.165,8.522,2.165L2.647,2.165C2.371,2.165,2.147,2.389,2.147,2.665L2.147,6.667 1.022,6.667 1.022,7.646 10.022,7.646 10.022,6.667 9.022,6.667z M3.838,1.897L2.838,1.897 2.838,0 3.838,0 3.838,1.897z M2.289,1.604L1.582,2.312 0,0.729 0.707,0.022 2.289,1.604z M1.879,2.856L1.879,3.856 0.043,3.856 0.043,2.856 1.879,2.856z" Name="PromoteButtonPath"/>
+                    <Path Fill="{Binding RelativeSource={RelativeSource AncestorType=e:GlyphButton},Path=GlyphForeground}" Width="10" Height="10" Stretch="Uniform" Data="F1M9.022,6.667L9.022,2.665C9.022,2.389,8.798,2.165,8.522,2.165L2.647,2.165C2.371,2.165,2.147,2.389,2.147,2.665L2.147,6.667 1.022,6.667 1.022,7.646 10.022,7.646 10.022,6.667 9.022,6.667z M3.838,1.897L2.838,1.897 2.838,0 3.838,0 3.838,1.897z M2.289,1.604L1.582,2.312 0,0.729 0.707,0.022 2.289,1.604z M1.879,2.856L1.879,3.856 0.043,3.856 0.043,2.856 1.879,2.856z" Name="PromoteButtonPath"/>
                 </e:GlyphButton>
                   <e:GlyphButton x:Name="PinButton" Visibility="Hidden"
-                                 HoverBackground="{DynamicResource HighlightBrushKey}"
                                  e:ViewPresenter.CanActivateFromLeftClick="False"
-                                 Foreground="{TemplateBinding e:Glyph.Foreground}"
                                  Command="{x:Static e:ViewCommands.TogglePinStatusCommand}"
                                  CommandParameter="{TemplateBinding ContentControl.Content}"
                                  Margin="3,2,3,1"
                                  Grid.Column="4">
-                    <Path Fill="{Binding RelativeSource={RelativeSource Self},Path=(TextElement.Foreground)}" Width="8" Height="8" Stretch="Uniform" Data="F1M0 4L3 4 3 1 4 1 4 2 7 2 8 2 8 7 7 7 4 7 4 8 3 8 3 5 0 5 0 4z M7 3L4 3 4 5 7 5 7 3z"/>
+                    <Path Fill="{Binding RelativeSource={RelativeSource AncestorType=e:GlyphButton},Path=GlyphForeground}" Width="8" Height="8" Stretch="Uniform" Data="F1M0 4L3 4 3 1 4 1 4 2 7 2 8 2 8 7 7 7 4 7 4 8 3 8 3 5 0 5 0 4z M7 3L4 3 4 5 7 5 7 3z"/>
                   </e:GlyphButton>
                 </Grid>
               </Border>

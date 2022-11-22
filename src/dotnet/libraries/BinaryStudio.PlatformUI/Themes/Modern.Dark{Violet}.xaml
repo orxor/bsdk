@@ -15,4 +15,7 @@
   <SolidColorBrush x:Key="{x:Static u:Theme.InfoBrushKey}"                               Color="#fffefcc8"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.InfoTextBrushKey}"                           Color="#ff1e1e1e"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.SelectionBrushKey}"                          Color="#ff7d1bd8"/>
+  <SolidColorBrush x:Key="GlyphButtonHoverBackgroundBrushKey"         Color="#ff9320ff"/>
+  <SolidColorBrush x:Key="GlyphButtonBorderBrushKey"                  Color="#ff9320ff"/>
+  <SolidColorBrush x:Key="GlyphForegroundBrushKey"                    Color="#FFF1F1F1"/>
 </ResourceDictionary>

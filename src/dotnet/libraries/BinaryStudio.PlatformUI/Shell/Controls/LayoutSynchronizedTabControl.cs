@@ -12,6 +12,9 @@ namespace BinaryStudio.PlatformUI
             DefaultStyleKeyProperty.OverrideMetadata(typeof(LayoutSynchronizedTabControl), new FrameworkPropertyMetadata(typeof(LayoutSynchronizedTabControl)));
             }
 
+        /// <summary>Prepares the specified element to display the specified item.</summary>
+        /// <param name="element">The element that is used to display the specified item.</param>
+        /// <param name="item">The specified item to display.</param>
         protected override void PrepareContainerForItemOverride(DependencyObject element, Object item)
             {
             base.PrepareContainerForItemOverride(element, item);
