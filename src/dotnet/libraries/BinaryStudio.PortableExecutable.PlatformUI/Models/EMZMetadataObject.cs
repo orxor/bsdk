@@ -3,7 +3,7 @@
 namespace BinaryStudio.PortableExecutable.PlatformUI.Models
     {
     [Model(typeof(MZMetadataObject))]
-    public class EMZMetadataObject : NotifyPropertyChangedDispatcherObject<MZMetadataObject>
+    internal class EMZMetadataObject : NotifyPropertyChangedDispatcherObject<MZMetadataObject>
         {
         public ENEMetadataObject NEMetadataObject { get; }
         public EMZMetadataObject(MZMetadataObject source)

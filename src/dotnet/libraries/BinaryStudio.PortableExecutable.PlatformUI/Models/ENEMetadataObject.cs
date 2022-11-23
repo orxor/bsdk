@@ -5,13 +5,13 @@ using BinaryStudio.PlatformUI.Models;
 namespace BinaryStudio.PortableExecutable.PlatformUI.Models
     {
     [Model(typeof(NEMetadataObject))]
-    public class ENEMetadataObject : NotifyPropertyChangedDispatcherObject<NEMetadataObject>
+    internal class ENEMetadataObject : NotifyPropertyChangedDispatcherObject<NEMetadataObject>
         {
-        public ObservableCollection<EOMFSSection> DebugSections { get; }
+        public ObservableCollection<IModelOMFSSection> DebugSections { get; }
         public ENEMetadataObject(NEMetadataObject source)
             : base(source)
             {
-            DebugSections = new ObservableCollection<EOMFSSection>(source.DebugDirectory.Sections.Select(i => new EOMFSSection(i)));
+            DebugSections = new ObservableCollection<IModelOMFSSection>(source.DebugDirectory.Sections.Select(i => (IModelOMFSSection)CreateModel(i)));
             }
         }
     }

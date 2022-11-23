@@ -10,7 +10,7 @@ namespace BinaryStudio.PortableExecutable
         {
         public Int16 OverlayNumber { get;protected set; }
         public Int16 LibraryIndex { get;protected set; }
-        protected String Name { get;set; }
+        public String Name { get;protected set; }
 
         protected class SegmentInfo
             {

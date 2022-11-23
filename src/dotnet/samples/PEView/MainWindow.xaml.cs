@@ -35,7 +35,7 @@ namespace PEView
             Theme.Apply();
             var Scope = new MetadataScope();
             var o = Scope.Load(@"C:\TFS\mir\crypto\.intermediate\csecapi32.dll");
-            DataContext = new EMZMetadataObject((MZMetadataObject)o);
+            //DataContext = new EMZMetadataObject((MZMetadataObject)o);
             }
         }
     }

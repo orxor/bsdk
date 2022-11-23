@@ -2,10 +2,10 @@
 
 namespace BinaryStudio.PortableExecutable.PlatformUI.Models
     {
-    [Model(typeof(OMFSSection))]
-    public class EOMFSSection : NotifyPropertyChangedDispatcherObject<OMFSSection>
+    [Model(typeof(OMFSSectionSegName))]
+    internal class ModelOMFSSectionSegName : ModelOMFSSection<OMFSSectionSegName>
         {
-        public EOMFSSection(OMFSSection source)
+        public ModelOMFSSectionSegName(OMFSSectionSegName source)
             : base(source)
             {
             }

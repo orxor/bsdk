@@ -41,6 +41,6 @@ internal class DocumentManager
 
     static DocumentManager()
         {
-        Model.RegisterModelTypes(typeof(EMZMetadataObject).Assembly);
+        Model.RegisterModelTypes(typeof(Module).Assembly);
         }
     }
