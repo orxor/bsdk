@@ -1,13 +1,234 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:e="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Models">
+                    xmlns:e="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Models"
+                    xmlns:u="http://schemas.helix.global">
+  <u:IsNullOrEmpty x:Key="IsNullOrEmpty"/>
   <DataTemplate DataType="{x:Type e:EMZMetadataObject}">
+    <Grid>
+      <ContentPresenter Visibility="Collapsed" Content="{Binding NEMetadataObject}" Name="NEMetadataObject"/>
+    </Grid>
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding NEMetadataObject,Converter={StaticResource IsNullOrEmpty}}" Value="False">
+        <Setter TargetName="NEMetadataObject" Property="Visibility" Value="Visible"/>
+      </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+  <DataTemplate DataType="{x:Type e:ENEMetadataObject}">
     <TabControl TabStripPlacement="Left">
       <TabItem Header="General">
-        
+
       </TabItem>
       <TabItem Header="Resources">
 
+      </TabItem>
+      <TabItem Header="Symbols" IsSelected="True">
+        <ScrollViewer>
+          <ListBox ItemsSource="{Binding DebugSections}">
+            <ListBox.ItemsPanel>
+              <ItemsPanelTemplate>
+                <VirtualizingStackPanel Orientation="Vertical"/>
+              </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.Template>
+              <ControlTemplate TargetType="{x:Type ListBox}">
+                <Grid Grid.IsSharedSizeScope="True">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup0"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup1"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup2"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <ItemsPresenter Grid.ColumnSpan="4"/>
+                </Grid>
+              </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemContainerStyle>
+              <Style TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Margin" Value="0,0,0,-1"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                      <ContentPresenter/>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="{x:Type e:EOMFSSection}">
+                <Expander ExpandDirection="Down">
+                  <Expander.Style>
+                    <Style TargetType="{x:Type Expander}">
+                      <Setter Property="Foreground" Value="{DynamicResource ControlTextBrushKey}"/>
+                      <Setter Property="Background" Value="Transparent"/>
+                      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                      <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                      <Setter Property="BorderBrush" Value="Transparent"/>
+                      <Setter Property="BorderThickness" Value="0"/>
+                      <Setter Property="Margin" Value="0,0,-1,0"/>
+                      <Setter Property="Padding" Value="0"/>
+                      <Setter Property="Template">
+                        <Setter.Value>
+                          <ControlTemplate TargetType="{x:Type Expander}">
+                            <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True">
+                              <DockPanel>
+                                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                              Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                                              DockPanel.Dock="Top" FontStyle="{TemplateBinding FontStyle}"
+                                              FontStretch="{TemplateBinding FontStretch}"
+                                              FontWeight="{TemplateBinding FontWeight}"
+                                              FocusVisualStyle="{x:Null}"
+                                              FontFamily="{TemplateBinding FontFamily}"
+                                              Foreground="{TemplateBinding Foreground}"
+                                              FontSize="{TemplateBinding FontSize}"
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                              MinHeight="0" MinWidth="0" Margin="0"
+                                              Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                                  <ToggleButton.Style>
+                                    <Style TargetType="{x:Type ToggleButton}">
+                                      <Setter Property="Background" Value="Transparent"/>
+                                      <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+                                      <Setter Property="Padding" Value="0"/>
+                                      <Setter Property="Template">
+                                        <Setter.Value>
+                                          <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                            <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1,1,1,1">
+                                              <Grid Background="Transparent" SnapsToDevicePixels="False">
+                                                <Grid.ColumnDefinitions>
+                                                  <ColumnDefinition Width="Auto"/>
+                                                  <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <AdornerDecorator>
+                                                  <Grid Name="Grid">
+                                                    <Border x:Name="Host" Background="{DynamicResource ControlBrushKey}" HorizontalAlignment="Center" Height="19"
+                                                            BorderBrush="{DynamicResource ControlDarkBrushKey}" VerticalAlignment="Center" Width="19"
+                                                            Margin="0,0,0,0"/>
+                                                    <Path x:Name="Arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5 Z" HorizontalAlignment="Center" SnapsToDevicePixels="false" StrokeThickness="1"
+                                                          Grid.Column="0"
+                                                          Stroke="{DynamicResource ControlDarkBrushKey}" VerticalAlignment="Center"
+                                                          Fill="{DynamicResource ControlDarkBrushKey}"/>
+                                                  </Grid>
+                                                </AdornerDecorator>
+                                                <Border Grid.Column="1" Background="{TemplateBinding Background}">
+                                                  <ContentPresenter HorizontalAlignment="Left" Margin="0,0,0,0" RecognizesAccessKey="True" SnapsToDevicePixels="True" VerticalAlignment="Stretch"/>
+                                                </Border>
+                                              </Grid>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                              <Trigger Property="IsChecked" Value="True">
+                                                <Setter Property="Data" TargetName="Arrow" Value="M 1,4.5  L 4.5,1  L 8,4.5"/>
+                                              </Trigger>
+                                              <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource ControlDarkBrushKey}"/>
+                                              </Trigger>
+                                              <Trigger Property="IsMouseOver" Value="True" SourceName="Grid">
+                                                <Setter TargetName="Host"  Property="BorderBrush" Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+                                                <Setter TargetName="Host"  Property="Background"  Value="{DynamicResource ControlDarkBrushKey}"/>
+                                                <Setter TargetName="Arrow" Property="Stroke"      Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+                                                <Setter TargetName="Arrow" Property="Fill"        Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+                                              </Trigger>
+                                              <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="Host"  Property="BorderBrush" Value="Red"/>
+                                                <Setter TargetName="Host"  Property="Background"  Value="Red"/>
+                                                <Setter TargetName="Arrow" Property="Stroke"      Value="Red"/>
+                                              </Trigger>
+                                              <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="Host"  Property="BorderBrush" Value="Green"/>
+                                                <Setter TargetName="Host"  Property="Background"  Value="Green"/>
+                                                <Setter TargetName="Arrow" Property="Stroke"      Value="Green"/>
+                                              </Trigger>
+                                            </ControlTemplate.Triggers>
+                                          </ControlTemplate>
+                                        </Setter.Value>
+                                      </Setter>
+                                    </Style>
+                                  </ToggleButton.Style>
+                                </ToggleButton>
+                                <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="False"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  Visibility="Collapsed"/>
+                              </DockPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                              <Trigger Property="IsExpanded" Value="true">
+                                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
+                              </Trigger>
+                              <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                              </Trigger>
+                            </ControlTemplate.Triggers>
+                          </ControlTemplate>
+                        </Setter.Value>
+                      </Setter>
+                    </Style>
+                  </Expander.Style>
+                  <Expander.Header>
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="SharedSizeGroup0"/>
+                        <ColumnDefinition SharedSizeGroup="SharedSizeGroup1"/>
+                        <ColumnDefinition SharedSizeGroup="SharedSizeGroup2"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <Border Grid.Column="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Grid.Column="0" Margin="2,0,2,0" Text="Offset:"/>
+                          <TextBlock Grid.Column="1" Margin="2,0,2,0" Text="{Binding Source.FileOffset,Mode=OneWay}" HorizontalAlignment="Right"/>
+                        </Grid>
+                      </Border>
+                      <Border Grid.Column="1" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Grid.Column="0" Margin="2,0,2,0" Text="Size:"/>
+                          <TextBlock Grid.Column="1" Margin="2,0,2,0" Text="{Binding Source.Size,Mode=OneWay}" HorizontalAlignment="Right"/>
+                        </Grid>
+                      </Border>
+                      <Border Grid.Column="2" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
+                        <Grid>
+                          <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                          </Grid.ColumnDefinitions>
+                          <TextBlock Grid.Column="0" Margin="2,0,2,0" Text="Type:"/>
+                          <TextBlock Grid.Column="1" Margin="2,0,2,0" Text="{Binding Source.SectionIndex,Mode=OneWay}" HorizontalAlignment="Right"/>
+                        </Grid>
+                      </Border>
+                    </Grid>
+                  </Expander.Header>
+                  <Expander.Content>
+                    <TextBlock TextWrapping="Wrap">
+Call me Ishmael. Some years ago—never mind how
+long precisely—having little or no money in my purse,
+and nothing particular to interest me on shore, I thought I
+would sail about a little and see the watery part of the world.
+It is a way I have of driving off the spleen and regulating
+the circulation. Whenever I find myself growing grim about
+the mouth; whenever it is a damp, drizzly November in my
+soul; whenever I find myself involuntarily pausing before
+coffin warehouses, and bringing up the rear of every funeral
+I meet; and especially whenever my hypos get such an upper hand of me, that it requires a strong moral principle to
+prevent me from deliberately stepping into the street, and
+methodically knocking people’s hats off—then, I account it
+high time to get to sea as soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato
+throws himself upon his sword; I quietly take to the ship.
+                    </TextBlock>
+                  </Expander.Content>
+                </Expander>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+        </ScrollViewer>
       </TabItem>
     </TabControl>
   </DataTemplate>

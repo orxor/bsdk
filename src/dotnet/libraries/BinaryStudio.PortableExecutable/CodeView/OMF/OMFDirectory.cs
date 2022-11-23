@@ -22,10 +22,11 @@ namespace BinaryStudio.PortableExecutable
         public CV_CPU_TYPE? CPU { get;internal set; }
         public abstract OMFDirectorySignature Signature { get; }
         public IList<String> Names { get;private set; }
-        private IList<OMFSSection> Sections = EmptyList<OMFSSection>.Value;
+        public IList<OMFSSection> Sections { get;private set; }
 
         protected unsafe OMFDirectory(IntPtr BaseAddress, IntPtr BegOfDebugData, IntPtr EndOfDebugData)
             {
+            Sections = EmptyList<OMFSSection>.Value;
             this.BaseAddress = (Byte*)BaseAddress;
             this.BegOfDebugData = (Byte*)BegOfDebugData;
             this.EndOfDebugData = (Byte*)EndOfDebugData;

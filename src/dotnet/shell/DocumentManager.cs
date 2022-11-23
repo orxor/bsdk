@@ -29,9 +29,9 @@ internal class DocumentManager
                 break;
             }
         if (o != null) {
-            var r = new View();
-            r.Content = new ContentControl {
-                Content = Model.CreateModel(o)
+            var r = new View {
+                Content = new ContentControl {Content = Model.CreateModel(o)},
+                Title = Path.GetFileName(filename)
                 };
             dockgroup.Children.Add(r);
             r.IsSelected = true;

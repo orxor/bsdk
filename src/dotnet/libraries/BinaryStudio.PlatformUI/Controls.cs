@@ -20,6 +20,7 @@ namespace BinaryStudio.PlatformUI
         public static Object ListBoxStyleKey                        { get { return CreateInstance(ref FieldListBoxStyleKey,ControlStyleCategory,nameof(ListBoxStyleKey)); }}
         public static Object ListBoxItemStyleKey                    { get { return CreateInstance(ref FieldListBoxItemStyleKey,ControlStyleCategory,nameof(ListBoxItemStyleKey)); }}
         public static Object TextBoxStyleKey                        { get { return CreateInstance(ref FieldTextBoxStyleKey,ControlStyleCategory,nameof(TextBoxStyleKey)); }}
+        public static Object ExpanderStyleKey                       { get { return CreateInstance(ref FieldExpanderStyleKey, ControlStyleCategory, nameof(ExpanderStyleKey)); } }
 
         private static Object FieldTabControlStyleKey;
         private static Object FieldTabItemStyleKey;
@@ -37,5 +38,6 @@ namespace BinaryStudio.PlatformUI
         private static Object FieldListBoxStyleKey;
         private static Object FieldListBoxItemStyleKey;
         private static Object FieldTextBoxStyleKey;
-        }
+        private static Object FieldExpanderStyleKey;
+    }
     }

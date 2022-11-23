@@ -12,6 +12,7 @@ namespace BinaryStudio.PortableExecutable
     {
     public class NEMetadataObject : MetadataObject
         {
+        public OMFDirectory DebugDirectory { get;private set; }
         public Int32 FileAlignmentUnitSize { get { return 512; }}
         public CV_CPU_TYPE CPU;
 
@@ -86,6 +87,7 @@ namespace BinaryStudio.PortableExecutable
                                     {
                                     Directory.WriteTo(writer,String.Empty,0);
                                     }
+                                DebugDirectory = Directory;
                                 break;
                                 }
                             }

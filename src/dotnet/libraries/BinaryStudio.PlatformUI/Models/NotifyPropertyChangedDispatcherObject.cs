@@ -384,16 +384,16 @@ namespace BinaryStudio.PlatformUI.Models
             return TypeDescriptor.GetConverter(Source);
             }
         #endregion
-        #region M:ToString:String
-        /// <summary>Returns a string that represents the current object.</summary>
-        /// <returns>A string that represents the current object.</returns>
-        /// <filterpriority>2</filterpriority>
-        public override String ToString()
-            {
-            return (Source != null)
-                ? Source.ToString()
-                : base.ToString();
-            }
-        #endregion
+        //#region M:ToString:String
+        ///// <summary>Returns a string that represents the current object.</summary>
+        ///// <returns>A string that represents the current object.</returns>
+        ///// <filterpriority>2</filterpriority>
+        //public override String ToString()
+        //    {
+        //    return (Source != null)
+        //        ? Source.ToString()
+        //        : base.ToString();
+        //    }
+        //#endregion
         }
     }

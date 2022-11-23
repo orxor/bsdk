@@ -29,7 +29,7 @@ public partial class MainWindow : BMainWindow
     #region M:OnLoaded(Object,RoutedEventArgs)
     private void OnLoaded(Object sender, RoutedEventArgs e)
         {
-        Theme.Apply(Theme.Themes[3]);
+        Theme.Apply(Theme.Themes[1]);
         var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
         if (dockgroupcontainer == null) {
             Profile.DockRoot.Children.Add(new DocumentGroupContainer
