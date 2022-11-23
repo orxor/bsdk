@@ -142,6 +142,7 @@
                                                   <Grid Name="Grid">
                                                     <Border x:Name="Host" Background="{DynamicResource ControlBrushKey}" HorizontalAlignment="Center" Height="19"
                                                             BorderBrush="{DynamicResource ControlDarkBrushKey}" VerticalAlignment="Center" Width="19"
+                                                            BorderThickness="0,0,1,0"
                                                             Margin="0,0,0,0"/>
                                                     <Path x:Name="Arrow" Data="M 1,1.5 L 4.5,5 L 8,1.5 Z" HorizontalAlignment="Center" SnapsToDevicePixels="false" StrokeThickness="1"
                                                           Grid.Column="0"
@@ -162,20 +163,18 @@
                                                 <Setter Property="Background" Value="{DynamicResource ControlDarkBrushKey}"/>
                                               </Trigger>
                                               <Trigger Property="IsMouseOver" Value="True" SourceName="Grid">
-                                                <Setter TargetName="Host"  Property="BorderBrush" Value="{DynamicResource ControlDarkDarkBrushKey}"/>
-                                                <Setter TargetName="Host"  Property="Background"  Value="{DynamicResource ControlDarkBrushKey}"/>
-                                                <Setter TargetName="Arrow" Property="Stroke"      Value="{DynamicResource ControlDarkDarkBrushKey}"/>
-                                                <Setter TargetName="Arrow" Property="Fill"        Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+                                                <Setter TargetName="Host"  Property="BorderBrush"     Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+                                                <Setter TargetName="Host"  Property="Background"      Value="{DynamicResource ControlDarkBrushKey}"/>
+                                                <Setter TargetName="Host"  Property="BorderThickness" Value="1"/>
+                                                <Setter TargetName="Arrow" Property="Stroke"          Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+                                                <Setter TargetName="Arrow" Property="Fill"            Value="{DynamicResource ControlDarkDarkBrushKey}"/>
                                               </Trigger>
                                               <Trigger Property="IsPressed" Value="True">
-                                                <Setter TargetName="Host"  Property="BorderBrush" Value="Red"/>
-                                                <Setter TargetName="Host"  Property="Background"  Value="Red"/>
-                                                <Setter TargetName="Arrow" Property="Stroke"      Value="Red"/>
-                                              </Trigger>
-                                              <Trigger Property="IsEnabled" Value="False">
-                                                <Setter TargetName="Host"  Property="BorderBrush" Value="Green"/>
-                                                <Setter TargetName="Host"  Property="Background"  Value="Green"/>
-                                                <Setter TargetName="Arrow" Property="Stroke"      Value="Green"/>
+                                                <Setter TargetName="Host"  Property="BorderBrush"     Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+                                                <Setter TargetName="Host"  Property="Background"      Value="{DynamicResource ControlDarkBrushKey}"/>
+                                                <Setter TargetName="Host"  Property="BorderThickness" Value="1"/>
+                                                <Setter TargetName="Arrow" Property="Stroke"          Value="{DynamicResource ControlDarkDarkBrushKey}"/>
+                                                <Setter TargetName="Arrow" Property="Fill"            Value="{DynamicResource ControlDarkDarkBrushKey}"/>
                                               </Trigger>
                                             </ControlTemplate.Triggers>
                                           </ControlTemplate>
