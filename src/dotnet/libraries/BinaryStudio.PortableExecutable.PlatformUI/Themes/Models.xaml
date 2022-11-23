@@ -31,14 +31,52 @@
             </ListBox.ItemsPanel>
             <ListBox.Template>
               <ControlTemplate TargetType="{x:Type ListBox}">
+                <ControlTemplate.Resources>
+                  <Style TargetType="{x:Type Border}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+                    <Setter Property="BorderThickness" Value="0,1,1,0"/>
+                  </Style>
+                  <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                    <Setter Property="Margin" Value="5,0,5,0"/>
+                  </Style>
+                  <Style TargetType="{x:Type GridSplitter}">
+                    <Setter Property="ShowsPreview" Value="False"/>
+                    <Setter Property="VerticalAlignment" Value="Stretch"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="ResizeDirection" Value="Columns"/>
+                    <Setter Property="Width" Value="5"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                  </Style>
+                </ControlTemplate.Resources>
                 <Grid Grid.IsSharedSizeScope="True">
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                  </Grid.RowDefinitions>
                   <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20"/>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup0"/>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup1"/>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup2"/>
                     <ColumnDefinition Width="*"/>
                   </Grid.ColumnDefinitions>
-                  <ItemsPresenter Grid.ColumnSpan="4"/>
+                  <Border Grid.Row="0" Grid.Column="0" BorderThickness="1,1,0,0"/>
+                  <Border Grid.Row="0" Grid.Column="1">
+                    <TextBlock>Offset</TextBlock>
+                  </Border>
+                  <Border Grid.Row="0" Grid.Column="2">
+                    <TextBlock>Size</TextBlock>  
+                  </Border>
+                  <Border Grid.Row="0" Grid.Column="3">
+                    <TextBlock>Type</TextBlock>
+                  </Border>
+                  <GridSplitter Grid.Row="0" Grid.Column="1"/>
+                  <GridSplitter Grid.Row="0" Grid.Column="2"/>
+                  <GridSplitter Grid.Row="0" Grid.Column="3"/>
+                  <ItemsPresenter Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5"/>
                 </Grid>
               </ControlTemplate>
             </ListBox.Template>
@@ -168,6 +206,12 @@
                   </Expander.Style>
                   <Expander.Header>
                     <Grid>
+                      <Grid.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                          <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                          <Setter Property="Margin" Value="5,0,5,0"/>
+                        </Style>
+                      </Grid.Resources>
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition SharedSizeGroup="SharedSizeGroup0"/>
                         <ColumnDefinition SharedSizeGroup="SharedSizeGroup1"/>
@@ -175,34 +219,13 @@
                         <ColumnDefinition Width="*"/>
                       </Grid.ColumnDefinitions>
                       <Border Grid.Column="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
-                        <Grid>
-                          <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                          </Grid.ColumnDefinitions>
-                          <TextBlock Grid.Column="0" Margin="2,0,2,0" Text="Offset:"/>
-                          <TextBlock Grid.Column="1" Margin="2,0,2,0" Text="{Binding Source.FileOffset,Mode=OneWay}" HorizontalAlignment="Right"/>
-                        </Grid>
+                        <TextBlock Text="{Binding Source.FileOffset,Mode=OneWay}" HorizontalAlignment="Right"/>
                       </Border>
                       <Border Grid.Column="1" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
-                        <Grid>
-                          <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                          </Grid.ColumnDefinitions>
-                          <TextBlock Grid.Column="0" Margin="2,0,2,0" Text="Size:"/>
-                          <TextBlock Grid.Column="1" Margin="2,0,2,0" Text="{Binding Source.Size,Mode=OneWay}" HorizontalAlignment="Right"/>
-                        </Grid>
+                        <TextBlock Text="{Binding Source.Size,Mode=OneWay}" HorizontalAlignment="Right"/>
                       </Border>
                       <Border Grid.Column="2" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
-                        <Grid>
-                          <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                          </Grid.ColumnDefinitions>
-                          <TextBlock Grid.Column="0" Margin="2,0,2,0" Text="Type:"/>
-                          <TextBlock Grid.Column="1" Margin="2,0,2,0" Text="{Binding Source.SectionIndex,Mode=OneWay}" HorizontalAlignment="Right"/>
-                        </Grid>
+                        <TextBlock Text="{Binding Source.SectionIndex,Mode=OneWay}"/>
                       </Border>
                     </Grid>
                   </Expander.Header>
