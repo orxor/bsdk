@@ -129,12 +129,16 @@ namespace BinaryStudio.PlatformUI.Controls
         private class BindingEvaluator : BridgeReference
             {
             public BindingEvaluator(Binding binding) { SetBinding(SourceProperty, binding); }
+            public BindingEvaluator(BindingBase binding) { SetBinding(SourceProperty, binding); }
             protected override void OnTargetChanged()
                 {
                 base.OnTargetChanged();
                 }
             }
         public static Object GetValue(this Binding binding) {
+            return (new BindingEvaluator(binding)).Target;
+            }
+        public static Object GetValue(this BindingBase binding) {
             return (new BindingEvaluator(binding)).Target;
             }
         #endregion

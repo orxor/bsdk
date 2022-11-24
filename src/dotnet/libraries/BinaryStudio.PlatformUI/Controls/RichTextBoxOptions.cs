@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -12,7 +14,7 @@ namespace BinaryStudio.PlatformUI.Controls
         { 
         public static readonly DependencyProperty IsAutoFitProperty = DependencyProperty.RegisterAttached("IsAutoFit", typeof(Boolean), typeof(RichTextBoxOptions), new PropertyMetadata(default(Boolean),OnSetIsAutoFitChanged));
         private static void OnSetIsAutoFitChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            OnSetIsAutoFitChanged(sender as TableColumn,(Boolean)e.NewValue);
+            OnSetIsAutoFitChanged(sender as Table,(Boolean)e.NewValue);
             }
 
         #region M:GetDesiredWidth(Run):Double
@@ -67,47 +69,51 @@ namespace BinaryStudio.PlatformUI.Controls
             }
         #endregion
 
-        private static void OnSetIsAutoFitChanged(TableColumn source,Boolean value) {
+        internal static void AutoFitTable(Table target) {
+            var DesiredWidth = new Double[target.Columns.Count];
+            foreach (var RowGroup in target.RowGroups) {
+                foreach (var Row in RowGroup.Rows) {
+                    var j = 0;
+                    for (var i = 0; i < Row.Cells.Count; i++) {
+                        var Cell = Row.Cells[i];
+                        if (Cell.ColumnSpan == 1) {
+                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredWidth(new TextRange(Cell.ContentStart,Cell.ContentEnd)) +
+                                Cell.Padding.Left + Cell.Padding.Right
+                                 + Cell.BorderThickness.Left
+                                 + Cell.BorderThickness.Right
+                                );
+                            }
+                        j += Cell.ColumnSpan;
+                        }
+                    }
+                }
+            for (var i = 0; i < DesiredWidth.Length;i++) {
+                if (target.Columns[i].Width.IsAuto || GetIsAutoFit(target.Columns[i])) {
+                    target.Columns[i].Width = new GridLength(DesiredWidth[i],GridUnitType.Pixel);
+                    SetIsAutoFit(target.Columns[i], true);
+                    }
+                }
+            }
+
+        private static void OnSetIsAutoFitChanged(Table source,Boolean value) {
             if (source != null) {
                 if (value) {
                     var host = source.Ancestors<RichTextBox>().FirstOrDefault();
                     if (host != null) {
                         var document = host.Document;
                         if (document != null) {
-                            void Handler(Object sender, RoutedEventArgs args) {
-                                document.Loaded -= Handler;
-                                var Table = source.Ancestors<Table>().FirstOrDefault();
-                                var ColumnIndex = -1;
-                                for (var i = 0; i < Table.Columns.Count; i++) {
-                                    if (ReferenceEquals(Table.Columns[i],source)) {
-                                        ColumnIndex = i;
-                                        break;
-                                        }
-                                    }
-                                if (ColumnIndex >= 0) {
-                                    var DesiredWidth = 0.0;
-                                    foreach (var Rowgroup in Table.RowGroups) {
-                                        foreach (var Row in Rowgroup.Rows) {
-                                            var j = 0;
-                                            for (var i = 0; i < Row.Cells.Count; i++) {
-                                                var Cell = Row.Cells[i];
-                                                if (ColumnIndex == j) {
-                                                    if (Cell.ColumnSpan == 1) {
-                                                        DesiredWidth = Math.Max(DesiredWidth,GetDesiredWidth(new TextRange(Cell.ContentStart,Cell.ContentEnd)) +
-                                                            Cell.Padding.Left + Cell.Padding.Right
-                                                             + Cell.BorderThickness.Left
-                                                             + Cell.BorderThickness.Right
-                                                            );
-                                                        }
-                                                    }
-                                                j += Cell.ColumnSpan;
-                                                }
-                                            }
-                                        }
-                                    source.Width = new GridLength(DesiredWidth,GridUnitType.Pixel);
-                                    }
-                                };
-                            document.Loaded += Handler;
+                            if (!document.IsLoaded) {
+                                void Handler(Object sender, RoutedEventArgs args) {
+                                    document.Loaded -= Handler;
+                                    AutoFitTable(source);
+                                    Debug.Print("FlowDocumentLoaded");
+                                    };
+                                document.Loaded += Handler;
+                                }
+                            else
+                                {
+                                AutoFitTable(source);
+                                }
                             }
                         }
                     }

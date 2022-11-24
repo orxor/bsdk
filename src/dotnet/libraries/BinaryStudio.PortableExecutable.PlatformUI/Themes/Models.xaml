@@ -1,7 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:e="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Models"
-                    xmlns:u="http://schemas.helix.global">
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:u="http://schemas.helix.global"
+                    mc:Ignorable="d">
   <u:IsNullOrEmpty x:Key="IsNullOrEmpty"/>
   <DataTemplate DataType="{x:Type e:EMZMetadataObject}">
     <Grid>
@@ -40,8 +43,8 @@
                   <Section>
                     <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                       <Table.Columns>
-                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
-                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                        <TableColumn/>
+                        <TableColumn/>
                       </Table.Columns>
                       <TableRowGroup>
                         <TableRow>
@@ -99,14 +102,26 @@
                     </Table>
                   </Section>
                   <Section>
-                    <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}">
+                    <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}"
+                           u:RichTextBoxOptions.IsAutoFit="True">
                       <Table.Columns>
-                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
-                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
-                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                        <TableColumn Width="Auto"/>
+                        <TableColumn Width="Auto"/>
+                        <TableColumn Width="Auto"/>
                       </Table.Columns>
                       <TableRowGroup>
-                        
+                        <u:TableBoundRow CellsSource="{Binding Segments}">
+                          <TableCell Foreground="{DynamicResource ControlTextBrushKey}" d:DataContext="{d:DesignInstance Type=e:ModelOMFSegmentInfo}">
+                            <Paragraph>
+                              <Run Text="{Binding Source.Index,Mode=OneWay,StringFormat=x4}"/>
+                            </Paragraph>
+                          </TableCell>
+                          <TableCell Foreground="{DynamicResource ControlTextBrushKey}" d:DataContext="{d:DesignInstance Type=e:ModelOMFSegmentInfo}">
+                            <Paragraph>
+                              <Run Text="{Binding Source.Offset,Mode=OneWay,StringFormat=x8}"/>
+                            </Paragraph>
+                          </TableCell>
+                        </u:TableBoundRow>
                       </TableRowGroup>
                     </Table>
                   </Section>
@@ -153,23 +168,28 @@
                   <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup0"/>
                   <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup1"/>
                   <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup2"/>
+                  <ColumnDefinition Width="Auto" SharedSizeGroup="SharedSizeGroup3"/>
                   <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.Row="0" Grid.Column="0" BorderThickness="1,1,0,0"/>
                 <Border Grid.Row="0" Grid.Column="1">
-                  <TextBlock>Offset</TextBlock>
+                  <TextBlock>ModuleIndex</TextBlock>
                 </Border>
                 <Border Grid.Row="0" Grid.Column="2">
-                  <TextBlock>Size</TextBlock>  
+                  <TextBlock>Offset</TextBlock>
                 </Border>
                 <Border Grid.Row="0" Grid.Column="3">
+                  <TextBlock>Size</TextBlock>  
+                </Border>
+                <Border Grid.Row="0" Grid.Column="4">
                   <TextBlock>Type</TextBlock>
                 </Border>
                 <GridSplitter Grid.Row="0" Grid.Column="1"/>
                 <GridSplitter Grid.Row="0" Grid.Column="2"/>
                 <GridSplitter Grid.Row="0" Grid.Column="3"/>
-                <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5">
-                  <ItemsPresenter />
+                <GridSplitter Grid.Row="0" Grid.Column="4"/>
+                <ScrollViewer Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="6">
+                  <ItemsPresenter/>
                 </ScrollViewer>
               </Grid>
             </ControlTemplate>
@@ -309,15 +329,19 @@
                       <ColumnDefinition SharedSizeGroup="SharedSizeGroup0"/>
                       <ColumnDefinition SharedSizeGroup="SharedSizeGroup1"/>
                       <ColumnDefinition SharedSizeGroup="SharedSizeGroup2"/>
+                      <ColumnDefinition SharedSizeGroup="SharedSizeGroup3"/>
                       <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
-                      <TextBlock Text="{Binding Source.FileOffset,Mode=OneWay,StringFormat=x8}" HorizontalAlignment="Right"/>
+                      <TextBlock Text="{Binding Source.ModuleIndex,Mode=OneWay,StringFormat=x4}" HorizontalAlignment="Left"/>
                     </Border>
                     <Border Grid.Column="1" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
-                      <TextBlock Text="{Binding Source.Size,Mode=OneWay}" HorizontalAlignment="Right"/>
+                      <TextBlock Text="{Binding Source.FileOffset,Mode=OneWay,StringFormat=x8}" HorizontalAlignment="Right"/>
                     </Border>
                     <Border Grid.Column="2" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
+                      <TextBlock Text="{Binding Source.Size,Mode=OneWay}" HorizontalAlignment="Right"/>
+                    </Border>
+                    <Border Grid.Column="3" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
                       <TextBlock Text="{Binding Source.SectionIndex,Mode=OneWay}"/>
                     </Border>
                   </Grid>

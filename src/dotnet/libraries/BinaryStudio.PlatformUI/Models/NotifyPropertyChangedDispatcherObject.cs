@@ -339,34 +339,34 @@ namespace BinaryStudio.PlatformUI.Models
             return TypeDescriptor.GetDefaultProperty((Source != null) ? (Object)Source: GetType());
             }
         #endregion
-        #region M:GetProperties(Attribute[]):IEnumerable<PropertyDescriptor>
-        /// <summary>Returns the properties for this instance of a component using the attribute array as a filter.</summary>
-        /// <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter.</param>
-        /// <returns>A collection that represents the filtered properties for this component instance.</returns>
-        protected override IEnumerable<PropertyDescriptor> GetProperties(Attribute[] attributes) {
-            return (Source != null)
-                ? TypeDescriptor.GetProperties(Source, attributes).OfType<PropertyDescriptor>()
-                : base.GetProperties(attributes);
-            }
-        #endregion
-        #region M:GetProperties():IEnumerable<PropertyDescriptor>
-        /// <summary>Returns the properties for this instance of a component.</summary>
-        /// <returns>A collection that represents the properties for this component instance.</returns>
-        protected override IEnumerable<PropertyDescriptor> GetProperties() {
-            return (Source != null)
-                ? TypeDescriptor.GetProperties(Source).OfType<PropertyDescriptor>()
-                : base.GetProperties();
-            }
-        #endregion
-        #region M:GetPropertyOwner(PropertyDescriptor):Object
-        /// <summary>Returns an object that contains the property described by the specified property descriptor.</summary>
-        /// <param name="descriptor">A <see cref="T:System.ComponentModel.PropertyDescriptor"/> that represents the property whose owner is to be found.</param>
-        /// <returns>An <see cref="T:System.Object"/> that represents the owner of the specified property.</returns>
-        protected override Object GetPropertyOwner(PropertyDescriptor descriptor)
-            {
-            return Source;
-            }
-        #endregion
+        //#region M:GetProperties(Attribute[]):IEnumerable<PropertyDescriptor>
+        ///// <summary>Returns the properties for this instance of a component using the attribute array as a filter.</summary>
+        ///// <param name="attributes">An array of type <see cref="T:System.Attribute"/> that is used as a filter.</param>
+        ///// <returns>A collection that represents the filtered properties for this component instance.</returns>
+        //protected override IEnumerable<PropertyDescriptor> GetProperties(Attribute[] attributes) {
+        //    return (Source != null)
+        //        ? TypeDescriptor.GetProperties(Source, attributes).OfType<PropertyDescriptor>()
+        //        : base.GetProperties(attributes);
+        //    }
+        //#endregion
+        //#region M:GetProperties():IEnumerable<PropertyDescriptor>
+        ///// <summary>Returns the properties for this instance of a component.</summary>
+        ///// <returns>A collection that represents the properties for this component instance.</returns>
+        //protected override IEnumerable<PropertyDescriptor> GetProperties() {
+        //    return (Source != null)
+        //        ? TypeDescriptor.GetProperties(Source).OfType<PropertyDescriptor>()
+        //        : base.GetProperties();
+        //    }
+        //#endregion
+        //#region M:GetPropertyOwner(PropertyDescriptor):Object
+        ///// <summary>Returns an object that contains the property described by the specified property descriptor.</summary>
+        ///// <param name="descriptor">A <see cref="T:System.ComponentModel.PropertyDescriptor"/> that represents the property whose owner is to be found.</param>
+        ///// <returns>An <see cref="T:System.Object"/> that represents the owner of the specified property.</returns>
+        //protected override Object GetPropertyOwner(PropertyDescriptor descriptor)
+        //    {
+        //    return Source;
+        //    }
+        //#endregion
         #region M:GetEditor(Type):Object
         /// <summary>Returns an editor of the specified type for this instance of a component.</summary>
         /// <returns>An <see cref="T:System.Object"/> of the specified type that is the editor for this object, or null if the editor cannot be found.</returns>
