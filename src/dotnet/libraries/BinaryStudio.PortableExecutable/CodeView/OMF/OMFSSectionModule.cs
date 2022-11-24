@@ -27,7 +27,6 @@ namespace BinaryStudio.PortableExecutable
             public Int16 DebuggingStyle; // Debugging style  for this  module.
             public Int32 NameIndex;
             public String Name;
-            public readonly IList<SegmentInfo> Segments = new List<SegmentInfo>();
             public override String ToString()
                 {
                 return Name;
@@ -36,11 +35,15 @@ namespace BinaryStudio.PortableExecutable
 
         protected ModuleInfo InitialValue;
 
+        public override OMFSSectionIndex SectionIndex { get { return OMFSSectionIndex.Module; }}
+        public IList<OMFSegmentInfo> Segments { get;private set; }
+
         public OMFSSectionModule(OMFDirectory Directory)
             : base(Directory)
             {
+            Segments = EmptyList<OMFSegmentInfo>.Value;
             }
-        public override OMFSSectionIndex SectionIndex { get { return OMFSSectionIndex.Module; }}
+
         public override unsafe OMFSSection Analyze(Byte* BaseAddress, Byte* Source, Int32 Size)
             {
             if (BaseAddress == null) { throw new ArgumentNullException(nameof(BaseAddress)); }
@@ -51,6 +54,7 @@ namespace BinaryStudio.PortableExecutable
 
         private unsafe void Analyze(OMFModuleInfo* Source) {
             if (InitialValue != null) { throw new InvalidOperationException(); }
+            var Segments = new List<OMFSegmentInfo>();
             LibraryIndex = Source->LibraryIndex;
             OverlayNumber = Source->OverlayNumber;
             var ModuleInfo = new ModuleInfo {
@@ -60,17 +64,17 @@ namespace BinaryStudio.PortableExecutable
                 };
             var SegmentInfo = (OMFSegInfo*)(Source + 1);
             for (var i = 0; i < Source->SegmentCount; i++) {
-                ModuleInfo.Segments.Add(new SegmentInfo{
-                    Offset  = SegmentInfo->Offset,
-                    Size    = SegmentInfo->Size,
-                    Flags   = SegmentInfo->Flags,
-                    Segment = SegmentInfo->Segment
-                    });
+                Segments.Add(new OMFSegmentInfo(
+                    SegmentInfo->Segment,
+                    SegmentInfo->Offset,
+                    SegmentInfo->Size,
+                    SegmentInfo->Flags));
                 SegmentInfo++;
                 }
             Name = ToString(Encoding.ASCII, (Byte*)(SegmentInfo), true);
             ModuleInfo.Name = Name;
             InitialValue = ModuleInfo;
+            this.Segments = Segments.ToArray();
             }
 
         /// <summary>Writes DUMP with specified flags.</summary>
@@ -81,10 +85,10 @@ namespace BinaryStudio.PortableExecutable
             if (Writer == null) { throw new ArgumentNullException(nameof(Writer)); }
             Writer.WriteLine("{0}OverlayNumber:{{{1}}} LibraryIndex:{{{2}}} SegmentCount:{4} Name:{{{3}}}",
                 LinePrefix,OverlayNumber.ToString("x4"),LibraryIndex.ToString("x4"),
-                Name,InitialValue.Segments.Count.ToString("x4"));
-            foreach (var Segment in InitialValue.Segments) {
+                Name,Segments.Count.ToString("x4"));
+            foreach (var Segment in Segments) {
                 Writer.WriteLine("  {0}{{{1}}}:{2}-{3}",
-                    LinePrefix,Segment.Segment.ToString("x4"),
+                    LinePrefix,Segment.Index.ToString("x4"),
                     Segment.Offset.ToString("x8"),(Segment.Offset+Segment.Size - 1).ToString("x8"));
                 }
             }

@@ -39,12 +39,11 @@ namespace BinaryStudio.PortableExecutable
             #endif
             var SegmentInfo = (TD32SegInfo*)(Source + 1);
             for (var i = 0; i < Source->SegmentCount; i++) {
-                ModuleInfo.Segments.Add(new SegmentInfo{
-                    Offset  = SegmentInfo->Offset,
-                    Size    = SegmentInfo->Size,
-                    Flags   = SegmentInfo->Flags,
-                    Segment = SegmentInfo->Segment
-                    });
+                Segments.Add(new OMFSegmentInfo(
+                    SegmentInfo->Segment,
+                    SegmentInfo->Offset,
+                    SegmentInfo->Size,
+                    SegmentInfo->Flags));
                 #if TD32DEBUG
                 Debug.Print("  {0:x4}:{1:x8}-{2:x8} Flags:{3:x4}",
                     SegmentInfo->Segment,
@@ -64,7 +63,7 @@ namespace BinaryStudio.PortableExecutable
             Debug.Print("OverlayNumber:{0:x4} LibraryIndex:{1:x4} SegmentCount:{2} Name:{3:x4}:{4}",
                 InitialValue.OverlayNumber,
                 InitialValue.LibraryIndex,
-                InitialValue.Segments.Count,
+                Segments.Count,
                 InitialValue.NameIndex,
                 Directory.Names[InitialValue.NameIndex - 1]);
             #endif
@@ -79,10 +78,10 @@ namespace BinaryStudio.PortableExecutable
             Writer.WriteLine("{0}OverlayNumber:{{{1}}} LibraryIndex:{{{2}}} SegmentCount:{5} Name:{{{3}}}:{{{4}}}",
                 LinePrefix,OverlayNumber.ToString("x4"),LibraryIndex.ToString("x4"),
                 NameIndex.ToString("x8"),Directory.Names[NameIndex-1],
-                InitialValue.Segments.Count.ToString("x4"));
-            foreach (var Segment in InitialValue.Segments) {
+                Segments.Count.ToString("x4"));
+            foreach (var Segment in Segments) {
                 Writer.WriteLine("  {0}{{{1}}}:{2}-{3}",
-                    LinePrefix,Segment.Segment.ToString("x4"),
+                    LinePrefix,Segment.Index.ToString("x4"),
                     Segment.Offset.ToString("x8"),(Segment.Offset+Segment.Size).ToString("x8"));
                 }
             }

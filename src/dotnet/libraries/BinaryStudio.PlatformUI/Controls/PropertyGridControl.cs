@@ -125,7 +125,7 @@ namespace BinaryStudio.PlatformUI.Controls
             }
         #endregion
         #region P:IsDescriptionPanelVisible:Boolean
-        public static readonly DependencyProperty IsDescriptionPanelVisibleProperty = DependencyProperty.Register("IsDescriptionPanelVisible", typeof(Boolean), typeof(PropertyGridControl), new PropertyMetadata(true));
+        public static readonly DependencyProperty IsDescriptionPanelVisibleProperty = DependencyProperty.Register(nameof(IsDescriptionPanelVisible), typeof(Boolean), typeof(PropertyGridControl), new PropertyMetadata(true));
         public Boolean IsDescriptionPanelVisible
             {
             get { return (Boolean)GetValue(IsDescriptionPanelVisibleProperty); }

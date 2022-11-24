@@ -1,4 +1,5 @@
-﻿using BinaryStudio.PlatformUI.Models;
+﻿using System;
+using BinaryStudio.PlatformUI.Models;
 
 namespace BinaryStudio.PortableExecutable.PlatformUI.Models
     {

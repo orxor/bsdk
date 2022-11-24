@@ -22,6 +22,99 @@
 
       </TabItem>
       <TabItem Header="Symbols" IsSelected="True">
+        <TabItem.Resources>
+          <DataTemplate DataType="{x:Type e:ModelOMFSSectionModule}">
+            <Grid>
+              <RichTextBox BorderThickness="0" Background="Transparent" Margin="2,5,2,5" IsReadOnly="True"
+                           HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
+                           IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
+                           Foreground="{DynamicResource ControlTextBrushKey}">
+                <RichTextBox.Resources>
+                  <Style TargetType="{x:Type TableCell}">
+                    <Setter Property="BorderThickness" Value="0,1,1,0"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+                    <Setter Property="Padding" Value="5,0,5,0"/>
+                  </Style>
+                </RichTextBox.Resources>
+                <FlowDocument PageWidth="{Binding RelativeSource={RelativeSource AncestorType=RichTextBox},Path=ActualWidth,Mode=OneWay}">
+                  <Section>
+                    <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}">
+                      <Table.Columns>
+                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                      </Table.Columns>
+                      <TableRowGroup>
+                        <TableRow>
+                          <TableCell>
+                            <Paragraph>Offset</Paragraph>
+                          </TableCell>
+                          <TableCell>
+                            <Paragraph>
+                              <Run Text="{Binding Source.FileOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+                            </Paragraph>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            <Paragraph>Size</Paragraph>
+                          </TableCell>
+                          <TableCell>
+                            <Paragraph>
+                              <Run Text="{Binding Source.Size,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+                              <Run Text="{}{"/><Run Text="{Binding Source.Size,Mode=OneWay}"/><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run Text="{}}"/>
+                            </Paragraph>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            <Paragraph>Name</Paragraph>
+                          </TableCell>
+                          <TableCell>
+                            <Paragraph>
+                              <Run Text="{Binding Source.Name,Mode=OneWay}"/>
+                            </Paragraph>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            <Paragraph>LibraryIndex</Paragraph>
+                          </TableCell>
+                          <TableCell>
+                            <Paragraph>
+                              <Run Text="{Binding Source.LibraryIndex,Mode=OneWay}"/>
+                            </Paragraph>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>
+                            <Paragraph>OverlayNumber</Paragraph>
+                          </TableCell>
+                          <TableCell>
+                            <Paragraph>
+                              <Run Text="{Binding Source.OverlayNumber,Mode=OneWay}"/>
+                            </Paragraph>
+                          </TableCell>
+                        </TableRow>
+                      </TableRowGroup>
+                    </Table>
+                  </Section>
+                  <Section>
+                    <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}">
+                      <Table.Columns>
+                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                        <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                      </Table.Columns>
+                      <TableRowGroup>
+                        
+                      </TableRowGroup>
+                    </Table>
+                  </Section>
+                </FlowDocument>
+              </RichTextBox>
+            </Grid>
+          </DataTemplate>
+        </TabItem.Resources>
         <ListBox ItemsSource="{Binding DebugSections}">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
@@ -219,7 +312,7 @@
                       <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
-                      <TextBlock Text="{Binding Source.FileOffset,Mode=OneWay}" HorizontalAlignment="Right"/>
+                      <TextBlock Text="{Binding Source.FileOffset,Mode=OneWay,StringFormat=x8}" HorizontalAlignment="Right"/>
                     </Border>
                     <Border Grid.Column="1" BorderBrush="{DynamicResource ControlDarkBrushKey}" BorderThickness="0,0,1,0">
                       <TextBlock Text="{Binding Source.Size,Mode=OneWay}" HorizontalAlignment="Right"/>
@@ -230,7 +323,7 @@
                   </Grid>
                 </Expander.Header>
                 <Expander.Content>
-                  <ContentPresenter Content="{Binding}"/>
+                  <ContentPresenter Content="{Binding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 </Expander.Content>
               </Expander>
             </DataTemplate>
