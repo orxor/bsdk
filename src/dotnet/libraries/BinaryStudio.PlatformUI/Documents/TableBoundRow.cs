@@ -6,6 +6,8 @@ using System.Windows.Documents;
 using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Extensions;
 
+// ReSharper disable LocalVariableHidesMember
+
 namespace BinaryStudio.PlatformUI.Documents
     {
     public class TableBoundRow : TableRow
@@ -27,12 +29,17 @@ namespace BinaryStudio.PlatformUI.Documents
             var cells = Cells.ToArray();
             var table = this.Ancestors<Table>().FirstOrDefault();
             Cells.Clear();
+            var TableCellStyle = FindResource(typeof(TableCell)) as Style;
+            var Foreground = this.GetForeground();
             var items = CellsSource;
             if (items != null) {
                 foreach (var item in items) {
                     foreach (var source in cells) {
                         source.DataContext = item;
-                        var target = CloneFactory.Clone(source);
+                        var target = CloneFactory.Clone(source,TableCellStyle);
+                        if (target.IsDefaultValue(ForegroundProperty)) {
+                            target.SetForegroundToSelfAndDescendants(Foreground);
+                            }
                         target.DataContext = item;
                         Cells.Add(target);
                         }

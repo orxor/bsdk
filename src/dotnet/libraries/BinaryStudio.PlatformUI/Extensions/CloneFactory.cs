@@ -16,13 +16,19 @@ namespace BinaryStudio.PlatformUI.Extensions
         #region M:CopyTo(DependencyObject,DependencyObject,DependencyProperty)
         private static void CopyTo(DependencyObject Source,DependencyObject Target,DependencyProperty Property)
             {
+            var TargetValue = Target.GetValue(Property);
+            var SourceValue = Source.GetValue(Property);
+            var TargetMetadata = Property.GetMetadata(Target);
+            if (Equals(TargetValue,TargetMetadata.DefaultValue)) {
+                Target.SetValue(Property,SourceValue);
+                }
             //var e = BindingOperations.GetBindingBase(Source,Property);
             //if (e != null) {
             //    BindingOperations.SetBinding(Target,Property,e);
             //    }
             //else
                 {
-                Target.SetValue(Property,Source.GetValue(Property));
+                
                 }
             }
         #endregion
@@ -99,6 +105,7 @@ namespace BinaryStudio.PlatformUI.Extensions
         private static void CopyTo(FrameworkContentElement Source,FrameworkContentElement Target)
             {
             CopyTo((ContentElement)Source,Target);
+            CopyTo(Source,Target,FrameworkContentElement.StyleProperty);
             CopyTo(Source,Target,FrameworkContentElement.ContextMenuProperty);
             CopyTo(Source,Target,FrameworkContentElement.CursorProperty);
             CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
@@ -108,7 +115,6 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo(Source,Target,FrameworkContentElement.LanguageProperty);
             CopyTo(Source,Target,FrameworkContentElement.NameProperty);
             CopyTo(Source,Target,FrameworkContentElement.OverridesDefaultStyleProperty);
-            CopyTo(Source,Target,FrameworkContentElement.StyleProperty);
             CopyTo(Source,Target,FrameworkContentElement.TagProperty);
             CopyTo(Source,Target,FrameworkContentElement.ToolTipProperty);
             Target.Resources = Source.Resources;
@@ -321,10 +327,13 @@ namespace BinaryStudio.PlatformUI.Extensions
             return Target;
             }
 
-        public static TableCell Clone(TableCell Source)
+        public static TableCell Clone(TableCell Source, Style Style = null)
             {
             if (Source == null) { return null; }
             var Target = new TableCell();
+            if (Style != null) {
+                Target.Style = Style;
+                }
             CopyTo(Source,Target);
             return Target;
             }

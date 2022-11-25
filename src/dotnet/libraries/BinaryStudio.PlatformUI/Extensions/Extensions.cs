@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -128,21 +129,38 @@ namespace BinaryStudio.PlatformUI.Controls
         #region M:GetValue({this}Binding):Object
         private class BindingEvaluator : BridgeReference
             {
-            public BindingEvaluator(Binding binding) { SetBinding(SourceProperty, binding); }
             public BindingEvaluator(BindingBase binding) { SetBinding(SourceProperty, binding); }
             protected override void OnTargetChanged()
                 {
                 base.OnTargetChanged();
                 }
             }
-        public static Object GetValue(this Binding binding) {
-            return (new BindingEvaluator(binding)).Target;
-            }
         public static Object GetValue(this BindingBase binding) {
             return (new BindingEvaluator(binding)).Target;
             }
         #endregion
-
+        #region M:IsDefaultValue({this}DependencyProperty,DependencyObject):Boolean
+        public static Boolean IsDefaultValue(this DependencyProperty source, DependencyObject o)
+            {
+            var metadata = source.GetMetadata(o);
+            var value = o.GetValue(source);
+            return Equals(metadata.DefaultValue,value);
+            }
+        #endregion
+        #region M:IsDefaultValue({this}DependencyObject,DependencyProperty):Boolean
+        public static Boolean IsDefaultValue(this DependencyObject source, DependencyProperty property)
+            {
+            return IsDefaultValue(source,property,out var value);
+            }
+        #endregion
+        #region M:IsDefaultValue({this}DependencyObject,DependencyProperty,{out}Object):Boolean
+        public static Boolean IsDefaultValue(this DependencyObject source, DependencyProperty property,out Object value)
+            {
+            var metadata = property.GetMetadata(source);
+            value = source.GetValue(property);
+            return Equals(metadata.DefaultValue,value);
+            }
+        #endregion
         #region P:UseExtensions:Boolean
         public static readonly DependencyProperty IsExtendedProperty = DependencyProperty.RegisterAttached("IsExtended", typeof(Boolean), typeof(Extensions), new PropertyMetadata(default(Boolean),OnIsExtendedChanged));
         public static void SetIsExtended(DependencyObject e, Boolean value)

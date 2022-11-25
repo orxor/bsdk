@@ -111,12 +111,12 @@
                       </Table.Columns>
                       <TableRowGroup>
                         <u:TableBoundRow CellsSource="{Binding Segments}">
-                          <TableCell Foreground="{DynamicResource ControlTextBrushKey}" d:DataContext="{d:DesignInstance Type=e:ModelOMFSegmentInfo}">
+                          <TableCell d:DataContext="{d:DesignInstance Type=e:ModelOMFSegmentInfo}">
                             <Paragraph>
                               <Run Text="{Binding Source.Index,Mode=OneWay,StringFormat=x4}"/>
                             </Paragraph>
                           </TableCell>
-                          <TableCell Foreground="{DynamicResource ControlTextBrushKey}" d:DataContext="{d:DesignInstance Type=e:ModelOMFSegmentInfo}">
+                          <TableCell d:DataContext="{d:DesignInstance Type=e:ModelOMFSegmentInfo}">
                             <Paragraph>
                               <Run Text="{Binding Source.Offset,Mode=OneWay,StringFormat=x8}"/>
                             </Paragraph>
