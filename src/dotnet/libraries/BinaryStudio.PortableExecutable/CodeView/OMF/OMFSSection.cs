@@ -11,7 +11,7 @@ namespace BinaryStudio.PortableExecutable
         public CV_CPU_TYPE? CPU { get;internal set; }
         public OMFDirectory Directory { get; }
         public abstract OMFSSectionIndex SectionIndex { get; }
-        public Int16 ModuleIndex { get;internal set; }
+        public UInt16 ModuleIndex { get;internal set; }
         public Int32 Offset { get;internal set; }
         public Int64 FileOffset { get;internal set; }
         public Int32 Size { get;internal set; }

@@ -11,7 +11,10 @@ namespace BinaryStudio.PortableExecutable.PlatformUI.Models
         public ENEMetadataObject(NEMetadataObject source)
             : base(source)
             {
-            DebugSections = new ObservableCollection<IModelOMFSSection>(source.DebugDirectory.Sections.Select(i => (IModelOMFSSection)CreateModel(i)));
+            DebugSections = new ObservableCollection<IModelOMFSSection>(
+                source.DebugDirectory.Sections.
+                Where(i => i.SectionIndex != OMFSSectionIndex.Module).
+                Select(i => (IModelOMFSSection)CreateModel(i)));
             }
         }
     }

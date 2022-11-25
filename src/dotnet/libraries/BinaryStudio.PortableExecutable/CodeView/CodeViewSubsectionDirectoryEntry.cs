@@ -14,7 +14,7 @@ namespace BinaryStudio.PortableExecutable
     public struct CodeViewSubsectionDirectoryEntry
         {
         public readonly OMFSSectionIndex SDirectoryIndex; // Subdirectory type
-        public readonly Int16 ModuleIndex;                 // Module index
+        public readonly UInt16 ModuleIndex;                 // Module index
         public readonly Int32 Offset;                      // Offset from the base offset lfoBase
         public readonly Int32 Size;                        // Number of bytes in subsection
         }
