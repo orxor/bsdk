@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Documents;
+using System.Xml;
 using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Extensions;
 
@@ -41,12 +45,29 @@ namespace BinaryStudio.PlatformUI.Documents
                             }
                         target.DataContext = item;
                         Rows.Add(target);
+                        AddLogicalChild(target);
                         }
                     }
                 }
             if (RichTextBoxOptions.GetIsAutoFit(Table)) {
                 RichTextBoxOptions.AutoFitTable(Table);
                 }
+            #if DEBUG
+            var range = new TextRange(ContentStart,ContentEnd);
+            using (var memory = new MemoryStream()) {
+                range.Save(memory,DataFormats.Xaml);
+                var builder = new StringBuilder();
+                using (var writer = XmlWriter.Create(new StringWriter(builder),new XmlWriterSettings{
+                    Indent = true,
+                    IndentChars = "  "
+                    })) {
+                    using (var reader = XmlReader.Create(new StreamReader(new MemoryStream(memory.ToArray())))) {
+                        writer.WriteNode(reader,false);
+                        }
+                    }
+                Debug.Print(builder.ToString());
+                }
+            #endif
             }
         }
     }

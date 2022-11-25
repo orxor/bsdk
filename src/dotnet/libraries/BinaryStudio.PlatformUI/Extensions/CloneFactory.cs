@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Extensions
     {
@@ -20,14 +22,10 @@ namespace BinaryStudio.PlatformUI.Extensions
             var TargetMetadata = Property.GetMetadata(Target);
             if (Equals(TargetValue,TargetMetadata.DefaultValue)) {
                 Target.SetValue(Property,SourceValue);
-                }
-            //var e = BindingOperations.GetBindingBase(Source,Property);
-            //if (e != null) {
-            //    BindingOperations.SetBinding(Target,Property,e);
-            //    }
-            //else
-                {
-                
+                var e = BindingOperations.GetBindingBase(Source, Property);
+                if (e != null) {
+                    BindingOperations.SetBinding(Target, Property, e);
+                    }
                 }
             }
         #endregion
@@ -81,8 +79,10 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo(Source,Target,TableCell.TextAlignmentProperty);
             var SourceBlocks = Source.Blocks;
             var TargetBlocks = Target.Blocks;
-            foreach (var Block in SourceBlocks) {
-                TargetBlocks.Add(Clone(Block,Host));
+            foreach (var SourceBlock in SourceBlocks) {
+                var TargetBlock = Clone(SourceBlock,Host,false);
+                TargetBlocks.Add(TargetBlock);
+                Load(SourceBlock,TargetBlock);
                 }
             }
         #endregion
@@ -167,8 +167,10 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo(Source,Target,AnchoredBlock.TextAlignmentProperty);
             var SourceBlocks = Source.Blocks;
             var TargetBlocks = Target.Blocks;
-            foreach (var Block in SourceBlocks) {
-                TargetBlocks.Add(Clone(Block,Host));
+            foreach (var SourceBlock in SourceBlocks) {
+                var TargetBlock = Clone(SourceBlock,Host,false);
+                TargetBlocks.Add(TargetBlock);
+                Load(SourceBlock,TargetBlock);
                 }
             }
         #endregion
@@ -207,8 +209,10 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo(Source,Target,ListItem.TextAlignmentProperty);
             var SourceBlocks = Source.Blocks;
             var TargetBlocks = Target.Blocks;
-            foreach (var Block in SourceBlocks) {
-                TargetBlocks.Add(Clone(Block,Host));
+            foreach (var SourceBlock in SourceBlocks) {
+                var TargetBlock = Clone(SourceBlock,Host,false);
+                TargetBlocks.Add(TargetBlock);
+                Load(SourceBlock,TargetBlock);
                 }
             }
         #endregion
@@ -243,15 +247,24 @@ namespace BinaryStudio.PlatformUI.Extensions
             }
         #endregion
         #region M:CopyTo(Section,Section)
-        private static void CopyTo(Section Source,Section Target,FrameworkContentElement Host)
+        public static void CopyTo(Section Source,Section Target,FrameworkContentElement Host)
             {
             CopyTo((Block)Source,Target,Host);
             Target.HasTrailingParagraphBreakOnPaste = Source.HasTrailingParagraphBreakOnPaste;
             var SourceBlocks = Source.Blocks;
             var TargetBlocks = Target.Blocks;
-            foreach (var Block in SourceBlocks) {
-                TargetBlocks.Add(Clone(Block,Host));
+            foreach (var SourceBlock in SourceBlocks) {
+                var TargetBlock = Clone(SourceBlock,Host,false);
+                TargetBlocks.Add(TargetBlock);
+                Load(SourceBlock,TargetBlock);
                 }
+            }
+        #endregion
+        #region M:CopyTo(DocumentSectionContent,DocumentSectionContent)
+        public static void CopyTo(DocumentSectionContent Source,DocumentSectionContent Target,FrameworkContentElement Host)
+            {
+            CopyTo((Section)Source,Target,Host);
+            CopyTo(Source,Target,DocumentSectionContent.ContentProperty);
             }
         #endregion
         #region M:CopyTo(Table,Table)
@@ -308,6 +321,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new TableColumn();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -317,15 +331,17 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new TableRow();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
         public static TableRowGroup Clone(TableRowGroup Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
-            var Target = new TableRowGroup();
+            var Target = (TableRowGroup)Activator.CreateInstance(Source.GetType());
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -335,6 +351,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new TableCell();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -346,58 +363,72 @@ namespace BinaryStudio.PlatformUI.Extensions
             return Target;
             }
 
-        public static Paragraph Clone(Paragraph Source,FrameworkContentElement Host)
+        public static Paragraph Clone(Paragraph Source,FrameworkContentElement Host,Boolean PerformLoad)
             {
             if (Source == null) { return null; }
             var Target = new Paragraph();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            if (PerformLoad) Load(Source,Target);
             return Target;
             }
 
-        public static BlockUIContainer Clone(BlockUIContainer Source,FrameworkContentElement Host)
+        public static BlockUIContainer Clone(BlockUIContainer Source,FrameworkContentElement Host,Boolean PerformLoad)
             {
             if (Source == null) { return null; }
             var Target = new BlockUIContainer();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            if (PerformLoad) Load(Source,Target);
             return Target;
             }
 
-        public static List Clone(List Source,FrameworkContentElement Host)
+        public static List Clone(List Source,FrameworkContentElement Host,Boolean PerformLoad)
             {
             if (Source == null) { return null; }
             var Target = new List();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            if (PerformLoad) Load(Source,Target);
             return Target;
             }
 
-        public static Section Clone(Section Source,FrameworkContentElement Host)
-            {
+        public static Section Clone(Section Source,FrameworkContentElement Host,Boolean PerformLoad) {
             if (Source == null) { return null; }
-            var Target = new Section();
+            var Target = (Section)Activator.CreateInstance(Source.GetType());
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            if (PerformLoad) Load(Source,Target);
             return Target;
             }
 
-        public static Table Clone(Table Source,FrameworkContentElement Host)
+        public static DocumentSectionContent Clone(DocumentSectionContent Source,FrameworkContentElement Host,Boolean PerformLoad) {
+            if (Source == null) { return null; }
+            var Target = (DocumentSectionContent)Activator.CreateInstance(Source.GetType());
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
+            if (PerformLoad) Load(Source,Target);
+            return Target;
+            }
+
+        public static Table Clone(Table Source,FrameworkContentElement Host,Boolean PerformLoad)
             {
             if (Source == null) { return null; }
             var Target = new Table();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            if (PerformLoad) Load(Source,Target);
             return Target;
             }
 
-        private static Block Clone(Block Source,FrameworkContentElement Host)
+        private static Block Clone(Block Source,FrameworkContentElement Host,Boolean PerformLoad)
             {
-            return (Block)Clone(Source as BlockUIContainer,Host)
-                ?? (Block)Clone(Source as List,Host)
-                ?? (Block)Clone(Source as Paragraph,Host)
-                ?? (Block)Clone(Source as Section,Host)
-                ?? (Block)Clone(Source as Table,Host);
+            return (Block)Clone(Source as DocumentSectionContent,Host,PerformLoad)
+                ?? (Block)Clone(Source as BlockUIContainer,Host,PerformLoad)
+                ?? (Block)Clone(Source as List,Host,PerformLoad)
+                ?? (Block)Clone(Source as Paragraph,Host,PerformLoad)
+                ?? (Block)Clone(Source as Section,Host,PerformLoad)
+                ?? (Block)Clone(Source as Table,Host,PerformLoad);
             }
 
         private static AnchoredBlock Clone(AnchoredBlock Source,FrameworkContentElement Host)
@@ -412,6 +443,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new Figure();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -421,6 +453,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new Floater();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -430,6 +463,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new InlineUIContainer();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -439,6 +473,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new LineBreak();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -448,6 +483,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new Run();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -457,6 +493,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new Span();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -471,6 +508,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             var Target = new ListItem();
             ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
+            Load(Source,Target);
             return Target;
             }
 
@@ -481,6 +519,18 @@ namespace BinaryStudio.PlatformUI.Extensions
                 ?? (Inline)Clone(Source as LineBreak,Host)
                 ?? (Inline)Clone(Source as Run,Host)
                 ?? (Inline)Clone(Source as Span,Host);
+            }
+
+        private static T Load<T>(FrameworkContentElement Source, T Target)
+            where T: FrameworkContentElement
+            {
+            if (Target != null) {
+                if (!Target.IsLoaded) {
+                    CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                    Target.RaiseEvent(new RoutedEventArgs(FrameworkContentElement.LoadedEvent));
+                    }
+                }
+            return Target;
             }
 
         private static void ApplyStyle<T>(T Target,FrameworkContentElement Host)

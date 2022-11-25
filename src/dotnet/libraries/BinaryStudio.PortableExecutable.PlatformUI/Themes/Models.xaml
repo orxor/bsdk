@@ -30,6 +30,7 @@
             <ResourceDictionary.MergedDictionaries>
               <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/ModelOMFSSectionModule.xaml"/>
               <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/ModelOMFSSectionLibraries.xaml"/>
+              <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/ModelOMFSSectionAlignSym.xaml"/>
             </ResourceDictionary.MergedDictionaries>
           </ResourceDictionary>
         </TabItem.Resources>

@@ -43,7 +43,7 @@ namespace BinaryStudio.PlatformUI.Controls
                     }
                 return (Brush)value;
                 }
-            throw new NotSupportedException();
+            return brush;
             }
         }
     }

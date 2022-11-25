@@ -1,0 +1,165 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Models"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:u="http://schemas.helix.global"
+                    mc:Ignorable="d">
+  <DataTemplate DataType="{x:Type e:ModelOMFSSectionAlignSym}">
+    <Grid>
+      <RichTextBox BorderThickness="0" Background="Transparent" Margin="2,5,2,5" IsReadOnly="True"
+                   HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
+                   IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
+                   Foreground="{DynamicResource ControlTextBrushKey}">
+        <RichTextBox.Resources>
+          <Style TargetType="{x:Type TableCell}">
+            <Setter Property="BorderThickness" Value="0,1,1,0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+            <Setter Property="Padding" Value="5,0,5,0"/>
+          </Style>
+        </RichTextBox.Resources>
+        <FlowDocument PageWidth="{Binding RelativeSource={RelativeSource AncestorType=RichTextBox},Path=ActualWidth,Mode=OneWay}">
+          <Section>
+            <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
+                   u:RichTextBoxOptions.IsAutoFit="True">
+              <Table.Columns>
+                <TableColumn/>
+                <TableColumn/>
+              </Table.Columns>
+              <TableRowGroup>
+                <TableRow>
+                  <TableCell>
+                    <Paragraph>Offset</Paragraph>
+                  </TableCell>
+                  <TableCell>
+                    <Paragraph>
+                      <Run Text="{Binding Source.FileOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+                    </Paragraph>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <Paragraph>Size</Paragraph>
+                  </TableCell>
+                  <TableCell>
+                    <Paragraph>
+                      <Run Text="{Binding Source.Size,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+                      <Run Text="{}{"/><Run Text="{Binding Source.Size,Mode=OneWay}"/><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run Text="{}}"/>
+                    </Paragraph>
+                  </TableCell>
+                </TableRow>
+              </TableRowGroup>
+            </Table>
+          </Section>
+          <Section>
+            <Paragraph Margin="0,5,0,5">Symbols:</Paragraph>
+            <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}"
+                   u:RichTextBoxOptions.IsAutoFit="True" Margin="0">
+              <Table.Columns>
+                <TableColumn Width="Auto"/>
+                <TableColumn Width="Auto"/>
+                <TableColumn Width="Auto"/>
+              </Table.Columns>
+              <TableRowGroup>
+                <TableRow>
+                  <TableCell>
+                    <Paragraph>Offset</Paragraph>
+                  </TableCell>
+                  <TableCell>
+                    <Paragraph>Symbol</Paragraph>
+                  </TableCell>
+                  <TableCell>
+                    <Paragraph>Details</Paragraph>
+                  </TableCell>
+                </TableRow>
+              </TableRowGroup>
+              <u:TableBoundRowGroup RowsSource="{Binding Source.Symbols}">
+                <TableRow>
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}">
+                    <Paragraph>
+                      <Run Text="{Binding Offset,Mode=OneWay,StringFormat=x8}"/>
+                    </Paragraph>
+                  </TableCell>
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}">
+                    <Paragraph>
+                      <Run Text="{Binding Type,Mode=OneWay}"/>
+                    </Paragraph>
+                  </TableCell>
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}">
+                    <TableCell.Resources>
+                      <DataTemplate DataType="{x:Type u:S_COMPILE}">
+                        <Section>
+                          <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0" u:RichTextBoxOptions.IsAutoFit="True">
+                            <Table.Columns>
+                              <TableColumn Width="Auto"/>
+                              <TableColumn Width="Auto"/>
+                            </Table.Columns>
+                            <TableRowGroup>
+                              <TableRow>
+                                <TableCell>
+                                  <Paragraph>Language</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                  <Paragraph>
+                                    <Run Text="{Binding Language,Mode=OneWay}"/>
+                                  </Paragraph>
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell>
+                                  <Paragraph>Machine</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                  <Paragraph>
+                                    <Run Text="{Binding Machine,Mode=OneWay}"/>
+                                  </Paragraph>
+                                </TableCell>
+                              </TableRow>
+                            </TableRowGroup>
+                          </Table>
+                        </Section>
+                      </DataTemplate>
+                      <DataTemplate DataType="{x:Type u:S_SSEARCH}">
+                        <Section>
+                          <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0" u:RichTextBoxOptions.IsAutoFit="True">
+                            <Table.Columns>
+                              <TableColumn Width="Auto"/>
+                              <TableColumn Width="Auto"/>
+                            </Table.Columns>
+                            <TableRowGroup>
+                              <TableRow>
+                                <TableCell>
+                                  <Paragraph>SegmentIndex</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                  <Paragraph>
+                                    <Run Text="{Binding SegmentIndex,Mode=OneWay}"/>
+                                  </Paragraph>
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell>
+                                  <Paragraph>ProcedureOrThunkRecordOffset</Paragraph>
+                                </TableCell>
+                                <TableCell>
+                                  <Paragraph>
+                                    <Run Text="{Binding ProcedureOrThunkRecordOffset,Mode=OneWay}"/>
+                                  </Paragraph>
+                                </TableCell>
+                              </TableRow>
+                            </TableRowGroup>
+                          </Table>
+                        </Section>
+                      </DataTemplate>
+                    </TableCell.Resources>
+                    <u:DocumentSectionContent Content="{Binding}"/>
+                  </TableCell>
+                </TableRow>
+              </u:TableBoundRowGroup>
+            </Table>
+          </Section>
+        </FlowDocument>
+      </RichTextBox>
+    </Grid>
+  </DataTemplate>
+</ResourceDictionary>
