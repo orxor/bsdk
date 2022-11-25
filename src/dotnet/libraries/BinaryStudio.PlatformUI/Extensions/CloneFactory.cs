@@ -8,9 +8,8 @@ namespace BinaryStudio.PlatformUI.Extensions
     {
     public class CloneFactory
         {
-        private static void CopyTo(ContextMenu Source,ContextMenu Target)
+        private static void CopyTo(ContextMenu Source,ContextMenu Target,FrameworkContentElement Host)
             {
-
             }
 
         #region M:CopyTo(DependencyObject,DependencyObject,DependencyProperty)
@@ -33,9 +32,9 @@ namespace BinaryStudio.PlatformUI.Extensions
             }
         #endregion
         #region M:CopyTo(Paragraph,Paragraph)
-        private static void CopyTo(Paragraph Source,Paragraph Target)
+        private static void CopyTo(Paragraph Source,Paragraph Target,FrameworkContentElement Host)
             {
-            CopyTo((Block)Source,(Block)Target);
+            CopyTo((Block)Source,(Block)Target,Host);
             CopyTo(Source,Target,Paragraph.KeepTogetherProperty);
             CopyTo(Source,Target,Paragraph.KeepWithNextProperty);
             CopyTo(Source,Target,Paragraph.MinOrphanLinesProperty);
@@ -45,14 +44,14 @@ namespace BinaryStudio.PlatformUI.Extensions
             var SourceInlines = Source.Inlines;
             var TargetInlines = Target.Inlines;
             foreach (var Inline in SourceInlines) {
-                TargetInlines.Add(Clone(Inline));
+                TargetInlines.Add(Clone(Inline,Host));
                 }
             }
         #endregion
         #region M:CopyTo(Block,Block)
-        private static void CopyTo(Block Source,Block Target)
+        private static void CopyTo(Block Source,Block Target,FrameworkContentElement Host)
             {
-            CopyTo((TextElement)Source,Target);
+            CopyTo((TextElement)Source,Target,Host);
             CopyTo(Source,Target,Block.BorderBrushProperty);
             CopyTo(Source,Target,Block.BorderThicknessProperty);
             CopyTo(Source,Target,Block.BreakColumnBeforeProperty);
@@ -68,9 +67,9 @@ namespace BinaryStudio.PlatformUI.Extensions
             }
         #endregion
         #region M:CopyTo(TableCell,TableCell)
-        private static void CopyTo(TableCell Source,TableCell Target)
+        private static void CopyTo(TableCell Source,TableCell Target,FrameworkContentElement Host)
             {
-            CopyTo((TextElement)Source,Target);
+            CopyTo((TextElement)Source,Target,Host);
             CopyTo(Source,Target,TableCell.BorderBrushProperty);
             CopyTo(Source,Target,TableCell.BorderThicknessProperty);
             CopyTo(Source,Target,TableCell.ColumnSpanProperty);
@@ -83,14 +82,14 @@ namespace BinaryStudio.PlatformUI.Extensions
             var SourceBlocks = Source.Blocks;
             var TargetBlocks = Target.Blocks;
             foreach (var Block in SourceBlocks) {
-                TargetBlocks.Add(Clone(Block));
+                TargetBlocks.Add(Clone(Block,Host));
                 }
             }
         #endregion
         #region M:CopyTo(TextElement,TextElement)
-        private static void CopyTo(TextElement Source,TextElement Target)
+        private static void CopyTo(TextElement Source,TextElement Target,FrameworkContentElement Host)
             {
-            CopyTo((FrameworkContentElement)Source,Target);
+            CopyTo((FrameworkContentElement)Source,Target,Host);
             CopyTo(Source,Target,TextElement.BackgroundProperty);
             CopyTo(Source,Target,TextElement.FontFamilyProperty);
             CopyTo(Source,Target,TextElement.FontSizeProperty);
@@ -102,9 +101,9 @@ namespace BinaryStudio.PlatformUI.Extensions
             }
         #endregion
         #region M:CopyTo(FrameworkContentElement,FrameworkContentElement)
-        private static void CopyTo(FrameworkContentElement Source,FrameworkContentElement Target)
+        private static void CopyTo(FrameworkContentElement Source,FrameworkContentElement Target,FrameworkContentElement Host)
             {
-            CopyTo((ContentElement)Source,Target);
+            CopyTo((ContentElement)Source,Target,Host);
             CopyTo(Source,Target,FrameworkContentElement.StyleProperty);
             CopyTo(Source,Target,FrameworkContentElement.ContextMenuProperty);
             CopyTo(Source,Target,FrameworkContentElement.CursorProperty);
@@ -121,44 +120,44 @@ namespace BinaryStudio.PlatformUI.Extensions
             }
         #endregion
         #region M:CopyTo(Inline,Inline)
-        private static void CopyTo(Inline Source,Inline Target)
+        private static void CopyTo(Inline Source,Inline Target,FrameworkContentElement Host)
             {
-            CopyTo((TextElement)Source,Target);
+            CopyTo((TextElement)Source,Target,Host);
             CopyTo(Source,Target,Inline.BaselineAlignmentProperty);
             CopyTo(Source,Target,Inline.FlowDirectionProperty);
             CopyTo(Source,Target,Inline.TextDecorationsProperty);
             }
         #endregion
         #region M:CopyTo(Run,Run)
-        private static void CopyTo(Run Source,Run Target)
+        private static void CopyTo(Run Source,Run Target,FrameworkContentElement Host)
             {
-            CopyTo((Inline)Source,(Inline)Target);
+            CopyTo((Inline)Source,Target,Host);
             Target.Text = Source.Text;
             CopyTo(Source,Target,Run.TextProperty);
             }
         #endregion
         #region M:CopyTo(Span,Span)
-        private static void CopyTo(Span Source,Span Target)
+        private static void CopyTo(Span Source,Span Target,FrameworkContentElement Host)
             {
-            CopyTo((Inline)Source,(Inline)Target);
+            CopyTo((Inline)Source,Target,Host);
             var SourceInlines = Source.Inlines;
             var TargetInlines = Target.Inlines;
             foreach (var Inline in SourceInlines) {
-                TargetInlines.Add(Clone(Inline));
+                TargetInlines.Add(Clone(Inline,Host));
                 }
             }
         #endregion
         #region M:CopyTo(InlineUIContainer,InlineUIContainer)
-        private static void CopyTo(InlineUIContainer Source,InlineUIContainer Target)
+        private static void CopyTo(InlineUIContainer Source,InlineUIContainer Target,FrameworkContentElement Host)
             {
-            CopyTo((Inline)Source,(Inline)Target);
-            Target.Child = Clone(Source.Child);
+            CopyTo((Inline)Source,Target,Host);
+            Target.Child = Clone(Source.Child,Host);
             }
         #endregion
         #region M:CopyTo(AnchoredBlock,AnchoredBlock)
-        private static void CopyTo(AnchoredBlock Source,AnchoredBlock Target)
+        private static void CopyTo(AnchoredBlock Source,AnchoredBlock Target,FrameworkContentElement Host)
             {
-            CopyTo((Inline)Source,(Inline)Target);
+            CopyTo((Inline)Source,Target,Host);
             CopyTo(Source,Target,AnchoredBlock.BorderBrushProperty);
             CopyTo(Source,Target,AnchoredBlock.BorderThicknessProperty);
             CopyTo(Source,Target,AnchoredBlock.LineHeightProperty);
@@ -169,35 +168,35 @@ namespace BinaryStudio.PlatformUI.Extensions
             var SourceBlocks = Source.Blocks;
             var TargetBlocks = Target.Blocks;
             foreach (var Block in SourceBlocks) {
-                TargetBlocks.Add(Clone(Block));
+                TargetBlocks.Add(Clone(Block,Host));
                 }
             }
         #endregion
         #region M:CopyTo(BlockUIContainer,BlockUIContainer)
-        private static void CopyTo(BlockUIContainer Source,BlockUIContainer Target)
+        private static void CopyTo(BlockUIContainer Source,BlockUIContainer Target,FrameworkContentElement Host)
             {
-            CopyTo((Block)Source,(Block)Target);
-            Target.Child = Clone(Source.Child);
+            CopyTo((Block)Source,Target,Host);
+            Target.Child = Clone(Source.Child,Host);
             }
         #endregion
         #region M:CopyTo(List,List)
-        private static void CopyTo(List Source,List Target)
+        private static void CopyTo(List Source,List Target,FrameworkContentElement Host)
             {
-            CopyTo((Block)Source,Target);
+            CopyTo((Block)Source,Target,Host);
             CopyTo(Source,Target,List.MarkerOffsetProperty);
             CopyTo(Source,Target,List.MarkerStyleProperty);
             CopyTo(Source,Target,List.StartIndexProperty);
             var SourceListItems = Source.ListItems;
             var TargetListItems = Target.ListItems;
             foreach (var ListItem in SourceListItems) {
-                TargetListItems.Add(Clone(ListItem));
+                TargetListItems.Add(Clone(ListItem,Host));
                 }
             }
         #endregion
         #region M:CopyTo(ListItem,ListItem)
-        private static void CopyTo(ListItem Source,ListItem Target)
+        private static void CopyTo(ListItem Source,ListItem Target,FrameworkContentElement Host)
             {
-            CopyTo((TextElement)Source,Target);
+            CopyTo((TextElement)Source,Target,Host);
             CopyTo(Source,Target,ListItem.BorderBrushProperty);
             CopyTo(Source,Target,ListItem.BorderThicknessProperty);
             CopyTo(Source,Target,ListItem.FlowDirectionProperty);
@@ -209,14 +208,14 @@ namespace BinaryStudio.PlatformUI.Extensions
             var SourceBlocks = Source.Blocks;
             var TargetBlocks = Target.Blocks;
             foreach (var Block in SourceBlocks) {
-                TargetBlocks.Add(Clone(Block));
+                TargetBlocks.Add(Clone(Block,Host));
                 }
             }
         #endregion
         #region M:CopyTo(Figure,Figure)
-        private static void CopyTo(Figure Source,Figure Target)
+        private static void CopyTo(Figure Source,Figure Target,FrameworkContentElement Host)
             {
-            CopyTo((AnchoredBlock)Source,Target);
+            CopyTo((AnchoredBlock)Source,Target,Host);
             CopyTo(Source,Target,Figure.CanDelayPlacementProperty);
             CopyTo(Source,Target,Figure.HeightProperty);
             CopyTo(Source,Target,Figure.HorizontalAnchorProperty);
@@ -228,15 +227,15 @@ namespace BinaryStudio.PlatformUI.Extensions
             }
         #endregion
         #region M:CopyTo(Floater,Floater)
-        private static void CopyTo(Floater Source,Floater Target)
+        private static void CopyTo(Floater Source,Floater Target,FrameworkContentElement Host)
             {
-            CopyTo((AnchoredBlock)Source,Target);
+            CopyTo((AnchoredBlock)Source,Target,Host);
             CopyTo(Source,Target,Floater.HorizontalAlignmentProperty);
             CopyTo(Source,Target,Floater.WidthProperty);
             }
         #endregion
         #region M:CopyTo(ContentElement,ContentElement)
-        private static void CopyTo(ContentElement Source,ContentElement Target)
+        private static void CopyTo(ContentElement Source,ContentElement Target,FrameworkContentElement Host)
             {
             CopyTo(Source,Target,ContentElement.AllowDropProperty);
             CopyTo(Source,Target,ContentElement.FocusableProperty);
@@ -244,231 +243,254 @@ namespace BinaryStudio.PlatformUI.Extensions
             }
         #endregion
         #region M:CopyTo(Section,Section)
-        private static void CopyTo(Section Source,Section Target)
+        private static void CopyTo(Section Source,Section Target,FrameworkContentElement Host)
             {
-            CopyTo((Block)Source,Target);
+            CopyTo((Block)Source,Target,Host);
             Target.HasTrailingParagraphBreakOnPaste = Source.HasTrailingParagraphBreakOnPaste;
             var SourceBlocks = Source.Blocks;
             var TargetBlocks = Target.Blocks;
             foreach (var Block in SourceBlocks) {
-                TargetBlocks.Add(Clone(Block));
+                TargetBlocks.Add(Clone(Block,Host));
                 }
             }
         #endregion
         #region M:CopyTo(Table,Table)
-        private static void CopyTo(Table Source,Table Target)
+        private static void CopyTo(Table Source,Table Target,FrameworkContentElement Host)
             {
-            CopyTo((Block)Source,Target);
+            CopyTo((Block)Source,Target,Host);
             CopyTo(Source,Target,Table.CellSpacingProperty);
             var SourceColumns = Source.Columns;
             var TargetColumns = Target.Columns;
             foreach (var Column in SourceColumns) {
-                TargetColumns.Add(Clone(Column));
+                TargetColumns.Add(Clone(Column,Host));
                 }
             var SourceRowGroups = Source.RowGroups;
             var TargetRowGroups = Target.RowGroups;
             foreach (var RowGroup in SourceRowGroups) {
-                TargetRowGroups.Add(Clone(RowGroup));
+                TargetRowGroups.Add(Clone(RowGroup,Host));
                 }
             }
         #endregion
         #region M:CopyTo(TableColumn,TableColumn)
-        private static void CopyTo(TableColumn Source,TableColumn Target)
+        private static void CopyTo(TableColumn Source,TableColumn Target,FrameworkContentElement Host)
             {
-            CopyTo((FrameworkContentElement)Source,Target);
+            CopyTo((FrameworkContentElement)Source,Target,Host);
             CopyTo(Source,Target,TableColumn.BackgroundProperty);
             CopyTo(Source,Target,TableColumn.WidthProperty);
             }
         #endregion
         #region M:CopyTo(TableRowGroup,TableRowGroup)
-        private static void CopyTo(TableRowGroup Source,TableRowGroup Target)
+        private static void CopyTo(TableRowGroup Source,TableRowGroup Target,FrameworkContentElement Host)
             {
-            CopyTo((TextElement)Source,Target);
+            CopyTo((TextElement)Source,Target,Host);
             var SourceRows = Source.Rows;
             var TargetRows = Target.Rows;
             foreach (var Row in SourceRows) {
-                TargetRows.Add(Clone(Row));
+                TargetRows.Add(Clone(Row,Host));
                 }
             }
         #endregion
         #region M:CopyTo(TableRow,TableRow)
-        private static void CopyTo(TableRow Source,TableRow Target)
+        private static void CopyTo(TableRow Source,TableRow Target,FrameworkContentElement Host)
             {
-            CopyTo((TextElement)Source,Target);
+            CopyTo((TextElement)Source,Target,Host);
             var SourceCells = Source.Cells;
             var TargetCells = Target.Cells;
             foreach (var Cell in SourceCells) {
-                TargetCells.Add(Clone(Cell));
+                TargetCells.Add(Clone(Cell,Host));
                 }
             }
         #endregion
 
-        public static TableColumn Clone(TableColumn Source)
+        public static TableColumn Clone(TableColumn Source, FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new TableColumn();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static TableRow Clone(TableRow Source)
+        public static TableRow Clone(TableRow Source, FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new TableRow();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static TableRowGroup Clone(TableRowGroup Source)
+        public static TableRowGroup Clone(TableRowGroup Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new TableRowGroup();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static TableCell Clone(TableCell Source, Style Style = null)
+        public static TableCell Clone(TableCell Source, FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new TableCell();
-            if (Style != null) {
-                Target.Style = Style;
-                }
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static ContextMenu Clone(ContextMenu Source)
+        public static ContextMenu Clone(ContextMenu Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new ContextMenu();
-            CopyTo(Source,Target);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static Paragraph Clone(Paragraph Source)
+        public static Paragraph Clone(Paragraph Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new Paragraph();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static BlockUIContainer Clone(BlockUIContainer Source)
+        public static BlockUIContainer Clone(BlockUIContainer Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new BlockUIContainer();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static List Clone(List Source)
+        public static List Clone(List Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new List();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static Section Clone(Section Source)
+        public static Section Clone(Section Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new Section();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static Table Clone(Table Source)
+        public static Table Clone(Table Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new Table();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        private static Block Clone(Block Source)
+        private static Block Clone(Block Source,FrameworkContentElement Host)
             {
-            return (Block)Clone(Source as BlockUIContainer)
-                ?? (Block)Clone(Source as List)
-                ?? (Block)Clone(Source as Paragraph)
-                ?? (Block)Clone(Source as Section)
-                ?? (Block)Clone(Source as Table);
+            return (Block)Clone(Source as BlockUIContainer,Host)
+                ?? (Block)Clone(Source as List,Host)
+                ?? (Block)Clone(Source as Paragraph,Host)
+                ?? (Block)Clone(Source as Section,Host)
+                ?? (Block)Clone(Source as Table,Host);
             }
 
-        private static AnchoredBlock Clone(AnchoredBlock Source)
+        private static AnchoredBlock Clone(AnchoredBlock Source,FrameworkContentElement Host)
             {
-            return (AnchoredBlock)Clone(Source as Figure)
-                ?? Clone(Source as Floater);
+            return (AnchoredBlock)Clone(Source as Figure,Host)
+                ?? Clone(Source as Floater,Host);
             }
 
-        private static Figure Clone(Figure Source)
+        private static Figure Clone(Figure Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new Figure();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        private static Floater Clone(Floater Source)
+        private static Floater Clone(Floater Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new Floater();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static InlineUIContainer Clone(InlineUIContainer Source)
+        public static InlineUIContainer Clone(InlineUIContainer Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new InlineUIContainer();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static LineBreak Clone(LineBreak Source)
+        public static LineBreak Clone(LineBreak Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new LineBreak();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static Run Clone(Run Source)
+        public static Run Clone(Run Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new Run();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        public static Span Clone(Span Source)
+        public static Span Clone(Span Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new Span();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        private static UIElement Clone(UIElement Source)
+        private static UIElement Clone(UIElement Source,FrameworkContentElement Host)
             {
             throw new NotImplementedException();
             }
 
-        private static ListItem Clone(ListItem Source)
+        private static ListItem Clone(ListItem Source,FrameworkContentElement Host)
             {
             if (Source == null) { return null; }
             var Target = new ListItem();
-            CopyTo(Source,Target);
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
             return Target;
             }
 
-        private static Inline Clone(Inline Source)
+        private static Inline Clone(Inline Source,FrameworkContentElement Host)
             {
-            return (Inline)Clone(Source as AnchoredBlock)
-                ?? (Inline)Clone(Source as InlineUIContainer)
-                ?? (Inline)Clone(Source as LineBreak)
-                ?? (Inline)Clone(Source as Run)
-                ?? (Inline)Clone(Source as Span);
+            return (Inline)Clone(Source as AnchoredBlock,Host)
+                ?? (Inline)Clone(Source as InlineUIContainer,Host)
+                ?? (Inline)Clone(Source as LineBreak,Host)
+                ?? (Inline)Clone(Source as Run,Host)
+                ?? (Inline)Clone(Source as Span,Host);
+            }
+
+        private static void ApplyStyle<T>(T Target,FrameworkContentElement Host)
+            where T: FrameworkContentElement
+            {
+            if (Host != null) {
+                if (Host.TryFindResource(typeof(T)) is Style Style) {
+                    Target.Style = Style;
+                    }
+                }
             }
         }
     }

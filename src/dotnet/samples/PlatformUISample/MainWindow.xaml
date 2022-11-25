@@ -18,6 +18,7 @@
         <ResourceDictionary Source="pack://application:,,,/Controls/TabControl.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/Asn1Control.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/TextBox.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/Controls/RichTextBox.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/ListView.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/TreeView.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/Controls/ListBox.xaml"/>
@@ -62,6 +63,9 @@
       </TabItem>
       <TabItem Header="TextBox">
         <ContentControl Template="{StaticResource TextBox}"/>
+      </TabItem>
+      <TabItem Header="RichTextBox" IsSelected="True">
+        <ContentControl Template="{StaticResource RichTextBox}"/>
       </TabItem>
       <TabItem Header="TabControl">
         <ContentControl Template="{StaticResource TabControl}"/>
@@ -161,7 +165,7 @@
       <TabItem Header="ASN.1" Name="TabItemAsn1">
         <ContentControl Template="{StaticResource Asn1Control}"/>
       </TabItem>
-      <TabItem Header="Certificates" Name="Certificates" IsSelected="True">
+      <TabItem Header="Certificates" Name="Certificates">
         <ContentControl Template="{StaticResource Certificates}"/>
       </TabItem>
     </TabControl>

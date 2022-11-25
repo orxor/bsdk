@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformUI;
 using BinaryStudio.PlatformUI.Media;
@@ -26,6 +32,7 @@ namespace PlatformUISample
             }
 
         private void MainWindow_OnLoaded(Object sender, RoutedEventArgs e) {
+            UpdateCommandBindings();
             Theme.Apply(Theme.Themes[3]);
             //Colors.ItemsSource = (new[] {
             //    Theme.ActiveBorderBrushKey,
@@ -71,6 +78,40 @@ namespace PlatformUISample
             Certificates.DataContext = (new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)).Certificates.Select(i=>new ECertificate(i));
             RGBTextBox.Text = SystemColors.HighlightColor.ToString();
             }
+
+        private void UpdateCommandBindings() {
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(LocalCommands.CopyToXaml, CopyToXamlExecuted,CanExecuteAllways));
+            }
+
+        private void CopyToXamlExecuted(Object sender, ExecutedRoutedEventArgs e) {
+            if (e.OriginalSource is RichTextBox source) {
+                var document = source.Document;
+                if (document != null) {
+                    var range = new TextRange(document.ContentStart,document.ContentEnd);
+                    using (var memory = new MemoryStream()) {
+                        range.Save(memory,DataFormats.Xaml);
+                        var builder = new StringBuilder();
+                        using (var writer = XmlWriter.Create(new StringWriter(builder),new XmlWriterSettings{
+                            Indent = true,
+                            IndentChars = "  "
+                            })) {
+                            using (var reader = XmlReader.Create(new StreamReader(new MemoryStream(memory.ToArray())))) {
+                                writer.WriteNode(reader,false);
+                                }
+                            }
+                        Clipboard.SetText(builder.ToString());
+                        }
+                    }
+                }
+            }
+
+        #region M:CanExecuteAllways(Object,CanExecuteRoutedEventArgs)
+        private static void CanExecuteAllways(Object sender, CanExecuteRoutedEventArgs e)
+            {
+            e.CanExecute = true;
+            e.Handled = true;
+            }
+        #endregion
 
         private void ThemeChange(Object sender, RoutedEventArgs e)
             {

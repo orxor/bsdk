@@ -16,6 +16,14 @@ namespace BinaryStudio.PlatformUI.Controls
             return (Brush)value;
             }
         #endregion
+        #region M:GetForeground({this}TableRowGroup):Brush
+        public static Brush GetForeground(this TableRowGroup source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (source.IsDefaultValue(TextElement.ForegroundProperty,out var value)) {
+                }
+            return (Brush)value;
+            }
+        #endregion
         #region M:SetForegroundToSelfAndDescendants({this}DependencyObject,Brush)
         public static void SetForegroundToSelfAndDescendants(this DependencyObject source, Brush brush) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
