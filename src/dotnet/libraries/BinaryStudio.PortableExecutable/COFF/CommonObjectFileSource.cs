@@ -77,7 +77,7 @@ namespace BinaryStudio.PortableExecutable
             if (size > Marshal.SizeOf(typeof(IMAGE_FILE_HEADER))) {
                 if (Enum.IsDefined(typeof(IMAGE_FILE_MACHINE), ImageFileHeader->Machine)) {
                     var machine = ImageFileHeader->Machine;
-                    CPU = CV_CPU_TYPE.CV_CFL_AMD64;
+                    CPU = CV_CPU_TYPE.CPU_AMD64;
                     var r = (Byte*)(ImageFileHeader + 1);
                     IMAGE_DATA_DIRECTORY*[] directories = null;
                     if ((ImageFileHeader->SizeOfOptionalHeader > 0) && !IgnoreOptionalHeaderSize) {

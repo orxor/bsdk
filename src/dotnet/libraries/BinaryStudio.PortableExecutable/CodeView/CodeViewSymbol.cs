@@ -186,108 +186,108 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public Object DecodeRegister(UInt16 value) {
             if (CPU != null) {
                 switch (CPU.Value) {
-                    case CV_CPU_TYPE.CV_CFL_8080:
-                    case CV_CPU_TYPE.CV_CFL_8086:
-                    case CV_CPU_TYPE.CV_CFL_80286:
-                    case CV_CPU_TYPE.CV_CFL_80386:
-                    case CV_CPU_TYPE.CV_CFL_80486:
-                    case CV_CPU_TYPE.CV_CFL_PENTIUM:
-                    case CV_CPU_TYPE.CV_CFL_PENTIUMII:
-                    case CV_CPU_TYPE.CV_CFL_PENTIUMIII:
+                    case CV_CPU_TYPE.CPU_8080:
+                    case CV_CPU_TYPE.CPU_8086:
+                    case CV_CPU_TYPE.CPU_80286:
+                    case CV_CPU_TYPE.CPU_80386:
+                    case CV_CPU_TYPE.CPU_80486:
+                    case CV_CPU_TYPE.CPU_PENTIUM:
+                    case CV_CPU_TYPE.CPU_PENTIUMII:
+                    case CV_CPU_TYPE.CPU_PENTIUMIII:
                         {
                         return (CV_REG)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_MIPS:
-                    case CV_CPU_TYPE.CV_CFL_MIPS16:
-                    case CV_CPU_TYPE.CV_CFL_MIPS32:
-                    case CV_CPU_TYPE.CV_CFL_MIPS64:
-                    case CV_CPU_TYPE.CV_CFL_MIPSI:
-                    case CV_CPU_TYPE.CV_CFL_MIPSII:
-                    case CV_CPU_TYPE.CV_CFL_MIPSIII:
-                    case CV_CPU_TYPE.CV_CFL_MIPSIV:
-                    case CV_CPU_TYPE.CV_CFL_MIPSV:
+                    case CV_CPU_TYPE.CPU_MIPS:
+                    case CV_CPU_TYPE.CPU_MIPS16:
+                    case CV_CPU_TYPE.CPU_MIPS32:
+                    case CV_CPU_TYPE.CPU_MIPS64:
+                    case CV_CPU_TYPE.CPU_MIPSI:
+                    case CV_CPU_TYPE.CPU_MIPSII:
+                    case CV_CPU_TYPE.CPU_MIPSIII:
+                    case CV_CPU_TYPE.CPU_MIPSIV:
+                    case CV_CPU_TYPE.CPU_MIPSV:
                         {
                         return (CV_M4)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_M68000:
-                    case CV_CPU_TYPE.CV_CFL_M68010:
-                    case CV_CPU_TYPE.CV_CFL_M68020:
-                    case CV_CPU_TYPE.CV_CFL_M68030:
-                    case CV_CPU_TYPE.CV_CFL_M68040:
+                    case CV_CPU_TYPE.CPU_M68000:
+                    case CV_CPU_TYPE.CPU_M68010:
+                    case CV_CPU_TYPE.CPU_M68020:
+                    case CV_CPU_TYPE.CPU_M68030:
+                    case CV_CPU_TYPE.CPU_M68040:
                         {
                         return (CV_R68)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_ALPHA:
-                    case CV_CPU_TYPE.CV_CFL_ALPHA_21164:
-                    case CV_CPU_TYPE.CV_CFL_ALPHA_21164A:
-                    case CV_CPU_TYPE.CV_CFL_ALPHA_21264:
-                    case CV_CPU_TYPE.CV_CFL_ALPHA_21364:
+                    case CV_CPU_TYPE.CPU_ALPHA:
+                    case CV_CPU_TYPE.CPU_ALPHA_21164:
+                    case CV_CPU_TYPE.CPU_ALPHA_21164A:
+                    case CV_CPU_TYPE.CPU_ALPHA_21264:
+                    case CV_CPU_TYPE.CPU_ALPHA_21364:
                         {
                         return (CV_ALPHA)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_PPC601:
-                    case CV_CPU_TYPE.CV_CFL_PPC603:
-                    case CV_CPU_TYPE.CV_CFL_PPC604:
-                    case CV_CPU_TYPE.CV_CFL_PPC620:
-                    case CV_CPU_TYPE.CV_CFL_PPCFP:
-                    case CV_CPU_TYPE.CV_CFL_PPCBE:
+                    case CV_CPU_TYPE.CPU_PPC601:
+                    case CV_CPU_TYPE.CPU_PPC603:
+                    case CV_CPU_TYPE.CPU_PPC604:
+                    case CV_CPU_TYPE.CPU_PPC620:
+                    case CV_CPU_TYPE.CPU_PPCFP:
+                    case CV_CPU_TYPE.CPU_PPCBE:
                         {
                         return (CV_PPC)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_SH3:
-                    case CV_CPU_TYPE.CV_CFL_SH3E:
-                    case CV_CPU_TYPE.CV_CFL_SH3DSP:
-                    case CV_CPU_TYPE.CV_CFL_SH4:
+                    case CV_CPU_TYPE.CPU_SH3:
+                    case CV_CPU_TYPE.CPU_SH3E:
+                    case CV_CPU_TYPE.CPU_SH3DSP:
+                    case CV_CPU_TYPE.CPU_SH4:
                         {
                         return (CV_SH3)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_SHMEDIA:
+                    case CV_CPU_TYPE.CPU_SHMEDIA:
                         {
                         return (CV_SHMEDIA)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_ARM3:
-                    case CV_CPU_TYPE.CV_CFL_ARM4:
-                    case CV_CPU_TYPE.CV_CFL_ARM4T:
-                    case CV_CPU_TYPE.CV_CFL_ARM5:
-                    case CV_CPU_TYPE.CV_CFL_ARM5T:
-                    case CV_CPU_TYPE.CV_CFL_ARM6:
-                    case CV_CPU_TYPE.CV_CFL_ARM_XMAC:
-                    case CV_CPU_TYPE.CV_CFL_ARM_WMMX:
-                    case CV_CPU_TYPE.CV_CFL_ARM7:
-                    case CV_CPU_TYPE.CV_CFL_THUMB:
-                    case CV_CPU_TYPE.CV_CFL_ARMNT:
+                    case CV_CPU_TYPE.CPU_ARM3:
+                    case CV_CPU_TYPE.CPU_ARM4:
+                    case CV_CPU_TYPE.CPU_ARM4T:
+                    case CV_CPU_TYPE.CPU_ARM5:
+                    case CV_CPU_TYPE.CPU_ARM5T:
+                    case CV_CPU_TYPE.CPU_ARM6:
+                    case CV_CPU_TYPE.CPU_ARM_XMAC:
+                    case CV_CPU_TYPE.CPU_ARM_WMMX:
+                    case CV_CPU_TYPE.CPU_ARM7:
+                    case CV_CPU_TYPE.CPU_THUMB:
+                    case CV_CPU_TYPE.CPU_ARMNT:
                         {
                         return (CV_ARM)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_IA64:
-                    case CV_CPU_TYPE.CV_CFL_IA64_2:
+                    case CV_CPU_TYPE.CPU_IA64:
+                    case CV_CPU_TYPE.CPU_IA64_2:
                         {
                         return (CV_IA64)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_AM33:
+                    case CV_CPU_TYPE.CPU_AM33:
                         {
                         return (CV_AM33)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_M32R:
+                    case CV_CPU_TYPE.CPU_M32R:
                         {
                         return (CV_M32R)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_TRICORE:
+                    case CV_CPU_TYPE.CPU_TRICORE:
                         {
                         return (CV_TRI)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_ARM64:
+                    case CV_CPU_TYPE.CPU_ARM64:
                         {
                         return (CV_ARM64)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_X64:
+                    case CV_CPU_TYPE.CPU_X64:
                         {
                         return (CV_AMD64)value;
                         }
-                    case CV_CPU_TYPE.CV_CFL_D3D11_SHADER:
-                    case CV_CPU_TYPE.CV_CFL_OMNI:
-                    case CV_CPU_TYPE.CV_CFL_CEE:
-                    case CV_CPU_TYPE.CV_CFL_EBC:
+                    case CV_CPU_TYPE.CPU_D3D11_SHADER:
+                    case CV_CPU_TYPE.CPU_OMNI:
+                    case CV_CPU_TYPE.CPU_CEE:
+                    case CV_CPU_TYPE.CPU_EBC:
                         {
                         return value.ToString("X4");
                         }

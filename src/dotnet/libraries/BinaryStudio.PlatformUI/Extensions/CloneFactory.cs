@@ -31,7 +31,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             }
         #endregion
         #region M:CopyTo(Paragraph,Paragraph)
-        private static void CopyTo(Paragraph Source,Paragraph Target,FrameworkContentElement Host)
+        public static void CopyTo(Paragraph Source,Paragraph Target,FrameworkContentElement Host)
             {
             CopyTo((Block)Source,(Block)Target,Host);
             CopyTo(Source,Target,Paragraph.KeepTogetherProperty);
@@ -268,6 +268,13 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo(Source,Target,DocumentSectionContent.ContentProperty);
             }
         #endregion
+        #region M:CopyTo(DocumentParagraphContent,DocumentParagraphContent)
+        public static void CopyTo(DocumentParagraphContent Source,DocumentParagraphContent Target,FrameworkContentElement Host)
+            {
+            CopyTo((Paragraph)Source,Target,Host);
+            CopyTo(Source,Target,DocumentParagraphContent.ContentProperty);
+            }
+        #endregion
         #region M:CopyTo(Table,Table)
         private static void CopyTo(Table Source,Table Target,FrameworkContentElement Host)
             {
@@ -408,6 +415,15 @@ namespace BinaryStudio.PlatformUI.Extensions
             return Target;
             }
 
+        public static DocumentParagraphContent Clone(DocumentParagraphContent Source,FrameworkContentElement Host,Boolean PerformLoad) {
+            if (Source == null) { return null; }
+            var Target = (DocumentParagraphContent)Activator.CreateInstance(Source.GetType());
+            ApplyStyle(Target,Host);
+            CopyTo(Source,Target,Host);
+            if (PerformLoad) Load(Source,Target);
+            return Target;
+            }
+
         public static DocumentSectionContent Clone(DocumentSectionContent Source,FrameworkContentElement Host,Boolean PerformLoad) {
             if (Source == null) { return null; }
             var Target = (DocumentSectionContent)Activator.CreateInstance(Source.GetType());
@@ -430,6 +446,7 @@ namespace BinaryStudio.PlatformUI.Extensions
         private static Block Clone(Block Source,FrameworkContentElement Host,Boolean PerformLoad)
             {
             return (Block)Clone(Source as DocumentSectionContent,Host,PerformLoad)
+                ?? (Block)Clone(Source as DocumentParagraphContent,Host,PerformLoad)
                 ?? (Block)Clone(Source as BlockUIContainer,Host,PerformLoad)
                 ?? (Block)Clone(Source as List,Host,PerformLoad)
                 ?? (Block)Clone(Source as Paragraph,Host,PerformLoad)

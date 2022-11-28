@@ -19,7 +19,7 @@ namespace BinaryStudio.PortableExecutable
         internal NEMetadataObject(MetadataScope scope, MetadataObjectIdentity identity)
             : base(scope, identity)
             {
-            CPU = CV_CPU_TYPE.CV_CFL_PENTIUMIII;
+            CPU = CV_CPU_TYPE.CPU_PENTIUMIII;
             }
 
         #region M:LoadCore(IntPtr[],Int64)

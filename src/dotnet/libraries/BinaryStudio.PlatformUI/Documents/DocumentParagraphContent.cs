@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Xml;
-using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Extensions;
 
 namespace BinaryStudio.PlatformUI.Documents
     {
-    public class DocumentSectionContent : Section
+    public class DocumentParagraphContent : Paragraph
         {
-        internal Int32 CloneCount;
         #region P:Content:Object
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(DocumentSectionContent), new PropertyMetadata(default(Object)));
+        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(DocumentParagraphContent), new PropertyMetadata(default(Object)));
         public Object Content
             {
             get { return GetValue(ContentProperty); }
@@ -24,7 +20,7 @@ namespace BinaryStudio.PlatformUI.Documents
             }
         #endregion
         #region P:IsContentApplied:Boolean
-        private static readonly DependencyPropertyKey IsContentAppliedPropertyKey = DependencyProperty.RegisterReadOnly("IsContentApplied", typeof(Boolean), typeof(DocumentSectionContent), new PropertyMetadata(default(Boolean)));
+        private static readonly DependencyPropertyKey IsContentAppliedPropertyKey = DependencyProperty.RegisterReadOnly("IsContentApplied", typeof(Boolean), typeof(DocumentParagraphContent), new PropertyMetadata(default(Boolean)));
         public static readonly DependencyProperty IsContentAppliedProperty = IsContentAppliedPropertyKey.DependencyProperty;
         public Boolean IsContentApplied
             {
@@ -33,18 +29,18 @@ namespace BinaryStudio.PlatformUI.Documents
             }
         #endregion
 
-        public DocumentSectionContent()
+        public DocumentParagraphContent()
             {
             Loaded += OnLoaded;
             }
 
         private void OnLoaded(Object sender, RoutedEventArgs e) {
             Loaded -= OnLoaded;
-            Blocks.Clear();
+            Inlines.Clear();
             var Source = Content;
             if (Source != null) {
                 if (TryFindResource(new DataTemplateKey(Source.GetType())) is DataTemplate ContentTemplate) {
-                    if (ContentTemplate.LoadContent() is Section TemplatedContent) {
+                    if (ContentTemplate.LoadContent() is Paragraph TemplatedContent) {
                         TemplatedContent.DataContext = Source;
                         CloneFactory.CopyTo(TemplatedContent,this,this);
                         DataContext = Source;
