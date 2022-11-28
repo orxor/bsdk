@@ -11,8 +11,14 @@
                    HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
                    IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
                    Foreground="{DynamicResource ControlTextBrushKey}">
+        <RichTextBox.ContextMenu>
+          <ContextMenu Style="{StaticResource {x:Static u:Theme.ContextMenuStyleKey}}">
+            <MenuItem Header="Copy" Command="ApplicationCommands.Copy" InputGestureText="Ctrl+C"/>
+            <MenuItem Header="Copy {XAML}" Command="u:PlatformCommands.CopyToXaml" InputGestureText="Ctrl+Alt+C"/>
+          </ContextMenu>
+        </RichTextBox.ContextMenu>
         <RichTextBox.Resources>
-          <Style TargetType="{x:Type TableCell}">
+          <Style TargetType="{x:Type TableCell}" x:Key="TableCell">
             <Setter Property="BorderThickness" Value="0,1,1,0"/>
             <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
             <Setter Property="Padding" Value="5,0,5,0"/>
@@ -23,25 +29,25 @@
             <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
                    u:RichTextBoxOptions.IsAutoFit="True">
               <Table.Columns>
-                <TableColumn/>
-                <TableColumn/>
+                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
               </Table.Columns>
               <TableRowGroup>
                 <TableRow>
-                  <TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
                     <Paragraph>Offset</Paragraph>
                   </TableCell>
-                  <TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
                     <Paragraph>
                       <Run Text="{Binding Source.FileOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                     </Paragraph>
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
                     <Paragraph>Size</Paragraph>
                   </TableCell>
-                  <TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
                     <Paragraph>
                       <Run Text="{Binding Source.Size,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                       <Run Text="{}{"/><Run Text="{Binding Source.Size,Mode=OneWay}"/><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run Text="{}}"/>
@@ -56,60 +62,60 @@
             <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}"
                    u:RichTextBoxOptions.IsAutoFit="True" Margin="0">
               <Table.Columns>
-                <TableColumn Width="Auto"/>
-                <TableColumn Width="Auto"/>
-                <TableColumn Width="Auto"/>
+                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
               </Table.Columns>
               <TableRowGroup>
                 <TableRow>
-                  <TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
                     <Paragraph>Offset</Paragraph>
                   </TableCell>
-                  <TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
                     <Paragraph>Symbol</Paragraph>
                   </TableCell>
-                  <TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
                     <Paragraph>Details</Paragraph>
                   </TableCell>
                 </TableRow>
               </TableRowGroup>
               <u:TableBoundRowGroup RowsSource="{Binding Source.Symbols}">
                 <TableRow>
-                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}">
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Style="{StaticResource TableCell}">
                     <Paragraph>
                       <Run Text="{Binding Offset,Mode=OneWay,StringFormat=x8}"/>
                     </Paragraph>
                   </TableCell>
-                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}">
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Style="{StaticResource TableCell}">
                     <Paragraph>
                       <Run Text="{Binding Type,Mode=OneWay}"/>
                     </Paragraph>
                   </TableCell>
-                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}">
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Padding="0" BorderThickness="0,1,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                     <TableCell.Resources>
                       <DataTemplate DataType="{x:Type u:S_COMPILE}">
-                        <Section>
-                          <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0" u:RichTextBoxOptions.IsAutoFit="True">
+                        <Section Margin="0">
+                          <Table CellSpacing="0" Margin="0">
                             <Table.Columns>
                               <TableColumn Width="Auto"/>
                               <TableColumn Width="Auto"/>
                             </Table.Columns>
                             <TableRowGroup>
                               <TableRow>
-                                <TableCell>
+                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <Paragraph>Language</Paragraph>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <Paragraph>
                                     <Run Text="{Binding Language,Mode=OneWay}"/>
                                   </Paragraph>
                                 </TableCell>
                               </TableRow>
                               <TableRow>
-                                <TableCell>
+                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <Paragraph>Machine</Paragraph>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell Padding="5,0,5,0">
                                   <Paragraph>
                                     <Run Text="{Binding Machine,Mode=OneWay}"/>
                                   </Paragraph>
@@ -120,30 +126,30 @@
                         </Section>
                       </DataTemplate>
                       <DataTemplate DataType="{x:Type u:S_SSEARCH}">
-                        <Section>
-                          <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0" u:RichTextBoxOptions.IsAutoFit="True">
+                        <Section Margin="0">
+                          <Table CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0" u:RichTextBoxOptions.IsAutoFit="True">
                             <Table.Columns>
-                              <TableColumn Width="Auto"/>
-                              <TableColumn Width="Auto"/>
+                              <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                              <TableColumn/>
                             </Table.Columns>
                             <TableRowGroup>
                               <TableRow>
-                                <TableCell>
+                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <Paragraph>SegmentIndex</Paragraph>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                                   <Paragraph>
-                                    <Run Text="{Binding SegmentIndex,Mode=OneWay}"/>
+                                    <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
                                 </TableCell>
                               </TableRow>
                               <TableRow>
-                                <TableCell>
+                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <Paragraph>ProcedureOrThunkRecordOffset</Paragraph>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell Padding="5,0,5,0">
                                   <Paragraph>
-                                    <Run Text="{Binding ProcedureOrThunkRecordOffset,Mode=OneWay}"/>
+                                    <Run Text="{Binding ProcedureOrThunkRecordOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
                                 </TableCell>
                               </TableRow>
@@ -152,7 +158,7 @@
                         </Section>
                       </DataTemplate>
                     </TableCell.Resources>
-                    <u:DocumentSectionContent Content="{Binding}"/>
+                    <u:DocumentSectionContent Content="{Binding}" Margin="0"/>
                   </TableCell>
                 </TableRow>
               </u:TableBoundRowGroup>

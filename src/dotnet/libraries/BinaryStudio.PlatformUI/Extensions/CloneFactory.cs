@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Extensions
@@ -272,6 +273,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             {
             CopyTo((Block)Source,Target,Host);
             CopyTo(Source,Target,Table.CellSpacingProperty);
+            CopyTo(Source,Target,RichTextBoxOptions.IsAutoFitProperty);
             var SourceColumns = Source.Columns;
             var TargetColumns = Target.Columns;
             foreach (var Column in SourceColumns) {
@@ -282,6 +284,9 @@ namespace BinaryStudio.PlatformUI.Extensions
             foreach (var RowGroup in SourceRowGroups) {
                 TargetRowGroups.Add(Clone(RowGroup,Host));
                 }
+            if (RichTextBoxOptions.GetIsAutoFit(Target)) {
+                RichTextBoxOptions.AutoFitTable(Target);
+                }
             }
         #endregion
         #region M:CopyTo(TableColumn,TableColumn)
@@ -290,6 +295,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo((FrameworkContentElement)Source,Target,Host);
             CopyTo(Source,Target,TableColumn.BackgroundProperty);
             CopyTo(Source,Target,TableColumn.WidthProperty);
+            CopyTo(Source,Target,RichTextBoxOptions.IsAutoFitProperty);
             }
         #endregion
         #region M:CopyTo(TableRowGroup,TableRowGroup)

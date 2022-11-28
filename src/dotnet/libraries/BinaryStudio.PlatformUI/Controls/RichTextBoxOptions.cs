@@ -88,7 +88,7 @@ namespace BinaryStudio.PlatformUI.Controls
                     }
                 }
             for (var i = 0; i < DesiredWidth.Length;i++) {
-                if (target.Columns[i].Width.IsAuto || GetIsAutoFit(target.Columns[i])) {
+                if (GetIsAutoFit(target.Columns[i])) {
                     target.Columns[i].Width = new GridLength(DesiredWidth[i],GridUnitType.Pixel);
                     SetIsAutoFit(target.Columns[i], true);
                     }
