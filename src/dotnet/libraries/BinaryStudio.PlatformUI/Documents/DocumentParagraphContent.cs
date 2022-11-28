@@ -46,6 +46,17 @@ namespace BinaryStudio.PlatformUI.Documents
                         DataContext = Source;
                         }
                     }
+                else
+                    {
+                    if (Source is Paragraph Paragraph) {
+                        Paragraph.DataContext = DataContext;
+                        CloneFactory.CopyTo(Paragraph,this,this);
+                        }
+                    else
+                        {
+                        Inlines.Add(new Run(Source.ToString()));
+                        }
+                    }
                 }
             #if DEBUG
             var range = new TextRange(ContentStart,ContentEnd);

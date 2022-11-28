@@ -52,7 +52,7 @@ namespace BinaryStudio.PlatformUI.Documents
             if (RichTextBoxOptions.GetIsAutoFit(Table)) {
                 RichTextBoxOptions.AutoFitTable(Table);
                 }
-            #if DEBUG
+            #if DEBUG3
             var range = new TextRange(ContentStart,ContentEnd);
             using (var memory = new MemoryStream()) {
                 range.Save(memory,DataFormats.Xaml);

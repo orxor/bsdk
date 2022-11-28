@@ -1,10 +1,12 @@
-﻿namespace BinaryStudio.PortableExecutable.Win32
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BinaryStudio.PortableExecutable.Win32
     {
     public enum CV_CPU_TYPE : ushort
         {
         CPU_8080         = 0x00,
         CPU_8086         = 0x01,
-        CPU_80286        = 0x02,
+        [Display(Name="Intel 286 Processor")] CPU_80286        = 0x02,
         CPU_80386        = 0x03,
         CPU_80486        = 0x04,
         CPU_PENTIUM      = 0x05,

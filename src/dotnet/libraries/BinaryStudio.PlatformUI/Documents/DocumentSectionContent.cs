@@ -51,7 +51,7 @@ namespace BinaryStudio.PlatformUI.Documents
                         }
                     }
                 }
-            #if DEBUG
+            #if DEBUG2
             var range = new TextRange(ContentStart,ContentEnd);
             if (!range.IsEmpty) {
                 using (var memory = new MemoryStream()) {
@@ -67,8 +67,8 @@ namespace BinaryStudio.PlatformUI.Documents
                         }
                     Debug.Print(builder.ToString());
                     }
-                #endif
                 }
+            #endif
             IsContentApplied = true;
             }
         }

@@ -380,7 +380,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             {
             if (Source == null) { return null; }
             var Target = new Paragraph();
-            ApplyStyle(Target,Host);
+            //ApplyStyle(Target,Host);
             CopyTo(Source,Target,Host);
             if (PerformLoad) Load(Source,Target);
             return Target;
