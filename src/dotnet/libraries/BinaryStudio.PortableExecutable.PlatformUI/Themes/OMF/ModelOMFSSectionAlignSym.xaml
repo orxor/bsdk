@@ -10,6 +10,8 @@
     <Grid>
       <Grid.Resources>
         <c:CPUTypeConverter x:Key="CPU"/>
+        <u:ADD64 x:Key="ADD64"/>
+        <u:SUB64 x:Key="SUB64"/>
       </Grid.Resources>
       <RichTextBox BorderThickness="0" Background="Transparent" Margin="2,5,2,5" IsReadOnly="True"
                    HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
@@ -119,7 +121,7 @@
                                 <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <Paragraph>ProcedureTypeIndex</Paragraph>
                                 </TableCell>
-                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1">
+                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                                   <Paragraph>
                                     <Run Text="{Binding ProcedureTypeIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
@@ -127,50 +129,77 @@
                               </TableRow>
                               <TableRow>
                                 <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>SegmentIndex</Paragraph>
+                                  <Paragraph>LOC</Paragraph>
                                 </TableCell>
-                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1">
+                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                                   <Paragraph>
-                                    <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>ProcedureOffset</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1">
-                                  <Paragraph>
-                                    <Run Text="{Binding ProcedureOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>ProcedureLength</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0">
-                                  <Paragraph>
-                                    <Run Text="{Binding ProcedureLength,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+                                    <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run Text="{Binding ProcedureOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>-<Run>
+                                      <Run.Text>
+                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8">
+                                          <MultiBinding.Bindings>
+                                            <Binding Path="ProcedureOffset" Mode="OneWay"/>
+                                            <Binding Path="ProcedureLength" Mode="OneWay"/>
+                                          </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                      </Run.Text>
+                                    </Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                     <Run Text="{}{"/><Run Text="{Binding ProcedureLength,Mode=OneWay}"/><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run Text="{}}"/>
                                   </Paragraph>
                                 </TableCell>
                               </TableRow>
                               <TableRow>
-                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
+                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
+                                  <Paragraph>DBG</Paragraph>
+                                </TableCell>
+                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
+                                  <Paragraph>
+                                    <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run>
+                                      <Run.Text>
+                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8">
+                                          <MultiBinding.Bindings>
+                                            <Binding Path="DbgStart" Mode="OneWay"/>
+                                            <Binding Path="ProcedureOffset" Mode="OneWay"/>
+                                          </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                      </Run.Text>
+                                    </Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>-<Run>
+                                      <Run.Text>
+                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8">
+                                          <MultiBinding.Bindings>
+                                            <Binding Path="DbgEnd" Mode="OneWay"/>
+                                            <Binding Path="ProcedureOffset" Mode="OneWay"/>
+                                          </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                      </Run.Text>
+                                    </Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+                                    <Run Text="{}{"/><Run>
+                                      <Run.Text>
+                                        <MultiBinding Converter="{StaticResource SUB64}" StringFormat="D">
+                                          <MultiBinding.Bindings>
+                                            <Binding Path="DbgEnd" Mode="OneWay"/>
+                                            <Binding Path="DbgStart" Mode="OneWay"/>
+                                          </MultiBinding.Bindings>
+                                        </MultiBinding>
+                                      </Run.Text>
+                                    </Run><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run Text="{}}"/>
+                                  </Paragraph>
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <Paragraph>Parent</Paragraph>
                                 </TableCell>
-                                <TableCell Padding="5,0,5,0">
+                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                                   <Paragraph>
                                     <Run Text="{Binding Parent,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
                                 </TableCell>
                               </TableRow>
                               <TableRow>
-                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
+                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <Paragraph>End</Paragraph>
                                 </TableCell>
-                                <TableCell Padding="5,0,5,0">
+                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                                   <Paragraph>
                                     <Run Text="{Binding End,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
@@ -183,26 +212,6 @@
                                 <TableCell Padding="5,0,5,0">
                                   <Paragraph>
                                     <Run Text="{Binding Next,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>DbgStart</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0">
-                                  <Paragraph>
-                                    <Run Text="{Binding DbgStart,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>DbgEnd</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0">
-                                  <Paragraph>
-                                    <Run Text="{Binding DbgEnd,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
                                 </TableCell>
                               </TableRow>
