@@ -409,7 +409,6 @@ namespace BinaryStudio.PlatformUI.Extensions
             if (Source == null) { return; }
             CopyTo(Source,Target,ContentElement.IsEnabledProperty);
             CopyTo(Source,Target,ContentElement.FocusableProperty);
-            CopyTo(Source,Target,DocumentProperties.IsAutoSizeProperty);
             CopyTo(Source,Target,DocumentProperties.IsSharedSizeScopeProperty);
             CopyTo(Source,Target,DocumentProperties.SharedGroupObjectProperty);
             CopyTo(Source,Target,DocumentProperties.WidthProperty);
@@ -447,6 +446,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo(Source,Target,TableColumn.BackgroundProperty);
             CopyTo(Source,Target,TableColumn.WidthProperty);
             CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+            CopyTo(Source,Target,DocumentProperties.IsAutoSizeProperty);
             }
         #endregion
         #region M:CopyTo(Table,Table)
@@ -472,9 +472,7 @@ namespace BinaryStudio.PlatformUI.Extensions
                 CopyTo(SourceRowGroup,TargetRowGroup,Host);
                 }
             CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-            if (DocumentProperties.GetIsAutoSize(Target)) {
-                DocumentProperties.DoAutoSize(Target);
-                }
+            CopyTo(Source,Target,DocumentProperties.IsAutoSizeProperty);
             }
         #endregion
         #region M:CopyTo(TableRowGroup,TableRowGroup)

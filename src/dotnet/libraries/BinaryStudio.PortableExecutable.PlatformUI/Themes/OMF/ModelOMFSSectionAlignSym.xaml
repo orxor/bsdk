@@ -68,7 +68,7 @@
             <Paragraph Margin="0,5,0,5">Symbols:</Paragraph>
             <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
                    u:DocumentProperties.IsSharedSizeScope="True"
-                   u:DocumentProperties.IsAutoSize="True">
+                   u:DocumentProperties.IsAutoSize="True" Name="SYMBOLS">
               <Table.Columns>
                 <TableColumn u:DocumentProperties.IsAutoSize="True"/>
                 <TableColumn u:DocumentProperties.IsAutoSize="True"/>
@@ -104,7 +104,7 @@
                     <TableCell.Resources>
                       <DataTemplate DataType="{x:Type u:S_GPROC16}">
                         <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True">
+                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="S_GPROC16">
                             <Table.Columns>
                               <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
                               <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
@@ -132,7 +132,7 @@
                               </TableRow>
                               <TableRow>
                                 <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>LOC</Paragraph>
+                                  <Paragraph>Location</Paragraph>
                                 </TableCell>
                                 <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                                   <Paragraph>
@@ -152,7 +152,7 @@
                               </TableRow>
                               <TableRow>
                                 <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>DBG</Paragraph>
+                                  <Paragraph>Debug</Paragraph>
                                 </TableCell>
                                 <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
                                   <Paragraph Margin="0" Padding="0">
@@ -224,7 +224,7 @@
                       </DataTemplate>
                       <DataTemplate DataType="{x:Type u:S_OBJNAME_ST}">
                         <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True">
+                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="S_OBJNAME_ST">
                             <Table.Columns>
                               <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
                               <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
@@ -256,7 +256,7 @@
                       </DataTemplate>
                       <DataTemplate DataType="{x:Type u:S_COMPILE}">
                         <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="TargetTable">
+                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="S_COMPILE">
                             <Table.Columns>
                               <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
                               <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -26,14 +27,14 @@ namespace BinaryStudio.PlatformUI.Documents
         private static readonly IDictionary<Object,DependencyObject> Values = new Dictionary<Object,DependencyObject>();
 
         #region P:DocumentProperties.SharedGroupObject:DependencyObject
-        internal static readonly DependencyProperty SharedGroupObjectProperty = DependencyProperty.RegisterAttached("SharedGroupObject", typeof(DependencyObject), typeof(DocumentProperties), new PropertyMetadata(default(DependencyObject)));
+        internal static readonly DependencyProperty SharedGroupObjectProperty = DependencyProperty.RegisterAttached("SharedGroupObject", typeof(DependencyObject), typeof(DocumentProperties), new FrameworkPropertyMetadata(null,FrameworkPropertyMetadataOptions.Inherits));
         private static void SetSharedGroupObject(DependencyObject element, DependencyObject value)
             {
             element.SetValue(SharedGroupObjectProperty, value);
             }
-        private static DependencyObject GetSharedGroupObject(DependencyObject element)
+        private static SharedSizeGroupObject GetSharedGroupObject(DependencyObject element)
             {
-            return (DependencyObject)element.GetValue(SharedGroupObjectProperty);
+            return (SharedSizeGroupObject)element.GetValue(SharedGroupObjectProperty);
             }
         #endregion
         #region P:DocumentProperties.SharedSizeGroup:String
@@ -49,10 +50,12 @@ namespace BinaryStudio.PlatformUI.Documents
                         Values[Key] = SharedGroupObject = new SharedSizeGroupObject(SharedSizeGroup);
                         }
                     SetSharedGroupObject(Source,SharedGroupObject);
+                    Debug.Print($"{SharedSizeGroup}");
                     Source.SetBinding(WidthProperty,SharedGroupObject,WidthProperty,BindingMode.TwoWay);
-                    break;
+                    return;
                     }
                 }
+            return;
             }
 
         public static void SetSharedSizeGroup(DependencyObject element, String value)
@@ -291,8 +294,8 @@ namespace BinaryStudio.PlatformUI.Documents
                 Brushes.Black,
                 null,
                 TextFormattingMode.Display);
-            SetDesiredSize(Source,new Size(r.Width,r.Height));
-            return new Vector(r.Width,r.Height);
+            SetDesiredSize(Source,new Size(Math.Max(r.Width,Source.FontSize),r.Height));
+            return new Vector(Math.Max(r.Width,Source.FontSize),r.Height);
             }
         #endregion
         #region M:GetDesiredSize(Span):Vector
@@ -410,7 +413,10 @@ namespace BinaryStudio.PlatformUI.Documents
                 if (DesiredWidth[i] >= 0) {
                     var SharedGroupObject = GetSharedGroupObject(Source.Columns[i]);
                     if (SharedGroupObject != null) {
-                        SetWidth(SharedGroupObject,DesiredWidth[i]);
+                        var value = GetWidth(SharedGroupObject);
+                        Debug.Print($"{SharedGroupObject.SharedSizeGroup}:OLD={value};NEW={DesiredWidth[i]}");
+                        SetWidth(SharedGroupObject,0);
+                        SetWidth(SharedGroupObject,Math.Max(DesiredWidth[i],value));
                         }
                     else if (GetIsAutoSize(Source.Columns[i])) { Source.Columns[i].Width = new GridLength(DesiredWidth[i],GridUnitType.Pixel); }
                     }
