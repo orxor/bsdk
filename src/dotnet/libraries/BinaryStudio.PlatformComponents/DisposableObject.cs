@@ -59,25 +59,16 @@ namespace BinaryStudio.PlatformComponents
         #endregion
         #region M:Dispose(Boolean)
         protected virtual void Dispose(Boolean disposing) {
-            if (!IsDisposed)
-                {
-                try
-                    {
-                    if (disposing)
-                        {
-                        if (Disposing != null)
-                            {
-                            Disposing(this, EventArgs.Empty);
-                            Disposing = null;
-                            }
-                        DisposeManagedResources();
+            if (!IsDisposed) {
+                IsDisposed = true;
+                if (disposing) {
+                    if (Disposing != null) {
+                        Disposing(this, EventArgs.Empty);
+                        Disposing = null;
                         }
-                    DisposeNativeResources();
+                    DisposeManagedResources();
                     }
-                finally
-                    {
-                    IsDisposed = true;
-                    }
+                DisposeNativeResources();
                 }
             }
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
 namespace BinaryStudio.PlatformUI.Shell.Controls
@@ -7,7 +8,8 @@ namespace BinaryStudio.PlatformUI.Shell.Controls
     public class ADD64 : IMultiValueConverter
         {
         private static Int64 ToInt64(Object value) {
-            if ((value == null) || (value is DBNull)) { return 0; }
+            if ((value == null) || (value is DBNull))   { return 0; }
+            if (value == DependencyProperty.UnsetValue) { return 0; }
             if (value is Int64 I8) { return I8; }
             if (value is Int32 I4) { return I4; }
             if (value is Int16 I2) { return I2; }
@@ -48,7 +50,8 @@ namespace BinaryStudio.PlatformUI.Shell.Controls
     public class SUB64 : IMultiValueConverter
         {
         private static Int64 ToInt64(Object value) {
-            if ((value == null) || (value is DBNull)) { return 0; }
+            if ((value == null) || (value is DBNull))   { return 0; }
+            if (value == DependencyProperty.UnsetValue) { return 0; }
             if (value is Int64 I8) { return I8; }
             if (value is Int32 I4) { return I4; }
             if (value is Int16 I2) { return I2; }

@@ -102,7 +102,7 @@
                   </TableCell>
                 </TableRow>
               </TableRowGroup>
-              <u:TableBoundRowGroup RowsSource="{Binding Segments}">
+              <u:TableBoundRowGroup ItemsSource="{Binding Segments}">
                 <TableRow>
                   <TableCell d:DataContext="{d:DesignInstance Type=e:ModelOMFSegmentInfo}">
                     <Paragraph>

@@ -3,22 +3,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Xml;
+using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Extensions;
 
 namespace BinaryStudio.PlatformUI.Documents
     {
     public class DocumentParagraphContent : Paragraph
         {
-        #region P:Content:Object
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(Object), typeof(DocumentParagraphContent), new PropertyMetadata(default(Object)));
-        public Object Content
-            {
-            get { return GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
-            }
-        #endregion
         #region P:IsContentApplied:Boolean
         private static readonly DependencyPropertyKey IsContentAppliedPropertyKey = DependencyProperty.RegisterReadOnly("IsContentApplied", typeof(Boolean), typeof(DocumentParagraphContent), new PropertyMetadata(default(Boolean)));
         public static readonly DependencyProperty IsContentAppliedProperty = IsContentAppliedPropertyKey.DependencyProperty;
@@ -28,28 +23,53 @@ namespace BinaryStudio.PlatformUI.Documents
             private set { SetValue(IsContentAppliedPropertyKey,value); }
             }
         #endregion
+        #region P:Content:Object
+        public static readonly DependencyProperty ContentProperty = ContentControl.ContentProperty.AddOwner(typeof(DocumentParagraphContent), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, OnContentChanged));
+        public Object Content
+            {
+            get { return (Object)GetValue(ContentControl.ContentProperty); }
+            set { SetValue(ContentControl.ContentProperty, value); }
+            }
+        #endregion
 
         public DocumentParagraphContent()
             {
+            //this.SetBinding(ContentProperty,this,DataContextProperty,BindingMode.OneWay);
             Loaded += OnLoaded;
             }
 
-        private void OnLoaded(Object sender, RoutedEventArgs e) {
-            Loaded -= OnLoaded;
+        protected override Boolean ShouldSerializeProperty(DependencyProperty dp)
+            {
+            return base.ShouldSerializeProperty(dp);
+            }
+
+        private static void OnContentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is DocumentParagraphContent source) {
+                source.OnContentChanged();
+                }
+            }
+
+        private void OnContentChanged() {
+            //if (!IsLoaded) { return; }
+            if (State > 0) { return; }
+            State = 1;
             Inlines.Clear();
             var Source = Content;
             if (Source != null) {
                 if (TryFindResource(new DataTemplateKey(Source.GetType())) is DataTemplate ContentTemplate) {
-                    if (ContentTemplate.LoadContent() is Paragraph TemplatedContent) {
-                        TemplatedContent.DataContext = Source;
+                    var content = ContentTemplate.LoadContent();
+                    if (content is Paragraph TemplatedContent) {
+                        //CloneFactory.CopyTo(this,TemplatedContent,ContentControl.ContentProperty);
+                        CloneFactory.CopyTo(this,TemplatedContent,DataContextProperty);
+                        //TemplatedContent.SetValue(ContentControl.ContentProperty,Content);
                         CloneFactory.CopyTo(TemplatedContent,this,this);
-                        DataContext = Source;
                         }
                     }
                 else
                     {
                     if (Source is Paragraph Paragraph) {
-                        Paragraph.DataContext = DataContext;
+                        //CloneFactory.CopyTo(this,Paragraph,ContentControl.ContentProperty);
+                        CloneFactory.CopyTo(this,Paragraph,DataContextProperty);
                         CloneFactory.CopyTo(Paragraph,this,this);
                         }
                     else
@@ -74,9 +94,26 @@ namespace BinaryStudio.PlatformUI.Documents
                         }
                     Debug.Print(builder.ToString());
                     }
-                #endif
                 }
+            #endif
             IsContentApplied = true;
+            State = 0;
             }
+
+        private void OnLoaded(Object sender, RoutedEventArgs e) {
+            Loaded -= OnLoaded;
+            //OnContentChanged();
+            }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
+            if (ReferenceEquals(e.Property,DataContextProperty)) {
+                Debug.Print($"{e.Property.Name}:{e.NewValue}");
+                var x = BindingOperations.GetBindingExpressionBase(this,ContentProperty);
+                x?.UpdateTarget();
+                }
+            base.OnPropertyChanged(e);
+            }
+
+        private Int32 State;
         }
     }

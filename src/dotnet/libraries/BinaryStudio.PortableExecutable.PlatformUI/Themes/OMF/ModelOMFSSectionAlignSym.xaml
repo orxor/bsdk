@@ -7,7 +7,7 @@
                     xmlns:c="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Controls"
                     mc:Ignorable="d">
   <DataTemplate DataType="{x:Type e:ModelOMFSSectionAlignSym}">
-    <Grid>
+    <Grid TextOptions.TextRenderingMode="Auto">
       <Grid.Resources>
         <c:CPUTypeConverter x:Key="CPU"/>
         <u:ADD64 x:Key="ADD64"/>
@@ -20,7 +20,8 @@
         <RichTextBox.ContextMenu>
           <ContextMenu Style="{StaticResource {x:Static u:Theme.ContextMenuStyleKey}}">
             <MenuItem Header="Copy" Command="ApplicationCommands.Copy" InputGestureText="Ctrl+C"/>
-            <MenuItem Header="Copy {XAML}" Command="u:PlatformCommands.CopyToXaml" InputGestureText="Ctrl+Alt+C"/>
+            <MenuItem Header="Copy {XAML-V}" Command="u:PlatformCommands.CopyToXamlV" InputGestureText="Ctrl+Alt+C"/>
+            <MenuItem Header="Copy {XAML-E}" Command="u:PlatformCommands.CopyToXamlE" InputGestureText="Ctrl+Alt+E"/>
           </ContextMenu>
         </RichTextBox.ContextMenu>
         <RichTextBox.Resources>
@@ -65,12 +66,14 @@
           </Section>
           <Section>
             <Paragraph Margin="0,5,0,5">Symbols:</Paragraph>
-            <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}"
-                   u:RichTextBoxOptions.IsAutoFit="True" Margin="0">
+            <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
+                   u:DocumentProperties.IsSharedSizeScope="True"
+                   u:DocumentProperties.IsAutoSize="True">
               <Table.Columns>
-                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
-                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
-                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                <TableColumn u:DocumentProperties.IsAutoSize="True"/>
+                <TableColumn u:DocumentProperties.IsAutoSize="True"/>
+                <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
+                <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
               </Table.Columns>
               <TableRowGroup>
                 <TableRow>
@@ -80,12 +83,12 @@
                   <TableCell Style="{StaticResource TableCell}">
                     <Paragraph>Symbol</Paragraph>
                   </TableCell>
-                  <TableCell Style="{StaticResource TableCell}">
+                  <TableCell Style="{StaticResource TableCell}" ColumnSpan="2">
                     <Paragraph>Details</Paragraph>
                   </TableCell>
                 </TableRow>
               </TableRowGroup>
-              <u:TableBoundRowGroup RowsSource="{Binding Source.Symbols}">
+              <u:TableBoundRowGroup ItemsSource="{Binding Symbols}">
                 <TableRow>
                   <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Style="{StaticResource TableCell}">
                     <Paragraph>
@@ -97,14 +100,14 @@
                       <Run Text="{Binding Type,Mode=OneWay}"/>
                     </Paragraph>
                   </TableCell>
-                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Padding="0" BorderThickness="0,1,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}">
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Padding="0" BorderThickness="0,1,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" ColumnSpan="2">
                     <TableCell.Resources>
                       <DataTemplate DataType="{x:Type u:S_GPROC16}">
                         <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0">
+                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True">
                             <Table.Columns>
-                              <TableColumn Width="Auto"/>
-                              <TableColumn Width="Auto"/>
+                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
+                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
                             </Table.Columns>
                             <TableRowGroup>
                               <TableRow>
@@ -135,7 +138,7 @@
                                   <Paragraph>
                                     <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run Text="{Binding ProcedureOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>-<Run>
                                       <Run.Text>
-                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8">
+                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8" Mode="OneWay">
                                           <MultiBinding.Bindings>
                                             <Binding Path="ProcedureOffset" Mode="OneWay"/>
                                             <Binding Path="ProcedureLength" Mode="OneWay"/>
@@ -152,10 +155,10 @@
                                   <Paragraph>DBG</Paragraph>
                                 </TableCell>
                                 <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                  <Paragraph>
+                                  <Paragraph Margin="0" Padding="0">
                                     <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run>
                                       <Run.Text>
-                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8">
+                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8" Mode="OneWay">
                                           <MultiBinding.Bindings>
                                             <Binding Path="DbgStart" Mode="OneWay"/>
                                             <Binding Path="ProcedureOffset" Mode="OneWay"/>
@@ -164,7 +167,7 @@
                                       </Run.Text>
                                     </Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>-<Run>
                                       <Run.Text>
-                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8">
+                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8" Mode="OneWay">
                                           <MultiBinding.Bindings>
                                             <Binding Path="DbgEnd" Mode="OneWay"/>
                                             <Binding Path="ProcedureOffset" Mode="OneWay"/>
@@ -174,7 +177,7 @@
                                     </Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                     <Run Text="{}{"/><Run>
                                       <Run.Text>
-                                        <MultiBinding Converter="{StaticResource SUB64}" StringFormat="D">
+                                        <MultiBinding Converter="{StaticResource SUB64}" StringFormat="D" Mode="OneWay">
                                           <MultiBinding.Bindings>
                                             <Binding Path="DbgEnd" Mode="OneWay"/>
                                             <Binding Path="DbgStart" Mode="OneWay"/>
@@ -187,30 +190,30 @@
                               </TableRow>
                               <TableRow>
                                 <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>Parent</Paragraph>
+                                  <Paragraph Margin="0" Padding="0">Parent</Paragraph>
                                 </TableCell>
                                 <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                  <Paragraph>
+                                  <Paragraph Margin="0" Padding="0">
                                     <Run Text="{Binding Parent,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
                                 </TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>End</Paragraph>
+                                  <Paragraph Margin="0" Padding="0">End</Paragraph>
                                 </TableCell>
                                 <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                  <Paragraph>
+                                  <Paragraph Margin="0" Padding="0">
                                     <Run Text="{Binding End,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
                                 </TableCell>
                               </TableRow>
                               <TableRow>
                                 <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>Next</Paragraph>
+                                  <Paragraph Margin="0" Padding="0">Next</Paragraph>
                                 </TableCell>
                                 <TableCell Padding="5,0,5,0">
-                                  <Paragraph>
+                                  <Paragraph Margin="0" Padding="0">
                                     <Run Text="{Binding Next,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
                                   </Paragraph>
                                 </TableCell>
@@ -221,10 +224,10 @@
                       </DataTemplate>
                       <DataTemplate DataType="{x:Type u:S_OBJNAME_ST}">
                         <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0">
+                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True">
                             <Table.Columns>
-                              <TableColumn Width="Auto"/>
-                              <TableColumn Width="Auto"/>
+                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
+                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
                             </Table.Columns>
                             <TableRowGroup>
                               <TableRow>
@@ -253,15 +256,15 @@
                       </DataTemplate>
                       <DataTemplate DataType="{x:Type u:S_COMPILE}">
                         <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0">
+                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="TargetTable">
                             <Table.Columns>
-                              <TableColumn Width="Auto"/>
-                              <TableColumn Width="Auto"/>
+                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
+                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
                             </Table.Columns>
                             <TableRowGroup>
                               <TableRow>
                                 <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>Language</Paragraph>
+                                  <Paragraph Margin="0" Padding="0">Language</Paragraph>
                                 </TableCell>
                                 <TableCell BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
                                   <u:DocumentParagraphContent Content="{Binding Language,Converter={StaticResource CPU},Mode=OneWay}"/>
@@ -269,10 +272,11 @@
                               </TableRow>
                               <TableRow>
                                 <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>Machine</Paragraph>
+                                  <Paragraph Margin="0" Padding="0">Machine</Paragraph>
                                 </TableCell>
                                 <TableCell Padding="5,0,5,0">
-                                  <u:DocumentParagraphContent Content="{Binding Machine,Converter={StaticResource CPU},Mode=OneWay}"/>
+                                  <u:DocumentParagraphContent Content="{Binding Machine,Converter={StaticResource CPU},Mode=OneWay}"
+                                                              Margin="0" Padding="0"/>
                                 </TableCell>
                               </TableRow>
                             </TableRowGroup>
@@ -287,7 +291,7 @@
                         </Section>
                       </DataTemplate>
                     </TableCell.Resources>
-                    <u:DocumentSectionContent Content="{Binding}" Margin="0"/>
+                    <u:DocumentSectionContent Margin="0" Content="{Binding}"/>
                   </TableCell>
                 </TableRow>
               </u:TableBoundRowGroup>

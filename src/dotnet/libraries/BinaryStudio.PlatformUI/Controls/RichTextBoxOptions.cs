@@ -7,67 +7,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
-    public class RichTextBoxOptions
+    public class RichTextBoxOptions : DocumentProperties
         { 
         public static readonly DependencyProperty IsAutoFitProperty = DependencyProperty.RegisterAttached("IsAutoFit", typeof(Boolean), typeof(RichTextBoxOptions), new PropertyMetadata(default(Boolean),OnSetIsAutoFitChanged));
         private static void OnSetIsAutoFitChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             OnSetIsAutoFitChanged(sender as Table,(Boolean)e.NewValue);
             }
-
-        #region M:GetDesiredWidth(Run):Double
-        private static Double GetDesiredWidth(Run source) {
-            var r = new FormattedText(
-                source.Text,
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                new Typeface(
-                    source.FontFamily,
-                    source.FontStyle,
-                    source.FontWeight,
-                    source.FontStretch),
-                    source.FontSize,
-                Brushes.Black,
-                null,
-                TextFormattingMode.Display).Width;
-            return Math.Max(r, source.FontSize/2);
-            }
-        #endregion
-        #region M:GetDesiredWidth(TextRange):Double
-        private static Double GetDesiredWidth(TextRange source) {
-            var r = 0.0;
-            var fontweight = source.GetPropertyValue(TextElement.FontWeightProperty);
-            var fontsize = source.GetPropertyValue(TextElement.FontSizeProperty);
-            if (fontsize == DependencyProperty.UnsetValue) {
-                for (var i = source.Start; (i != null) && (i.CompareTo(source.End) <= 0);i = i.GetNextContextPosition(LogicalDirection.Forward)) {
-                    if (i.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.ElementEnd) {
-                        if (i.Parent is Run run) {
-                            r += GetDesiredWidth(run);
-                            }
-                        }
-                    }
-                }
-            else
-                {
-                r = new FormattedText(
-                    source.Text,
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    new Typeface(
-                        source.GetPropertyValue(TextElement.FontFamilyProperty) as FontFamily,
-                        (FontStyle)source.GetPropertyValue(TextElement.FontStyleProperty),
-                        (FontWeight)fontweight,
-                        FontStretches.Normal),
-                        (Double)fontsize,
-                    Brushes.Black,
-                    null,
-                    TextFormattingMode.Display).Width;
-                }
-            return r;
-            }
-        #endregion
 
         internal static void AutoFitTable(Table target) {
             var DesiredWidth = new Double[target.Columns.Count];
@@ -77,7 +26,7 @@ namespace BinaryStudio.PlatformUI.Controls
                     for (var i = 0; i < Row.Cells.Count; i++) {
                         var Cell = Row.Cells[i];
                         if (Cell.ColumnSpan == 1) {
-                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredWidth(new TextRange(Cell.ContentStart,Cell.ContentEnd)) +
+                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(Cell).X +
                                 Cell.Padding.Left + Cell.Padding.Right
                                  + Cell.BorderThickness.Left
                                  + Cell.BorderThickness.Right

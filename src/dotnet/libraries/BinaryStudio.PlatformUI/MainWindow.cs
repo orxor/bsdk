@@ -3,9 +3,12 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Xml;
+using BinaryStudio.PlatformUI.Markup;
 using BinaryStudio.PlatformUI.Shell;
 using BinaryStudio.PlatformUI.Shell.Controls;
 
@@ -95,11 +98,12 @@ namespace BinaryStudio.PlatformUI
         #endregion
 
         private void UpdateCommandBindings() {
-            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(PlatformCommands.CopyToXaml, CopyToXamlExecuted,CanExecuteCopyToXaml));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(PlatformCommands.CopyToXamlV, CopyToXamlVExecuted,CanExecuteCopyToXamlV));
+            CommandManager.RegisterClassCommandBinding(GetType(), new CommandBinding(PlatformCommands.CopyToXamlE, CopyToXamlEExecuted,CanExecuteCopyToXamlE));
             }
 
-        #region M:CopyToXamlExecuted(Object,ExecutedRoutedEventArgs)
-        private static void CopyToXamlExecuted(Object sender, ExecutedRoutedEventArgs e) {
+        #region M:CopyToXamlVExecuted(Object,ExecutedRoutedEventArgs)
+        private static void CopyToXamlVExecuted(Object sender, ExecutedRoutedEventArgs e) {
             if (e.OriginalSource is RichTextBox RichTextBox) {
                 using (var memory = new MemoryStream()) {
                     RichTextBox.Selection.Save(memory,DataFormats.Xaml);
@@ -117,8 +121,38 @@ namespace BinaryStudio.PlatformUI
                 }
             }
         #endregion
-        #region M:CanExecuteCopyToXaml(Object,CanExecuteRoutedEventArgs)
-        private static void CanExecuteCopyToXaml(Object sender, CanExecuteRoutedEventArgs e) {
+        #region M:CopyToXamlEExecuted(Object,ExecutedRoutedEventArgs)
+        private static void CopyToXamlEExecuted(Object sender, ExecutedRoutedEventArgs e) {
+            if (e.OriginalSource is RichTextBox RichTextBox) {
+                var builder = new StringBuilder();
+                using (var writer = XmlWriter.Create(new StringWriter(builder),new XmlWriterSettings{
+                    Indent = true,
+                    IndentChars = "  ",
+                    }))
+                    {
+                    var Srt = RichTextBox.Selection.Start;
+                    var End = RichTextBox.Selection.End;
+                    var SerializationManager = new XamlDesignerSerializationManager(writer) {
+                        XamlWriterMode = XamlWriterMode.Expression
+                        };
+                    //XamlWriter.Save(RichTextBox.Document,SerializationManager);
+                    XamlSerializer.WriteTo(RichTextBox.Document,writer,XamlWriterMode.Expression);
+                    }
+                Clipboard.SetText(builder.ToString());
+                }
+            }
+        #endregion
+        #region M:CanExecuteCopyToXamlV(Object,CanExecuteRoutedEventArgs)
+        private static void CanExecuteCopyToXamlV(Object sender, CanExecuteRoutedEventArgs e) {
+            e.CanExecute = false;
+            if (e.OriginalSource is RichTextBox RichTextBox) {
+                e.CanExecute = !RichTextBox.Selection.IsEmpty;
+                e.Handled = true;
+                }
+            }
+        #endregion
+        #region M:CanExecuteCopyToXamlE(Object,CanExecuteRoutedEventArgs)
+        private static void CanExecuteCopyToXamlE(Object sender, CanExecuteRoutedEventArgs e) {
             e.CanExecute = false;
             if (e.OriginalSource is RichTextBox RichTextBox) {
                 e.CanExecute = !RichTextBox.Selection.IsEmpty;

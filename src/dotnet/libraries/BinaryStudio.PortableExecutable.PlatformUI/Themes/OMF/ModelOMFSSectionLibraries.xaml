@@ -69,7 +69,7 @@
                   </TableCell>
                 </TableRow>
               </TableRowGroup>
-              <u:TableBoundRowGroup RowsSource="{Binding Libraries}">
+              <u:TableBoundRowGroup ItemsSource="{Binding Libraries}">
                 <TableRow>
                   <TableCell d:DataContext="{d:DesignInstance Type=e:ModelOMFSSectionLibrary}">
                     <Paragraph>
