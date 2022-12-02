@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace BinaryStudio.PlatformUI.Shell.Controls
     {
-    public class ADD64 : IMultiValueConverter
+    public class AddInt64 : IMultiValueConverter
         {
         private static Int64 ToInt64(Object value) {
             if ((value == null) || (value is DBNull))   { return 0; }
@@ -47,7 +47,7 @@ namespace BinaryStudio.PlatformUI.Shell.Controls
             }
         }
 
-    public class SUB64 : IMultiValueConverter
+    public class SubInt64 : IMultiValueConverter
         {
         private static Int64 ToInt64(Object value) {
             if ((value == null) || (value is DBNull))   { return 0; }

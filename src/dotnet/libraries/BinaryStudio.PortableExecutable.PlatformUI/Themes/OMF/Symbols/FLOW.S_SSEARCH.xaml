@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="http://schemas.helix.global"
+                    xmlns:e="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Models"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:c="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Controls"
+                    mc:Ignorable="d">
+  <!-- ReSharper disable MarkupAttributeTypo -->
+  <DataTemplate DataType="{x:Type u:S_SSEARCH}">
+    <Section Margin="1" Padding="1">
+      <Paragraph Margin="1" Padding="1" OverridesDefaultStyle="True">
+        <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run Text="{Binding ProcedureOrThunkRecordOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+      </Paragraph>
+    </Section>
+  </DataTemplate>
+</ResourceDictionary>

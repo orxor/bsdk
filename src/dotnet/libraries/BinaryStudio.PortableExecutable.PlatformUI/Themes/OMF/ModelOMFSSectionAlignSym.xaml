@@ -10,8 +10,8 @@
     <Grid TextOptions.TextRenderingMode="Auto">
       <Grid.Resources>
         <c:CPUTypeConverter x:Key="CPU"/>
-        <u:ADD64 x:Key="ADD64"/>
-        <u:SUB64 x:Key="SUB64"/>
+        <u:AddInt64 x:Key="ADD64"/>
+        <u:SubInt64 x:Key="SUB64"/>
       </Grid.Resources>
       <RichTextBox BorderThickness="0" Background="Transparent" Margin="2,5,2,5" IsReadOnly="True"
                    HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
@@ -102,194 +102,14 @@
                   </TableCell>
                   <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Padding="0" BorderThickness="0,1,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" ColumnSpan="2">
                     <TableCell.Resources>
-                      <DataTemplate DataType="{x:Type u:S_GPROC16}">
-                        <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="S_GPROC16">
-                            <Table.Columns>
-                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
-                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
-                            </Table.Columns>
-                            <TableRowGroup>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>Name</Paragraph>
-                                </TableCell>
-                                <TableCell BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>
-                                    <Run Text="{Binding Name,Mode=OneWay}"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>ProcedureTypeIndex</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                  <Paragraph>
-                                    <Run Text="{Binding ProcedureTypeIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>Location</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                  <Paragraph>
-                                    <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run Text="{Binding ProcedureOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>-<Run>
-                                      <Run.Text>
-                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8" Mode="OneWay">
-                                          <MultiBinding.Bindings>
-                                            <Binding Path="ProcedureOffset" Mode="OneWay"/>
-                                            <Binding Path="ProcedureLength" Mode="OneWay"/>
-                                          </MultiBinding.Bindings>
-                                        </MultiBinding>
-                                      </Run.Text>
-                                    </Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                    <Run Text="{}{"/><Run Text="{Binding ProcedureLength,Mode=OneWay}"/><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run Text="{}}"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>Debug</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                  <Paragraph Margin="0" Padding="0">
-                                    <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run>
-                                      <Run.Text>
-                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8" Mode="OneWay">
-                                          <MultiBinding.Bindings>
-                                            <Binding Path="DbgStart" Mode="OneWay"/>
-                                            <Binding Path="ProcedureOffset" Mode="OneWay"/>
-                                          </MultiBinding.Bindings>
-                                        </MultiBinding>
-                                      </Run.Text>
-                                    </Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>-<Run>
-                                      <Run.Text>
-                                        <MultiBinding Converter="{StaticResource ADD64}" StringFormat="x8" Mode="OneWay">
-                                          <MultiBinding.Bindings>
-                                            <Binding Path="DbgEnd" Mode="OneWay"/>
-                                            <Binding Path="ProcedureOffset" Mode="OneWay"/>
-                                          </MultiBinding.Bindings>
-                                        </MultiBinding>
-                                      </Run.Text>
-                                    </Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                    <Run Text="{}{"/><Run>
-                                      <Run.Text>
-                                        <MultiBinding Converter="{StaticResource SUB64}" StringFormat="D" Mode="OneWay">
-                                          <MultiBinding.Bindings>
-                                            <Binding Path="DbgEnd" Mode="OneWay"/>
-                                            <Binding Path="DbgStart" Mode="OneWay"/>
-                                          </MultiBinding.Bindings>
-                                        </MultiBinding>
-                                      </Run.Text>
-                                    </Run><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run Text="{}}"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph Margin="0" Padding="0">Parent</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                  <Paragraph Margin="0" Padding="0">
-                                    <Run Text="{Binding Parent,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph Margin="0" Padding="0">End</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
-                                  <Paragraph Margin="0" Padding="0">
-                                    <Run Text="{Binding End,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph Margin="0" Padding="0">Next</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0">
-                                  <Paragraph Margin="0" Padding="0">
-                                    <Run Text="{Binding Next,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                            </TableRowGroup>
-                          </Table>
-                        </Section>
-                      </DataTemplate>
-                      <DataTemplate DataType="{x:Type u:S_OBJNAME_ST}">
-                        <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="S_OBJNAME_ST">
-                            <Table.Columns>
-                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
-                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
-                            </Table.Columns>
-                            <TableRowGroup>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>FileName</Paragraph>
-                                </TableCell>
-                                <TableCell BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>
-                                    <Run Text="{Binding Value,Mode=OneWay}"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph>Signature</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0">
-                                  <Paragraph>
-                                    <Run Text="{Binding Signature,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                                  </Paragraph>
-                                </TableCell>
-                              </TableRow>
-                            </TableRowGroup>
-                          </Table>
-                        </Section>
-                      </DataTemplate>
-                      <DataTemplate DataType="{x:Type u:S_COMPILE}">
-                        <Section Margin="0">
-                          <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="S_COMPILE">
-                            <Table.Columns>
-                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
-                              <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
-                            </Table.Columns>
-                            <TableRowGroup>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph Margin="0" Padding="0">Language</Paragraph>
-                                </TableCell>
-                                <TableCell BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <u:DocumentParagraphContent Content="{Binding Language,Converter={StaticResource CPU},Mode=OneWay}"/>
-                                </TableCell>
-                              </TableRow>
-                              <TableRow>
-                                <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-                                  <Paragraph Margin="0" Padding="0">Machine</Paragraph>
-                                </TableCell>
-                                <TableCell Padding="5,0,5,0">
-                                  <u:DocumentParagraphContent Content="{Binding Machine,Converter={StaticResource CPU},Mode=OneWay}"
-                                                              Margin="0" Padding="0"/>
-                                </TableCell>
-                              </TableRow>
-                            </TableRowGroup>
-                          </Table>
-                        </Section>
-                      </DataTemplate>
-                      <DataTemplate DataType="{x:Type u:S_SSEARCH}">
-                        <Section Margin="1" Padding="1">
-                          <Paragraph Margin="1" Padding="1" OverridesDefaultStyle="True">
-                            <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run Text="{Binding ProcedureOrThunkRecordOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
-                          </Paragraph>
-                        </Section>
-                      </DataTemplate>
+                      <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/FLOW.S_COMPILE.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/FLOW.S_GPROC.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/FLOW.S_OBJNAME.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/FLOW.S_SSEARCH.xaml"/>
+                        </ResourceDictionary.MergedDictionaries>
+                      </ResourceDictionary>
                     </TableCell.Resources>
                     <u:DocumentSectionContent Margin="0" Content="{Binding}"/>
                   </TableCell>
