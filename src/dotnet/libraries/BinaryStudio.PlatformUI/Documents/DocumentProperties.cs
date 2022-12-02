@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -50,12 +48,10 @@ namespace BinaryStudio.PlatformUI.Documents
                         Values[Key] = SharedGroupObject = new SharedSizeGroupObject(SharedSizeGroup);
                         }
                     SetSharedGroupObject(Source,SharedGroupObject);
-                    Debug.Print($"{SharedSizeGroup}");
                     Source.SetBinding(WidthProperty,SharedGroupObject,WidthProperty,BindingMode.TwoWay);
                     return;
                     }
                 }
-            return;
             }
 
         public static void SetSharedSizeGroup(DependencyObject element, String value)
@@ -389,7 +385,6 @@ namespace BinaryStudio.PlatformUI.Documents
 
         internal static void DoAutoSize(Table Source) {
             if (Source == null) { throw new ArgumentNullException(nameof(Source)); }
-            //return;
             #if DEBUG
             GetDesiredSize(Source);
             #endif
@@ -414,7 +409,6 @@ namespace BinaryStudio.PlatformUI.Documents
                     var SharedGroupObject = GetSharedGroupObject(Source.Columns[i]);
                     if (SharedGroupObject != null) {
                         var value = GetWidth(SharedGroupObject);
-                        Debug.Print($"{SharedGroupObject.SharedSizeGroup}:OLD={value};NEW={DesiredWidth[i]}");
                         SetWidth(SharedGroupObject,0);
                         SetWidth(SharedGroupObject,Math.Max(DesiredWidth[i],value));
                         }
@@ -422,7 +416,5 @@ namespace BinaryStudio.PlatformUI.Documents
                     }
                 }
             }
-
-        //public static void WriteXaml(
         }
     }

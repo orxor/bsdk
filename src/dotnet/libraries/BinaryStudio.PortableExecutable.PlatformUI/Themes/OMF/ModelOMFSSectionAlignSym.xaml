@@ -104,10 +104,10 @@
                     <TableCell.Resources>
                       <ResourceDictionary>
                         <ResourceDictionary.MergedDictionaries>
-                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/FLOW.S_COMPILE.xaml"/>
-                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/FLOW.S_GPROC.xaml"/>
-                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/FLOW.S_OBJNAME.xaml"/>
-                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/FLOW.S_SSEARCH.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_COMPILE.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_GPROC.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_OBJNAME.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_SSEARCH.xaml"/>
                         </ResourceDictionary.MergedDictionaries>
                       </ResourceDictionary>
                     </TableCell.Resources>
