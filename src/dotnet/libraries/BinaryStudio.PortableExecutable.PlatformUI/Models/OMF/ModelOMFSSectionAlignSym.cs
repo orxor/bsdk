@@ -14,7 +14,7 @@ namespace BinaryStudio.PortableExecutable.PlatformUI.Models
             {
             //Symbols = source.Symbols.Where(i => i is S_COMPILE).ToArray();
             //Symbols = source.Symbols.Where(i => i is S_SSEARCH).ToArray();
-            Symbols = source.Symbols.ToArray();
+            Symbols = source.Symbols.Select(Model.CreateModel).ToArray();
             }
         }
     }

@@ -22,7 +22,7 @@ namespace BinaryStudio.PortableExecutable.Win32
         {
         public readonly Int16 Length;                   // Record length.
         public readonly DEBUG_SYMBOL_INDEX Type;        // S_REGISTER_16
-        public readonly Int16 TypeIndex;                // Type index.
+        public readonly UInt16 TypeIndex;               // Type index.
         public readonly UInt16 Register;                // Register enumerate.
         /* unsigned char* Name; */                      // Length-prefixed name.
         }
