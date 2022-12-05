@@ -6,11 +6,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Interactivity;
 using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Extensions
     {
+    using TriggerBase=System.Windows.Interactivity.TriggerBase;
     public class CloneFactory
         {
         private static void CopyTo(ContextMenu Source,ContextMenu Target,FrameworkContentElement Host)
@@ -403,17 +405,29 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
             }
         #endregion
+        #region M:CopyTriggers(DependencyObject,DependencyObject)
+        private static void CopyTriggers(DependencyObject Source,DependencyObject Target) {
+            if (Source == null) { return; }
+            var SourceTriggers = Interaction.GetTriggers(Source);
+            var TargetTriggers = Interaction.GetTriggers(Target);
+            TargetTriggers.Clear();
+            foreach (var SourceTrigger in SourceTriggers) {
+                var TargetTrigger = (TriggerBase)SourceTrigger.Clone();
+                TargetTriggers.Add(TargetTrigger);
+                }
+            }
+        #endregion
         #region M:CopyTo(ContentElement,ContentElement)
         private static void CopyTo(ContentElement Source,ContentElement Target,FrameworkContentElement Host)
             {
             if (Source == null) { return; }
             CopyTo(Source,Target,ContentElement.IsEnabledProperty);
             CopyTo(Source,Target,ContentElement.FocusableProperty);
-            CopyTo(Source,Target,DocumentProperties.IsSharedSizeScopeProperty);
-            CopyTo(Source,Target,DocumentProperties.SharedGroupObjectProperty);
-            CopyTo(Source,Target,DocumentProperties.WidthProperty);
-            CopyTo(Source,Target,DocumentProperties.SharedSizeGroupProperty);
-            CopyTo(Source,Target,DocumentProperties.DesiredSizeProperty);
+            CopyTo(Source,Target,TextProperties.IsSharedSizeScopeProperty);
+            CopyTo(Source,Target,TextProperties.SharedGroupObjectProperty);
+            CopyTo(Source,Target,TextProperties.WidthProperty);
+            CopyTo(Source,Target,TextProperties.SharedSizeGroupProperty);
+            CopyTo(Source,Target,TextProperties.DesiredSizeProperty);
             }
         #endregion
         #region M:CopyTo(Section,Section)
@@ -446,7 +460,7 @@ namespace BinaryStudio.PlatformUI.Extensions
             CopyTo(Source,Target,TableColumn.BackgroundProperty);
             CopyTo(Source,Target,TableColumn.WidthProperty);
             CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-            CopyTo(Source,Target,DocumentProperties.IsAutoSizeProperty);
+            CopyTo(Source,Target,TextProperties.IsAutoSizeProperty);
             }
         #endregion
         #region M:CopyTo(Table,Table)
@@ -472,7 +486,7 @@ namespace BinaryStudio.PlatformUI.Extensions
                 CopyTo(SourceRowGroup,TargetRowGroup,Host);
                 }
             CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-            CopyTo(Source,Target,DocumentProperties.IsAutoSizeProperty);
+            CopyTo(Source,Target,TextProperties.IsAutoSizeProperty);
             }
         #endregion
         #region M:CopyTo(TableRowGroup,TableRowGroup)
@@ -503,6 +517,7 @@ namespace BinaryStudio.PlatformUI.Extensions
                 CopyTo(SourceCell,TargetCell,Host);
                 }
             CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+            CopyTriggers((DependencyObject)Source,Target);
             }
         #endregion
         #region M:CopyTo(Figure,Figure)

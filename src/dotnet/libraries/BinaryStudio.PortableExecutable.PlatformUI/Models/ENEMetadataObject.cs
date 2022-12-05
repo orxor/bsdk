@@ -13,7 +13,7 @@ namespace BinaryStudio.PortableExecutable.PlatformUI.Models
             {
             DebugSections = new ObservableCollection<IModelOMFSSection>(
                 source.DebugDirectory.Sections.
-                Where(i => i.SectionIndex != OMFSSectionIndex.Module).
+                Where(i => i.SectionIndex == OMFSSectionIndex.AlignSym).
                 Select(i => (IModelOMFSSection)CreateModel(i)));
             }
         }

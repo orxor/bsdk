@@ -11,7 +11,7 @@ using BinaryStudio.PlatformUI.Controls;
 
 namespace BinaryStudio.PlatformUI.Documents
     {
-    public class DocumentProperties
+    public class TextProperties
         {
         private class SharedSizeGroupObject : DependencyObject
             {
@@ -24,8 +24,8 @@ namespace BinaryStudio.PlatformUI.Documents
 
         private static readonly IDictionary<Object,DependencyObject> Values = new Dictionary<Object,DependencyObject>();
 
-        #region P:DocumentProperties.SharedGroupObject:DependencyObject
-        internal static readonly DependencyProperty SharedGroupObjectProperty = DependencyProperty.RegisterAttached("SharedGroupObject", typeof(DependencyObject), typeof(DocumentProperties), new FrameworkPropertyMetadata(null,FrameworkPropertyMetadataOptions.Inherits));
+        #region P:TextProperties.SharedGroupObject:DependencyObject
+        internal static readonly DependencyProperty SharedGroupObjectProperty = DependencyProperty.RegisterAttached("SharedGroupObject", typeof(DependencyObject), typeof(TextProperties), new FrameworkPropertyMetadata(null,FrameworkPropertyMetadataOptions.Inherits));
         private static void SetSharedGroupObject(DependencyObject element, DependencyObject value)
             {
             element.SetValue(SharedGroupObjectProperty, value);
@@ -35,8 +35,8 @@ namespace BinaryStudio.PlatformUI.Documents
             return (SharedSizeGroupObject)element.GetValue(SharedGroupObjectProperty);
             }
         #endregion
-        #region P:DocumentProperties.SharedSizeGroup:String
-        public static readonly DependencyProperty SharedSizeGroupProperty = DependencyProperty.RegisterAttached("SharedSizeGroup", typeof(String), typeof(DocumentProperties), new PropertyMetadata(default(String),OnSharedSizeGroupChanged));
+        #region P:TextProperties.SharedSizeGroup:String
+        public static readonly DependencyProperty SharedSizeGroupProperty = DependencyProperty.RegisterAttached("SharedSizeGroup", typeof(String), typeof(TextProperties), new PropertyMetadata(default(String),OnSharedSizeGroupChanged));
         private static void OnSharedSizeGroupChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             OnSharedSizeGroupChanged(sender as TableColumn, (String)e.NewValue);
             }
@@ -64,8 +64,8 @@ namespace BinaryStudio.PlatformUI.Documents
             return (String) element.GetValue(SharedSizeGroupProperty);
             }
         #endregion
-        #region P:DocumentProperties.IsSharedSizeScope:Boolean
-        public static readonly DependencyProperty IsSharedSizeScopeProperty = DependencyProperty.RegisterAttached("IsSharedSizeScope", typeof(Boolean), typeof(DocumentProperties), new PropertyMetadata(default(Boolean)));
+        #region P:TextProperties.IsSharedSizeScope:Boolean
+        public static readonly DependencyProperty IsSharedSizeScopeProperty = DependencyProperty.RegisterAttached("IsSharedSizeScope", typeof(Boolean), typeof(TextProperties), new PropertyMetadata(default(Boolean)));
         public static void SetIsSharedSizeScope(DependencyObject element, Boolean value)
             {
             element.SetValue(IsSharedSizeScopeProperty, value);
@@ -76,8 +76,8 @@ namespace BinaryStudio.PlatformUI.Documents
             return (Boolean) element.GetValue(IsSharedSizeScopeProperty);
             }
         #endregion
-        #region P:DocumentProperties.IsAutoSize:Boolean
-        public static readonly DependencyProperty IsAutoSizeProperty = DependencyProperty.RegisterAttached("IsAutoSize", typeof(Boolean), typeof(DocumentProperties), new PropertyMetadata(default(Boolean),OnIsAutoSizeChanged));
+        #region P:TextProperties.IsAutoSize:Boolean
+        public static readonly DependencyProperty IsAutoSizeProperty = DependencyProperty.RegisterAttached("IsAutoSize", typeof(Boolean), typeof(TextProperties), new PropertyMetadata(default(Boolean),OnIsAutoSizeChanged));
         private static void OnIsAutoSizeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             OnIsAutoSizeChanged(sender as Table,(Boolean)e.NewValue);
             }
@@ -114,8 +114,8 @@ namespace BinaryStudio.PlatformUI.Documents
             return (Boolean) element.GetValue(IsAutoSizeProperty);
             }
         #endregion
-        #region P:DocumentProperties.Width:Double
-        public static readonly DependencyProperty WidthProperty = DependencyProperty.RegisterAttached("Width", typeof(Double), typeof(DocumentProperties), new PropertyMetadata(default(Double),OnWidthChanged));
+        #region P:TextProperties.Width:Double
+        public static readonly DependencyProperty WidthProperty = DependencyProperty.RegisterAttached("Width", typeof(Double), typeof(TextProperties), new PropertyMetadata(default(Double),OnWidthChanged));
         private static void OnWidthChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             if (sender is TableColumn TableColumn) {
                 var value = (Double)e.NewValue;
@@ -134,8 +134,8 @@ namespace BinaryStudio.PlatformUI.Documents
             return (Double) element.GetValue(WidthProperty);
             }
         #endregion
-        #region P:DocumentProperties.DesiredSize:Size
-        public static readonly DependencyProperty DesiredSizeProperty = DependencyProperty.RegisterAttached("DesiredSize", typeof(Size), typeof(DocumentProperties), new PropertyMetadata(default(Size)));
+        #region P:TextProperties.DesiredSize:Size
+        public static readonly DependencyProperty DesiredSizeProperty = DependencyProperty.RegisterAttached("DesiredSize", typeof(Size), typeof(TextProperties), new PropertyMetadata(default(Size)));
         public static void SetDesiredSize(DependencyObject element, Size value)
             {
             element.SetValue(DesiredSizeProperty, value);

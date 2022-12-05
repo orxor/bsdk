@@ -4,15 +4,11 @@
                     xmlns:e="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Models"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                    xmlns:c="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Controls"
                     mc:Ignorable="d">
   <!-- ReSharper disable MarkupAttributeTypo -->
-  <DataTemplate DataType="{x:Type u:S_COMPILE}">
-    <DataTemplate.Resources>
-      <c:CPUTypeConverter x:Key="CPU"/>
-    </DataTemplate.Resources>
+  <DataTemplate DataType="{x:Type u:S_BPRELSYM16}">
     <Section Margin="0">
-      <Table CellSpacing="0" Margin="0" u:TextProperties.IsAutoSize="True" Name="S_COMPILE">
+      <Table CellSpacing="0" Margin="0" u:TextProperties.IsAutoSize="True">
         <Table.Columns>
           <TableColumn u:TextProperties.SharedSizeGroup="SharedSize0"/>
           <TableColumn u:TextProperties.SharedSizeGroup="SharedSize1"/>
@@ -20,24 +16,36 @@
         <TableRowGroup>
           <TableRow>
             <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-              <Paragraph Margin="0" Padding="0">Language</Paragraph>
+              <Paragraph>Name</Paragraph>
             </TableCell>
             <TableCell BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-              <u:DocumentParagraphContent Content="{Binding Language,Converter={StaticResource CPU},Mode=OneWay}"/>
+              <Paragraph>
+                <Run Text="{Binding Name,Mode=OneWay}"/>
+              </Paragraph>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell BorderThickness="0,0,1,1" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
+              <Paragraph>TypeIndex</Paragraph>
+            </TableCell>
+            <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource ControlDarkBrushKey}">
+              <Paragraph>
+                <Run Text="{Binding TypeIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+              </Paragraph>
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell BorderThickness="0,0,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Padding="5,0,5,0">
-              <Paragraph Margin="0" Padding="0">Machine</Paragraph>
+              <Paragraph>BasePointerRegisterOffset</Paragraph>
             </TableCell>
-            <TableCell Padding="5,0,5,0">
-              <u:DocumentParagraphContent Content="{Binding Machine,Converter={StaticResource CPU},Mode=OneWay}"
-                                          Margin="0" Padding="0"/>
+            <TableCell Padding="5,0,5,0" BorderThickness="0,0,0,0" BorderBrush="{DynamicResource ControlDarkBrushKey}">
+              <Paragraph>
+                <Run>[bp+</Run><Run Text="{Binding BasePointerRegisterOffset,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/><Run>]</Run>
+              </Paragraph>
             </TableCell>
           </TableRow>
         </TableRowGroup>
       </Table>
-    </Section>
+      </Section>
   </DataTemplate>
-    
 </ResourceDictionary>

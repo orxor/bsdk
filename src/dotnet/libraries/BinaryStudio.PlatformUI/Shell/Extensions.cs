@@ -119,6 +119,7 @@ namespace BinaryStudio.PlatformUI.Controls
                 }
             }
 
+        #region M:Descendants({this}DependencyObject):IEnumerable<DependencyObject>
         public static IEnumerable<DependencyObject> Descendants(this DependencyObject source) {
             if (source != null) {
                 var c = VisualTreeHelper.GetChildrenCount(source);
@@ -133,6 +134,7 @@ namespace BinaryStudio.PlatformUI.Controls
                     }
                 }
             }
+        #endregion
 
         public static T FindDescendantReverse<T>(this DependencyObject source)
             where T : class

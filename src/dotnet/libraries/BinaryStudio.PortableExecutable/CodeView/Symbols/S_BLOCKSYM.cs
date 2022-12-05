@@ -11,8 +11,8 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public UInt16 SegmentIndex { get; }
         public Int32 CodeOffset { get; }
         public String Name { get; }
-        public UInt32 pParent { get; }
-        public UInt32 pEnd { get; }
+        public UInt32 Parent { get; }
+        public UInt32 End { get; }
         public Int32 CodeLength { get; }
 
         public ICodeViewBlockStart BlockStart { get;set; }
@@ -21,8 +21,8 @@ namespace BinaryStudio.PortableExecutable.CodeView
             {
             var Header = (BLOCKSYM16*)Content;
             CodeLength = Header->len;
-            pParent = Header->pParent;
-            pEnd = Header->pEnd;
+            Parent = Header->pParent;
+            End = Header->pEnd;
             SegmentIndex = Header->seg;
             CodeOffset = Header->off;
             Name = ToString(Encoding, (Byte*)(Header + 1), IsLengthPrefixedString);
@@ -39,7 +39,28 @@ namespace BinaryStudio.PortableExecutable.CodeView
             if (!String.IsNullOrWhiteSpace(Name)) {
                 Writer.WriteLine("{0}  Name:{{{1}}}", LinePrefix,Name);
                 }
-            Writer.WriteLine("{0}  Parent:{1:x8} End:{2:x8}", LinePrefix,pParent,pEnd);
+            Writer.WriteLine("{0}  Parent:{1:x8} End:{2:x8}", LinePrefix,Parent,End);
+            }
+        }
+
+    internal abstract class S_BLOCKSYM32 : CodeViewSymbol
+        {
+        public UInt16 Segment { get; }
+        public new UInt32 Offset { get; }
+        public String Value { get; }
+        public UInt32 Parent { get; }
+        public UInt32 End { get; }
+        public UInt32 len { get; }
+        protected unsafe S_BLOCKSYM32(CodeViewSymbolsSSection Section, Int32 Offset, IntPtr Content, Int32 Length)
+            : base(Section, Offset, Content, Length)
+            {
+            var Header = (BLOCKSYM32*)Content;
+            len = Header->len;
+            Parent = Header->pParent;
+            End = Header->pEnd;
+            Segment = Header->seg;
+            this.Offset = Header->off;
+            Value = ToString(Section.Section.Encoding, (Byte*)(Header + 1), Section.Section.IsLengthPrefixedString);
             }
         }
     }

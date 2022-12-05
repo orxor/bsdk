@@ -195,11 +195,11 @@ namespace BinaryStudio.PlatformUI.Markup
             //    }
 
             //foreach (var descriptor in new []{
-            //    DocumentProperties.IsAutoSizeProperty,
-            //    DocumentProperties.IsSharedSizeScopeProperty,
-            //    DocumentProperties.SharedGroupObjectProperty,
-            //    DocumentProperties.SharedSizeGroupProperty,
-            //    DocumentProperties.WidthProperty
+            //    TextProperties.IsAutoSizeProperty,
+            //    TextProperties.IsSharedSizeScopeProperty,
+            //    TextProperties.SharedGroupObjectProperty,
+            //    TextProperties.SharedSizeGroupProperty,
+            //    TextProperties.WidthProperty
             //    })
             //    {
             //    if (properties.Add(descriptor)) {

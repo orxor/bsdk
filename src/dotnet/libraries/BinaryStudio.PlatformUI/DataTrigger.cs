@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -9,17 +12,35 @@ using System.Windows.Markup;
 using System.Windows.Media.Animation;
 using BinaryStudio.PlatformUI.Controls;
 using TriggerActionCollection = System.Windows.TriggerActionCollection;
+using UDataTrigger=System.Windows.DataTrigger;
 
 namespace BinaryStudio.PlatformUI
     {
     [ContentProperty("Setters")]
-    public class DataTrigger : TriggerBase<DependencyObject> {
+    public class DataTrigger : TriggerBase<DependencyObject>
+        {
+        #region E:DataTrigger.AttachedEvent:RoutedEvent
+        public static readonly RoutedEvent AttachedEvent = EventManager.RegisterRoutedEvent("Attached", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DataTrigger));
+        public static void AddAttachedHandler(DependencyObject source, RoutedEventHandler handler) {
+            if (source is UIElement e) {
+                e.AddHandler(AttachedEvent,handler);
+                }
+            }
+        public static void RemoveAttachedHandler(DependencyObject source, RoutedEventHandler handler) {
+            if (source is UIElement e) {
+                e.RemoveHandler(AttachedEvent,handler);
+                }
+            }
+        #endregion
+
         public DataTrigger() {
             EnterActions = new TriggerActionCollection();
             ExitActions  = new TriggerActionCollection();
             EnterSetters = Setters;
             ExitSetters = new SetterBaseCollection();
             }
+
+        public BindingExpressionBase BindingExpression { get;private set; }
 
         #region P:Binding:BindingBase
         private BindingBase binding;
@@ -35,7 +56,7 @@ namespace BinaryStudio.PlatformUI
                 if (IsSealed) { throw new InvalidOperationException(); }
                 binding = value;
                 if (binding != null) {
-                    BindingOperations.SetBinding(this, TriggerValueProperty, binding);
+                    BindingExpression = BindingOperations.SetBinding(this, TriggerValueProperty,binding);
                     }
                 }
             }
@@ -57,9 +78,8 @@ namespace BinaryStudio.PlatformUI
         #endregion
         #region P:TriggerValue:Object
         internal static readonly DependencyProperty TriggerValueProperty = DependencyProperty.Register("TriggerValue", typeof(Object), typeof(DataTrigger), new PropertyMetadata(default(Object), OnTriggerValueChanged));
-        private static void OnTriggerValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var source = d as DataTrigger;
-            if (source != null) {
+        private static void OnTriggerValueChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is DataTrigger source) {
                 source.OnTriggerValueChanged();
                 }
             }
@@ -88,23 +108,29 @@ namespace BinaryStudio.PlatformUI
             return Object.Equals(x,y);
             }
         #endregion
-
-        private void InvokeSetters(FrameworkElement source, SetterBaseCollection setters) {
+        #region M:InvokeSetters(DependencyObject,SetterBaseCollection)
+        private static void InvokeSetters(DependencyObject source, IEnumerable setters) {
             foreach (var setter in setters.OfType<Setter>()) {
-                if (setter != null) {
-                    var resolver = new NameResolver {
-                        NameScopeReferenceElement = source,
-                        Name = setter.TargetName
-                        };
-                    var r = resolver.Object;
-                    if (r != null) {
-                        if (setter.Property != null) {
-                            r.SetValue(setter.Property, setter.Value);
+                var resolver = NameResolver.Create(source,setter.TargetName);
+                var o = resolver.Object;
+                if (o != null) {
+                    if (setter.Property != null) {
+                        if (setter.Value is DynamicResourceExtension DynamicResourceExtension) {
+                            if (source is FrameworkContentElement FrameworkContentElement) {
+                                var r = FrameworkContentElement.TryFindResource(DynamicResourceExtension.ResourceKey);
+                                if (r != null) {
+                                    o.SetValue(setter.Property, r);
+                                    continue;
+                                    }
+                                }
+                            continue;
                             }
+                        o.SetValue(setter.Property, setter.Value);
                         }
                     }
                 }
             }
+        #endregion
 
         private void PlayActions(FrameworkElement source, TriggerActionCollection actions) {
             if (source != null) {
@@ -123,46 +149,78 @@ namespace BinaryStudio.PlatformUI
                 }
             }
 
-        private void OnTriggerValueChanged() {
-            var source = AssociatedObject as FrameworkElement;
-            if (Equals(TriggerValue, Value)) {
-                if (source != null) {
-                    if (source.IsLoaded) {
+        #region M:OnEnter(FrameworkElement)
+        private void OnEnter(FrameworkElement source) {
+            if (source != null) {
+                if (source.IsLoaded) {
+                    InvokeSetters(source, EnterSetters);
+                    PlayActions(source, EnterActions);
+                    }
+                else
+                    {
+                    source.DoAfterLoaded(()=> {
                         InvokeSetters(source, EnterSetters);
                         PlayActions(source, EnterActions);
-                        }
-                    else
-                        {
-                        source.DoAfterLoaded(()=> {
-                            InvokeSetters(source, EnterSetters);
-                            PlayActions(source, EnterActions);
-                            });
-                        }
+                        });
                     }
-                if (TriggerActivated != null) {
-                    TriggerActivated(this, new RoutedEventArgs(TriggerActivatedEvent));
+                }
+            }
+        #endregion
+        #region M:OnEnter(FrameworkContentElement)
+        private void OnEnter(FrameworkContentElement source) {
+            if (source != null) {
+                InvokeSetters(source, EnterSetters);
+                }
+            }
+        #endregion
+        #region M:OnExit(FrameworkElement)
+        private void OnExit(FrameworkElement source) {
+            if (source != null) {
+                if (source.IsLoaded) {
+                    PlayActions(source, ExitActions);
+                    InvokeSetters(source, ExitSetters);
                     }
+                else
+                    {
+                    source.DoAfterLoaded(()=> {
+                        PlayActions(source, ExitActions);
+                        InvokeSetters(source, ExitSetters);
+                        });
+                    }
+                }
+            }
+        #endregion
+        #region M:OnExit(FrameworkContentElement)
+        private void OnExit(FrameworkContentElement source) {
+            if (source != null) {
+                if (source.IsLoaded) {
+                    InvokeSetters(source, ExitSetters);
+                    }
+                else
+                    {
+                    source.DoAfterLoaded(()=> {
+                        InvokeSetters(source, ExitSetters);
+                        });
+                    }
+                }
+            }
+        #endregion
+
+        private void OnTriggerValueChanged() {
+            Debug.Print(@"DataTrigger:OnTriggerValueChanged");
+            if (Equals(TriggerValue, Value)) {
+                OnEnter(AssociatedObject as FrameworkElement);
+                OnEnter(AssociatedObject as FrameworkContentElement);
+                TriggerActivated?.Invoke(this, new RoutedEventArgs(TriggerActivatedEvent));
                 }
             else
                 {
-                if (source != null) {
-                    if (source.IsLoaded) {
-                        PlayActions(source, ExitActions);
-                        InvokeSetters(source, ExitSetters);
-                        }
-                    else
-                        {
-                        source.DoAfterLoaded(()=> {
-                            PlayActions(source, ExitActions);
-                            InvokeSetters(source, ExitSetters);
-                            });
-                        }
-                    }
+                OnExit(AssociatedObject as FrameworkElement);
                 }
             }
 
         internal Object TriggerValue {
-            get { return (Object) GetValue(TriggerValueProperty); }
+            get { return (Object)GetValue(TriggerValueProperty); }
             set { SetValue(TriggerValueProperty, value); }
             }
         #endregion
@@ -176,32 +234,109 @@ namespace BinaryStudio.PlatformUI
         #region M:OnAttached
         protected override void OnAttached() {
             base.OnAttached();
-            NameScopeReferenceElement = AssociatedObject as FrameworkElement;
-            if (NameScopeReferenceElement != null) {
-                NameScopeReferenceElement.DoAfterLoaded(()=> {
-                    Scope = FindScope(AssociatedObject);
-                    });
-                }
+            Debug.Print(@"DataTrigger:OnAttached");
+            var o = AssociatedObject;
+            (o as FrameworkElement       ).DoAfterLoaded(()=>{ Scope = FindScope(o); });
+            (o as FrameworkContentElement).DoAfterLoaded(()=>{ Scope = FindScope(o); });
+            (o as FrameworkContentElement).OnDataContextChanged(()=>{
+                var e = BindingExpression;
+                if (e != null) {
+                    e.UpdateTarget();
+                    }
+                return;
+                });
             OnTriggerValueChanged();
             }
         #endregion
 
-        //protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
-        //    base.OnPropertyChanged(e);
-        //    Debug.Print("DataTrigger:OnPropertyChanged:{0}:{1}->{2}", e.Property.Name,
-        //        (e.OldValue != null)
-        //            ? String.Format(@"""{0}""", e.OldValue)
-        //            : "(null)",
-        //        (e.NewValue != null)
-        //            ? String.Format(@"""{0}""", e.NewValue)
-        //            : "(null)"
-        //        );
-        //    }
+        #region M:Clone(UDataTrigger):DataTrigger
+        internal static DataTrigger Clone(UDataTrigger source) {
+            if (source != null) {
+                var r = new DataTrigger{
+                    Binding = source.Binding,
+                    Value = source.Value
+                    };
+                foreach (var setter in source.Setters.OfType<Setter>()) {
+                    r.Setters.Add(Clone(setter));
+                    }
+                return r;
+                }
+            return null;
+            }
+        #endregion
+        #region M:Clone(Setter):Setter
+        private static Setter Clone(Setter Source) {
+            return (Source != null)
+                ? new Setter(Source.Property,Source.Value,Source.TargetName)
+                : null;
+            }
+        #endregion
+        #region M:Clone(SetterBase):SetterBase
+        private static SetterBase Clone(SetterBase Source) {
+            if (Source != null) {
+                if (Source is Setter Setter) {
+                    return Clone(Setter);
+                    }
+                throw new NotSupportedException();
+                }
+            return null;
+            }
+        #endregion
+        #region M:Attach(IList<DataTrigger>,DependencyObject)
+        internal static void Attach(IList<DataTrigger> triggers, DependencyObject source) {
+            if (triggers != null) {
+                foreach (var trigger in triggers) {
+                    //trigger.Attach(source);
+                    }
+                }
+            }
+        #endregion
+        #region M:CopyTo(SetterBaseCollection,SetterBaseCollection)
+        private static void CopyTo(SetterBaseCollection Source,SetterBaseCollection Target) {
+            if ((Source != null) && (Target != null)) {
+                foreach (var SourceSetter in Source) {
+                    Target.Add(Clone(SourceSetter));
+                    }
+                }
+            }
+        #endregion
+
+        /// <summary>Makes the instance a clone (deep copy) of the specified <see cref="T:System.Windows.Freezable"/> using base (non-animated) property values.</summary>
+        /// <param name="Source">The object to clone.</param>
+        protected override void CloneCore(Freezable Source) {
+            if (Source is DataTrigger Trigger) {
+                Value   = Trigger.Value;
+                Binding = Trigger.Binding;
+                CopyTo(Trigger.EnterSetters,EnterSetters);
+                CopyTo(Trigger.ExitSetters,ExitSetters);
+                CopyTo(Trigger.Setters,Setters);
+                }
+            }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
+            base.OnPropertyChanged(e);
+            Debug.Print(@"DataTrigger:OnPropertyChanged:Scope:""{0}""",Scope);
+            Debug.Print(@"DataTrigger:OnPropertyChanged:{0}:{1}->{2}", e.Property.Name,
+                (e.OldValue != null)
+                    ? String.Format(@"""{0}""", e.OldValue)
+                    : "(null)",
+                (e.NewValue != null)
+                    ? String.Format(@"""{0}""", e.NewValue)
+                    : "(null)"
+                );
+            }
 
         public static readonly RoutedEvent TriggerActivatedEvent = EventManager.RegisterRoutedEvent("TriggerActivated",RoutingStrategy.Bubble,typeof(RoutedEventHandler),typeof(DataTrigger));
         internal FrameworkElement NameScopeReferenceElement;
 
         public event RoutedEventHandler TriggerActivated;
+
+        #region M:FindScope(FrameworkContentElement):INameScope
+        internal static INameScope FindScope(FrameworkContentElement source) {
+            if (source == null) { return null; }
+            return null;
+            }
+        #endregion
 
         internal static INameScope FindScope(DependencyObject d) {
             return (INameScope)(typeof(FrameworkElement).
@@ -215,4 +350,6 @@ namespace BinaryStudio.PlatformUI
         //    return (TriggerActionCollection)ctor.Invoke(new Object[0]);
         //    }
         //#endregion
-        }    }
+        //private static IDictionary<DataTrigger,DependencyObject> 
+        }
+    }

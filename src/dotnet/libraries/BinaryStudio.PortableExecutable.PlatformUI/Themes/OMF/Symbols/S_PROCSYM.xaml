@@ -6,12 +6,12 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     mc:Ignorable="d">
   <!-- ReSharper disable MarkupAttributeTypo -->
-  <DataTemplate DataType="{x:Type u:S_GPROC16}">
+  <DataTemplate DataType="{x:Type u:S_PROCSYM16}">
     <Section Margin="0">
-      <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="S_GPROC16">
+      <Table CellSpacing="0" Margin="0" u:TextProperties.IsAutoSize="True">
         <Table.Columns>
-          <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
-          <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
+          <TableColumn u:TextProperties.SharedSizeGroup="SharedSize0"/>
+          <TableColumn u:TextProperties.SharedSizeGroup="SharedSize1"/>
         </Table.Columns>
         <TableRowGroup>
           <TableRow>

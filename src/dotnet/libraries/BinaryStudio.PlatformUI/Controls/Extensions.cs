@@ -79,6 +79,18 @@ namespace BinaryStudio.PlatformUI.Controls
             return Ancestors<T>(source,GetVisualOrLogicalParent);
             }
         #endregion
+        #region M:LogicalDescendants({this}DependencyObject):DependencyObject
+        public static IEnumerable<DependencyObject> LogicalDescendants(this DependencyObject source) {
+            if (source != null) {
+                foreach (var i in LogicalTreeHelper.GetChildren(source).OfType<DependencyObject>()) {
+                    yield return i;
+                    foreach (var j in LogicalDescendants(i)) {
+                        yield return j;
+                        }
+                    }
+                }
+            }
+        #endregion
 
         public static void DrawText(this DrawingContext context, Point origin, String text) {
             #if NET40 || NET45

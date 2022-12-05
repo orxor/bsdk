@@ -78,7 +78,7 @@ namespace BinaryStudio.PlatformUI.Documents
                         }
                     }
                 }
-            #if DEBUG
+            #if DEBUG3
             var range = new TextRange(ContentStart,ContentEnd);
             if (!range.IsEmpty) {
                 using (var memory = new MemoryStream()) {
@@ -107,7 +107,7 @@ namespace BinaryStudio.PlatformUI.Documents
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
             if (ReferenceEquals(e.Property,DataContextProperty)) {
-                Debug.Print($"{e.Property.Name}:{e.NewValue}");
+                //Debug.Print($"{e.Property.Name}:{e.NewValue}");
                 var x = BindingOperations.GetBindingExpressionBase(this,ContentProperty);
                 x?.UpdateTarget();
                 }

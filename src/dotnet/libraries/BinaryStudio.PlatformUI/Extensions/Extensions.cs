@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -34,30 +35,55 @@ namespace BinaryStudio.PlatformUI.Controls
             source.LayoutUpdated += handler;
             }
         #endregion
-        #region M:DoAfterLoaded<T>({this}T,Action<T>)
-        public static void DoAfterLoaded<T>(this T source,Action<T> predicate)
-            where T: FrameworkElement {
-            if (source == null) { throw new ArgumentNullException("source"); }
-            if (predicate == null) { throw new ArgumentNullException("predicate"); }
-            RoutedEventHandler handler = null;
-            handler = delegate {
-                predicate.Invoke(source);
-                source.Loaded -= handler;
-                };
-            source.Loaded += handler;
+        //#region M:DoAfterLoaded<T>({this}T,Action<T>)
+        //public static void DoAfterLoaded<T>(this T source,Action<T> predicate)
+        //    where T: FrameworkElement
+        //    {
+        //    if (source == null) { throw new ArgumentNullException(nameof(source)); }
+        //    if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
+        //    RoutedEventHandler handler = null;
+        //    handler = delegate {
+        //        predicate.Invoke(source);
+        //        source.Loaded -= handler;
+        //        };
+        //    source.Loaded += handler;
+        //    }
+        //#endregion
+        #region M:DoAfterLoaded({this}FrameworkElement,Action)
+        public static void DoAfterLoaded(this FrameworkElement source,Action predicate) {
+            if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
+            if (source != null) {
+                void Handler(Object sender, RoutedEventArgs e) {
+                    predicate.Invoke();
+                    source.Loaded -= Handler;
+                    }
+                source.Loaded += Handler;
+                }
             }
         #endregion
-        #region M:DoAfterLoaded<T>({this}T,Action)
-        public static void DoAfterLoaded<T>(this T source,Action predicate)
-            where T: FrameworkElement {
-            if (source == null) { throw new ArgumentNullException("source"); }
-            if (predicate == null) { throw new ArgumentNullException("predicate"); }
-            RoutedEventHandler handler = null;
-            handler = delegate {
-                predicate.Invoke();
-                source.Loaded -= handler;
-                };
-            source.Loaded += handler;
+        //#region M:DoAfterLoaded<T:FrameworkContentElement>({this}T,Action<T>)
+        //public static void DoAfterLoaded<T>(this T source,Action<T> predicate)
+        //    where T: FrameworkContentElement {
+        //    if (source == null) { throw new ArgumentNullException(nameof(source)); }
+        //    if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
+        //    RoutedEventHandler handler = null;
+        //    handler = delegate {
+        //        predicate.Invoke(source);
+        //        source.Loaded -= handler;
+        //        };
+        //    source.Loaded += handler;
+        //    }
+        //#endregion
+        #region M:DoAfterLoaded({this}FrameworkContentElement,Action)
+        public static void DoAfterLoaded(this FrameworkContentElement source,Action predicate) {
+            if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
+            if (source != null) {
+                void Handler(Object sender, RoutedEventArgs e) {
+                    predicate.Invoke();
+                    source.Loaded -= Handler;
+                    }
+                source.Loaded += Handler;
+                }
             }
         #endregion
         #region M:DoAfterPreviewLostKeyboardFocus<T>({this}T,Action)
@@ -84,6 +110,29 @@ namespace BinaryStudio.PlatformUI.Controls
                 source.PreviewLostKeyboardFocus -= handler;
                 };
             source.PreviewLostKeyboardFocus += handler;
+            }
+        #endregion
+        #region M:DoAfterDataContextChanged({this}FrameworkContentElement,Action)
+        public static void DoAfterDataContextChanged(this FrameworkContentElement source,Action predicate) {
+            if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
+            if (source != null) {
+                void Handler(Object sender, DependencyPropertyChangedEventArgs e) {
+                    predicate.Invoke();
+                    source.DataContextChanged -= Handler;
+                    }
+                source.DataContextChanged += Handler;
+                }
+            }
+        #endregion
+        #region M:OnDataContextChanged({this}FrameworkContentElement,Action)
+        public static void OnDataContextChanged(this FrameworkContentElement source,Action predicate) {
+            if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
+            if (source != null) {
+                void Handler(Object sender, DependencyPropertyChangedEventArgs e) {
+                    predicate.Invoke();
+                    }
+                source.DataContextChanged += Handler;
+                }
             }
         #endregion
         #region M:SetFocusAfterLayoutUpdated({this}Control)
@@ -187,6 +236,18 @@ namespace BinaryStudio.PlatformUI.Controls
                 }
             }
         #endregion
+
+        public static void WaitForLoad(this FrameworkContentElement source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (!source.IsLoaded) {
+                using (var e = new ManualResetEventSlim(false)) {
+                    DoAfterLoaded(source,()=>{
+                        e.Set();
+                        });
+                    e.Wait();
+                    }
+                }
+            }
 
         private static readonly DependencyPropertyKey ActualWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly("ActualWidth", typeof(Double), typeof(Extensions), new PropertyMetadata(default(Double)));
         public static readonly DependencyProperty ActualWidthProperty=ActualWidthPropertyKey.DependencyProperty;

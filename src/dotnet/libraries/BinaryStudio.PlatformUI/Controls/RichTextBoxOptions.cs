@@ -11,7 +11,7 @@ using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
-    public class RichTextBoxOptions : DocumentProperties
+    public class RichTextBoxOptions : TextProperties
         { 
         public static readonly DependencyProperty IsAutoFitProperty = DependencyProperty.RegisterAttached("IsAutoFit", typeof(Boolean), typeof(RichTextBoxOptions), new PropertyMetadata(default(Boolean),OnSetIsAutoFitChanged));
         private static void OnSetIsAutoFitChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {

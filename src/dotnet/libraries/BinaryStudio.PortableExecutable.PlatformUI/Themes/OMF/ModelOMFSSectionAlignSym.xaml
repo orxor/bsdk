@@ -67,13 +67,13 @@
           <Section>
             <Paragraph Margin="0,5,0,5">Symbols:</Paragraph>
             <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
-                   u:DocumentProperties.IsSharedSizeScope="True"
-                   u:DocumentProperties.IsAutoSize="True" Name="SYMBOLS">
+                   u:TextProperties.IsSharedSizeScope="True"
+                   u:TextProperties.IsAutoSize="True" Name="SYMBOLS">
               <Table.Columns>
-                <TableColumn u:DocumentProperties.IsAutoSize="True"/>
-                <TableColumn u:DocumentProperties.IsAutoSize="True"/>
-                <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
-                <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
+                <TableColumn u:TextProperties.IsAutoSize="True"/>
+                <TableColumn u:TextProperties.IsAutoSize="True"/>
+                <TableColumn u:TextProperties.SharedSizeGroup="SharedSize0"/>
+                <TableColumn u:TextProperties.SharedSizeGroup="SharedSize1"/>
               </Table.Columns>
               <TableRowGroup>
                 <TableRow>
@@ -105,9 +105,11 @@
                       <ResourceDictionary>
                         <ResourceDictionary.MergedDictionaries>
                           <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_COMPILE.xaml"/>
-                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_GPROC.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_PROCSYM.xaml"/>
                           <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_OBJNAME.xaml"/>
                           <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_SSEARCH.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_BPRELSYM.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_BLOCKSYM.xaml"/>
                         </ResourceDictionary.MergedDictionaries>
                       </ResourceDictionary>
                     </TableCell.Resources>

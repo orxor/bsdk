@@ -30,7 +30,7 @@ namespace BinaryStudio.PlatformUI.Markup
         protected override void WriteAttribute(DependencyObject source, DependencyProperty property) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (property == null) { throw new ArgumentNullException(nameof(property)); }
-            if (ReferenceEquals(property,DocumentProperties.SharedGroupObjectProperty)) { return; }
+            if (ReferenceEquals(property,TextProperties.SharedGroupObjectProperty)) { return; }
             base.WriteAttribute(source, property);
             }
 
@@ -42,9 +42,9 @@ namespace BinaryStudio.PlatformUI.Markup
             var descriptors = TypeDescriptor.GetProperties(source,true);
             Writer.WriteStartElement(type.Name,GetXmlNamespace(type));
             WriteAttributes(source,descriptors.OfType<PropertyDescriptor>().Where(i => !i.IsReadOnly));
-            var SharedGroupObject = source.GetValue(DocumentProperties.SharedGroupObjectProperty);
+            var SharedGroupObject = source.GetValue(TextProperties.SharedGroupObjectProperty);
             if (SharedGroupObject != null) {
-                Writer.WriteStartElement("DocumentProperties.SharedGroupObject",GetXmlNamespace(typeof(DocumentProperties)));
+                Writer.WriteStartElement("TextProperties.SharedGroupObject",GetXmlNamespace(typeof(TextProperties)));
                 using (var writer = GetSerializer(SharedGroupObject.GetType())) {
                     writer.Write(SharedGroupObject);
                     }

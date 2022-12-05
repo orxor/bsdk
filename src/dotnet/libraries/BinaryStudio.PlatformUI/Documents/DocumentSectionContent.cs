@@ -1,21 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Interactivity;
+using System.Windows.Threading;
 using System.Xml;
 using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Extensions;
 
 namespace BinaryStudio.PlatformUI.Documents
     {
+    using TriggerBase = System.Windows.Interactivity.TriggerBase;
+    using UDataTrigger=System.Windows.DataTrigger;
     public class DocumentSectionContent : Section
         {
-        //internal Int32 CloneCount;
         #region P:Content:Object
         public static readonly DependencyProperty ContentProperty = ContentControl.ContentProperty.AddOwner(typeof(DocumentSectionContent), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, OnContentChanged));
         public Object Content
@@ -34,18 +40,24 @@ namespace BinaryStudio.PlatformUI.Documents
             }
         #endregion
 
+        #region M:ShouldSerializeProperty(DependencyProperty):Boolean
+        /// <summary>Returns a value that indicates whether serialization processes should serialize the value for the provided dependency property.</summary>
+        /// <param name="dp">The identifier for the dependency property that should be serialized.</param>
+        /// <returns><see langword="true"/> if the dependency property that is supplied should be value-serialized; otherwise, <see langword="false"/>.</returns>
         protected override Boolean ShouldSerializeProperty(DependencyProperty dp)
             {
             if (ReferenceEquals(dp,ContentProperty)) { return false; }
             return base.ShouldSerializeProperty(dp);
             }
-
+        #endregion
+        #region M:OnContentChanged(DependencyObject,DependencyPropertyChangedEventArgs)
         private static void OnContentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             if (sender is DocumentSectionContent source) {
                 source.OnContentChanged();
                 }
             }
-
+        #endregion
+        #region M:OnContentChanged
         private void OnContentChanged() {
             if (State > 0) { return; }
             State = 1;
@@ -54,11 +66,42 @@ namespace BinaryStudio.PlatformUI.Documents
                 Blocks.Clear();
                 var Source = Content;
                 if (Source != null) {
-                    if (TryFindResource(new DataTemplateKey(Source.GetType())) is DataTemplate ContentTemplate) {
-                        var content = ContentTemplate.LoadContent();
+                    var template = TryFindDataTemplate(Source.GetType());
+                    if (template != null) {
+                        var content = template.LoadContent();
                         if (content is Section TemplatedContent) {
                             CloneFactory.CopyTo(this,TemplatedContent,DataContextProperty);
                             CloneFactory.CopyTo(TemplatedContent,this,this);
+                            TemplatedContent.DataContext = null;
+                            var triggers = this.LogicalDescendants().
+                                SelectMany(Interaction.GetTriggers).
+                                OfType<DataTrigger>().
+                                ToArray();
+                            var expressions = triggers.
+                                Select(i => i.BindingExpression).
+                                Where(i => i != null).
+                                ToArray();
+                            if (expressions.Length > 0) {
+                                if (expressions.Any(i => i.Status != BindingStatus.Active)) {
+                                    var task = Task.Factory.StartNew(()=>{
+                                        while(true) {
+                                            if ((Boolean)Dispatcher.Invoke(DispatcherPriority.DataBind,new Func<Boolean>(()=>{
+                                                var r = expressions.All(i => i.Status == BindingStatus.Active);
+                                                return r;
+                                                })))
+                                                {
+                                                break;
+                                                }
+                                            Thread.Yield();
+                                            }
+                                        });
+                                    task.Wait();
+                                    }
+                                Debug.Print($"{{{Source}}}:4");
+                                }
+                            foreach (var trigger in triggers) {
+                                trigger.Detach();
+                                }
                             }
                         }
                     }
@@ -87,23 +130,36 @@ namespace BinaryStudio.PlatformUI.Documents
                 State = 0;
                 }
             }
-
+        #endregion
+        #region M:OnPropertyChanged(DependencyPropertyChangedEventArgs)
+        /// <summary>Handles notifications that one or more of the dependency properties that exist on the element have had their effective values changed.</summary>
+        /// <param name="e">Arguments associated with the property value change. The <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.Property"/> property specifies which property has changed, the <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.OldValue"/> property specifies the previous property value, and the <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.NewValue"/> property specifies the new property value.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
             if (ReferenceEquals(e.Property,DataContextProperty)) {
                 BindingOperations.GetBindingExpressionBase(this,ContentProperty)?.UpdateTarget();
                 }
             base.OnPropertyChanged(e);
             }
+        #endregion
+        #region M:OnLoaded(Object,RoutedEventArgs)
+        private void OnLoaded(Object sender, RoutedEventArgs e) {
+            Loaded -= OnLoaded;
+            }
+        #endregion
+        #region M:TryFindDataTemplate(Type):DataTemplate
+        private DataTemplate TryFindDataTemplate(Type source) {
+            if (source == null) { return null; }
+            while ((source != null) && (source != typeof(Object))) {
+                if (TryFindResource(new DataTemplateKey(source)) is DataTemplate r) { return r; }
+                source = source.BaseType;
+                }
+            return null;
+            }
+        #endregion
 
         public DocumentSectionContent()
             {
-            //this.SetBinding(ContentProperty,this,DataContextProperty,BindingMode.OneWay);
             Loaded += OnLoaded;
-            }
-
-        private void OnLoaded(Object sender, RoutedEventArgs e) {
-            Loaded -= OnLoaded;
-            //OnContentChanged();
             }
 
         private Int32 State;

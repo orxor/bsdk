@@ -60,8 +60,8 @@ namespace BinaryStudio.PlatformUI.Documents
                         }
                     }
                 }
-            if (DocumentProperties.GetIsAutoSize(Table)) {
-                DocumentProperties.DoAutoSize(Table);
+            if (TextProperties.GetIsAutoSize(Table)) {
+                TextProperties.DoAutoSize(Table);
                 }
             #if DEBUG2
             var range = new TextRange(ContentStart,ContentEnd);

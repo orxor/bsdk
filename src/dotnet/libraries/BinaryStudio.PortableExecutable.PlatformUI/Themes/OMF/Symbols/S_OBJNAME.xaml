@@ -7,10 +7,10 @@
   <!-- ReSharper disable MarkupAttributeTypo -->
   <DataTemplate DataType="{x:Type u:S_OBJNAME_ST}">
     <Section Margin="0">
-      <Table CellSpacing="0" Margin="0" u:DocumentProperties.IsAutoSize="True" Name="S_OBJNAME_ST">
+      <Table CellSpacing="0" Margin="0" u:TextProperties.IsAutoSize="True" Name="S_OBJNAME_ST">
         <Table.Columns>
-          <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize0"/>
-          <TableColumn u:DocumentProperties.SharedSizeGroup="SharedSize1"/>
+          <TableColumn u:TextProperties.SharedSizeGroup="SharedSize0"/>
+          <TableColumn u:TextProperties.SharedSizeGroup="SharedSize1"/>
         </Table.Columns>
         <TableRowGroup>
           <TableRow>

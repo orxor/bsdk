@@ -42,10 +42,7 @@ namespace BinaryStudio.PlatformUI
         private void InvokeSetters(FrameworkElement source, SetterBaseCollection setters) {
             if (source != null) {
                 foreach (var setter in setters.OfType<Setter>()) {
-                    var resolver = new NameResolver {
-                        NameScopeReferenceElement = source,
-                        Name = setter.TargetName
-                        };
+                    var resolver = NameResolver.Create(source,setter.TargetName);
                     var r = resolver.Object;
                     if (r != null) {
                         if (setter.Property != null) {
