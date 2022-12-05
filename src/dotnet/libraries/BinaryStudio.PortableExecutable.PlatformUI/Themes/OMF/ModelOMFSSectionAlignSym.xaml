@@ -110,6 +110,7 @@
                           <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_SSEARCH.xaml"/>
                           <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_BPRELSYM.xaml"/>
                           <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_BLOCKSYM.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_DATASYM16_16.xaml"/>
                         </ResourceDictionary.MergedDictionaries>
                       </ResourceDictionary>
                     </TableCell.Resources>

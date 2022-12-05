@@ -16,4 +16,10 @@
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\OMF\Symbols\S_DATASYM16_16.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
 </Project>
