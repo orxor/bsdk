@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Xml;
 using BinaryStudio.PlatformUI.Controls;
-using BinaryStudio.PlatformUI.Extensions;
+using BinaryStudio.PlatformUI.Extensions.Cloneable;
 
 // ReSharper disable LocalVariableHidesMember
 
@@ -51,7 +47,7 @@ namespace BinaryStudio.PlatformUI.Documents
                         Rows.Add(TargetRow);
                         TargetRow.SetValue(DataContextProperty,null);
                         SourceRow.SetValue(DataContextProperty,null);
-                        CloneFactory.CopyTo(SourceRow,TargetRow,this);
+                        CloneFactory.GetFactory(SourceRow.GetType()).CopyTo(SourceRow,TargetRow);
                         TargetRow.SetValue(DataContextProperty,item);
                         CloneFactory.ApplyBindings(TargetRow);
                         if (TargetRow.IsDefaultValue(ForegroundProperty)) {

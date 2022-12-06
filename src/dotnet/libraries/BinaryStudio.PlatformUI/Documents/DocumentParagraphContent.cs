@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Xml;
-using BinaryStudio.PlatformUI.Controls;
-using BinaryStudio.PlatformUI.Extensions;
+using BinaryStudio.PlatformUI.Extensions.Cloneable;
 
 namespace BinaryStudio.PlatformUI.Documents
     {
@@ -59,18 +54,15 @@ namespace BinaryStudio.PlatformUI.Documents
                 if (TryFindResource(new DataTemplateKey(Source.GetType())) is DataTemplate ContentTemplate) {
                     var content = ContentTemplate.LoadContent();
                     if (content is Paragraph TemplatedContent) {
-                        //CloneFactory.CopyTo(this,TemplatedContent,ContentControl.ContentProperty);
                         CloneFactory.CopyTo(this,TemplatedContent,DataContextProperty);
-                        //TemplatedContent.SetValue(ContentControl.ContentProperty,Content);
-                        CloneFactory.CopyTo(TemplatedContent,this,this);
+                        CloneFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
                         }
                     }
                 else
                     {
                     if (Source is Paragraph Paragraph) {
-                        //CloneFactory.CopyTo(this,Paragraph,ContentControl.ContentProperty);
                         CloneFactory.CopyTo(this,Paragraph,DataContextProperty);
-                        CloneFactory.CopyTo(Paragraph,this,this);
+                        CloneFactory.GetFactory(Paragraph.GetType()).CopyTo(Paragraph,this);
                         }
                     else
                         {

@@ -15,6 +15,7 @@ using System.Windows.Threading;
 using System.Xml;
 using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Extensions;
+using BinaryStudio.PlatformUI.Extensions.Cloneable;
 
 namespace BinaryStudio.PlatformUI.Documents
     {
@@ -60,9 +61,11 @@ namespace BinaryStudio.PlatformUI.Documents
         #region M:OnContentChanged
         private void OnContentChanged() {
             if (State > 0) { return; }
+            Debug.Print($@"DocumentSectionContent[""{Name}""].OnContentChanged");
             State = 1;
             try
                 {
+                Debug.Indent();
                 Blocks.Clear();
                 var Source = Content;
                 if (Source != null) {
@@ -71,7 +74,7 @@ namespace BinaryStudio.PlatformUI.Documents
                         var content = template.LoadContent();
                         if (content is Section TemplatedContent) {
                             CloneFactory.CopyTo(this,TemplatedContent,DataContextProperty);
-                            CloneFactory.CopyTo(TemplatedContent,this,this);
+                            CloneFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
                             TemplatedContent.DataContext = null;
                             var triggers = this.LogicalDescendants().
                                 SelectMany(Interaction.GetTriggers).
@@ -126,6 +129,7 @@ namespace BinaryStudio.PlatformUI.Documents
                 }
             finally
                 {
+                Debug.Unindent();
                 IsContentApplied = true;
                 State = 0;
                 }

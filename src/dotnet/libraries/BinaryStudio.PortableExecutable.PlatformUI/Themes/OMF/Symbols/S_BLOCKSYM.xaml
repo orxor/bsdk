@@ -81,7 +81,5 @@
         </TableRowGroup>
       </Table>
     </Section>
-    <DataTemplate.Triggers>
-    </DataTemplate.Triggers>
   </DataTemplate>
 </ResourceDictionary>

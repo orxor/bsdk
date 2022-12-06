@@ -100,7 +100,7 @@
                       <Run Text="{Binding Type,Mode=OneWay}"/>
                     </Paragraph>
                   </TableCell>
-                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Padding="0" BorderThickness="0,1,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" ColumnSpan="2">
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Padding="0" BorderThickness="0,1,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" ColumnSpan="2" Name="TableCell2">
                     <TableCell.Resources>
                       <ResourceDictionary>
                         <ResourceDictionary.MergedDictionaries>
@@ -115,7 +115,7 @@
                         </ResourceDictionary.MergedDictionaries>
                       </ResourceDictionary>
                     </TableCell.Resources>
-                    <u:DocumentSectionContent Margin="0" Content="{Binding}"/>
+                    <u:DocumentSectionContent Margin="0" Content="{Binding}" Name="DocumentSectionContent222"/>
                   </TableCell>
                 </TableRow>
               </u:TableBoundRowGroup>

@@ -1,18 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
     public class RichTextBoxOptions : TextProperties
-        { 
+        {
+        #region P:RichTextBoxOptions.Document:FlowDocument
+        public static readonly DependencyProperty DocumentProperty = DependencyProperty.RegisterAttached("Document", typeof(FlowDocument), typeof(RichTextBoxOptions), new PropertyMetadata(default(FlowDocument),OnDocumentChanged));
+        private static void OnDocumentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
+            if (sender is RichTextBox source) {
+                try
+                    {
+                    source.Document = (FlowDocument)e.NewValue;
+                    }
+                catch (Exception x)
+                    {
+                    Debug.Print(Exceptions.ToString(x));
+                    }
+                }
+            }
+
+        public static void SetDocument(DependencyObject element, FlowDocument value)
+            {
+            element.SetValue(DocumentProperty, value);
+            }
+
+        public static FlowDocument GetDocument(DependencyObject element)
+            {
+            return (FlowDocument) element.GetValue(DocumentProperty);
+            }
+        #endregion
+
         public static readonly DependencyProperty IsAutoFitProperty = DependencyProperty.RegisterAttached("IsAutoFit", typeof(Boolean), typeof(RichTextBoxOptions), new PropertyMetadata(default(Boolean),OnSetIsAutoFitChanged));
         private static void OnSetIsAutoFitChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             OnSetIsAutoFitChanged(sender as Table,(Boolean)e.NewValue);
