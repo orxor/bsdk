@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
@@ -11,13 +12,15 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
         /// <param name="Target">Target where properties are copied to.</param>
         protected override void CopyTo(T Source, T Target) {
             if (Source == null) { return; }
-            CopyTo(Source,Target,ContentElement.IsEnabledProperty);
-            CopyTo(Source,Target,ContentElement.FocusableProperty);
-            CopyTo(Source,Target,TextProperties.IsSharedSizeScopeProperty);
-            CopyTo(Source,Target,TextProperties.SharedGroupObjectProperty);
-            CopyTo(Source,Target,TextProperties.WidthProperty);
-            CopyTo(Source,Target,TextProperties.SharedSizeGroupProperty);
-            CopyTo(Source,Target,TextProperties.DesiredSizeProperty);
+            using (new DebugScope()) {
+                CopyTo(Source,Target,ContentElement.IsEnabledProperty);
+                CopyTo(Source,Target,ContentElement.FocusableProperty);
+                CopyTo(Source,Target,TextProperties.IsSharedSizeScopeProperty);
+                CopyTo(Source,Target,TextProperties.SharedGroupObjectProperty);
+                CopyTo(Source,Target,TextProperties.WidthProperty);
+                CopyTo(Source,Target,TextProperties.SharedSizeGroupProperty);
+                CopyTo(Source,Target,TextProperties.DesiredSizeProperty);
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Documents;
+using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
@@ -13,22 +14,24 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
         protected override void CopyTo(T Source, T Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
-            CopyTo(Source,Target,AnchoredBlock.BorderBrushProperty);
-            CopyTo(Source,Target,AnchoredBlock.BorderThicknessProperty);
-            CopyTo(Source,Target,AnchoredBlock.LineHeightProperty);
-            CopyTo(Source,Target,AnchoredBlock.LineStackingStrategyProperty);
-            CopyTo(Source,Target,AnchoredBlock.MarginProperty);
-            CopyTo(Source,Target,AnchoredBlock.PaddingProperty);
-            CopyTo(Source,Target,AnchoredBlock.TextAlignmentProperty);
-            var SourceBlocks = Source.Blocks;
-            var TargetBlocks = Target.Blocks;
-            foreach (var SourceBlock in SourceBlocks) {
-                var TargetBlock = (Block)Activator.CreateInstance(SourceBlock.GetType());
-                TargetBlocks.Add(TargetBlock);
-                //ApplyStyle(TargetBlock,Host);
-                GetFactory(SourceBlock.GetType()).CopyTo(SourceBlock,TargetBlock);
+            using (new DebugScope()) {
+                CopyTo(Source,Target,AnchoredBlock.BorderBrushProperty);
+                CopyTo(Source,Target,AnchoredBlock.BorderThicknessProperty);
+                CopyTo(Source,Target,AnchoredBlock.LineHeightProperty);
+                CopyTo(Source,Target,AnchoredBlock.LineStackingStrategyProperty);
+                CopyTo(Source,Target,AnchoredBlock.MarginProperty);
+                CopyTo(Source,Target,AnchoredBlock.PaddingProperty);
+                CopyTo(Source,Target,AnchoredBlock.TextAlignmentProperty);
+                var SourceBlocks = Source.Blocks;
+                var TargetBlocks = Target.Blocks;
+                foreach (var SourceBlock in SourceBlocks) {
+                    var TargetBlock = (Block)Activator.CreateInstance(SourceBlock.GetType());
+                    TargetBlocks.Add(TargetBlock);
+                    //ApplyStyle(TargetBlock,Host);
+                    GetFactory(SourceBlock.GetType()).CopyTo(SourceBlock,TargetBlock);
+                    }
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
-            CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
@@ -12,17 +13,19 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
             if (Source == null) { return; }
             CopyTo(Source,Target,FrameworkContentElement.NameProperty);
             base.CopyTo(Source, Target);
-            CopyTo(Source,Target,FrameworkContentElement.StyleProperty);
-            CopyTo(Source,Target,FrameworkContentElement.ContextMenuProperty);
-            CopyTo(Source,Target,FrameworkContentElement.CursorProperty);
-            CopyTo(Source,Target,FrameworkContentElement.FocusVisualStyleProperty);
-            CopyTo(Source,Target,FrameworkContentElement.ForceCursorProperty);
-            CopyTo(Source,Target,FrameworkContentElement.InputScopeProperty);
-            CopyTo(Source,Target,FrameworkContentElement.LanguageProperty);
-            CopyTo(Source,Target,FrameworkContentElement.OverridesDefaultStyleProperty);
-            CopyTo(Source,Target,FrameworkContentElement.TagProperty);
-            CopyTo(Source,Target,FrameworkContentElement.ToolTipProperty);
-            Target.Resources = Source.Resources;
+            using (new DebugScope()) {
+                CopyTo(Source,Target,FrameworkContentElement.StyleProperty);
+                CopyTo(Source,Target,FrameworkContentElement.ContextMenuProperty);
+                CopyTo(Source,Target,FrameworkContentElement.CursorProperty);
+                CopyTo(Source,Target,FrameworkContentElement.FocusVisualStyleProperty);
+                CopyTo(Source,Target,FrameworkContentElement.ForceCursorProperty);
+                CopyTo(Source,Target,FrameworkContentElement.InputScopeProperty);
+                CopyTo(Source,Target,FrameworkContentElement.LanguageProperty);
+                CopyTo(Source,Target,FrameworkContentElement.OverridesDefaultStyleProperty);
+                CopyTo(Source,Target,FrameworkContentElement.TagProperty);
+                CopyTo(Source,Target,FrameworkContentElement.ToolTipProperty);
+                Target.Resources = Source.Resources;
+                }
             }
         }
     }

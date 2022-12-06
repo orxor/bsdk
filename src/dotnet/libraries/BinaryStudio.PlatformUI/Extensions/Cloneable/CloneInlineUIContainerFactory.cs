@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
+using BinaryStudio.DiagnosticServices;
 using JetBrains.Annotations;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
@@ -14,8 +15,10 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
         protected override void CopyTo(InlineUIContainer Source, InlineUIContainer Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
-            Target.Child = Clone(Source.Child);
-            CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+            using (new DebugScope()) {
+                Target.Child = Clone(Source.Child);
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Documents;
+using BinaryStudio.DiagnosticServices;
 using JetBrains.Annotations;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
@@ -15,15 +16,17 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
         protected override void CopyTo(TableRowGroup Source, TableRowGroup Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
-            var SourceRows = Source.Rows;
-            var TargetRows = Target.Rows;
-            foreach (var SourceRow in SourceRows) {
-                var TargetRow = (TableRow)Activator.CreateInstance(SourceRow.GetType());
-                TargetRows.Add(TargetRow);
-                //ApplyStyle(TargetRow,Host);
-                GetFactory(SourceRow.GetType()).CopyTo(SourceRow,TargetRow);
+            using (new DebugScope()) {
+                var SourceRows = Source.Rows;
+                var TargetRows = Target.Rows;
+                foreach (var SourceRow in SourceRows) {
+                    var TargetRow = (TableRow)Activator.CreateInstance(SourceRow.GetType());
+                    TargetRows.Add(TargetRow);
+                    //ApplyStyle(TargetRow,Host);
+                    GetFactory(SourceRow.GetType()).CopyTo(SourceRow,TargetRow);
+                    }
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
-            CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
             }
         }
     }

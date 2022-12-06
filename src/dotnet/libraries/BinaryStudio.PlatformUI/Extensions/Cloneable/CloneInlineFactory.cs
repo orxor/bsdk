@@ -1,4 +1,5 @@
 ﻿using System.Windows.Documents;
+using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
@@ -11,9 +12,11 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
         protected override void CopyTo(T Source, T Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
-            CopyTo(Source,Target,Inline.BaselineAlignmentProperty);
-            CopyTo(Source,Target,Inline.FlowDirectionProperty);
-            CopyTo(Source,Target,Inline.TextDecorationsProperty);
+            using (new DebugScope()) {
+                CopyTo(Source,Target,Inline.BaselineAlignmentProperty);
+                CopyTo(Source,Target,Inline.FlowDirectionProperty);
+                CopyTo(Source,Target,Inline.TextDecorationsProperty);
+                }
             }
         }
     }

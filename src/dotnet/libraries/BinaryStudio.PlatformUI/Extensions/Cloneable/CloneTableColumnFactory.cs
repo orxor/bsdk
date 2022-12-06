@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Documents;
 using JetBrains.Annotations;
 
@@ -15,10 +16,12 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
         protected override void CopyTo(TableColumn Source, TableColumn Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
-            CopyTo(Source,Target,TableColumn.BackgroundProperty);
-            CopyTo(Source,Target,TableColumn.WidthProperty);
-            CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-            CopyTo(Source,Target,TextProperties.IsAutoSizeProperty);
+            using (new DebugScope()) {
+                CopyTo(Source,Target,TableColumn.BackgroundProperty);
+                CopyTo(Source,Target,TableColumn.WidthProperty);
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                CopyTo(Source,Target,TextProperties.IsAutoSizeProperty);
+                }
             }
         }
     }

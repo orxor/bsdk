@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
+using BinaryStudio.DiagnosticServices;
 using JetBrains.Annotations;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
@@ -16,8 +17,10 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
             if (Source == null) { return; }
             Target.Text = Source.Text;
             base.CopyTo(Source, Target);
-            CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-            CopyTo(Source,Target,Run.TextProperty);
+            using (new DebugScope()) {
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                CopyTo(Source,Target,Run.TextProperty);
+                }
             }
         }
     }
