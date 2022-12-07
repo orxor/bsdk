@@ -16,7 +16,7 @@ using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Documents;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     using TriggerBase=System.Windows.Interactivity.TriggerBase;
     public abstract class TransferFactory

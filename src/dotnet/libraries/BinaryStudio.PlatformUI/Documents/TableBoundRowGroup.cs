@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Controls;
-using BinaryStudio.PlatformUI.Extensions.Cloneable;
+using BinaryStudio.PlatformUI.Extensions.Transfer;
 
 // ReSharper disable LocalVariableHidesMember
 

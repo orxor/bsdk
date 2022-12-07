@@ -16,7 +16,7 @@ using System.Xml;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Extensions;
-using BinaryStudio.PlatformUI.Extensions.Cloneable;
+using BinaryStudio.PlatformUI.Extensions.Transfer;
 
 namespace BinaryStudio.PlatformUI.Documents
     {

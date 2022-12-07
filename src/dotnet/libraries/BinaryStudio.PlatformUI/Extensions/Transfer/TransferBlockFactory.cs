@@ -1,7 +1,7 @@
 ﻿using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     internal abstract class TransferBlockFactory<T> : TransferTextElementFactory<T>
         where T : Block

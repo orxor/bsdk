@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     internal interface ITransferFactory
         {

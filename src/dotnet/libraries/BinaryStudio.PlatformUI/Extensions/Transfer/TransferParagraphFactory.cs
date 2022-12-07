@@ -6,7 +6,7 @@ using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Controls;
 using JetBrains.Annotations;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     [UsedImplicitly]
     [CloneFactory(typeof(Paragraph))]

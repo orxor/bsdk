@@ -4,7 +4,7 @@ using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 using JetBrains.Annotations;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     [UsedImplicitly]
     [CloneFactory(typeof(TableCell))]

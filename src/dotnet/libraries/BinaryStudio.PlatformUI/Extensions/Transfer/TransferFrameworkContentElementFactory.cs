@@ -2,7 +2,7 @@
 using System.Windows;
 using BinaryStudio.DiagnosticServices;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     internal abstract class TransferFrameworkContentElementFactory<T> : TransferContentElementFactory<T>
         where T : FrameworkContentElement

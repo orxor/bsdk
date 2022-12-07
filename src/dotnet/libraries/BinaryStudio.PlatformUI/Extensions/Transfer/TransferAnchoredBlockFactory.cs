@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     internal abstract class TransferAnchoredBlockFactory<T> : TransferInlineFactory<T>
         where T : AnchoredBlock

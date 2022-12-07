@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     internal class CloneFactoryAttribute : Attribute
         {

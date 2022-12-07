@@ -5,7 +5,7 @@ using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Documents;
 using JetBrains.Annotations;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     [UsedImplicitly]
     [CloneFactory(typeof(Table))]

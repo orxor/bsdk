@@ -2,7 +2,7 @@
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Documents;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     internal abstract class TransferContentElementFactory<T> : TransferFactory<T>
         where T : ContentElement

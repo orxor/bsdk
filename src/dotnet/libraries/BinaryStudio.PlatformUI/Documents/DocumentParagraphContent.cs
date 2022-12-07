@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using BinaryStudio.PlatformUI.Extensions.Cloneable;
+using BinaryStudio.PlatformUI.Extensions.Transfer;
 
 namespace BinaryStudio.PlatformUI.Documents
     {

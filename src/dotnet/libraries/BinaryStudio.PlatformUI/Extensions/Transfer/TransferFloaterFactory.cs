@@ -3,20 +3,21 @@ using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 using JetBrains.Annotations;
 
-namespace BinaryStudio.PlatformUI.Extensions.Cloneable
+namespace BinaryStudio.PlatformUI.Extensions.Transfer
     {
     [UsedImplicitly]
-    [CloneFactory(typeof(BlockUIContainer))]
-    internal class TransferBlockUIContainerFactory : TransferBlockFactory<BlockUIContainer>
+    [CloneFactory(typeof(Floater))]
+    internal class TransferFloaterFactory : TransferAnchoredBlockFactory<Floater>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(BlockUIContainer Source, BlockUIContainer Target) {
+        protected override void CopyTo(Floater Source, Floater Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                Target.Child = Clone(Source.Child);
+                CopyTo(Source,Target,Floater.HorizontalAlignmentProperty);
+                CopyTo(Source,Target,Floater.WidthProperty);
                 CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
             }
