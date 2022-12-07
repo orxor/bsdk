@@ -207,7 +207,9 @@ namespace BinaryStudio.PlatformUI
         #endregion
 
         private void OnTriggerValueChanged() {
+            #if DEBUG_TRIGGER
             Debug.Print(@"DataTrigger:OnTriggerValueChanged");
+            #endif
             if (Equals(TriggerValue, Value)) {
                 OnEnter(AssociatedObject as FrameworkElement);
                 OnEnter(AssociatedObject as FrameworkContentElement);
@@ -234,7 +236,9 @@ namespace BinaryStudio.PlatformUI
         #region M:OnAttached
         protected override void OnAttached() {
             base.OnAttached();
+            #if DEBUG_TRIGGER
             Debug.Print(@"DataTrigger:OnAttached");
+            #endif
             var o = AssociatedObject;
             (o as FrameworkElement       ).DoAfterLoaded(()=>{ Scope = FindScope(o); });
             (o as FrameworkContentElement).DoAfterLoaded(()=>{ Scope = FindScope(o); });
@@ -313,6 +317,7 @@ namespace BinaryStudio.PlatformUI
                 }
             }
 
+        #if DEBUG_TRIGGER
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
             base.OnPropertyChanged(e);
             Debug.Print(@"DataTrigger:OnPropertyChanged:Scope:""{0}""",Scope);
@@ -325,6 +330,7 @@ namespace BinaryStudio.PlatformUI
                     : "(null)"
                 );
             }
+        #endif
 
         public static readonly RoutedEvent TriggerActivatedEvent = EventManager.RegisterRoutedEvent("TriggerActivated",RoutingStrategy.Bubble,typeof(RoutedEventHandler),typeof(DataTrigger));
         internal FrameworkElement NameScopeReferenceElement;

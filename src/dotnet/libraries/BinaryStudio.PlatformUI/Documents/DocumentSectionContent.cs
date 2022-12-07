@@ -56,7 +56,7 @@ namespace BinaryStudio.PlatformUI.Documents
                 try
                     {
                     var Source = Content;
-                    Debug.Print($@"DocumentSectionContent:{{{Diagnostics.GetKey(this)}}}:{{{DataContext}}}:OnContentChanged:{{{Source}}}");
+                    //Debug.Print($@"DocumentSectionContent:{{{Diagnostics.GetKey(this)}}}:{{{DataContext}}}:OnContentChanged:{{{Source}}}");
                     Blocks.Clear();
                     if (Source != null) {
                         var template = TryFindDataTemplate(Source.GetType());
@@ -124,7 +124,7 @@ namespace BinaryStudio.PlatformUI.Documents
         /// <param name="e">Arguments associated with the property value change. The <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.Property"/> property specifies which property has changed, the <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.OldValue"/> property specifies the previous property value, and the <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.NewValue"/> property specifies the new property value.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
             if (ReferenceEquals(e.Property,DataContextProperty)) {
-                Debug.Print($@"{GetType().Name}.OnPropertyChanged[""{Name}"":{{{DataContext}}}].{e.Property.Name}");
+                //Debug.Print($@"{GetType().Name}.OnPropertyChanged[""{Name}"":{{{DataContext}}}].{e.Property.Name}");
                 BindingOperations.GetBindingExpressionBase(this,ContentProperty)?.UpdateTarget();
                 }
             base.OnPropertyChanged(e);

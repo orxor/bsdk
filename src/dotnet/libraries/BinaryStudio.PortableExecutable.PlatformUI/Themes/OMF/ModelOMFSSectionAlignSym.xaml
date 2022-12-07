@@ -5,6 +5,7 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:u="http://schemas.helix.global"
                     xmlns:c="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Controls"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     mc:Ignorable="d">
   <DataTemplate DataType="{x:Type e:ModelOMFSSectionAlignSym}">
     <Grid TextOptions.TextRenderingMode="Auto">
@@ -17,6 +18,9 @@
                    HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
                    IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
                    Foreground="{DynamicResource ControlTextBrushKey}">
+        <i:Interaction.Behaviors>
+          <c:WaitCursorBehavior/>
+        </i:Interaction.Behaviors>
         <RichTextBox.ContextMenu>
           <ContextMenu Style="{StaticResource {x:Static u:Theme.ContextMenuStyleKey}}">
             <MenuItem Header="Copy" Command="ApplicationCommands.Copy" InputGestureText="Ctrl+C"/>
