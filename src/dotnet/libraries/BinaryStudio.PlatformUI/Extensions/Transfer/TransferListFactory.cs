@@ -17,10 +17,10 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,List.MarkerOffsetProperty);
-                CopyTo(Source,Target,List.MarkerStyleProperty);
-                CopyTo(Source,Target,List.StartIndexProperty);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,List.MarkerOffsetProperty);
+                Transfer(Source,Target,List.MarkerStyleProperty);
+                Transfer(Source,Target,List.StartIndexProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceListItems = Source.ListItems;
                 var TargetListItems = Target.ListItems;
                 var SourceListItem = SourceListItems.FirstListItem;

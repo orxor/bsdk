@@ -13,14 +13,14 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,TextElement.BackgroundProperty);
-                CopyTo(Source,Target,TextElement.FontFamilyProperty);
-                CopyTo(Source,Target,TextElement.FontSizeProperty);
-                CopyTo(Source,Target,TextElement.FontStretchProperty);
-                CopyTo(Source,Target,TextElement.FontStyleProperty);
-                CopyTo(Source,Target,TextElement.FontWeightProperty);
-                CopyTo(Source,Target,TextElement.ForegroundProperty);
-                CopyTo(Source,Target,TextElement.TextEffectsProperty);
+                Transfer(Source,Target,TextElement.BackgroundProperty);
+                Transfer(Source,Target,TextElement.FontFamilyProperty);
+                Transfer(Source,Target,TextElement.FontSizeProperty);
+                Transfer(Source,Target,TextElement.FontStretchProperty);
+                Transfer(Source,Target,TextElement.FontStyleProperty);
+                Transfer(Source,Target,TextElement.FontWeightProperty);
+                Transfer(Source,Target,TextElement.ForegroundProperty);
+                Transfer(Source,Target,TextElement.TextEffectsProperty);
                 }
             }
         }

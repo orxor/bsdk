@@ -13,9 +13,9 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,Inline.BaselineAlignmentProperty);
-                CopyTo(Source,Target,Inline.FlowDirectionProperty);
-                CopyTo(Source,Target,Inline.TextDecorationsProperty);
+                Transfer(Source,Target,Inline.BaselineAlignmentProperty);
+                Transfer(Source,Target,Inline.FlowDirectionProperty);
+                Transfer(Source,Target,Inline.TextDecorationsProperty);
                 }
             }
         }

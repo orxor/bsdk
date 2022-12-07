@@ -17,10 +17,10 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,TableColumn.BackgroundProperty);
-                CopyTo(Source,Target,TableColumn.WidthProperty);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-                CopyTo(Source,Target,TextProperties.IsAutoSizeProperty);
+                Transfer(Source,Target,TableColumn.BackgroundProperty);
+                Transfer(Source,Target,TableColumn.WidthProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,TextProperties.IsAutoSizeProperty);
                 }
             }
         }

@@ -16,9 +16,9 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,Floater.HorizontalAlignmentProperty);
-                CopyTo(Source,Target,Floater.WidthProperty);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,Floater.HorizontalAlignmentProperty);
+                Transfer(Source,Target,Floater.WidthProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
             }
         }

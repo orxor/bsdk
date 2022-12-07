@@ -17,15 +17,15 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,ListItem.BorderBrushProperty);
-                CopyTo(Source,Target,ListItem.BorderThicknessProperty);
-                CopyTo(Source,Target,ListItem.FlowDirectionProperty);
-                CopyTo(Source,Target,ListItem.LineHeightProperty);
-                CopyTo(Source,Target,ListItem.LineStackingStrategyProperty);
-                CopyTo(Source,Target,ListItem.MarginProperty);
-                CopyTo(Source,Target,ListItem.PaddingProperty);
-                CopyTo(Source,Target,ListItem.TextAlignmentProperty);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,ListItem.BorderBrushProperty);
+                Transfer(Source,Target,ListItem.BorderThicknessProperty);
+                Transfer(Source,Target,ListItem.FlowDirectionProperty);
+                Transfer(Source,Target,ListItem.LineHeightProperty);
+                Transfer(Source,Target,ListItem.LineStackingStrategyProperty);
+                Transfer(Source,Target,ListItem.MarginProperty);
+                Transfer(Source,Target,ListItem.PaddingProperty);
+                Transfer(Source,Target,ListItem.TextAlignmentProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceBlocks = Source.Blocks;
                 var TargetBlocks = Target.Blocks;
                 var SourceBlock = SourceBlocks.FirstBlock;

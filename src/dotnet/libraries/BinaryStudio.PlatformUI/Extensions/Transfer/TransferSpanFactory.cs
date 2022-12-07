@@ -17,7 +17,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceInlines = Source.Inlines;
                 var TargetInlines = Target.Inlines;
                 var SourceInline = SourceInlines.FirstInline;

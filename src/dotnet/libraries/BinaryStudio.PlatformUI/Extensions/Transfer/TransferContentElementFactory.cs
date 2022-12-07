@@ -13,13 +13,13 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         protected override void CopyTo(T Source, T Target) {
             if (Source == null) { return; }
             using (new DebugScope()) {
-                CopyTo(Source,Target,ContentElement.IsEnabledProperty);
-                CopyTo(Source,Target,ContentElement.FocusableProperty);
-                CopyTo(Source,Target,TextProperties.IsSharedSizeScopeProperty);
-                CopyTo(Source,Target,TextProperties.SharedGroupObjectProperty);
-                CopyTo(Source,Target,TextProperties.WidthProperty);
-                CopyTo(Source,Target,TextProperties.SharedSizeGroupProperty);
-                CopyTo(Source,Target,TextProperties.DesiredSizeProperty);
+                Transfer(Source,Target,ContentElement.IsEnabledProperty);
+                Transfer(Source,Target,ContentElement.FocusableProperty);
+                Transfer(Source,Target,TextProperties.IsSharedSizeScopeProperty);
+                Transfer(Source,Target,TextProperties.SharedGroupObjectProperty);
+                Transfer(Source,Target,TextProperties.WidthProperty);
+                Transfer(Source,Target,TextProperties.SharedSizeGroupProperty);
+                Transfer(Source,Target,TextProperties.DesiredSizeProperty);
                 }
             }
         }

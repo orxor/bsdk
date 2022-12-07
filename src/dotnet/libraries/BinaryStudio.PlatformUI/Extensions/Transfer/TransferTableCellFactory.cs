@@ -17,16 +17,16 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,TableCell.BorderBrushProperty);
-                CopyTo(Source,Target,TableCell.BorderThicknessProperty);
-                CopyTo(Source,Target,TableCell.ColumnSpanProperty);
-                CopyTo(Source,Target,TableCell.FlowDirectionProperty);
-                CopyTo(Source,Target,TableCell.LineHeightProperty);
-                CopyTo(Source,Target,TableCell.LineStackingStrategyProperty);
-                CopyTo(Source,Target,TableCell.PaddingProperty);
-                CopyTo(Source,Target,TableCell.RowSpanProperty);
-                CopyTo(Source,Target,TableCell.TextAlignmentProperty);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,TableCell.BorderBrushProperty);
+                Transfer(Source,Target,TableCell.BorderThicknessProperty);
+                Transfer(Source,Target,TableCell.ColumnSpanProperty);
+                Transfer(Source,Target,TableCell.FlowDirectionProperty);
+                Transfer(Source,Target,TableCell.LineHeightProperty);
+                Transfer(Source,Target,TableCell.LineStackingStrategyProperty);
+                Transfer(Source,Target,TableCell.PaddingProperty);
+                Transfer(Source,Target,TableCell.RowSpanProperty);
+                Transfer(Source,Target,TableCell.TextAlignmentProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceBlocks = Source.Blocks;
                 var TargetBlocks = Target.Blocks;
                 var SourceBlock = SourceBlocks.FirstBlock;

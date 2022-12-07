@@ -19,20 +19,20 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,Paragraph.KeepTogetherProperty);
-                CopyTo(Source,Target,Paragraph.KeepWithNextProperty);
-                CopyTo(Source,Target,Paragraph.MinOrphanLinesProperty);
-                CopyTo(Source,Target,Paragraph.MinWidowLinesProperty);
-                CopyTo(Source,Target,Paragraph.TextDecorationsProperty);
-                CopyTo(Source,Target,Paragraph.TextIndentProperty);
+                Transfer(Source,Target,Paragraph.KeepTogetherProperty);
+                Transfer(Source,Target,Paragraph.KeepWithNextProperty);
+                Transfer(Source,Target,Paragraph.MinOrphanLinesProperty);
+                Transfer(Source,Target,Paragraph.MinWidowLinesProperty);
+                Transfer(Source,Target,Paragraph.TextDecorationsProperty);
+                Transfer(Source,Target,Paragraph.TextIndentProperty);
                 if (ContentControl.ContentProperty.IsOwnedBy(Source.GetType())) {
-                    CopyTo(Source,Target,ContentControl.ContentProperty);
-                    CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                    Transfer(Source,Target,ContentControl.ContentProperty);
+                    Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                     Update(Target,ContentControl.ContentProperty);
                     }
                 else
                     {
-                    CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                    Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                     }
                 var SourceInlines = Source.Inlines;
                 var TargetInlines = Target.Inlines;

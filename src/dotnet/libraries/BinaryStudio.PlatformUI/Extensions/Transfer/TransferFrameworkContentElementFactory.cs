@@ -12,19 +12,19 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <param name="Target">Target where properties are copied to.</param>
         protected override void CopyTo(T Source, T Target) {
             if (Source == null) { return; }
-            CopyTo(Source,Target,FrameworkContentElement.NameProperty);
+            Transfer(Source,Target,FrameworkContentElement.NameProperty);
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,FrameworkContentElement.StyleProperty);
-                CopyTo(Source,Target,FrameworkContentElement.ContextMenuProperty);
-                CopyTo(Source,Target,FrameworkContentElement.CursorProperty);
-                CopyTo(Source,Target,FrameworkContentElement.FocusVisualStyleProperty);
-                CopyTo(Source,Target,FrameworkContentElement.ForceCursorProperty);
-                CopyTo(Source,Target,FrameworkContentElement.InputScopeProperty);
-                CopyTo(Source,Target,FrameworkContentElement.LanguageProperty);
-                CopyTo(Source,Target,FrameworkContentElement.OverridesDefaultStyleProperty);
-                CopyTo(Source,Target,FrameworkContentElement.TagProperty);
-                CopyTo(Source,Target,FrameworkContentElement.ToolTipProperty);
+                Transfer(Source,Target,FrameworkContentElement.StyleProperty);
+                Transfer(Source,Target,FrameworkContentElement.ContextMenuProperty);
+                Transfer(Source,Target,FrameworkContentElement.CursorProperty);
+                Transfer(Source,Target,FrameworkContentElement.FocusVisualStyleProperty);
+                Transfer(Source,Target,FrameworkContentElement.ForceCursorProperty);
+                Transfer(Source,Target,FrameworkContentElement.InputScopeProperty);
+                Transfer(Source,Target,FrameworkContentElement.LanguageProperty);
+                Transfer(Source,Target,FrameworkContentElement.OverridesDefaultStyleProperty);
+                Transfer(Source,Target,FrameworkContentElement.TagProperty);
+                Transfer(Source,Target,FrameworkContentElement.ToolTipProperty);
                 Target.Resources = Source.Resources;
                 }
             }

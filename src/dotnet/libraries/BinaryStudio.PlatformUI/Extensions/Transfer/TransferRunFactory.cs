@@ -18,8 +18,8 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-                CopyTo(Source,Target,Run.TextProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,Run.TextProperty);
                 //Debug.Print("Target{{{1}}}.Text:{0}", (Target.Text != null) ? $@"""{Target.Text}""" : "null", Diagnostics.GetKey(Target));
                 }
             }

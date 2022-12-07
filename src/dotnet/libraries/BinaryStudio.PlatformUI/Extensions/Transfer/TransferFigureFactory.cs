@@ -16,15 +16,15 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,Figure.CanDelayPlacementProperty);
-                CopyTo(Source,Target,Figure.HeightProperty);
-                CopyTo(Source,Target,Figure.HorizontalAnchorProperty);
-                CopyTo(Source,Target,Figure.HorizontalOffsetProperty);
-                CopyTo(Source,Target,Figure.VerticalAnchorProperty);
-                CopyTo(Source,Target,Figure.VerticalOffsetProperty);
-                CopyTo(Source,Target,Figure.WidthProperty);
-                CopyTo(Source,Target,Figure.WrapDirectionProperty);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,Figure.CanDelayPlacementProperty);
+                Transfer(Source,Target,Figure.HeightProperty);
+                Transfer(Source,Target,Figure.HorizontalAnchorProperty);
+                Transfer(Source,Target,Figure.HorizontalOffsetProperty);
+                Transfer(Source,Target,Figure.VerticalAnchorProperty);
+                Transfer(Source,Target,Figure.VerticalOffsetProperty);
+                Transfer(Source,Target,Figure.WidthProperty);
+                Transfer(Source,Target,Figure.WrapDirectionProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
             }
         }

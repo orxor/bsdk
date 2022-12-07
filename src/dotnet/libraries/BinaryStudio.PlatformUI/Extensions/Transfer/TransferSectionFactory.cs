@@ -22,13 +22,13 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             using (new DebugScope()) {
                 Target.HasTrailingParagraphBreakOnPaste = Source.HasTrailingParagraphBreakOnPaste;
                 if (ContentControl.ContentProperty.IsOwnedBy(Source.GetType())) {
-                    CopyTo(Source,Target,ContentControl.ContentProperty);
-                    CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                    Transfer(Source,Target,ContentControl.ContentProperty);
+                    Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                     Update(Target,ContentControl.ContentProperty);
                     }
                 else
                     {
-                    CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                    Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                     }
                 var SourceBlocks = Source.Blocks;
                 var TargetBlocks = Target.Blocks;

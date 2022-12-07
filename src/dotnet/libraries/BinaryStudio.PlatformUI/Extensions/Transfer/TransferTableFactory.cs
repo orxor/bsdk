@@ -18,7 +18,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,Table.CellSpacingProperty);
+                Transfer(Source,Target,Table.CellSpacingProperty);
                 var SourceColumns = Source.Columns;
                 var TargetColumns = Target.Columns;
                 foreach (var SourceColumn in SourceColumns) {
@@ -27,7 +27,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     ApplyStyle(TargetColumn,Target);
                     GetFactory(SourceColumn).CopyTo(SourceColumn,TargetColumn);
                     }
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceRowGroups = Source.RowGroups;
                 var TargetRowGroups = Target.RowGroups;
                 foreach (var SourceRowGroup in SourceRowGroups) {
@@ -36,7 +36,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     ApplyStyle(TargetRowGroup,Target);
                     GetFactory(SourceRowGroup).CopyTo(SourceRowGroup,TargetRowGroup);
                     }
-                CopyTo(Source,Target,TextProperties.IsAutoSizeProperty);
+                Transfer(Source,Target,TextProperties.IsAutoSizeProperty);
                 }
             }
         }

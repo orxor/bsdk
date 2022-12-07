@@ -14,5 +14,6 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <param name="Target">Target object.</param>
         /// <param name="DataContext">Data context.</param>
         void TransferDataContext(DependencyObject Target,Object DataContext);
+        void Transfer(DependencyObject Source,DependencyObject Target,DependencyProperty Property);
         }
     }

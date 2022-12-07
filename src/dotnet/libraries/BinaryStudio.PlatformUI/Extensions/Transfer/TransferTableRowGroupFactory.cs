@@ -18,8 +18,8 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,ItemsControl.ItemsSourceProperty);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,ItemsControl.ItemsSourceProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceRows = Source.Rows;
                 var TargetRows = Target.Rows;
                 foreach (var SourceRow in SourceRows) {

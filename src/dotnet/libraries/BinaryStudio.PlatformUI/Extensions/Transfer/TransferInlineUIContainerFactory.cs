@@ -17,7 +17,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
                 Target.Child = Clone(Source.Child);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
             }
         }

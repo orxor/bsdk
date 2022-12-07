@@ -15,13 +15,13 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,AnchoredBlock.BorderBrushProperty);
-                CopyTo(Source,Target,AnchoredBlock.BorderThicknessProperty);
-                CopyTo(Source,Target,AnchoredBlock.LineHeightProperty);
-                CopyTo(Source,Target,AnchoredBlock.LineStackingStrategyProperty);
-                CopyTo(Source,Target,AnchoredBlock.MarginProperty);
-                CopyTo(Source,Target,AnchoredBlock.PaddingProperty);
-                CopyTo(Source,Target,AnchoredBlock.TextAlignmentProperty);
+                Transfer(Source,Target,AnchoredBlock.BorderBrushProperty);
+                Transfer(Source,Target,AnchoredBlock.BorderThicknessProperty);
+                Transfer(Source,Target,AnchoredBlock.LineHeightProperty);
+                Transfer(Source,Target,AnchoredBlock.LineStackingStrategyProperty);
+                Transfer(Source,Target,AnchoredBlock.MarginProperty);
+                Transfer(Source,Target,AnchoredBlock.PaddingProperty);
+                Transfer(Source,Target,AnchoredBlock.TextAlignmentProperty);
                 var SourceBlocks = Source.Blocks;
                 var TargetBlocks = Target.Blocks;
                 var SourceBlock = SourceBlocks.FirstBlock;
@@ -32,7 +32,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     GetFactory(SourceBlock).CopyTo(SourceBlock,TargetBlock);
                     SourceBlock = SourceBlock.NextBlock;
                     }
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
             }
         }

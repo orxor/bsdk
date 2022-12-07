@@ -21,7 +21,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 var SourceCells = Source.Cells;
                 var TargetCells = Target.Cells;
                 CopyTriggers(Source,Target);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 foreach (var SourceCell in SourceCells) {
                     var TargetCell = (TableCell)Activator.CreateInstance(SourceCell.GetType());
                     TargetCells.Add(TargetCell);
