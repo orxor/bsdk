@@ -12,15 +12,16 @@
                    HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
                    IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
                    Foreground="{DynamicResource ControlTextBrushKey}" x:Name="Target">
-        <RichTextBox.Resources>
-          <Style TargetType="{x:Type TableCell}">
-            <Setter Property="BorderThickness" Value="0,1,1,0"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
-            <Setter Property="Padding" Value="5,0,5,0"/>
-          </Style>
-        </RichTextBox.Resources>
         <u:RichTextBoxOptions.Document>
-          <FlowDocument PageWidth="{Binding RelativeSource={RelativeSource AncestorType=RichTextBox},Path=ActualWidth,Mode=OneWay}">
+          <FlowDocument PageWidth="{Binding ElementName=Target,Path=ActualWidth,Mode=OneWay}"
+                        Foreground="{DynamicResource ControlTextBrushKey}">
+            <FlowDocument.Resources>
+              <Style TargetType="{x:Type TableCell}">
+                <Setter Property="BorderThickness" Value="0,1,1,0"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+                <Setter Property="Padding" Value="5,0,5,0"/>
+              </Style>
+            </FlowDocument.Resources>
             <Section>
               <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
                      u:TextProperties.IsAutoSize="True">
@@ -136,6 +137,13 @@
         <Setter TargetName="Target" Property="u:RichTextBoxOptions.Document">
           <Setter.Value>
             <FlowDocument PageWidth="{Binding ElementName=Target,Path=ActualWidth,Mode=OneWay}">
+              <FlowDocument.Resources>
+                <Style TargetType="{x:Type TableCell}">
+                  <Setter Property="BorderThickness" Value="0,1,1,0"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+                  <Setter Property="Padding" Value="5,0,5,0"/>
+                </Style>
+              </FlowDocument.Resources>
               <Section>
                 <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
                        u:TextProperties.IsAutoSize="True">

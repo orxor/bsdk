@@ -8,7 +8,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
     [CloneFactory(typeof(List))]
-    internal class CloneListFactory : CloneBlockFactory<List>
+    internal class TransferListFactory : TransferBlockFactory<List>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
@@ -20,6 +20,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                 CopyTo(Source,Target,List.MarkerOffsetProperty);
                 CopyTo(Source,Target,List.MarkerStyleProperty);
                 CopyTo(Source,Target,List.StartIndexProperty);
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceListItems = Source.ListItems;
                 var TargetListItems = Target.ListItems;
                 foreach (var SourceListItem in SourceListItems) {
@@ -28,7 +29,6 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                     //ApplyStyle(TargetListItem,Host);
                     GetFactory(SourceListItem.GetType()).CopyTo(SourceListItem,TargetListItem);
                     }
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
             }
         }

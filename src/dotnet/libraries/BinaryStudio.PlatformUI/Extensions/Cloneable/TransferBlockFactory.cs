@@ -3,7 +3,7 @@ using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
-    internal abstract class CloneBlockFactory<T> : CloneTextElementFactory<T>
+    internal abstract class TransferBlockFactory<T> : TransferTextElementFactory<T>
         where T : Block
         {
         /// <summary>Copies properties from one instance to another.</summary>

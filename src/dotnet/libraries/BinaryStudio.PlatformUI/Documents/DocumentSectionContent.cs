@@ -62,29 +62,23 @@ namespace BinaryStudio.PlatformUI.Documents
         #region M:OnContentChanged
         private void OnContentChanged() {
             if (State > 0) { return; }
-            Debug.Print($@"DocumentSectionContent[""{Name}""].OnContentChanged");
             using (new DebugScope()) {
                 State = 1;
                 try
                     {
-                    Blocks.Clear();
                     var Source = Content;
+                    Debug.Print($@"DocumentSectionContent:{{{Diagnostics.GetKey(this)}}}:{{{DataContext}}}:OnContentChanged:{{{Source}}}");
+                    Blocks.Clear();
                     if (Source != null) {
                         var template = TryFindDataTemplate(Source.GetType());
                         if (template != null) {
                             var content = template.LoadContent();
                             if (content is Section TemplatedContent) {
-                                CloneFactory.CopyTo(this,TemplatedContent,DataContextProperty);
-                                CloneFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
+                                TransferFactory.CopyTo(this,TemplatedContent,DataContextProperty);
+                                TransferFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
                                 TemplatedContent.DataContext = null;
-                                var triggers = this.LogicalDescendants().
-                                    SelectMany(Interaction.GetTriggers).
-                                    OfType<DataTrigger>().
-                                    ToArray();
-                                var expressions = triggers.
-                                    Select(i => i.BindingExpression).
-                                    Where(i => i != null).
-                                    ToArray();
+                                var triggers = this.LogicalDescendants().SelectMany(Interaction.GetTriggers).OfType<DataTrigger>().ToArray();
+                                var expressions = triggers.Select(i => i.BindingExpression).Where(i => i != null).ToArray();
                                 if (expressions.Length > 0) {
                                     if (expressions.Any(i => i.Status != BindingStatus.Active)) {
                                         var task = Task.Factory.StartNew(()=>{
@@ -141,6 +135,7 @@ namespace BinaryStudio.PlatformUI.Documents
         /// <param name="e">Arguments associated with the property value change. The <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.Property"/> property specifies which property has changed, the <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.OldValue"/> property specifies the previous property value, and the <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.NewValue"/> property specifies the new property value.</param>
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
             if (ReferenceEquals(e.Property,DataContextProperty)) {
+                Debug.Print($@"{GetType().Name}.OnPropertyChanged[""{Name}"":{{{DataContext}}}].{e.Property.Name}");
                 BindingOperations.GetBindingExpressionBase(this,ContentProperty)?.UpdateTarget();
                 }
             base.OnPropertyChanged(e);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
@@ -8,7 +9,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
     [CloneFactory(typeof(TableRow))]
-    internal class CloneTableRowFactory : CloneTextElementFactory<TableRow>
+    internal class TransferTableRowFactory : TransferTextElementFactory<TableRow>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
@@ -19,14 +20,24 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
             using (new DebugScope()) {
                 var SourceCells = Source.Cells;
                 var TargetCells = Target.Cells;
+                CopyTriggers(Source,Target);
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 foreach (var SourceCell in SourceCells) {
                     var TargetCell = (TableCell)Activator.CreateInstance(SourceCell.GetType());
                     TargetCells.Add(TargetCell);
-                    //ApplyStyle(TargetCell,Host);
+                    ApplyStyle(TargetCell,Target);
                     GetFactory(SourceCell.GetType()).CopyTo(SourceCell,TargetCell);
                     }
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-                CopyTriggers(Source,Target);
+                }
+            }
+
+        /// <summary>Transfers data context.</summary>
+        /// <param name="Target">Target object.</param>
+        /// <param name="DataContext">Data context.</param>
+        protected override void TransferDataContext(TableRow Target, Object DataContext) {
+            base.TransferDataContext(Target, DataContext);
+            foreach (var Cell in Target.Cells.ToArray()) {
+                GetFactory(Cell).TransferDataContext(Cell,DataContext);
                 }
             }
         }

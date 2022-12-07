@@ -46,7 +46,7 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <summary>Invoked when an unhandled <see cref="E:System.Windows.UIElement.MouseLeftButtonDown"/> routed event is raised on this element. Implement this method to add class handling for this event. </summary>
         /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
-            Diagnostic.Print((new StackTrace()).GetFrame(0).GetMethod());
+            Diagnostics.Print((new StackTrace()).GetFrame(0).GetMethod());
             if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
                 var Selected = !IsSelected;
                 if (Selected)

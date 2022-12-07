@@ -115,7 +115,7 @@
                         </ResourceDictionary.MergedDictionaries>
                       </ResourceDictionary>
                     </TableCell.Resources>
-                    <u:DocumentSectionContent Margin="0" Content="{Binding}" Name="DocumentSectionContent222"/>
+                    <u:DocumentSectionContent Margin="0" Content="{Binding}" u:Diagnostics.Key="0000"/>
                   </TableCell>
                 </TableRow>
               </u:TableBoundRowGroup>

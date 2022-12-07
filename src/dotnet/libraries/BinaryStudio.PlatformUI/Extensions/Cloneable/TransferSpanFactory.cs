@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 using JetBrains.Annotations;
@@ -8,22 +7,17 @@ using JetBrains.Annotations;
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
-    [CloneFactory(typeof(Paragraph))]
-    internal class CloneParagraphFactory : CloneBlockFactory<Paragraph>
+    [CloneFactory(typeof(Span))]
+    internal class TransferSpanFactory : TransferInlineFactory<Span>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(Paragraph Source, Paragraph Target) {
+        protected override void CopyTo(Span Source, Span Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,Paragraph.KeepTogetherProperty);
-                CopyTo(Source,Target,Paragraph.KeepWithNextProperty);
-                CopyTo(Source,Target,Paragraph.MinOrphanLinesProperty);
-                CopyTo(Source,Target,Paragraph.MinWidowLinesProperty);
-                CopyTo(Source,Target,Paragraph.TextDecorationsProperty);
-                CopyTo(Source,Target,Paragraph.TextIndentProperty);
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceInlines = Source.Inlines;
                 var TargetInlines = Target.Inlines;
                 foreach (var SourceInline in SourceInlines) {
@@ -32,8 +26,6 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                     //ApplyStyle(TargetInline,Host);
                     GetFactory(SourceInline.GetType()).CopyTo(SourceInline,TargetInline);
                     }
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-                CopyTo(Source,Target,ContentControl.ContentProperty);
                 }
             }
         }

@@ -1,11 +1,34 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Text;
+using System.Windows;
 using BinaryStudio.DiagnosticServices.Logging;
 
 namespace BinaryStudio.DiagnosticServices
     {
-    public static class Diagnostic
+    public static class Diagnostics
         {
+        #region P:Diagnostics.Key:Object
+        public static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached("Key", typeof(Object), typeof(Diagnostics), new PropertyMetadata(default(Object)));
+        public static void SetKey(DependencyObject e, Object value)
+            {
+            e.SetValue(KeyProperty, value);
+            }
+
+        private static readonly Random rng = new Random(0);
+        public static Object GetKey(DependencyObject e) {
+            if (e != null) {
+                var r = e.GetValue(KeyProperty);
+                if (r == null) {
+                    r = rng.Next(UInt16.MaxValue).ToString("x4");
+                    SetKey(e, r);
+                    }
+                return r;
+                }
+            return null;
+            }
+        #endregion
+
         public static void Print(MethodBase value) {
             var r = new StringBuilder();
             r.Append("Method:");

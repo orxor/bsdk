@@ -1,25 +1,26 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Interactivity;
+using System.Windows.Threading;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Controls;
 using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     using TriggerBase=System.Windows.Interactivity.TriggerBase;
-    public abstract class CloneFactory
+    public abstract class TransferFactory
         {
-        private static void CopyTo(ContextMenu Source,ContextMenu Target,FrameworkContentElement Host)
-            {
-            }
-
         private static void ApplyBindings(DependencyObject source, DependencyProperty property) {
             if ((source != null) && (property != null)) {
                 var B = BindingOperations.GetBindingBase(source,property);
@@ -177,6 +178,18 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                 }
             }
         #endregion
+        #region M:UpdateDataContext(FrameworkContentElement,Object):Boolean
+        public static void UpdateDataContext(FrameworkContentElement Target,Object DataContext) {
+            if (Target != null) {
+                FrameworkContentElementOperations.ForEachDescendants(Target,(i)=>{
+                    Debug.Print($"UpdateDataContext:{{{Diagnostics.GetKey(i)}}}:{{{i.GetType().Name}}}:{{{DataContext}}}");
+                    using (new DebugScope()) {
+                        i.DataContext = DataContext;
+                        }
+                    });
+                }
+            }
+        #endregion
 
         private static UIElement Clone(UIElement Source, FrameworkContentElement Host)
             {
@@ -195,7 +208,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
         //    return Target;
         //    }
 
-        private static void ApplyStyle<T>(T Target,FrameworkContentElement Host)
+        protected static void ApplyStyle<T>(T Target,FrameworkContentElement Host)
             where T: FrameworkContentElement
             {
             if (Host != null) {
@@ -210,8 +223,18 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                 }
             }
 
-        #region M:GetFactory(Type):ICloneFactory
-        internal static ICloneFactory GetFactory(Type Type) {
+        protected static void ApplyStyle<T>(T Target,FrameworkElement Host)
+            where T: DependencyObject
+            {
+            if (Host != null) {
+                if (Host.TryFindResource(Target.GetType()) is Style Style) {
+                    Target.SetValue(FrameworkElement.StyleProperty,Style);
+                    }
+                }
+            }
+
+        #region M:GetFactory(Type):ITransferFactory
+        internal static ITransferFactory GetFactory(Type Type) {
             if (Type != null) {
                 if (!Factories.TryGetValue(Type, out var Factory)) {
                     foreach (var i in Factories) {
@@ -221,14 +244,23 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                             }
                         }
                     }
+                #if DEBUG_CLONE
                 Debug.Print($"Factory[{{{Type.Name}}}]:{{{Factory.GetType().Name}}}");
+                #endif
                 return Factory;
                 }
             return null;
             }
         #endregion
-
-        public T Clone<T>(T Source)
+        #region M:GetFactory(Object):ITransferFactory
+        internal static ITransferFactory GetFactory(Object Source) {
+            return (Source != null)
+                ? GetFactory(Source.GetType())
+                : null;
+            }
+        #endregion
+        #region M:Clone<T>(T):T
+        public static T Clone<T>(T Source)
             where T : DependencyObject
             {
             if (Source != null) {
@@ -240,19 +272,42 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                 }
             return null;
             }
+        #endregion
+        #region M:Update(DependencyObject,DependencyProperty)
+        public static void Update(DependencyObject source,DependencyProperty property) {
+            if ((source != null) && (property != null)) {
+                var binding = BindingOperations.GetBindingBase(source,property);
+                if (binding != null) {
+                    var expression = BindingOperations.GetBindingExpressionBase(source,property);
+                    if (expression != null) {
+                        expression.UpdateTarget();
+                        }
+                    }
+                }
+            }
+        #endregion
 
-        private static readonly IDictionary<Type,ICloneFactory> Factories = new Dictionary<Type, ICloneFactory>();
-        static CloneFactory()
+        /// <summary>Transfers data context.</summary>
+        /// <param name="Target">Target object.</param>
+        /// <param name="DataContext">Data context.</param>
+        public static void TransferDataContext(DependencyObject Target, Object DataContext) {
+            var Factory = GetFactory(Target.GetType());
+            if (Factory == null) { throw new NotSupportedException(); }
+            Factory.TransferDataContext(Target,DataContext);
+            }
+
+        private static readonly IDictionary<Type,ITransferFactory> Factories = new Dictionary<Type, ITransferFactory>();
+        static TransferFactory()
             {
-            foreach (var Type in typeof(CloneFactory).Assembly.GetTypes()) {
+            foreach (var Type in typeof(TransferFactory).Assembly.GetTypes()) {
                 foreach (var Attribute in Type.GetCustomAttributes(false).OfType<CloneFactoryAttribute>()) {
-                    Factories.Add(Attribute.Type,(ICloneFactory)Activator.CreateInstance(Type));
+                    Factories.Add(Attribute.Type,(ITransferFactory)Activator.CreateInstance(Type));
                     }
                 }
             }
         }
 
-    internal abstract class CloneFactory<T> : CloneFactory,ICloneFactory
+    internal abstract class TransferFactory<T> : TransferFactory,ITransferFactory
         where T : DependencyObject
         {
         #region M:CopyTo(T,T)
@@ -268,9 +323,37 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
             var TargetValue = Target.GetValue(Property);
             var SourceValue = Source.GetValue(Property);
             var TargetMetadata = Property.GetMetadata(Target);
-            var e = BindingOperations.GetBindingBase(Source,Property);
-            if (e != null) {
-                BindingOperations.SetBinding(Target,Property,e);
+            var binding = BindingOperations.GetBindingBase(Source,Property);
+            if (binding != null) {
+                BindingOperations.SetBinding(Target,Property,binding);
+                var e = BindingOperations.GetBindingExpressionBase(Target,Property);
+                if (e != null) {
+                    e.UpdateTarget();
+                    //if (e.Status != BindingStatus.Active) {
+                    //    Task.Factory.StartNew(()=>{
+                    //        for (;;) {
+                    //            var status = e.Status;
+                    //            switch (status) {
+                    //                case BindingStatus.UpdateTargetError : { return; }
+                    //                case BindingStatus.Active:
+                    //                    {
+                    //                    Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.DataBind,new Action(()=>{
+                    //                        e.UpdateTarget();
+                    //                        }));
+                    //                    return;
+                    //                    }
+                    //                }
+                    //            Debug.Print($"Binding:{Target.GetType().Name}.{Property}:{status}");
+                    //            Thread.Yield();
+                    //            Thread.Sleep(1000);
+                    //            }
+                    //        });
+                    //    }
+                    //else
+                    //    {
+                    //    return;
+                    //    }
+                    }
                 }
             else
                 {
@@ -279,12 +362,34 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
             }
         #endregion
 
+        /// <summary>Transfers data context.</summary>
+        /// <param name="Target">Target object.</param>
+        /// <param name="DataContext">Data context.</param>
+        protected abstract void TransferDataContext(T Target, Object DataContext);
+
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        void ICloneFactory.CopyTo(DependencyObject Source,DependencyObject Target)
-            {
-            CopyTo((T)Source,(T)Target);
+        void ITransferFactory.CopyTo(DependencyObject Source,DependencyObject Target) {
+            #if DEBUG
+            if ((Source != null) && (Target != null)) {
+                Debug.Print("Transfer:{{{1}}}->{{{3}}}:{{{0}}}->{{{2}}}",
+                    Source.GetType().Name, Diagnostics.GetKey(Source),
+                    Target.GetType().Name, Diagnostics.GetKey(Target));
+                }
+            #endif
+            using (new DebugScope()) {
+                CopyTo((T)Source,(T)Target);
+                }
+            }
+
+        /// <summary>Transfers data context.</summary>
+        /// <param name="Target">Target object.</param>
+        /// <param name="DataContext">Data context.</param>
+        void ITransferFactory.TransferDataContext(DependencyObject Target, Object DataContext) {
+            using (new DebugScope()) {
+                TransferDataContext((T)Target,DataContext);
+                }
             }
         }
     }

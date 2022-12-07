@@ -54,15 +54,15 @@ namespace BinaryStudio.PlatformUI.Documents
                 if (TryFindResource(new DataTemplateKey(Source.GetType())) is DataTemplate ContentTemplate) {
                     var content = ContentTemplate.LoadContent();
                     if (content is Paragraph TemplatedContent) {
-                        CloneFactory.CopyTo(this,TemplatedContent,DataContextProperty);
-                        CloneFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
+                        TransferFactory.CopyTo(this,TemplatedContent,DataContextProperty);
+                        TransferFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
                         }
                     }
                 else
                     {
                     if (Source is Paragraph Paragraph) {
-                        CloneFactory.CopyTo(this,Paragraph,DataContextProperty);
-                        CloneFactory.GetFactory(Paragraph.GetType()).CopyTo(Paragraph,this);
+                        TransferFactory.CopyTo(this,Paragraph,DataContextProperty);
+                        TransferFactory.GetFactory(Paragraph.GetType()).CopyTo(Paragraph,this);
                         }
                     else
                         {

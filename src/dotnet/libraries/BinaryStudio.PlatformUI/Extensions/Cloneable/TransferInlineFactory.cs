@@ -1,23 +1,21 @@
-﻿using System.Windows;
-using System.Windows.Documents;
+﻿using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
-using JetBrains.Annotations;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
-    [UsedImplicitly]
-    [CloneFactory(typeof(InlineUIContainer))]
-    internal class CloneInlineUIContainerFactory : CloneInlineFactory<InlineUIContainer>
+    internal abstract class TransferInlineFactory<T> : TransferTextElementFactory<T>
+        where T : Inline
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(InlineUIContainer Source, InlineUIContainer Target) {
+        protected override void CopyTo(T Source, T Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                Target.Child = Clone(Source.Child);
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                CopyTo(Source,Target,Inline.BaselineAlignmentProperty);
+                CopyTo(Source,Target,Inline.FlowDirectionProperty);
+                CopyTo(Source,Target,Inline.TextDecorationsProperty);
                 }
             }
         }

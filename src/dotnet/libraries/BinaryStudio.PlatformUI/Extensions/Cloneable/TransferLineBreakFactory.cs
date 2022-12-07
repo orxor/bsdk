@@ -5,7 +5,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
     [CloneFactory(typeof(LineBreak))]
-    internal class CloneLineBreakFactory : CloneInlineFactory<LineBreak>
+    internal class TransferLineBreakFactory : TransferInlineFactory<LineBreak>
         {
         }
     }

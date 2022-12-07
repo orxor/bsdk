@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Documents;
+using BinaryStudio.PlatformUI.Extensions.Cloneable;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
@@ -17,7 +18,34 @@ namespace BinaryStudio.PlatformUI.Controls
             if (sender is RichTextBox source) {
                 try
                     {
-                    source.Document = (FlowDocument)e.NewValue;
+                    var document = (FlowDocument)e.NewValue;
+                    if (document != null) {
+                        if (document.IsInitialized) {
+                            source.Document = (FlowDocument)Activator.CreateInstance(document.GetType());
+                            TransferFactory.CopyTo(source,document,Control.ForegroundProperty);
+                            TransferFactory.CopyTo(source,document,Control.FontFamilyProperty);
+                            TransferFactory.CopyTo(source,document,Control.FontSizeProperty);
+                            TransferFactory.CopyTo(source,document,Control.FontStretchProperty);
+                            TransferFactory.CopyTo(source,document,Control.FontStyleProperty);
+                            TransferFactory.CopyTo(source,document,Control.FontWeightProperty);
+                            TransferFactory.CopyTo(source,document,FrameworkElement.DataContextProperty);
+                            TransferFactory.GetFactory(document.GetType()).CopyTo(document,source.Document);
+                            }
+                        else
+                            {
+                            document.DoAfterInitialization(()=>{
+                                source.Document = (FlowDocument)Activator.CreateInstance(document.GetType());
+                                TransferFactory.CopyTo(source,document,Control.ForegroundProperty);
+                                TransferFactory.CopyTo(source,document,Control.FontFamilyProperty);
+                                TransferFactory.CopyTo(source,document,Control.FontSizeProperty);
+                                TransferFactory.CopyTo(source,document,Control.FontStretchProperty);
+                                TransferFactory.CopyTo(source,document,Control.FontStyleProperty);
+                                TransferFactory.CopyTo(source,document,Control.FontWeightProperty);
+                                TransferFactory.CopyTo(source,document,FrameworkElement.DataContextProperty);
+                                TransferFactory.GetFactory(document.GetType()).CopyTo(document,source.Document);
+                                });
+                            }
+                        }
                     }
                 catch (Exception x)
                     {

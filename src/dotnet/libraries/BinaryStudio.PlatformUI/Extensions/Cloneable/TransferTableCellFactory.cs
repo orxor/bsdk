@@ -8,7 +8,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
     [CloneFactory(typeof(TableCell))]
-    internal class CloneTableCellFactory : CloneTextElementFactory<TableCell>
+    internal class TransferTableCellFactory : TransferTextElementFactory<TableCell>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
@@ -26,15 +26,29 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                 CopyTo(Source,Target,TableCell.PaddingProperty);
                 CopyTo(Source,Target,TableCell.RowSpanProperty);
                 CopyTo(Source,Target,TableCell.TextAlignmentProperty);
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceBlocks = Source.Blocks;
                 var TargetBlocks = Target.Blocks;
-                foreach (var SourceBlock in SourceBlocks) {
+                var SourceBlock = SourceBlocks.FirstBlock;
+                while (SourceBlock != null) {
                     var TargetBlock = (Block)Activator.CreateInstance(SourceBlock.GetType());
                     TargetBlocks.Add(TargetBlock);
-                    //ApplyStyle(TargetBlock,Host);
-                    GetFactory(SourceBlock.GetType()).CopyTo(SourceBlock,TargetBlock);
+                    ApplyStyle(TargetBlock,Target);
+                    GetFactory(SourceBlock).CopyTo(SourceBlock,TargetBlock);
+                    SourceBlock = SourceBlock.NextBlock;
                     }
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
+                }
+            }
+
+        /// <summary>Transfers data context.</summary>
+        /// <param name="Target">Target object.</param>
+        /// <param name="DataContext">Data context.</param>
+        protected override void TransferDataContext(TableCell Target, Object DataContext) {
+            base.TransferDataContext(Target, DataContext);
+            var Block = Target.Blocks.FirstBlock;
+            while (Block != null) {
+                GetFactory(Block).TransferDataContext(Block,DataContext);
+                Block = Block.NextBlock;
                 }
             }
         }

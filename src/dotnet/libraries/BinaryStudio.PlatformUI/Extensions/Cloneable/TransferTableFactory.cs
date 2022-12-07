@@ -9,7 +9,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
     [CloneFactory(typeof(Table))]
-    internal class CloneTableFactory : CloneBlockFactory<Table>
+    internal class TransferTableFactory : TransferBlockFactory<Table>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
@@ -27,6 +27,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                     //ApplyStyle(TargetColumn,Host);
                     GetFactory(SourceColumn.GetType()).CopyTo(SourceColumn,TargetColumn);
                     }
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceRowGroups = Source.RowGroups;
                 var TargetRowGroups = Target.RowGroups;
                 foreach (var SourceRowGroup in SourceRowGroups) {
@@ -35,7 +36,6 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                     //ApplyStyle(TargetRowGroup,Host);
                     GetFactory(SourceRowGroup.GetType()).CopyTo(SourceRowGroup,TargetRowGroup);
                     }
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 CopyTo(Source,Target,TextProperties.IsAutoSizeProperty);
                 }
             }

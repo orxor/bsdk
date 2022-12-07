@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 using JetBrains.Annotations;
@@ -8,7 +9,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
     [CloneFactory(typeof(TableRowGroup))]
-    internal class CloneTableRowGroupFactory : CloneTextElementFactory<TableRowGroup>
+    internal class TransferTableRowGroupFactory : TransferTextElementFactory<TableRowGroup>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
@@ -17,6 +18,8 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
+                CopyTo(Source,Target,ItemsControl.ItemsSourceProperty);
+                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceRows = Source.Rows;
                 var TargetRows = Target.Rows;
                 foreach (var SourceRow in SourceRows) {
@@ -25,7 +28,6 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                     //ApplyStyle(TargetRow,Host);
                     GetFactory(SourceRow.GetType()).CopyTo(SourceRow,TargetRow);
                     }
-                CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
             }
         }

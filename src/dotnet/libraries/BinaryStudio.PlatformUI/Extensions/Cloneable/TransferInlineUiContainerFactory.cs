@@ -6,18 +6,17 @@ using JetBrains.Annotations;
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
-    [CloneFactory(typeof(Floater))]
-    internal class CloneFloaterFactory : CloneAnchoredBlockFactory<Floater>
+    [CloneFactory(typeof(InlineUIContainer))]
+    internal class TransferInlineUIContainerFactory : TransferInlineFactory<InlineUIContainer>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(Floater Source, Floater Target) {
+        protected override void CopyTo(InlineUIContainer Source, InlineUIContainer Target) {
             if (Source == null) { return; }
             base.CopyTo(Source, Target);
             using (new DebugScope()) {
-                CopyTo(Source,Target,Floater.HorizontalAlignmentProperty);
-                CopyTo(Source,Target,Floater.WidthProperty);
+                Target.Child = Clone(Source.Child);
                 CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 }
             }

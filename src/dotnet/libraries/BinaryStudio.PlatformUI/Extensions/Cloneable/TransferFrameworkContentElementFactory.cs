@@ -1,9 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
-    internal abstract class CloneFrameworkContentElementFactory<T> : CloneContentElementFactory<T>
+    internal abstract class TransferFrameworkContentElementFactory<T> : TransferContentElementFactory<T>
         where T : FrameworkContentElement
         {
         /// <summary>Copies properties from one instance to another.</summary>
@@ -26,6 +27,14 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
                 CopyTo(Source,Target,FrameworkContentElement.ToolTipProperty);
                 Target.Resources = Source.Resources;
                 }
+            }
+
+        /// <summary>Transfers data context.</summary>
+        /// <param name="Target">Target object.</param>
+        /// <param name="DataContext">Data context.</param>
+        protected override void TransferDataContext(T Target, Object DataContext)
+            {
+            Target.DataContext = DataContext;
             }
         }
     }

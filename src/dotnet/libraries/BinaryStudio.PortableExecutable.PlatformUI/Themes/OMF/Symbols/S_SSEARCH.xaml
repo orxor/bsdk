@@ -8,9 +8,9 @@
                     mc:Ignorable="d">
   <!-- ReSharper disable MarkupAttributeTypo -->
   <DataTemplate DataType="{x:Type u:S_SSEARCH}">
-    <Section Margin="1" Padding="1">
-      <Paragraph Margin="1" Padding="1" OverridesDefaultStyle="True">
-        <Run Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run Text="{Binding ProcedureOrThunkRecordOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+    <Section Margin="1" Padding="1" u:Diagnostics.Key="0001">
+      <Paragraph Margin="1" Padding="1" OverridesDefaultStyle="True" u:Diagnostics.Key="0002">
+        <Run u:Diagnostics.Key="0004" Text="{Binding SegmentIndex,Mode=OneWay,StringFormat=x4}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run Text="{Binding ProcedureOrThunkRecordOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
       </Paragraph>
     </Section>
   </DataTemplate>

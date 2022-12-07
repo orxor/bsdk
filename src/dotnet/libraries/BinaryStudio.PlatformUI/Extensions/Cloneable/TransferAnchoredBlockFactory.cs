@@ -5,7 +5,7 @@ using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
-    internal abstract class CloneAnchoredBlockFactory<T> : CloneInlineFactory<T>
+    internal abstract class TransferAnchoredBlockFactory<T> : TransferInlineFactory<T>
         where T : AnchoredBlock
         {
         /// <summary>Copies properties from one instance to another.</summary>

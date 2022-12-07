@@ -8,7 +8,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
     [CloneFactory(typeof(TableColumn))]
-    internal class CloneTableColumnFactory : CloneFrameworkContentElementFactory<TableColumn>
+    internal class TransferTableColumnFactory : TransferFrameworkContentElementFactory<TableColumn>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>

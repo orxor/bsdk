@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Drawing;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -124,6 +127,18 @@ namespace BinaryStudio.PlatformUI.Controls
                 }
             }
         #endregion
+        #region M:DoAfterInitialization({this}FrameworkContentElement,Action)
+        public static void DoAfterInitialization(this FrameworkContentElement source,Action predicate) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
+            void Handler(Object sender, EventArgs e) {
+                predicate.Invoke();
+                source.Initialized -= Handler;
+                }
+            source.Initialized += Handler;
+            }
+        #endregion
+
         #region M:OnDataContextChanged({this}FrameworkContentElement,Action)
         public static void OnDataContextChanged(this FrameworkContentElement source,Action predicate) {
             if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
@@ -188,6 +203,7 @@ namespace BinaryStudio.PlatformUI.Controls
             return (new BindingEvaluator(binding)).Target;
             }
         #endregion
+
         #region M:IsDefaultValue({this}DependencyProperty,DependencyObject):Boolean
         public static Boolean IsDefaultValue(this DependencyProperty source, DependencyObject o)
             {
@@ -210,6 +226,19 @@ namespace BinaryStudio.PlatformUI.Controls
             return Equals(metadata.DefaultValue,value);
             }
         #endregion
+        #region M:IsOwnedBy({this}DependencyProperty,Type):Boolean
+        public static Boolean IsOwnedBy(this DependencyProperty source, Type type) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (type == null) { throw new ArgumentNullException(nameof(type)); }
+            var types = PropertyFromName.
+                OfType<DictionaryEntry>().
+                Where(i => ReferenceEquals(i.Value,source)).
+                Select(i=> (Type)FromNameKeyTypeOwnerField.GetValue(i.Key)).
+                ToArray();
+            return types.Any(i => (type == i) || type.IsSubclassOf(i));
+            }
+        #endregion
+
         #region P:UseExtensions:Boolean
         public static readonly DependencyProperty IsExtendedProperty = DependencyProperty.RegisterAttached("IsExtended", typeof(Boolean), typeof(Extensions), new PropertyMetadata(default(Boolean),OnIsExtendedChanged));
         public static void SetIsExtended(DependencyObject e, Boolean value)
@@ -249,7 +278,19 @@ namespace BinaryStudio.PlatformUI.Controls
                 }
             }
 
+        static Extensions() {
+            var PropertyFromNameFieldInfo = typeof(DependencyProperty).GetField("PropertyFromName",BindingFlags.Static|BindingFlags.NonPublic);
+            PropertyFromName = (PropertyFromNameFieldInfo != null)
+                ? (Hashtable)PropertyFromNameFieldInfo.GetValue(null)
+                : new Hashtable();
+            FromNameKeyType = typeof(DependencyProperty).GetNestedType("FromNameKey",BindingFlags.NonPublic);
+            FromNameKeyTypeOwnerField = FromNameKeyType.GetField("_ownerType",BindingFlags.NonPublic|BindingFlags.Instance);
+            }
+
         private static readonly DependencyPropertyKey ActualWidthPropertyKey = DependencyProperty.RegisterAttachedReadOnly("ActualWidth", typeof(Double), typeof(Extensions), new PropertyMetadata(default(Double)));
         public static readonly DependencyProperty ActualWidthProperty=ActualWidthPropertyKey.DependencyProperty;
+        private static readonly Hashtable PropertyFromName;
+        private static readonly Type FromNameKeyType;
+        private static readonly FieldInfo FromNameKeyTypeOwnerField;
         }
     }

@@ -7,7 +7,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
     [UsedImplicitly]
     [CloneFactory(typeof(Figure))]
-    internal class CloneFigureFactory : CloneAnchoredBlockFactory<Figure>
+    internal class TransferFigureFactory : TransferAnchoredBlockFactory<Figure>
         {
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>

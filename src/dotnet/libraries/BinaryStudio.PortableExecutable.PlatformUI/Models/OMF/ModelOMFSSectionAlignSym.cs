@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using BinaryStudio.PlatformUI.Models;
+using BinaryStudio.PortableExecutable.Win32;
 
 namespace BinaryStudio.PortableExecutable.PlatformUI.Models
     {
@@ -11,7 +12,9 @@ namespace BinaryStudio.PortableExecutable.PlatformUI.Models
         public ModelOMFSSectionAlignSym(OMFSSectionAlignSym source)
             : base(source)
             {
-            Symbols = source.Symbols.Select(Model.CreateModel).ToArray();
+            Symbols = source.Symbols.
+                //Where(i => i.Type == DEBUG_SYMBOL_INDEX.S_SSEARCH).
+                Select(Model.CreateModel).ToArray();
             }
         }
     }

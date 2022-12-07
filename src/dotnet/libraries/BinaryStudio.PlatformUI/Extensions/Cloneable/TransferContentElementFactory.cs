@@ -4,7 +4,7 @@ using BinaryStudio.PlatformUI.Documents;
 
 namespace BinaryStudio.PlatformUI.Extensions.Cloneable
     {
-    internal abstract class CloneContentElementFactory<T> : CloneFactory<T>
+    internal abstract class TransferContentElementFactory<T> : TransferFactory<T>
         where T : ContentElement
         {
         /// <summary>Copies properties from one instance to another.</summary>
