@@ -24,8 +24,8 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 foreach (var SourceColumn in SourceColumns) {
                     var TargetColumn = (TableColumn)Activator.CreateInstance(SourceColumn.GetType());
                     TargetColumns.Add(TargetColumn);
-                    //ApplyStyle(TargetColumn,Host);
-                    GetFactory(SourceColumn.GetType()).CopyTo(SourceColumn,TargetColumn);
+                    ApplyStyle(TargetColumn,Target);
+                    GetFactory(SourceColumn).CopyTo(SourceColumn,TargetColumn);
                     }
                 CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceRowGroups = Source.RowGroups;
@@ -33,8 +33,8 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 foreach (var SourceRowGroup in SourceRowGroups) {
                     var TargetRowGroup = (TableRowGroup)Activator.CreateInstance(SourceRowGroup.GetType());
                     TargetRowGroups.Add(TargetRowGroup);
-                    //ApplyStyle(TargetRowGroup,Host);
-                    GetFactory(SourceRowGroup.GetType()).CopyTo(SourceRowGroup,TargetRowGroup);
+                    ApplyStyle(TargetRowGroup,Target);
+                    GetFactory(SourceRowGroup).CopyTo(SourceRowGroup,TargetRowGroup);
                     }
                 CopyTo(Source,Target,TextProperties.IsAutoSizeProperty);
                 }

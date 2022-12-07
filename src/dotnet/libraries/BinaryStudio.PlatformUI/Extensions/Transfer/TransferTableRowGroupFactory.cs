@@ -25,8 +25,8 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 foreach (var SourceRow in SourceRows) {
                     var TargetRow = (TableRow)Activator.CreateInstance(SourceRow.GetType());
                     TargetRows.Add(TargetRow);
-                    //ApplyStyle(TargetRow,Host);
-                    GetFactory(SourceRow.GetType()).CopyTo(SourceRow,TargetRow);
+                    ApplyStyle(TargetRow,Target);
+                    GetFactory(SourceRow).CopyTo(SourceRow,TargetRow);
                     }
                 }
             }

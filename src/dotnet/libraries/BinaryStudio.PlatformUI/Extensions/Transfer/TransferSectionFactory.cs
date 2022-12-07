@@ -37,7 +37,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     var TargetBlock = (Block)Activator.CreateInstance(SourceBlock.GetType());
                     TargetBlocks.Add(TargetBlock);
                     ApplyStyle(TargetBlock,Target);
-                    GetFactory(SourceBlock.GetType()).CopyTo(SourceBlock,TargetBlock);
+                    GetFactory(SourceBlock).CopyTo(SourceBlock,TargetBlock);
                     SourceBlock = SourceBlock.NextBlock;
                     }
                 }

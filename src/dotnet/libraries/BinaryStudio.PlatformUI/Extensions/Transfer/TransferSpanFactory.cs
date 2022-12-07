@@ -20,11 +20,13 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceInlines = Source.Inlines;
                 var TargetInlines = Target.Inlines;
-                foreach (var SourceInline in SourceInlines) {
+                var SourceInline = SourceInlines.FirstInline;
+                while (SourceInline != null) {
                     var TargetInline = (Inline)Activator.CreateInstance(SourceInline.GetType());
                     TargetInlines.Add(TargetInline);
-                    //ApplyStyle(TargetInline,Host);
-                    GetFactory(SourceInline.GetType()).CopyTo(SourceInline,TargetInline);
+                    ApplyStyle(TargetInline,Target);
+                    GetFactory(SourceInline).CopyTo(SourceInline,TargetInline);
+                    SourceInline = SourceInline.NextInline;
                     }
                 }
             }

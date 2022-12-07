@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,6 +34,14 @@ namespace BinaryStudio.PlatformUI.Documents
             Loaded += OnLoaded;
             }
 
+        /// <summary>Returns a value that indicates whether serialization processes should serialize the value for the provided dependency property.</summary>
+        /// <param name="dp">The identifier for the dependency property that should be serialized.</param>
+        /// <returns> <see langword="true"/> if the dependency property that is supplied should be value-serialized; otherwise, <see langword="false"/>.</returns>
+        protected override Boolean ShouldSerializeProperty(DependencyProperty dp) {
+            if (ReferenceEquals(dp,ItemsSourceProperty)) { return false; }
+            return base.ShouldSerializeProperty(dp);
+            }
+
         #region M:OnPropertyChanged(DependencyPropertyChangedEventArgs)
         /// <summary>Handles notifications that one or more of the dependency properties that exist on the element have had their effective values changed.</summary>
         /// <param name="e">Arguments associated with the property value change. The <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.Property"/> property specifies which property has changed, the <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.OldValue"/> property specifies the previous property value, and the <see cref="P:System.Windows.DependencyPropertyChangedEventArgs.NewValue"/> property specifies the new property value.</param>
@@ -48,14 +55,11 @@ namespace BinaryStudio.PlatformUI.Documents
         #region M:OnItemsSourceChanged
         private void OnItemsSourceChanged() {
             if (State > 0) { return; }
-            Debug.Print("TableBoundRowGroup.OnItemsSourceChanged");
             using (new DebugScope()) {
                 State = 1;
                 var rows = Rows.ToArray();
                 var Table = this.Ancestors<Table>().FirstOrDefault();
-                Debug.Print("TableBoundRowGroup.OnItemsSourceChanged[before Rows.Clear()]");
                 Rows.Clear();
-                Debug.Print("TableBoundRowGroup.OnItemsSourceChanged[after Rows.Clear()]");
                 var Foreground = this.GetForeground();
                 var items = ItemsSource;
                 if (items != null) {
@@ -65,16 +69,8 @@ namespace BinaryStudio.PlatformUI.Documents
                             Rows.Add(TargetRow);
                             TargetRow.ClearValue(DataContextProperty);
                             SourceRow.ClearValue(DataContextProperty);
-                            //SourceRow.SetValue(DataContextProperty,item);
-                            //TransferFactory.UpdateDataContext(SourceRow,item);
                             TransferFactory.GetFactory(SourceRow.GetType()).CopyTo(SourceRow,TargetRow);
-                            Debug.Print("TableBoundRowGroup.OnItemsSourceChanged[before TransferFactory.TransferDataContext(TargetRow,item)]");
                             TransferFactory.TransferDataContext(TargetRow,item);
-                            FrameworkContentElementOperations.ForSelfAndEachDescendants(TargetRow,(i)=>{
-                                Debug.Print($"DataContext:{{{Diagnostics.GetKey(i)}}}:{{{i.GetType().Name}}}:{{{i.DataContext}}}");
-                                });
-                            Debug.Print("TableBoundRowGroup.OnItemsSourceChanged[after TransferFactory.TransferDataContext(TargetRow,item)]");
-                            //TransferFactory.ApplyBindings(TargetRow);
                             if (TargetRow.IsDefaultValue(ForegroundProperty)) {
                                 TargetRow.SetForegroundToSelfAndDescendants(Foreground);
                                 }

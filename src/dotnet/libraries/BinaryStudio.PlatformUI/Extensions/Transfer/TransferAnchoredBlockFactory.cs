@@ -24,11 +24,13 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 CopyTo(Source,Target,AnchoredBlock.TextAlignmentProperty);
                 var SourceBlocks = Source.Blocks;
                 var TargetBlocks = Target.Blocks;
-                foreach (var SourceBlock in SourceBlocks) {
+                var SourceBlock = SourceBlocks.FirstBlock;
+                while (SourceBlock != null) {
                     var TargetBlock = (Block)Activator.CreateInstance(SourceBlock.GetType());
                     TargetBlocks.Add(TargetBlock);
-                    //ApplyStyle(TargetBlock,Host);
-                    GetFactory(SourceBlock.GetType()).CopyTo(SourceBlock,TargetBlock);
+                    ApplyStyle(TargetBlock,Target);
+                    GetFactory(SourceBlock).CopyTo(SourceBlock,TargetBlock);
+                    SourceBlock = SourceBlock.NextBlock;
                     }
                 CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 }

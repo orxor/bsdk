@@ -20,32 +20,33 @@ namespace BinaryStudio.PlatformUI.Documents
         #endregion
         #region P:Content:Object
         public static readonly DependencyProperty ContentProperty = ContentControl.ContentProperty.AddOwner(typeof(DocumentParagraphContent), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, OnContentChanged));
-        public Object Content
-            {
-            get { return (Object)GetValue(ContentControl.ContentProperty); }
-            set { SetValue(ContentControl.ContentProperty, value); }
-            }
-        #endregion
-
-        public DocumentParagraphContent()
-            {
-            //this.SetBinding(ContentProperty,this,DataContextProperty,BindingMode.OneWay);
-            Loaded += OnLoaded;
-            }
-
-        protected override Boolean ShouldSerializeProperty(DependencyProperty dp)
-            {
-            return base.ShouldSerializeProperty(dp);
-            }
-
         private static void OnContentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             if (sender is DocumentParagraphContent source) {
                 source.OnContentChanged();
                 }
             }
+        public Object Content
+            {
+            get { return GetValue(ContentControl.ContentProperty); }
+            set { SetValue(ContentControl.ContentProperty,value); }
+            }
+        #endregion
+
+        public DocumentParagraphContent()
+            {
+            Loaded += OnLoaded;
+            }
+
+        /// <summary>Returns a value that indicates whether serialization processes should serialize the value for the provided dependency property.</summary>
+        /// <param name="dp">The identifier for the dependency property that should be serialized.</param>
+        /// <returns><see langword="true"/> if the dependency property that is supplied should be value-serialized; otherwise, <see langword="false"/>.</returns>
+        protected override Boolean ShouldSerializeProperty(DependencyProperty dp) {
+            if (ReferenceEquals(dp, ContentProperty)) { return false; }
+            if (ReferenceEquals(dp, IsContentAppliedProperty)) { return false; }
+            return base.ShouldSerializeProperty(dp);
+            }
 
         private void OnContentChanged() {
-            //if (!IsLoaded) { return; }
             if (State > 0) { return; }
             State = 1;
             Inlines.Clear();

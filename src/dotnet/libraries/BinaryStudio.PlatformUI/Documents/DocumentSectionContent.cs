@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Interactivity;
-using System.Windows.Threading;
-using System.Xml;
 using BinaryStudio.DiagnosticServices;
-using BinaryStudio.PlatformUI.Controls;
-using BinaryStudio.PlatformUI.Extensions;
 using BinaryStudio.PlatformUI.Extensions.Transfer;
 
 namespace BinaryStudio.PlatformUI.Documents
@@ -77,29 +66,29 @@ namespace BinaryStudio.PlatformUI.Documents
                                 TransferFactory.CopyTo(this,TemplatedContent,DataContextProperty);
                                 TransferFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
                                 TemplatedContent.DataContext = null;
-                                var triggers = this.LogicalDescendants().SelectMany(Interaction.GetTriggers).OfType<DataTrigger>().ToArray();
-                                var expressions = triggers.Select(i => i.BindingExpression).Where(i => i != null).ToArray();
-                                if (expressions.Length > 0) {
-                                    if (expressions.Any(i => i.Status != BindingStatus.Active)) {
-                                        var task = Task.Factory.StartNew(()=>{
-                                            while(true) {
-                                                if ((Boolean)Dispatcher.Invoke(DispatcherPriority.DataBind,new Func<Boolean>(()=>{
-                                                    var r = expressions.All(i => i.Status == BindingStatus.Active);
-                                                    return r;
-                                                    })))
-                                                    {
-                                                    break;
-                                                    }
-                                                Thread.Yield();
-                                                }
-                                            });
-                                        task.Wait();
-                                        }
-                                    Debug.Print($"{{{Source}}}:4");
-                                    }
-                                foreach (var trigger in triggers) {
-                                    trigger.Detach();
-                                    }
+                                //var triggers = this.LogicalDescendants().SelectMany(Interaction.GetTriggers).OfType<DataTrigger>().ToArray();
+                                //var expressions = triggers.Select(i => i.BindingExpression).Where(i => i != null).ToArray();
+                                //if (expressions.Length > 0) {
+                                //    if (expressions.Any(i => i.Status != BindingStatus.Active)) {
+                                //        var task = Task.Factory.StartNew(()=>{
+                                //            while(true) {
+                                //                if ((Boolean)Dispatcher.Invoke(DispatcherPriority.DataBind,new Func<Boolean>(()=>{
+                                //                    var r = expressions.All(i => i.Status == BindingStatus.Active);
+                                //                    return r;
+                                //                    })))
+                                //                    {
+                                //                    break;
+                                //                    }
+                                //                Thread.Yield();
+                                //                }
+                                //            });
+                                //        task.Wait();
+                                //        }
+                                //    Debug.Print($"{{{Source}}}:4");
+                                //    }
+                                //foreach (var trigger in triggers) {
+                                //    trigger.Detach();
+                                //    }
                                 }
                             }
                         }

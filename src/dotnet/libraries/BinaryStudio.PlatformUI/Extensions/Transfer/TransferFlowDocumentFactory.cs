@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
-using BinaryStudio.PlatformUI.Controls;
 using JetBrains.Annotations;
 
 namespace BinaryStudio.PlatformUI.Extensions.Transfer
@@ -46,15 +44,14 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 CopyTo(Source,Target,FlowDocument.TextAlignmentProperty);
                 CopyTo(Source,Target,FlowDocument.TextEffectsProperty);
                 CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
-                //if (Target.Parent is Control Control) {
-                //    if (Target.IsDefaultValue(FlowDocument.FontFamilyProperty)) { CopyTo(Control,Target,Control.FontFamilyProperty); }
-                //    }
                 var SourceBlocks = Source.Blocks;
                 var TargetBlocks = Target.Blocks;
-                foreach (var SourceBlock in SourceBlocks) {
+                var SourceBlock = SourceBlocks.FirstBlock;
+                while (SourceBlock != null) {
                     var TargetBlock = (Block)Activator.CreateInstance(SourceBlock.GetType());
                     TargetBlocks.Add(TargetBlock);
-                    GetFactory(SourceBlock.GetType()).CopyTo(SourceBlock,TargetBlock);
+                    GetFactory(SourceBlock).CopyTo(SourceBlock,TargetBlock);
+                    SourceBlock = SourceBlock.NextBlock;
                     }
                 ApplyStyle(Target,Target.Parent as FrameworkElement);
                 }

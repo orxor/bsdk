@@ -26,7 +26,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     var TargetCell = (TableCell)Activator.CreateInstance(SourceCell.GetType());
                     TargetCells.Add(TargetCell);
                     ApplyStyle(TargetCell,Target);
-                    GetFactory(SourceCell.GetType()).CopyTo(SourceCell,TargetCell);
+                    GetFactory(SourceCell).CopyTo(SourceCell,TargetCell);
                     }
                 }
             }

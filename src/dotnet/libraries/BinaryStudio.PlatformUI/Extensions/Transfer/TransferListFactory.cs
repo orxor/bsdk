@@ -23,11 +23,13 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 CopyTo(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceListItems = Source.ListItems;
                 var TargetListItems = Target.ListItems;
-                foreach (var SourceListItem in SourceListItems) {
+                var SourceListItem = SourceListItems.FirstListItem;
+                while (SourceListItem != null) {
                     var TargetListItem = (ListItem)Activator.CreateInstance(SourceListItem.GetType());
                     TargetListItems.Add(TargetListItem);
-                    //ApplyStyle(TargetListItem,Host);
-                    GetFactory(SourceListItem.GetType()).CopyTo(SourceListItem,TargetListItem);
+                    ApplyStyle(TargetListItem,Target);
+                    GetFactory(SourceListItem).CopyTo(SourceListItem,TargetListItem);
+                    SourceListItem = SourceListItem.NextListItem;
                     }
                 }
             }
