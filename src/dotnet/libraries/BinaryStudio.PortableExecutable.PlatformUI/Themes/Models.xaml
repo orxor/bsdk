@@ -28,9 +28,9 @@
         <TabItem.Resources>
           <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-              <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/ModelOMFSSectionModule.xaml"/>
-              <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/ModelOMFSSectionLibraries.xaml"/>
-              <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/ModelOMFSSectionAlignSym.xaml"/>
+              <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionModule.xaml"/>
+              <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionLibraries.xaml"/>
+              <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionAlignSym.xaml"/>
             </ResourceDictionary.MergedDictionaries>
           </ResourceDictionary>
         </TabItem.Resources>
