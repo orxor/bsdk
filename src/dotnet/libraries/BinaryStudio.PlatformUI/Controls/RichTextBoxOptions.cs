@@ -61,7 +61,7 @@ namespace BinaryStudio.PlatformUI.Controls
 
         public static FlowDocument GetDocument(DependencyObject element)
             {
-            return (FlowDocument) element.GetValue(DocumentProperty);
+            return (FlowDocument)element.GetValue(DocumentProperty);
             }
         #endregion
 

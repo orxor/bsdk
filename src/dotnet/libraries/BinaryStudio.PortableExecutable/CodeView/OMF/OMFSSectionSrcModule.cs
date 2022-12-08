@@ -1,38 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Xml;
+using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PortableExecutable
     {
     [OMFSSectionIndex(OMFSSectionIndex.SrcModule)]
     internal class OMFSSectionSrcModule : OMFSSection
         {
-        private class LineInfo
-            {
-            public Int16 LineNumber;
-            public Int32 SegmentOffset;
-            }
-
-        private class SegmentInfo
-            {
-            public Int16 Index;
-            public Int32 StartOffset;
-            public Int32 EndOffset;
-            public LineInfo[] LineNumbers = EmptyArray<LineInfo>.Value;
-            }
-
-        private class FileInfo
-            {
-            public String Name;
-            public Int32 Offset;
-            public Int64 FileOffset;
-            public SegmentInfo[] Segments = EmptyArray<SegmentInfo>.Value;
-            }
-
-        private SegmentInfo[] Segments = EmptyArray<SegmentInfo>.Value;
-        private FileInfo[] Files = EmptyArray<FileInfo>.Value;
+        public override OMFSSectionIndex SectionIndex { get { return OMFSSectionIndex.SrcModule; }}
+        public OMFSrcSegInfo[] Segments { get;private set; }
+        public OMFSrcFileInfo[] Files { get;private set; }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         internal struct SourceFileEntry
@@ -63,8 +46,10 @@ namespace BinaryStudio.PortableExecutable
         public OMFSSectionSrcModule(OMFDirectory Directory)
             : base(Directory)
             {
+            Segments = EmptyArray<OMFSrcSegInfo>.Value;
+            Files = EmptyArray<OMFSrcFileInfo>.Value;
             }
-        public override OMFSSectionIndex SectionIndex { get { return OMFSSectionIndex.SrcModule; }}
+
         public override unsafe OMFSSection Analyze(Byte* BaseAddress, Byte* Source, Int32 Size)
             {
             if (BaseAddress == null) { throw new ArgumentNullException(nameof(BaseAddress)); }
@@ -80,83 +65,92 @@ namespace BinaryStudio.PortableExecutable
             var BaseSrcFiles = (Int32*)(Source + 1);
             var SegmentAdrss = (OMFOffsetPair*)(BaseSrcFiles + Source->FileCount);
             var SegmentIndcs = (Int16*)(SegmentAdrss + Source->SegmentCount);
-            Segments = new SegmentInfo[Source->SegmentCount];
-            #if OMFDEBUG
-            Debug.Print("FileCount:{0:x4} SegmentCount:{1:x4}",
-                Source->FileCount,
-                Source->SegmentCount);
-            #endif
-            if (Source->SegmentCount > 0) {
+            try
+                {
+                Segments = new OMFSrcSegInfo[Source->SegmentCount];
                 #if OMFDEBUG
-                Debug.Print("  Segments:");
+                Debug.Print("FileCount:{0:x4} SegmentCount:{1:x4}",
+                    Source->FileCount,
+                    Source->SegmentCount);
                 #endif
-                for (var i = 0; i < Source->SegmentCount; i++) {
-                    Segments[i] = new SegmentInfo{
-                        Index = SegmentIndcs[i],
-                        StartOffset = SegmentAdrss[i].StartOffset,
-                        EndOffset = SegmentAdrss[i].EndOffset
-                        };
+                if (Source->SegmentCount > 0) {
                     #if OMFDEBUG
-                    Debug.Print("    {0:x4}:{1:x8}-{2:x8}",
-                        SegmentIndcs[i],
-                        SegmentAdrss[i].StartOffset,
-                        SegmentAdrss[i].EndOffset);
+                    Debug.Print("  Segments:");
                     #endif
-                    }
-                }
-            if (Source->FileCount > 0) {
-                #if OMFDEBUG
-                Debug.Print("  Files:");
-                #endif
-                Files = new FileInfo[Source->FileCount];
-                for (var i = 0; i < Source->FileCount; i++) {
-                    var SrcFile = (SourceFileEntry*)((Byte*)Source + BaseSrcFiles[i]);
-                    var SrcFileBaseSrcFiles = (Int32*)(SrcFile + 1);
-                    var SrcFileSegmentAddress = (OMFOffsetPair*)(SrcFileBaseSrcFiles + SrcFile->SegmentCount);
-                    var SrcFileNameLength = (Byte*)(SrcFileSegmentAddress + SrcFile->SegmentCount);
-                    var SrcFileName = (Byte*)(SrcFileNameLength + 1);
-                    Files[i] = new FileInfo{
-                        Name = ToString(Encoding.ASCII,SrcFileName,*SrcFileNameLength),
-                        Offset = BaseSrcFiles[i],
-                        FileOffset = (Byte*)Source - BaseAddress + BaseSrcFiles[i],
-                        Segments = new SegmentInfo[SrcFile->SegmentCount]
-                        };
-                    #if OMFDEBUG
-                    Debug.Print("    Offset:{0:x8} FileOffset:{1:x8} FileNameIndex:{2:x8}",
-                        BaseSrcFiles[i],
-                        (Byte*)Source - BaseAddress + BaseSrcFiles[i],
-                        SrcFile->NameIndex);
-                    #endif
-                    for (var j = 0; j < SrcFile->SegmentCount; j++) {
-                        var LineEntry = (LineMappingEntry*)((Byte*)Source + SrcFileBaseSrcFiles[j]);
-                        var LineEntryOffsets = (Int32*)(LineEntry + 1);
-                        var LineEntryLnNmbrs = (Int16*)(LineEntryOffsets + LineEntry->PairCount);
-                        Files[i].Segments[j] = new SegmentInfo{
-                            LineNumbers = new LineInfo[LineEntry->PairCount]
-                            };
+                    for (var i = 0; i < Source->SegmentCount; i++) {
+                        Segments[i] = new OMFSrcSegInfo(
+                            SegmentIndcs[i],
+                            SegmentAdrss[i].StartOffset,
+                            SegmentAdrss[i].EndOffset
+                            );
                         #if OMFDEBUG
-                        var DebugString = new StringBuilder("      Line numbers:\n     ");
-                        #endif
-                        for (var l = 0; l < LineEntry->PairCount; l++) {
-                            Files[i].Segments[j].LineNumbers[l] = new LineInfo{
-                                LineNumber = LineEntryLnNmbrs[l],
-                                SegmentOffset = LineEntryOffsets[l]
-                                };
-                            #if OMFDEBUG
-                            if ((l % 4 == 0) && (l > 0)) {
-                                DebugString.AppendLine();
-                                DebugString.Append("     ");
-                                }
-                            DebugString.AppendFormat(" {0:d5}:{1:x8}",
-                                LineEntryLnNmbrs[l],
-                                LineEntryOffsets[l]);
-                            #endif
-                            }
-                        #if OMFDEBUG
-                        Debug.Print(DebugString.ToString());
+                        Debug.Print("    {0:x4}:{1:x8}-{2:x8}",
+                            SegmentIndcs[i],
+                            SegmentAdrss[i].StartOffset,
+                            SegmentAdrss[i].EndOffset);
                         #endif
                         }
                     }
+                if (Source->FileCount > 0) {
+                    var SegmentIndex  = 0;
+                    #if OMFDEBUG
+                    Debug.Print("  Files:");
+                    #endif
+                    Files = new OMFSrcFileInfo[Source->FileCount];
+                    for (var i = 0; i < Source->FileCount; i++) {
+                        var SrcFile = (SourceFileEntry*)((Byte*)Source + BaseSrcFiles[i]);
+                        var SrcFileBaseSrcFiles = (Int32*)(SrcFile + 1);
+                        var SrcFileSegmentAddress = (OMFOffsetPair*)(SrcFileBaseSrcFiles + SrcFile->SegmentCount);
+                        var SrcFileNameLength = (Byte*)(SrcFileSegmentAddress + SrcFile->SegmentCount);
+                        var SrcFileName = (Byte*)(SrcFileNameLength + 1);
+                        Files[i] = new OMFSrcFileInfo(
+                            ToString(Encoding.ASCII,SrcFileName,*SrcFileNameLength),
+                            BaseSrcFiles[i],
+                            (Byte*)Source - BaseAddress + BaseSrcFiles[i],
+                            SrcFile->SegmentCount
+                            );
+                        #if OMFDEBUG
+                        Debug.Print("    Offset:{0:x8} FileOffset:{1:x8} FileNameIndex:{2:x8}",
+                            BaseSrcFiles[i],
+                            (Byte*)Source - BaseAddress + BaseSrcFiles[i],
+                            SrcFile->NameIndex);
+                        #endif
+                        for (var j = 0; j < SrcFile->SegmentCount; j++) {
+                            var LineEntry = (LineMappingEntry*)((Byte*)Source + SrcFileBaseSrcFiles[j]);
+                            var LineEntryOffsets = (Int32*)(LineEntry + 1);
+                            var LineEntryLnNmbrs = (Int16*)(LineEntryOffsets + LineEntry->PairCount);
+                            Files[i].Segments[j] = Segments[SegmentIndex++];
+                            Files[i].Segments[j].LineNumbers = new OMFSrcLineInfo[LineEntry->PairCount];
+                            #if OMFDEBUG
+                            var DebugString = new StringBuilder("      Line numbers:\n     ");
+                            #endif
+                            for (var l = 0; l < LineEntry->PairCount; l++) {
+                                Files[i].Segments[j].LineNumbers[l] =
+                                    new OMFSrcLineInfo(
+                                        LineEntryLnNmbrs[l],
+                                        LineEntryOffsets[l]
+                                        );
+                                #if OMFDEBUG
+                                if ((l % 4 == 0) && (l > 0)) {
+                                    DebugString.AppendLine();
+                                    DebugString.Append("     ");
+                                    }
+                                DebugString.AppendFormat(" {0:d5}:{1:x8}",
+                                    LineEntryLnNmbrs[l],
+                                    LineEntryOffsets[l]);
+                                #endif
+                                }
+                            #if OMFDEBUG
+                            Debug.Print(DebugString.ToString());
+                            #endif
+                            }
+                        }
+                    }
+                }
+            catch (Exception e)
+                {
+                Debug.WriteLine(Exceptions.ToString(e));
+                throw;
                 }
             }
 
@@ -192,5 +186,50 @@ namespace BinaryStudio.PortableExecutable
                     }
                 }
             }
+
+        #region M:WriteXml(XmlWriter)
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("Section");
+                writer.WriteAttributeString("Type",SectionIndex.ToString());
+                writer.WriteAttributeString(nameof(ModuleIndex),ModuleIndex.ToString());
+                writer.WriteAttributeString("Offset",FileOffset.ToString());
+                writer.WriteAttributeString(nameof(Size),Size.ToString());
+                writer.WriteStartElement(nameof(Segments));
+                foreach (var segment in Segments) {
+                    writer.WriteStartElement("SegmentInfo");
+                        writer.WriteAttributeString(nameof(segment.Index),segment.Index.ToString());
+                        writer.WriteAttributeString("Offset",segment.StartOffset.ToString());
+                        writer.WriteAttributeString("Size",(segment.EndOffset-segment.StartOffset-1).ToString());
+                    writer.WriteEndElement();
+                    }
+                writer.WriteEndElement();
+                writer.WriteStartElement(nameof(Files));
+                foreach (var file in Files) {
+                    writer.WriteStartElement("FileInfo");
+                        writer.WriteAttributeString(nameof(file.Name),file.Name);
+                        writer.WriteAttributeString("Offset",file.FileOffset.ToString());
+                        foreach (var segment in file.Segments) {
+                            writer.WriteStartElement("SegmentInfo");
+                                writer.WriteAttributeString(nameof(segment.Index),segment.Index.ToString());
+                                writer.WriteAttributeString("Offset",segment.StartOffset.ToString());
+                                writer.WriteAttributeString("Size",(segment.EndOffset-segment.StartOffset-1).ToString());
+                                writer.WriteStartElement("LineNumbers");
+                                foreach (var li in segment.LineNumbers) {
+                                    writer.WriteStartElement("LineInfo");
+                                        writer.WriteAttributeString(nameof(li.LineNumber),li.LineNumber.ToString());
+                                        writer.WriteAttributeString(nameof(li.SegmentOffset),li.SegmentOffset.ToString());
+                                    writer.WriteEndElement();
+                                    }
+                                writer.WriteEndElement();
+                            writer.WriteEndElement();
+                            }
+                    writer.WriteEndElement();
+                    }
+                writer.WriteEndElement();
+            writer.WriteEndElement();
+            }
+        #endregion
         }
     }

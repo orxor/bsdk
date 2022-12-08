@@ -400,6 +400,10 @@ namespace BinaryStudio.PlatformUI.Documents
                         if (Cell.ColumnSpan == 1) {
                             DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(Cell).X);
                             }
+                        else
+                            {
+                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(Cell).X);
+                            }
                         j += Cell.ColumnSpan;
                         }
                     }

@@ -94,7 +94,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libntx64", "src\cc\ntdll\li
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libntx86", "src\cc\ntdll\libntx86.vcxproj", "{48853572-DA26-4F02-B25E-0B1861E40A70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shell", "src\dotnet\shell\shell.csproj", "{A723B362-0BC0-4302-A666-97B488A4543A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shell", "src\dotnet\shell\shell.csproj", "{A723B362-0BC0-4302-A666-97B488A4543A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3F12F4DA-7663-46F8-994C-A64612EAD1A6}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

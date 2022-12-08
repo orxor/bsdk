@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Models"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:u="http://schemas.helix.global"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:c="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Controls"
+                    mc:Ignorable="d">
+  <DataTemplate DataType="{x:Type e:ModelOMFSSectionSrcModule}">
+    <Grid>
+      <Grid.Resources>
+        <u:FlowDocumentConverter x:Key="Converter"/>
+        <XmlDataProvider x:Key="XSLT" XPath="*" IsAsynchronous="False" Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionSrcModule.xslt"/>
+      </Grid.Resources>
+      <RichTextBox BorderThickness="0" Background="Transparent" Margin="2,5,2,5" IsReadOnly="True"
+                   HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
+                   IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
+                   Foreground="{DynamicResource ControlTextBrushKey}" x:Name="Target"
+                   u:RichTextBoxOptions.Document="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource XSLT}}">
+        <RichTextBox.Resources>
+          <Style TargetType="{x:Type TableCell}" x:Key="TableCell">
+            <Setter Property="BorderThickness" Value="0,1,1,0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+            <Setter Property="Padding" Value="5,0,5,0"/>
+          </Style>
+        </RichTextBox.Resources>
+        <i:Interaction.Behaviors>
+          <c:WaitCursorBehavior/>
+        </i:Interaction.Behaviors>
+      </RichTextBox>
+    </Grid>
+  </DataTemplate>
+</ResourceDictionary>

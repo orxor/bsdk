@@ -59,7 +59,7 @@ namespace BinaryStudio.PortableExecutable
                 if (TryGetType(Entries[i].SDirectoryIndex, out var Type)) {
                     var Section = (OMFSSection)Activator.CreateInstance(Type,this);
                     Section.ModuleIndex = Entries[i].ModuleIndex;
-                    Section.Offset = Entries[i].Offset;
+                    Section.RelativeOffset = Entries[i].Offset;
                     Section.FileOffset = BegOfDebugData + Entries[i].Offset - BaseAddress;
                     Section.Size = Entries[i].Size;
                     Section.CPU = CPU;
@@ -98,7 +98,7 @@ namespace BinaryStudio.PortableExecutable
             foreach (var section in Sections) {
                 Writer.WriteLine("{0}  ModuleIndex:{1:x4} Offset:{2:x8} FileOffset:{3:x8} Size:{4:x8} Type:sst{5}",
                     LinePrefix,
-                    section.ModuleIndex, section.Offset,
+                    section.ModuleIndex, section.RelativeOffset,
                     section.FileOffset, section.Size,
                     section.SectionIndex);
                 }
@@ -106,7 +106,7 @@ namespace BinaryStudio.PortableExecutable
             foreach (var section in Sections) {
                 Writer.WriteLine("{0}  ModuleIndex:{1:x4} Offset:{2:x8} FileOffset:{3:x8} Size:{4:x8} Type:sst{5}",
                     LinePrefix,
-                    section.ModuleIndex, section.Offset,
+                    section.ModuleIndex, section.RelativeOffset,
                     section.FileOffset, section.Size,
                     section.SectionIndex);
                 section.WriteTo(Writer,LinePrefix + "    ", Flags);

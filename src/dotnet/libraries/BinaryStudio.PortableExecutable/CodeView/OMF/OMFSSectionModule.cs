@@ -12,14 +12,6 @@ namespace BinaryStudio.PortableExecutable
         public Int16 LibraryIndex { get;protected set; }
         public String Name { get;protected set; }
 
-        protected class SegmentInfo
-            {
-            public Int16 Segment; // Segment that this structure describes
-            public Int16 Flags;   // Attributes for the logical segment.
-            public Int32 Offset;  // Offset in segment where the code starts
-            public Int32 Size;    // Count of the number of bytes of code in the segment
-            }
-
         protected class ModuleInfo
             {
             public Int16 OverlayNumber;  // Overlay number

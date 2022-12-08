@@ -4,7 +4,11 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Version>1.0.1</Version>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Themes\OMF\OMFSSectionSrcModule.xslt" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
     <PackageReference Include="AvalonEdit" Version="6.1.3.50" />
@@ -15,6 +19,9 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\OMF\OMFSSectionSrcModule.xslt" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="Themes\OMF\Symbols\S_REGISTER16.xaml">
