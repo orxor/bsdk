@@ -29,7 +29,7 @@
           </TableCell>
           <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,0,1" Padding="5,0,5,0">
             <Paragraph>
-              <Run><xsl:value-of select="helix:str(@TypeIndex,'x4')"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+              <Run><xsl:value-of select="@TypeIndex"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
             </Paragraph>
           </TableCell>
         </TableRow>
@@ -47,7 +47,45 @@
           </TableCell>
           <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,0,0" Padding="5,0,5,0">
             <Paragraph>
-              <Run><xsl:value-of select="helix:str(@SegmentIndex,'x4')"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run><xsl:value-of select="helix:str(@SymbolOffset,'x4')"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+              <Run><xsl:value-of select="@SegmentIndex"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run><xsl:value-of select="@SymbolOffset"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+            </Paragraph>
+          </TableCell>
+        </TableRow>
+      </TableRowGroup>
+    </Table>
+  </xsl:template>
+  <xsl:template name="S_DATASYM16_32">
+    <Table CellSpacing="0" Margin="0" u:TextProperties.IsAutoSize="True">
+      <Table.Columns>
+        <TableColumn u:TextProperties.SharedSizeGroup="SharedSize0"/>
+        <TableColumn u:TextProperties.SharedSizeGroup="SharedSize1"/>
+      </Table.Columns>
+      <TableRowGroup>
+        <TableRow>
+          <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,1,1" Padding="5,0,5,0">
+            <Paragraph>TypeIndex</Paragraph>
+          </TableCell>
+          <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,0,1" Padding="5,0,5,0">
+            <Paragraph>
+              <Run><xsl:value-of select="@TypeIndex"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+            </Paragraph>
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,1,1" Padding="5,0,5,0">
+            <Paragraph>Name</Paragraph>
+          </TableCell>
+          <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,0,1" Padding="5,0,5,0">
+            <Paragraph><xsl:value-of select="@Name"/></Paragraph>
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,1,0" Padding="5,0,5,0">
+            <Paragraph>Location</Paragraph>
+          </TableCell>
+          <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,0,0" Padding="5,0,5,0">
+            <Paragraph>
+              <Run><xsl:value-of select="@SegmentIndex"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>:<Run><xsl:value-of select="@SymbolOffset"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
             </Paragraph>
           </TableCell>
         </TableRow>
@@ -57,9 +95,14 @@
   <xsl:template match="SymbolInfo[@Type='S_PUB16']">
     <xsl:call-template name="S_DATASYM16_16"/>
   </xsl:template>
+  <xsl:template match="SymbolInfo[@Type='S_PUB16_32']">
+    <xsl:call-template name="S_DATASYM16_32"/>
+  </xsl:template>
+  <xsl:template match="SymbolInfo[@Type='S_ALIGN']"/>
   <xsl:template match="SymbolInfo">
     <Paragraph Foreground="{{DynamicResource AccentRBrushKey}}"><xsl:value-of select="@Type"/></Paragraph>
   </xsl:template>
+  
   <xsl:template match="Section[@Type='GlobalPub']">
     <Section>
       <Table BorderThickness="1,0,0,1" CellSpacing="0" Margin="0"
@@ -121,7 +164,7 @@
           <xsl:for-each select="Symbols/SymbolInfo">
             <TableRow>
               <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="1,1,0,0" Padding="5,0,5,0">
-                <Paragraph><xsl:value-of select="helix:str(@Offset,'x8')"/></Paragraph>
+                <Paragraph><xsl:value-of select="@Offset"/></Paragraph>
               </TableCell>
               <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="1,1,0,0" Padding="5,0,5,0">
                 <Paragraph><xsl:value-of select="@Type"/></Paragraph>

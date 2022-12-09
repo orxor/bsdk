@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using BinaryStudio.PlatformUI.Controls;
+using log4net;
 
 namespace BinaryStudio.PlatformUI.Documents
     {
@@ -22,6 +23,7 @@ namespace BinaryStudio.PlatformUI.Documents
                 }
             }
 
+        private static readonly ILog logger = LogManager.GetLogger(nameof(TextProperties));
         private static readonly IDictionary<Object,DependencyObject> Values = new Dictionary<Object,DependencyObject>();
 
         #region P:TextProperties.SharedGroupObject:DependencyObject
@@ -385,9 +387,7 @@ namespace BinaryStudio.PlatformUI.Documents
 
         internal static void DoAutoSize(Table Source) {
             if (Source == null) { throw new ArgumentNullException(nameof(Source)); }
-            #if DEBUG
-            GetDesiredSize(Source);
-            #endif
+            logger.Debug("BeforeDoAutoSize");
             var DesiredWidth = new Double[Source.Columns.Count];
             for (var i = 0; i < DesiredWidth.Length;i++) {
                 DesiredWidth[i] = -1;
@@ -419,6 +419,7 @@ namespace BinaryStudio.PlatformUI.Documents
                     else if (GetIsAutoSize(Source.Columns[i])) { Source.Columns[i].Width = new GridLength(DesiredWidth[i],GridUnitType.Pixel); }
                     }
                 }
+            logger.Debug("AfterDoAutoSize");
             }
         }
     }

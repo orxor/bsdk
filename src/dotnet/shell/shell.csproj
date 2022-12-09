@@ -6,6 +6,9 @@
     <RootNamespace>Shell</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.13" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\libraries\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
     <ProjectReference Include="..\libraries\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj" />
     <ProjectReference Include="..\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />

@@ -321,7 +321,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
         public virtual void WriteXml(XmlWriter writer) {
             writer.WriteStartElement("SymbolInfo");
                 writer.WriteAttributeString("Type",Type.ToString());
-                writer.WriteAttributeString("Offset",Offset.ToString());
+                writer.WriteAttributeString("Offset",Offset.ToString("x8"));
             writer.WriteEndElement();
             }
         #endregion

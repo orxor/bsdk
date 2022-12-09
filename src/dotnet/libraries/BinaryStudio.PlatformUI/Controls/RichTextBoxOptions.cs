@@ -8,17 +8,21 @@ using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Documents;
 using BinaryStudio.PlatformUI.Extensions.Transfer;
+using log4net;
 
 namespace BinaryStudio.PlatformUI.Controls
     {
     public class RichTextBoxOptions : TextProperties
         {
+        private static readonly ILog logger = LogManager.GetLogger(nameof(RichTextBoxOptions));
+
         #region P:RichTextBoxOptions.Document:FlowDocument
         public static readonly DependencyProperty DocumentProperty = DependencyProperty.RegisterAttached("Document", typeof(FlowDocument), typeof(RichTextBoxOptions), new PropertyMetadata(default(FlowDocument),OnDocumentChanged));
         private static void OnDocumentChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
             if (sender is RichTextBox source) {
                 try
                     {
+                    logger.Debug("BeforeClone");
                     var document = (FlowDocument)e.NewValue;
                     if (document != null) {
                         if (document.IsInitialized) {
@@ -47,6 +51,7 @@ namespace BinaryStudio.PlatformUI.Controls
                                 });
                             }
                         }
+                    logger.Debug("AfterClone");
                     BindingOperations.SetBinding(source.Document, FlowDocument.PageWidthProperty, new Binding {
                         Mode = BindingMode.OneWay,
                         Path = new PropertyPath("ActualWidth"),

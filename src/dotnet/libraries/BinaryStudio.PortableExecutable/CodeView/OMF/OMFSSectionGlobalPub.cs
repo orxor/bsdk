@@ -99,7 +99,11 @@ namespace BinaryStudio.PortableExecutable
                 writer.WriteAttributeString("Offset",FileOffset.ToString());
                 writer.WriteAttributeString(nameof(Size),Size.ToString());
                 writer.WriteStartElement(nameof(Symbols));
-                foreach (var symbol in Symbols.Take(50)) {
+                foreach (var symbol in Symbols
+                    .Where(i => i.Type != DEBUG_SYMBOL_INDEX.S_PUB16)
+                    //.Where(i => i.Type != DEBUG_SYMBOL_INDEX.S_PUB16_32)
+                    //.Where(i => i.Type != DEBUG_SYMBOL_INDEX.S_ALIGN)
+                    ) {
                     symbol.WriteXml(writer);
                     }
                 writer.WriteEndElement();

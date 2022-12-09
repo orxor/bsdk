@@ -14,10 +14,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BinaryStudio.PlatformUI;
 using BinaryStudio.PlatformUI.Shell;
+using log4net;
 using BMainWindow = BinaryStudio.PlatformUI.MainWindow;
 
 public partial class MainWindow : BMainWindow
     {
+    private static readonly ILog log = LogManager.GetLogger(typeof(MainWindow));
     private DocumentGroup dockgroup;
     private DocumentManager docmanager;
 
@@ -29,6 +31,7 @@ public partial class MainWindow : BMainWindow
     #region M:OnLoaded(Object,RoutedEventArgs)
     private void OnLoaded(Object sender, RoutedEventArgs e)
         {
+        log.Debug("OnLoaded");
         Theme.Apply(Theme.Themes[1]);
         var dockgroupcontainer = (DocumentGroupContainer)Profile.DockRoot.Children.FirstOrDefault(i => i is DocumentGroupContainer);
         if (dockgroupcontainer == null) {

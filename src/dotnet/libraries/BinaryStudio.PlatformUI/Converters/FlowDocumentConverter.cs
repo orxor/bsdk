@@ -16,11 +16,13 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.Xml.Xsl;
 using BinaryStudio.DiagnosticServices;
+using log4net;
 
 namespace BinaryStudio.PlatformUI.Converters
     {
     public class FlowDocumentConverter : IValueConverter
         {
+        private static readonly ILog logger = LogManager.GetLogger(nameof(FlowDocumentConverter));
         private class UrlResolver : XmlUrlResolver
             {
             /// <summary>Resolves the absolute URI from the base and relative URIs.</summary>
@@ -112,6 +114,7 @@ namespace BinaryStudio.PlatformUI.Converters
                                     }))
                                     {
                                     xslt.Transform(SourceXmlReader,writer);
+                                    return;
                                     }
                                 }
                             }).Wait();
@@ -138,7 +141,9 @@ namespace BinaryStudio.PlatformUI.Converters
                             r.ContentStart, 
                             r.ContentEnd
                             );
+                        logger.Debug("BeforeLoad");
                         range.Load(OutputStream,DataFormats.Xaml);
+                        logger.Debug("AfterLoad");
                         }
                     return r;
                     }

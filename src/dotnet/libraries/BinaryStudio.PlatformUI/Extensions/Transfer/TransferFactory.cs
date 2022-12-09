@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interactivity;
 using BinaryStudio.DiagnosticServices;
+using BinaryStudio.DiagnosticServices.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformUI.Controls;
 
 namespace BinaryStudio.PlatformUI.Extensions.Transfer
@@ -214,9 +216,9 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
         void ITransferFactory.CopyTo(DependencyObject Source,DependencyObject Target) {
-            #if DEBUG_TRANSFER
+            #if DEBUG
             if ((Source != null) && (Target != null)) {
-                Debug.Print("Transfer:{{{1}}}->{{{3}}}:{{{0}}}->{{{2}}}",
+                PlatformContext.Logger.Log(LogLevel.Debug, "Transfer:{{{1}}}->{{{3}}}:{{{0}}}->{{{2}}}",
                     Source.GetType().Name, Diagnostics.GetKey(Source),
                     Target.GetType().Name, Diagnostics.GetKey(Target));
                 }
