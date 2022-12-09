@@ -7,6 +7,7 @@
     <Version>1.0.1</Version>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Themes\OMF\OMFSSectionGlobalPub.xslt" />
     <None Remove="Themes\OMF\OMFSSectionSrcModule.xslt" />
   </ItemGroup>
   <ItemGroup>
@@ -21,6 +22,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Themes\OMF\OMFSSectionGlobalPub.xslt" />
     <Resource Include="Themes\OMF\OMFSSectionSrcModule.xslt" />
   </ItemGroup>
   <ItemGroup>

@@ -32,6 +32,7 @@
               <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionLibraries.xaml"/>
               <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionAlignSym.xaml"/>
               <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionSrcModule.xaml"/>
+              <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionGlobalPub.xaml"/>
             </ResourceDictionary.MergedDictionaries>
           </ResourceDictionary>
         </TabItem.Resources>

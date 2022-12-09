@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {
@@ -32,7 +36,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
             }
         }
 
-    public class CodeViewSymbol<T,I> : IJsonSerializable,IFileDumpSupport,ICodeViewSymbol
+    public class CodeViewSymbol<T,I> : IJsonSerializable,IFileDumpSupport,ICodeViewSymbol,IXmlSerializable
         where T: ICodeViewSymbolAttribute
         {
         UInt16 ICodeViewSymbol.Type { get { return (UInt16)(Object)Type; }}
@@ -295,6 +299,32 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 }
             return value.ToString("X4");
             }
+
+        #region M:IXmlSerializable.GetSchema:XmlSchema
+        /// <summary>This method is reserved and should not be used. When implementing the <see langword="IXmlSerializable"/> interface, you should return <see langword="null" /> (<see langword="Nothing" /> in Visual Basic) from this method, and instead, if specifying a custom schema is required, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class.</summary>
+        /// <returns>An <see cref="T:System.Xml.Schema.XmlSchema"/> that describes the XML representation of the object that is produced by the <see cref="M:System.Xml.Serialization.IXmlSerializable.WriteXml(System.Xml.XmlWriter)" /> method and consumed by the <see cref="M:System.Xml.Serialization.IXmlSerializable.ReadXml(System.Xml.XmlReader)"/> method.</returns>
+        XmlSchema IXmlSerializable.GetSchema() {
+            return null;
+            }
+        #endregion
+        #region M:IXmlSerializable.ReadXml(XmlReader)
+        /// <summary>Generates an object from its XML representation.</summary>
+        /// <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is deserialized.</param>
+        void IXmlSerializable.ReadXml(XmlReader reader)
+            {
+            throw new NotSupportedException();
+            }
+        #endregion
+        #region M:WriteXml(XmlWriter)
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public virtual void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("SymbolInfo");
+                writer.WriteAttributeString("Type",Type.ToString());
+                writer.WriteAttributeString("Offset",Offset.ToString());
+            writer.WriteEndElement();
+            }
+        #endregion
 
         private static Int32 MaxSizeLength;
         private const DEBUG_TYPE_ENUM CV_FIRST_NONPRIM = (DEBUG_TYPE_ENUM)0x1000;

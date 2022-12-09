@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Xml;
 using BinaryStudio.PortableExecutable.Win32;
 
 // ReSharper disable VirtualMemberCallInConstructor
@@ -32,6 +33,21 @@ namespace BinaryStudio.PortableExecutable.CodeView
                 LinePrefix,Offset,Type,
                 TypeIndex,SegmentIndex,SymbolOffset,Name);
             }
+
+        #region M:WriteXml(XmlWriter)
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("SymbolInfo");
+                writer.WriteAttributeString("Type",Type.ToString());
+                writer.WriteAttributeString("Offset",Offset.ToString());
+                writer.WriteAttributeString("TypeIndex",TypeIndex.ToString());
+                writer.WriteAttributeString("SegmentIndex",SegmentIndex.ToString());
+                writer.WriteAttributeString("SymbolOffset",SymbolOffset.ToString());
+                writer.WriteAttributeString("Name",Name);
+            writer.WriteEndElement();
+            }
+        #endregion
         }
 
     internal abstract class S_DATASYM16_32 : CodeViewSymbol

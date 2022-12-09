@@ -41,13 +41,14 @@ namespace BinaryStudio.PlatformUI.Converters
                 using (var output = new MemoryStream()) {
                     using (var writer = XmlWriter.Create(output, new XmlWriterSettings
                         {
-                        Indent = false,
+                        Indent = true,
                         Encoding = Encoding.Default
                         }))
                         {
                         source.WriteXml(writer);
                         }
                     output.Seek(0, SeekOrigin.Begin);
+                    Debug.Print(Encoding.Default.GetString(output.ToArray()));
                     return XDocument.Load(output);
                     }
                 });

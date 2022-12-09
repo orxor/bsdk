@@ -402,7 +402,7 @@ namespace BinaryStudio.PlatformUI.Documents
                             }
                         else
                             {
-                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(Cell).X);
+                            //DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(Cell).X);
                             }
                         j += Cell.ColumnSpan;
                         }
