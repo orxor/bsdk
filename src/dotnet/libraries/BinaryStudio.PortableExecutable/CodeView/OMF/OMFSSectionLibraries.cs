@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml;
 using JetBrains.Annotations;
 
 namespace BinaryStudio.PortableExecutable
@@ -46,5 +47,25 @@ namespace BinaryStudio.PortableExecutable
                 i++;
                 }
             }
+
+        #region M:WriteXml(XmlWriter)
+        /// <summary>Converts an object into its XML representation.</summary>
+        /// <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is serialized.</param>
+        public override void WriteXml(XmlWriter writer) {
+            writer.WriteStartElement("Section");
+                writer.WriteAttributeString("Type",SectionIndex.ToString());
+                writer.WriteAttributeString(nameof(ModuleIndex),ModuleIndex.ToString());
+                writer.WriteAttributeString("Offset",FileOffset.ToString());
+                writer.WriteAttributeString(nameof(Size),Size.ToString());
+                writer.WriteStartElement(nameof(Libraries));
+                foreach (var library in Libraries) {
+                    writer.WriteStartElement("LibraryInfo");
+                        writer.WriteAttributeString("Name",library);
+                    writer.WriteEndElement();
+                    }
+                writer.WriteEndElement();
+            writer.WriteEndElement();
+            }
+        #endregion
         }
     }

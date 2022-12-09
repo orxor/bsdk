@@ -15,6 +15,7 @@ namespace BinaryStudio.PortableExecutable.PlatformUI.Models
                 source.DebugDirectory.Sections.
                 Where(i => i.SectionIndex != OMFSSectionIndex.AlignSym).
                 Where(i => i.SectionIndex != OMFSSectionIndex.Module).
+                Where(i => i.SectionIndex != OMFSSectionIndex.SrcModule).
                 Select(i => (IModelOMFSSection)CreateModel(i)));
             }
         }

@@ -21,14 +21,14 @@
         <FlowDocument PageWidth="{Binding RelativeSource={RelativeSource AncestorType=RichTextBox},Path=ActualWidth,Mode=OneWay}">
           <Section>
             <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
-                   u:RichTextBoxOptions.IsAutoFit="True">
+                   u:TextProperties.IsAutoSize="True">
               <Table.Columns>
-                <TableColumn/>
-                <TableColumn/>
+                <TableColumn u:TextProperties.IsAutoSize="True"/>
+                <TableColumn u:TextProperties.IsAutoSize="True"/>
               </Table.Columns>
               <TableRowGroup>
                 <TableRow>
-                  <TableCell>
+                  <TableCell Background="{DynamicResource ControlLightBrushKey}">
                     <Paragraph>Offset</Paragraph>
                   </TableCell>
                   <TableCell>
@@ -38,7 +38,7 @@
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>
+                  <TableCell Background="{DynamicResource ControlLightBrushKey}">
                     <Paragraph>Size</Paragraph>
                   </TableCell>
                   <TableCell>
@@ -54,13 +54,13 @@
           <Section>
             <Paragraph Margin="0,5,0,5">Libraries:</Paragraph>
             <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}"
-                   u:RichTextBoxOptions.IsAutoFit="True" Margin="0">
+                   u:TextProperties.IsAutoSize="True" Margin="0">
               <Table.Columns>
-                <TableColumn Width="Auto"/>
-                <TableColumn Width="Auto"/>
+                <TableColumn u:TextProperties.IsAutoSize="True"/>
+                <TableColumn u:TextProperties.IsAutoSize="True"/>
               </Table.Columns>
               <TableRowGroup>
-                <TableRow>
+                <TableRow Background="{DynamicResource ControlLightBrushKey}">
                   <TableCell>
                     <Paragraph>Order</Paragraph>
                   </TableCell>
