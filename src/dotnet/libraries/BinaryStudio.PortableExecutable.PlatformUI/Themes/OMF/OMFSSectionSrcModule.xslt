@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl" xmlns:helix="urn:helix" xmlns:u="http://schemas.helix.global">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt" exclude-result-prefixes="msxsl" xmlns:helix="urn:helix" xmlns:u="http://schemas.helix.global"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
   <xsl:output method="xml" indent="yes"/>
   <msxsl:script language="CSharp" implements-prefix="helix">
     <![CDATA[
@@ -19,8 +20,8 @@
     <xsl:param name="Offset"/>
     <TableRow>
       <xsl:for-each select="LineNumbers/LineInfo[(position() &gt;= $Offset) and (position() &lt; ($Offset + 4))]">
-        <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,1,1" Padding="5,0,5,0">
-          <Paragraph>
+        <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,0,1,1" Padding="5,0,0,0">
+          <Paragraph Margin="0,0,0,0">
             <Run><xsl:value-of select="helix:str(@LineNumber,'d5')"/></Run><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run>:</Run>
             <Run><xsl:value-of select="helix:str(@SegmentOffset,'x8')"/></Run><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
           </Paragraph>
@@ -44,7 +45,7 @@
         </Table.Columns>
         <TableRowGroup>
           <TableRow>
-            <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,1,1,0" Padding="5,0,5,0" Background="{{DynamicResource ControlDarkBrushKey}}">
+            <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,1,1,0" Padding="5,0,5,0" Background="{{DynamicResource ControlLightBrushKey}}">
               <Paragraph>Offset</Paragraph>
             </TableCell>
             <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,1,1,0" Padding="5,0,5,0">
@@ -54,7 +55,7 @@
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,1,1,0" Padding="5,0,5,0" Background="{{DynamicResource ControlDarkBrushKey}}">
+            <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,1,1,0" Padding="5,0,5,0" Background="{{DynamicResource ControlLightBrushKey}}">
               <Paragraph>Size</Paragraph>
             </TableCell>
             <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="0,1,1,0" Padding="5,0,5,0">
@@ -101,7 +102,7 @@
           <TableColumn u:TextProperties.IsAutoSize="True"/>
         </Table.Columns>
         <TableRowGroup>
-          <TableRow Background="{{DynamicResource ControlDarkBrushKey}}">
+          <TableRow Background="{{DynamicResource ControlLightBrushKey}}">
             <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="1,1,0,0" Padding="5,0,5,0"><Paragraph>Name</Paragraph></TableCell>
             <TableCell BorderBrush="{{DynamicResource ControlDarkBrushKey}}" BorderThickness="1,1,1,0" Padding="5,0,5,0"><Paragraph>Offset</Paragraph></TableCell>
           </TableRow>

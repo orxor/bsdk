@@ -1,55 +1,26 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Threading;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
-using System.Xml.XPath;
 using System.Xml.Xsl;
+using BinaryStudio.DiagnosticServices;
 
 namespace BinaryStudio.PlatformUI.Converters
     {
     public class FlowDocumentConverter : IValueConverter
         {
-        #region M:CreateReader(XmlNode):XmlReader
-        private static XmlReader CreateReader(XmlNode source)
-            {
-            return new XmlNodeReader(source);
-            }
-        #endregion
-        #region M:CreateReader(String):XmlReader
-        private static XmlReader CreateReader(String source)
-            {
-            return XmlReader.Create(new StringReader(source));
-            }
-        #endregion
-        #region M:CreateReader(StringBuilder):XmlReader
-        private static XmlReader CreateReader(StringBuilder source)
-            {
-            return XmlReader.Create(new StringReader(source.ToString()));
-            }
-        #endregion
-        #region M:ReadXml(IXmlSerializable):MemoryStream
-        private static MemoryStream ReadXml(IXmlSerializable Source) {
-            var Output = new MemoryStream();
-            using (var writer = XmlWriter.Create(Output, new XmlWriterSettings
-                {
-                Indent = true,
-                Encoding = Encoding.Default
-                }))
-                {
-                Source.WriteXml(writer);
-                }
-            Output.Seek(0, SeekOrigin.Begin);
-            return Output;
-            }
-        #endregion
-
         private class UrlResolver : XmlUrlResolver
             {
             /// <summary>Resolves the absolute URI from the base and relative URIs.</summary>
@@ -64,6 +35,42 @@ namespace BinaryStudio.PlatformUI.Converters
                 }
             }
 
+        #region M:ResolveDocument(Dispatcher,IXmlSerializable):Task<XDocument>
+        private static Task<XDocument> ResolveDocument(Dispatcher Dispatcher, IXmlSerializable source) {
+            return Task.Factory.StartNew(()=>{
+                using (var output = new MemoryStream()) {
+                    using (var writer = XmlWriter.Create(output, new XmlWriterSettings
+                        {
+                        Indent = false,
+                        Encoding = Encoding.Default
+                        }))
+                        {
+                        source.WriteXml(writer);
+                        }
+                    output.Seek(0, SeekOrigin.Begin);
+                    return XDocument.Load(output);
+                    }
+                });
+            }
+        #endregion
+        #region M:ResolveDocument(Dispatcher,XmlDataProvider):Task<XDocument>
+        private static Task<XDocument> ResolveDocument(Dispatcher Dispatcher, XmlDataProvider source) {
+            return Task.Factory.StartNew(()=>{
+                if (source != null) {
+                    if (source.Document == null) {
+                        if (source.IsAsynchronous && source.IsInitialLoadEnabled) {
+                            throw new InvalidOperationException("When using 'XmlDataProvider' with 'IsAsynchronous=true', requires asynchronous binding.");
+                            }
+                        }
+                    if (source.Document != null) {
+                        return XDocument.Parse(source.Document.InnerXml);
+                        }
+                    }
+                return null;
+                });
+            }
+        #endregion
+
         /// <summary>Converts a value.</summary>
         /// <param name="value">The value produced by the binding source.</param>
         /// <param name="targetType">The type of the binding target property.</param>
@@ -71,53 +78,68 @@ namespace BinaryStudio.PlatformUI.Converters
         /// <param name="culture">The culture to use in the converter.</param>
         /// <returns>A converted value. If the method returns <see langword="null"/>, the valid null value is used.</returns>
         Object IValueConverter.Convert(Object value, Type targetType, Object parameter, CultureInfo culture) {
-            if (value is IXmlSerializable source) {
-                var InputStream = ReadXml(source);
-                if (parameter is XmlDataProvider provider) {
-                    provider.Refresh();
-                    if (provider.Document != null) {
-                        using (var reader = CreateReader(provider.Document.InnerXml)) {
-                            var xslt = new XslCompiledTransform();
-                            xslt.Load(reader, new XsltSettings{
-                                EnableScript = true
-                                }, new UrlResolver());
-                            var OutputBuilder = new StringBuilder();
-                            using (var writer = XmlWriter.Create(OutputBuilder, new XmlWriterSettings
+            if (value is IXmlSerializable Source) {
+                if (parameter is XmlDataProvider Provider) {
+                    var r = new FlowDocument();
+                    //BindingOperations.SetBinding(r,FlowDocument.PageWidthProperty,new Binding{
+                    //    Mode = BindingMode.OneWay,
+                    //    Path = new PropertyPath("ActualWidth"),
+                    //    RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor){
+                    //        AncestorType = typeof(RichTextBox)
+                    //        },
+                    //    });
+                    var dispatcher = Dispatcher.CurrentDispatcher;
+                    var OutputBuilder = new StringBuilder();
+                    try
+                        {
+                        Task.Factory.ContinueWhenAll<XDocument>(new []{
+                            ResolveDocument(dispatcher,Source),
+                            ResolveDocument(dispatcher,Provider)
+                            },(tasks)=>
+                            {
+                            using (XmlReader SourceXmlReader = tasks[0].Result?.CreateReader(),
+                                             SourceXslReader = tasks[1].Result?.CreateReader())
                                 {
-                                Indent = true,
-                                Encoding = Encoding.Default
-                                }))
-                                {
-                                xslt.Transform(new XPathDocument(XmlReader.Create(InputStream,new XmlReaderSettings{
-                                    IgnoreComments = true
-                                    })), writer);
+                                var xslt = new XslCompiledTransform();
+                                xslt.Load(SourceXslReader, new XsltSettings{
+                                    EnableScript = true
+                                    }, new UrlResolver());
+                                using (var writer = XmlWriter.Create(OutputBuilder, new XmlWriterSettings
+                                    {
+                                    Indent = false,
+                                    Encoding = Encoding.Default
+                                    }))
+                                    {
+                                    xslt.Transform(SourceXmlReader,writer);
+                                    }
                                 }
-                            var r = new FlowDocument();
-                            BindingOperations.SetBinding(r,FlowDocument.PageWidthProperty,new Binding{
-                                Mode = BindingMode.OneWay,
-                                Path = new PropertyPath("ActualWidth"),
-                                RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor){
-                                    AncestorType = typeof(RichTextBox)
-                                    },
-                                });
-                            var OutputDocument = new XmlDocument();
-                            OutputDocument.LoadXml(OutputBuilder.ToString());
-                            if (String.IsNullOrWhiteSpace(OutputDocument.DocumentElement.NamespaceURI)) {
-                                OutputDocument.DocumentElement.SetAttribute("xmlns","http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-                                }
-                            #if DEBUG
-                            Debug.Print(OutputBuilder.ToString());
-                            #endif
-                            using (var OutputStream = new MemoryStream(Encoding.UTF8.GetBytes(OutputDocument.InnerXml))) {
-                                var range = new TextRange(
-                                    r.ContentStart, 
-                                    r.ContentEnd
-                                    );
-                                range.Load(OutputStream,DataFormats.Xaml);
-                                }
-                            return r;
-                            }
+                            }).Wait();
                         }
+                    catch (Exception e)
+                        {
+                        Debug.Print(Exceptions.ToString(e));
+                        OutputBuilder = new StringBuilder();
+                        OutputBuilder.Append(@"<Section xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">");
+                        OutputBuilder.Append(@"  <Paragraph Margin=""0,5,0,5"" Foreground=""{DynamicResource AccentRBrushKey}"">");
+                        foreach (var i in Exceptions.ToString(e).Split(new []{'\r','\n'},StringSplitOptions.RemoveEmptyEntries)) {
+                            OutputBuilder.AppendFormat(@"<Run Text=""{0}""></Run><LineBreak/>",
+                                i.Replace("<","&lt;").
+                                  Replace(">","&gt;"));
+                            }
+                        OutputBuilder.Append(@"  </Paragraph>");
+                        OutputBuilder.Append(@"</Section>");
+                        }
+                    #if DEBUG
+                    Debug.Print(OutputBuilder.ToString());
+                    #endif
+                    using (var OutputStream = new MemoryStream(Encoding.UTF8.GetBytes(OutputBuilder.ToString()))) {
+                        var range = new TextRange(
+                            r.ContentStart, 
+                            r.ContentEnd
+                            );
+                        range.Load(OutputStream,DataFormats.Xaml);
+                        }
+                    return r;
                     }
                 }
             return null;

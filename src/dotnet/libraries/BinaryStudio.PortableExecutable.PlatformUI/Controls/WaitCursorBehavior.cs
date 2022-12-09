@@ -16,11 +16,13 @@ namespace BinaryStudio.PortableExecutable.PlatformUI.Controls
             AssociatedObject.Dispatcher.BeginInvoke(new Action(() =>
                 {
                 Mouse.OverrideCursor = null;
+                AssociatedObject.SetValue(UIElement.VisibilityProperty, Visibility.Visible);
                 }), DispatcherPriority.ApplicationIdle);
             #else
             AssociatedObject.Dispatcher.InvokeAsync(() =>
                 {
                 Mouse.OverrideCursor = null;
+                AssociatedObject.SetValue(UIElement.VisibilityProperty, Visibility.Visible);
                 }, DispatcherPriority.ApplicationIdle);
             #endif
             base.OnAttached();

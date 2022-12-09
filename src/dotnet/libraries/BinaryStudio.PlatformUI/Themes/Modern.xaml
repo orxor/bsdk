@@ -9,6 +9,9 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/Expander.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Templates.xaml"/>
   </ResourceDictionary.MergedDictionaries>
+  <SolidColorBrush x:Key="AccentRBrushKey"                  Color="Red"/>
+  <SolidColorBrush x:Key="AccentGBrushKey"                  Color="Green"/>
+  <SolidColorBrush x:Key="AccentYBrushKey"                  Color="DarkGoldenrod"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushKey}"                   Color="{DynamicResource {x:Static SystemColors.ActiveBorderColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushKey}"                  Color="{DynamicResource {x:Static SystemColors.ActiveCaptionColorKey}}"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionTextBrushKey}"              Color="{DynamicResource {x:Static SystemColors.ActiveCaptionTextColorKey}}"/>

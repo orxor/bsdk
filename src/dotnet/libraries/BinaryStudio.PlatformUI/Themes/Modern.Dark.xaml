@@ -6,6 +6,9 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/Menu.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/ScrollViewer.xaml"/>
   </ResourceDictionary.MergedDictionaries>
+  <SolidColorBrush x:Key="AccentRBrushKey"                  Color="OrangeRed"/>
+  <SolidColorBrush x:Key="AccentGBrushKey"                  Color="LightGreen"/>
+  <SolidColorBrush x:Key="AccentYBrushKey"                  Color="Yellow"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushKey}"                       Color="#ff3f3f46"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushKey}"                      Color="#ff252526"/>
   <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionTextBrushKey}"                  Color="#ff999999"/>

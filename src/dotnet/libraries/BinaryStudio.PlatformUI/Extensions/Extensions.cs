@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -17,12 +18,11 @@ namespace BinaryStudio.PlatformUI.Controls
         public static void DoAfterLayoutUpdated(this UIElement source,Action predicate) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
-            EventHandler handler = null;
-            handler = delegate {
+            void Handler(Object sender, EventArgs e) {
                 predicate.Invoke();
-                source.LayoutUpdated -= handler;
-                };
-            source.LayoutUpdated += handler;
+                source.LayoutUpdated -= Handler;
+                }
+            source.LayoutUpdated += Handler;
             }
         #endregion
         #region M:DoAfterLayoutUpdated<T>({this}T,Action<T>)
@@ -265,6 +265,12 @@ namespace BinaryStudio.PlatformUI.Controls
                 }
             }
         #endregion
+
+        public static void ForAll<T>(this IEnumerable<T> source, Action<T> action) {
+            foreach (var i in source) {
+                action(i);
+                }
+            }
 
         public static void WaitForLoad(this FrameworkContentElement source) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }

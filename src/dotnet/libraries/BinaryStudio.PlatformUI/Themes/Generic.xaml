@@ -7,6 +7,7 @@
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/Primitives/RangeSelectionTrackingControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/HexBox.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/PropertyGridControl.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/ProgressRing.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Controls/MainWindow.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideChannelControl.xaml"/>
     <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Shell/Controls/AutoHideGroupControl.xaml"/>

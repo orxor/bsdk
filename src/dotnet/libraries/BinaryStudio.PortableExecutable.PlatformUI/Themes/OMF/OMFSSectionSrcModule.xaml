@@ -11,13 +11,16 @@
     <Grid>
       <Grid.Resources>
         <u:FlowDocumentConverter x:Key="Converter"/>
-        <XmlDataProvider x:Key="XSLT" XPath="*" IsAsynchronous="False" Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionSrcModule.xslt"/>
+        <u:VisibilityInverter x:Key="VisibilityInverter"/>
+        <XmlDataProvider x:Key="XSLT" XPath="*" IsAsynchronous="True" Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionSrcModule.xslt"/>
       </Grid.Resources>
+      <TextBlock Margin="5" x:Name="LoadingControl" Grid.Column="0" HorizontalAlignment="Left">Loading...</TextBlock>
       <RichTextBox BorderThickness="0" Background="Transparent" Margin="2,5,2,5" IsReadOnly="True"
                    HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
                    IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
                    Foreground="{DynamicResource ControlTextBrushKey}" x:Name="Target"
-                   u:RichTextBoxOptions.Document="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource XSLT}}">
+                   Visibility="{Binding ElementName=LoadingControl,Path=Visibility,Converter={StaticResource VisibilityInverter},Mode=TwoWay}"
+                   u:RichTextBoxOptions.Document="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource XSLT},IsAsync=True}">
         <RichTextBox.Resources>
           <Style TargetType="{x:Type TableCell}" x:Key="TableCell">
             <Setter Property="BorderThickness" Value="0,1,1,0"/>
@@ -25,6 +28,13 @@
             <Setter Property="Padding" Value="5,0,5,0"/>
           </Style>
         </RichTextBox.Resources>
+        <RichTextBox.ContextMenu>
+          <ContextMenu Style="{StaticResource {x:Static u:Theme.ContextMenuStyleKey}}">
+            <MenuItem Header="Copy" Command="ApplicationCommands.Copy" InputGestureText="Ctrl+C"/>
+            <MenuItem Header="Copy {XAML-V}" Command="u:PlatformCommands.CopyToXamlV" InputGestureText="Ctrl+Alt+C"/>
+            <MenuItem Header="Copy {XAML-E}" Command="u:PlatformCommands.CopyToXamlE" InputGestureText="Ctrl+Alt+E"/>
+          </ContextMenu>
+        </RichTextBox.ContextMenu>
         <i:Interaction.Behaviors>
           <c:WaitCursorBehavior/>
         </i:Interaction.Behaviors>

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Documents;
@@ -46,6 +47,16 @@ namespace BinaryStudio.PlatformUI.Controls
                                 });
                             }
                         }
+                    BindingOperations.SetBinding(source.Document, FlowDocument.PageWidthProperty, new Binding {
+                        Mode = BindingMode.OneWay,
+                        Path = new PropertyPath("ActualWidth"),
+                        Source = source
+                        });
+                    source.Document.LogicalDescendants().OfType<Table>().Reverse().ForAll(i =>{
+                        if (GetIsAutoSize(i)) {
+                            DoAutoSize(i);
+                            }
+                        });
                     }
                 catch (Exception x)
                     {

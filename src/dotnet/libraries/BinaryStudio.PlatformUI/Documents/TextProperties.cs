@@ -290,8 +290,8 @@ namespace BinaryStudio.PlatformUI.Documents
                 Brushes.Black,
                 null,
                 TextFormattingMode.Display);
-            SetDesiredSize(Source,new Size(Math.Max(r.Width,Source.FontSize),r.Height));
-            return new Vector(Math.Max(r.Width,Source.FontSize),r.Height);
+            SetDesiredSize(Source,new Size(Math.Max(r.Width,Source.FontSize*0.5),r.Height));
+            return new Vector(Math.Max(r.Width,Source.FontSize*0.5),r.Height);
             }
         #endregion
         #region M:GetDesiredSize(Span):Vector
