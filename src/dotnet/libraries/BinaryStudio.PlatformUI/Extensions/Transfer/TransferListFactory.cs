@@ -13,9 +13,9 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(List Source, List Target) {
+        protected override void Transfer(List Source, List Target) {
             if (Source == null) { return; }
-            base.CopyTo(Source, Target);
+            base.Transfer(Source, Target);
             using (new DebugScope()) {
                 Transfer(Source,Target,List.MarkerOffsetProperty);
                 Transfer(Source,Target,List.MarkerStyleProperty);
@@ -28,7 +28,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     var TargetListItem = (ListItem)Activator.CreateInstance(SourceListItem.GetType());
                     TargetListItems.Add(TargetListItem);
                     ApplyStyle(TargetListItem,Target);
-                    GetFactory(SourceListItem).CopyTo(SourceListItem,TargetListItem);
+                    GetFactory(SourceListItem).Transfer(SourceListItem,TargetListItem);
                     SourceListItem = SourceListItem.NextListItem;
                     }
                 }

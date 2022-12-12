@@ -10,7 +10,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(T Source, T Target) {
+        protected override void Transfer(T Source, T Target) {
             if (Source == null) { return; }
             using (new DebugScope()) {
                 Transfer(Source,Target,ContentElement.IsEnabledProperty);

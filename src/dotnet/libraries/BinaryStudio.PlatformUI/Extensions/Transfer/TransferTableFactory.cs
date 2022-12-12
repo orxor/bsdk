@@ -14,9 +14,9 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(Table Source, Table Target) {
+        protected override void Transfer(Table Source, Table Target) {
             if (Source == null) { return; }
-            base.CopyTo(Source, Target);
+            base.Transfer(Source, Target);
             using (new DebugScope()) {
                 Transfer(Source,Target,Table.CellSpacingProperty);
                 var SourceColumns = Source.Columns;
@@ -25,7 +25,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     var TargetColumn = (TableColumn)Activator.CreateInstance(SourceColumn.GetType());
                     TargetColumns.Add(TargetColumn);
                     ApplyStyle(TargetColumn,Target);
-                    GetFactory(SourceColumn).CopyTo(SourceColumn,TargetColumn);
+                    GetFactory(SourceColumn).Transfer(SourceColumn,TargetColumn);
                     }
                 Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
                 var SourceRowGroups = Source.RowGroups;
@@ -34,7 +34,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     var TargetRowGroup = (TableRowGroup)Activator.CreateInstance(SourceRowGroup.GetType());
                     TargetRowGroups.Add(TargetRowGroup);
                     ApplyStyle(TargetRowGroup,Target);
-                    GetFactory(SourceRowGroup).CopyTo(SourceRowGroup,TargetRowGroup);
+                    GetFactory(SourceRowGroup).Transfer(SourceRowGroup,TargetRowGroup);
                     }
                 Transfer(Source,Target,TextProperties.IsAutoSizeProperty);
                 }

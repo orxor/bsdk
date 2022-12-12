@@ -56,14 +56,14 @@ namespace BinaryStudio.PlatformUI.Documents
                     var content = ContentTemplate.LoadContent();
                     if (content is Paragraph TemplatedContent) {
                         TransferFactory.CopyTo(this,TemplatedContent,DataContextProperty);
-                        TransferFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
+                        TransferFactory.GetFactory(TemplatedContent.GetType()).Transfer(TemplatedContent,this);
                         }
                     }
                 else
                     {
                     if (Source is Paragraph Paragraph) {
                         TransferFactory.CopyTo(this,Paragraph,DataContextProperty);
-                        TransferFactory.GetFactory(Paragraph.GetType()).CopyTo(Paragraph,this);
+                        TransferFactory.GetFactory(Paragraph.GetType()).Transfer(Paragraph,this);
                         }
                     else
                         {

@@ -34,7 +34,7 @@ namespace BinaryStudio.PlatformUI.Controls
                             TransferFactory.CopyTo(source,document,Control.FontStyleProperty);
                             TransferFactory.CopyTo(source,document,Control.FontWeightProperty);
                             TransferFactory.CopyTo(source,document,FrameworkElement.DataContextProperty);
-                            TransferFactory.GetFactory(document.GetType()).CopyTo(document,source.Document);
+                            TransferFactory.GetFactory(document.GetType()).Transfer(document,source.Document);
                             }
                         else
                             {
@@ -47,7 +47,7 @@ namespace BinaryStudio.PlatformUI.Controls
                                 TransferFactory.CopyTo(source,document,Control.FontStyleProperty);
                                 TransferFactory.CopyTo(source,document,Control.FontWeightProperty);
                                 TransferFactory.CopyTo(source,document,FrameworkElement.DataContextProperty);
-                                TransferFactory.GetFactory(document.GetType()).CopyTo(document,source.Document);
+                                TransferFactory.GetFactory(document.GetType()).Transfer(document,source.Document);
                                 });
                             }
                         }

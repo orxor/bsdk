@@ -69,7 +69,7 @@ namespace BinaryStudio.PlatformUI.Documents
                             Rows.Add(TargetRow);
                             TargetRow.ClearValue(DataContextProperty);
                             SourceRow.ClearValue(DataContextProperty);
-                            TransferFactory.GetFactory(SourceRow.GetType()).CopyTo(SourceRow,TargetRow);
+                            TransferFactory.GetFactory(SourceRow.GetType()).Transfer(SourceRow,TargetRow);
                             TransferFactory.TransferDataContext(TargetRow,item);
                             if (TargetRow.IsDefaultValue(ForegroundProperty)) {
                                 TargetRow.SetForegroundToSelfAndDescendants(Foreground);

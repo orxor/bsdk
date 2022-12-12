@@ -14,9 +14,9 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(TableRowGroup Source, TableRowGroup Target) {
+        protected override void Transfer(TableRowGroup Source, TableRowGroup Target) {
             if (Source == null) { return; }
-            base.CopyTo(Source, Target);
+            base.Transfer(Source, Target);
             using (new DebugScope()) {
                 Transfer(Source,Target,ItemsControl.ItemsSourceProperty);
                 Transfer(Source,Target,FrameworkContentElement.DataContextProperty);
@@ -26,7 +26,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     var TargetRow = (TableRow)Activator.CreateInstance(SourceRow.GetType());
                     TargetRows.Add(TargetRow);
                     ApplyStyle(TargetRow,Target);
-                    GetFactory(SourceRow).CopyTo(SourceRow,TargetRow);
+                    GetFactory(SourceRow).Transfer(SourceRow,TargetRow);
                     }
                 }
             }

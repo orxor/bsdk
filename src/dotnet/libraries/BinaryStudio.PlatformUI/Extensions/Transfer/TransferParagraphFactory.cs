@@ -15,9 +15,9 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected override void CopyTo(Paragraph Source, Paragraph Target) {
+        protected override void Transfer(Paragraph Source, Paragraph Target) {
             if (Source == null) { return; }
-            base.CopyTo(Source, Target);
+            base.Transfer(Source, Target);
             using (new DebugScope()) {
                 Transfer(Source,Target,Paragraph.KeepTogetherProperty);
                 Transfer(Source,Target,Paragraph.KeepWithNextProperty);
@@ -41,7 +41,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                     var TargetInline = (Inline)Activator.CreateInstance(SourceInline.GetType());
                     TargetInlines.Add(TargetInline);
                     ApplyStyle(TargetInline,Target);
-                    GetFactory(SourceInline).CopyTo(SourceInline,TargetInline);
+                    GetFactory(SourceInline).Transfer(SourceInline,TargetInline);
                     SourceInline = SourceInline.NextInline;
                     }
                 }

@@ -6,4 +6,17 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.2" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.2" />
+    <PackageReference Include="stub.system.data.sqlite.core.netframework" Version="1.0.113">
+      <GeneratePathProperty>true</GeneratePathProperty>
+    </PackageReference>
+    <None Include="$(Pkgstub_system_data_sqlite_core_netframework)\build\net40\x86\SQLite.Interop.dll" Link="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(Pkgstub_system_data_sqlite_core_netframework)\build\net40\x64\SQLite.Interop.dll" Link="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

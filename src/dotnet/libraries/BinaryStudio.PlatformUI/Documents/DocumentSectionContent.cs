@@ -64,7 +64,7 @@ namespace BinaryStudio.PlatformUI.Documents
                             var content = template.LoadContent();
                             if (content is Section TemplatedContent) {
                                 TransferFactory.CopyTo(this,TemplatedContent,DataContextProperty);
-                                TransferFactory.GetFactory(TemplatedContent.GetType()).CopyTo(TemplatedContent,this);
+                                TransferFactory.GetFactory(TemplatedContent.GetType()).Transfer(TemplatedContent,this);
                                 TemplatedContent.DataContext = null;
                                 //var triggers = this.LogicalDescendants().SelectMany(Interaction.GetTriggers).OfType<DataTrigger>().ToArray();
                                 //var expressions = triggers.Select(i => i.BindingExpression).Where(i => i != null).ToArray();

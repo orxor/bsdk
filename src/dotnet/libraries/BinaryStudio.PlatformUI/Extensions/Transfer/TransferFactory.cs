@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Interactivity;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DiagnosticServices.Logging;
+using BinaryStudio.DiagnosticServices.Tracing;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformUI.Controls;
 
@@ -25,7 +26,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
             return Source;
             }
 
-        #region M:CopyTo(DependencyObject,DependencyObject,DependencyProperty)
+        #region M:Transfer(DependencyObject,DependencyObject,DependencyProperty)
         public static void CopyTo(DependencyObject Source,DependencyObject Target,DependencyProperty Property)
             {
             if (Source == null) { return; }
@@ -114,7 +115,7 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
                 var Target = (T)Activator.CreateInstance(Source.GetType());
                 var Factory = GetFactory(Source.GetType());
                 if (Factory == null) { throw new NotSupportedException(); }
-                Factory.CopyTo(Source,Target);
+                Factory.Transfer(Source,Target);
                 return Target;
                 }
             return null;
@@ -157,11 +158,11 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
     internal abstract class TransferFactory<T> : TransferFactory,ITransferFactory
         where T : DependencyObject
         {
-        #region M:CopyTo(T,T)
+        #region M:Transfer(T,T)
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        protected abstract void CopyTo(T Source,T Target);
+        protected abstract void Transfer(T Source,T Target);
         #endregion
         #region M:Transfer(DependencyObject,DependencyObject,DependencyProperty)
         protected virtual void Transfer(DependencyObject Source,DependencyObject Target,DependencyProperty Property) {
@@ -215,16 +216,18 @@ namespace BinaryStudio.PlatformUI.Extensions.Transfer
         /// <summary>Copies properties from one instance to another.</summary>
         /// <param name="Source">Source of properties.</param>
         /// <param name="Target">Target where properties are copied to.</param>
-        void ITransferFactory.CopyTo(DependencyObject Source,DependencyObject Target) {
-            #if DEBUG
-            if ((Source != null) && (Target != null)) {
-                PlatformContext.Logger.Log(LogLevel.Debug, "Transfer:{{{1}}}->{{{3}}}:{{{0}}}->{{{2}}}",
-                    Source.GetType().Name, Diagnostics.GetKey(Source),
-                    Target.GetType().Name, Diagnostics.GetKey(Target));
-                }
-            #endif
-            using (new DebugScope()) {
-                CopyTo((T)Source,(T)Target);
+        void ITransferFactory.Transfer(DependencyObject Source,DependencyObject Target) {
+            using (new TraceScope(nameof(Transfer))) {
+                #if DEBUG
+                if ((Source != null) && (Target != null)) {
+                    PlatformContext.Logger.Log(LogLevel.Debug, "Transfer:{{{1}}}->{{{3}}}:{{{0}}}->{{{2}}}",
+                        Source.GetType().Name, Diagnostics.GetKey(Source),
+                        Target.GetType().Name, Diagnostics.GetKey(Target));
+                    }
+                #endif
+                using (new DebugScope()) {
+                    Transfer((T)Source,(T)Target);
+                    }
                 }
             }
 
