@@ -1,13 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Threading;
@@ -20,10 +17,10 @@ using log4net;
 
 namespace BinaryStudio.PlatformUI.Converters
     {
-    public class FlowDocumentConverter : IValueConverter
+    public class FDConverter : IValueConverter
         {
-        private static readonly ILog logger = LogManager.GetLogger(nameof(FlowDocumentConverter));
-        private class UrlResolver : XmlUrlResolver
+        private static readonly ILog logger = LogManager.GetLogger(nameof(FDConverter));
+        protected class UrlResolver : XmlUrlResolver
             {
             /// <summary>Resolves the absolute URI from the base and relative URIs.</summary>
             /// <param name="baseUri">The base URI used to resolve the relative URI.</param>
@@ -37,8 +34,8 @@ namespace BinaryStudio.PlatformUI.Converters
                 }
             }
 
-        #region M:ResolveDocument(Dispatcher,IXmlSerializable):Task<XDocument>
-        private static Task<XDocument> ResolveDocument(Dispatcher Dispatcher, IXmlSerializable source) {
+        #region M:ResolveDocument(IXmlSerializable):Task<XDocument>
+        protected static Task<XDocument> ResolveDocument(IXmlSerializable source) {
             return Task.Factory.StartNew(()=>{
                 using (var output = new MemoryStream()) {
                     using (var writer = XmlWriter.Create(output, new XmlWriterSettings
@@ -50,14 +47,14 @@ namespace BinaryStudio.PlatformUI.Converters
                         source.WriteXml(writer);
                         }
                     output.Seek(0, SeekOrigin.Begin);
-                    Debug.Print(Encoding.Default.GetString(output.ToArray()));
+                    //Debug.Print(Encoding.Default.GetString(output.ToArray()));
                     return XDocument.Load(output);
                     }
                 });
             }
         #endregion
-        #region M:ResolveDocument(Dispatcher,XmlDataProvider):Task<XDocument>
-        private static Task<XDocument> ResolveDocument(Dispatcher Dispatcher, XmlDataProvider source) {
+        #region M:ResolveDocument(XmlDataProvider):Task<XDocument>
+        protected static Task<XDocument> ResolveDocument(XmlDataProvider source) {
             return Task.Factory.StartNew(()=>{
                 if (source != null) {
                     if (source.Document == null) {
@@ -80,24 +77,16 @@ namespace BinaryStudio.PlatformUI.Converters
         /// <param name="parameter">The converter parameter to use.</param>
         /// <param name="culture">The culture to use in the converter.</param>
         /// <returns>A converted value. If the method returns <see langword="null"/>, the valid null value is used.</returns>
-        Object IValueConverter.Convert(Object value, Type targetType, Object parameter, CultureInfo culture) {
+        public virtual Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture) {
             if (value is IXmlSerializable Source) {
                 if (parameter is XmlDataProvider Provider) {
                     var r = new FlowDocument();
-                    //BindingOperations.SetBinding(r,FlowDocument.PageWidthProperty,new Binding{
-                    //    Mode = BindingMode.OneWay,
-                    //    Path = new PropertyPath("ActualWidth"),
-                    //    RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor){
-                    //        AncestorType = typeof(RichTextBox)
-                    //        },
-                    //    });
-                    var dispatcher = Dispatcher.CurrentDispatcher;
                     var OutputBuilder = new StringBuilder();
                     try
                         {
                         Task.Factory.ContinueWhenAll<XDocument>(new []{
-                            ResolveDocument(dispatcher,Source),
-                            ResolveDocument(dispatcher,Provider)
+                            ResolveDocument(Source),
+                            ResolveDocument(Provider)
                             },(tasks)=>
                             {
                             using (XmlReader SourceXmlReader = tasks[0].Result?.CreateReader(),
@@ -114,7 +103,6 @@ namespace BinaryStudio.PlatformUI.Converters
                                     }))
                                     {
                                     xslt.Transform(SourceXmlReader,writer);
-                                    return;
                                     }
                                 }
                             }).Wait();
@@ -133,17 +121,12 @@ namespace BinaryStudio.PlatformUI.Converters
                         OutputBuilder.Append(@"  </Paragraph>");
                         OutputBuilder.Append(@"</Section>");
                         }
-                    #if DEBUG
-                    Debug.Print(OutputBuilder.ToString());
-                    #endif
                     using (var OutputStream = new MemoryStream(Encoding.UTF8.GetBytes(OutputBuilder.ToString()))) {
                         var range = new TextRange(
                             r.ContentStart, 
                             r.ContentEnd
                             );
-                        logger.Debug("BeforeLoad");
                         range.Load(OutputStream,DataFormats.Xaml);
-                        logger.Debug("AfterLoad");
                         }
                     return r;
                     }

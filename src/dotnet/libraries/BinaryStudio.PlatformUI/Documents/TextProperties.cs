@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformUI.Controls;
 using log4net;
 
@@ -143,36 +144,37 @@ namespace BinaryStudio.PlatformUI.Documents
             element.SetValue(DesiredSizeProperty, value);
             }
 
-        public static Size GetDesiredSize(DependencyObject element)
-            {
-            return (Size) element.GetValue(DesiredSizeProperty);
+        public static Size GetDesiredSize(DependencyObject element) {
+            return (Size)element.GetValue(DesiredSizeProperty);
             }
         #endregion
 
-        #region M:GetDesiredSize(Inline):Vector
-        protected static Vector GetDesiredSize(Inline Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Inline):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Inline Source) {
             if (Source == null) { return new Vector(0,0); }
-            return GetDesiredSize(Source as AnchoredBlock) +
-                   GetDesiredSize(Source as InlineUIContainer) +
-                   GetDesiredSize(Source as LineBreak) +
-                   GetDesiredSize(Source as Run) +
-                   GetDesiredSize(Source as Span);
+            return GetDesiredSize(context,Source as AnchoredBlock) +
+                   GetDesiredSize(context,Source as InlineUIContainer) +
+                   GetDesiredSize(context,Source as LineBreak) +
+                   GetDesiredSize(context,Source as Run) +
+                   GetDesiredSize(context,Source as Span);
             }
         #endregion
-        #region M:GetDesiredSize(Block):Vector
-        protected static Vector GetDesiredSize(Block Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Block):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Block Source) {
             if (Source == null) { return new Vector(0,0); }
-            return GetDesiredSize(Source as BlockUIContainer) +
-                   GetDesiredSize(Source as List) +
-                   GetDesiredSize(Source as Paragraph) +
-                   GetDesiredSize(Source as Section) +
-                   GetDesiredSize(Source as Table);
+            return GetDesiredSize(context,Source as BlockUIContainer) +
+                   GetDesiredSize(context,Source as List) +
+                   GetDesiredSize(context,Source as Paragraph) +
+                   GetDesiredSize(context,Source as Section) +
+                   GetDesiredSize(context,Source as Table);
             }
         #endregion
-        #region M:GetDesiredSize(BlockUIContainer):Vector
-        protected static Vector GetDesiredSize(BlockUIContainer Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,BlockUIContainer):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,BlockUIContainer Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             if (Source.Child != null) {
                 Source.Child.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
                 var Size = Source.Child.DesiredSize;
@@ -182,41 +184,50 @@ namespace BinaryStudio.PlatformUI.Documents
             r.X += Source.Padding.Left + Source.Padding.Right  + Source.Margin.Left + Source.Margin.Right;
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + Source.Margin.Top  + Source.Margin.Bottom;
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(List):Vector
-        protected static Vector GetDesiredSize(List Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,List):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,List Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(Source.MarkerOffset,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(Source.MarkerOffset,0);
             foreach (var ListItem in Source.ListItems) {
-                r += GetDesiredSize(ListItem);
+                r += GetDesiredSize(context,ListItem);
                 }
             r.X += Source.Padding.Left + Source.Padding.Right  + Source.Margin.Left + Source.Margin.Right;
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + Source.Margin.Top  + Source.Margin.Bottom;
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(ListItem):Vector
-        protected static Vector GetDesiredSize(ListItem Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,ListItem):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,ListItem Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             foreach (var Block in Source.Blocks) {
-                r += GetDesiredSize(Block);
+                r += GetDesiredSize(context,Block);
                 }
             r.X += Source.Padding.Left + Source.Padding.Right  + Source.Margin.Left + Source.Margin.Right;
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + Source.Margin.Top  + Source.Margin.Bottom;
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(Paragraph):Vector
-        protected static Vector GetDesiredSize(Paragraph Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Paragraph):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Paragraph Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             foreach (var Inline in Source.Inlines) {
-                var Target = GetDesiredSize(Inline);
+                var Target = GetDesiredSize(context,Inline);
                 r.Y = Math.Max(r.Y,Target.Y);
                 r.X += Target.X;
                 }
@@ -224,40 +235,49 @@ namespace BinaryStudio.PlatformUI.Documents
             r.X += Source.Padding.Left + Source.Padding.Right  + FilterNaN(Source.Margin.Left,0) + FilterNaN(Source.Margin.Right,0);
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + FilterNaN(Source.Margin.Top,0)  + FilterNaN(Source.Margin.Bottom,0);
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(AnchoredBlock):Vector
-        protected static Vector GetDesiredSize(AnchoredBlock Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,AnchoredBlock):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,AnchoredBlock Source) {
             if (Source == null) { return new Vector(0,0); }
-            return GetDesiredSize(Source as Figure) +
-                   GetDesiredSize(Source as Floater);
+            return GetDesiredSize(context,Source as Figure) +
+                   GetDesiredSize(context,Source as Floater);
             }
         #endregion
-        #region M:GetDesiredSize(Figure):Vector
-        protected static Vector GetDesiredSize(Figure Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Figure):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Figure Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(Source.VerticalOffset,Source.HorizontalOffset);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(Source.VerticalOffset,Source.HorizontalOffset);
             r.X += Source.Padding.Left + Source.Padding.Right  + Source.Margin.Left + Source.Margin.Right;
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + Source.Margin.Top  + Source.Margin.Bottom;
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(Floater):Vector
-        protected static Vector GetDesiredSize(Floater Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Floater):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Floater Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             r.X += Source.Padding.Left + Source.Padding.Right  + Source.Margin.Left + Source.Margin.Right;
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + Source.Margin.Top  + Source.Margin.Bottom;
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(InlineUIContainer):Vector
-        protected static Vector GetDesiredSize(InlineUIContainer Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,InlineUIContainer):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,InlineUIContainer Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             if (Source.Child != null) {
                 Source.Child.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
                 var Size = Source.Child.DesiredSize;
@@ -265,21 +285,27 @@ namespace BinaryStudio.PlatformUI.Documents
                 r.Y += Size.Height;
                 }
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(LineBreak):Vector
-        protected static Vector GetDesiredSize(LineBreak Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,LineBreak):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,LineBreak Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(Run):Vector
-        protected static Vector GetDesiredSize(Run Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Run):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Run Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new FormattedText(
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            var o = new FormattedText(
                 Source.Text,
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
@@ -292,87 +318,104 @@ namespace BinaryStudio.PlatformUI.Documents
                 Brushes.Black,
                 null,
                 TextFormattingMode.Display);
-            SetDesiredSize(Source,new Size(Math.Max(r.Width,Source.FontSize*0.5),r.Height));
-            return new Vector(Math.Max(r.Width,Source.FontSize*0.5),r.Height);
-            }
-        #endregion
-        #region M:GetDesiredSize(Span):Vector
-        protected static Vector GetDesiredSize(Span Source) {
-            if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
-            foreach (var Inline in Source.Inlines) {
-                r += GetDesiredSize(Inline);
-                }
-            SetDesiredSize(Source,new Size(r.X,r.Y));
+            r = new Vector(Math.Max(o.Width,Source.FontSize*0.5),o.Height);
+            SetDesiredSize(Source,new Size(Math.Max(o.Width,Source.FontSize*0.5),o.Height));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(Section):Vector
-        protected static Vector GetDesiredSize(Section Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Span):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Span Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
+            foreach (var Inline in Source.Inlines) {
+                r += GetDesiredSize(context,Inline);
+                }
+            SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
+            return r;
+            }
+        #endregion
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Section):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Section Source) {
+            if (Source == null) { return new Vector(0,0); }
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             foreach (var Block in Source.Blocks) {
-                r += GetDesiredSize(Block);
+                r += GetDesiredSize(context,Block);
                 }
             r.X += Source.Padding.Left + Source.Padding.Right  + Source.Margin.Left + Source.Margin.Right;
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + Source.Margin.Top  + Source.Margin.Bottom;
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(Table):Vector
-        protected static Vector GetDesiredSize(Table Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,Table):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,Table Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             foreach (var RowGroup in Source.RowGroups) {
-                var Target = GetDesiredSize(RowGroup);
+                var Target = GetDesiredSize(context,RowGroup);
                 r.X = Math.Max(r.X, Target.X);
                 r.Y += Target.Y;
                 }
             r.X += Source.Padding.Left + Source.Padding.Right  + Source.Margin.Left + Source.Margin.Right  + Source.BorderThickness.Left + Source.BorderThickness.Right;
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + Source.Margin.Top  + Source.Margin.Bottom + Source.BorderThickness.Top  + Source.BorderThickness.Bottom;
-            SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(TableRowGroup):Vector
-        protected static Vector GetDesiredSize(TableRowGroup Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,TableRowGroup):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,TableRowGroup Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             foreach (var Row in Source.Rows) {
-                var Target = GetDesiredSize(Row);
+                var Target = GetDesiredSize(context,Row);
                 r.X = Math.Max(r.X,Target.X);
                 r.Y += Target.Y;
                 }
             SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(TableRow):Vector
-        protected static Vector GetDesiredSize(TableRow Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,TableRow):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,TableRow Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             foreach (var Cell in Source.Cells) {
-                var Target = GetDesiredSize(Cell);
+                var Target = GetDesiredSize(context,Cell);
                 r.Y = Math.Max(r.Y,Target.Y);
                 r.X += Target.X;
                 }
-            SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
-        #region M:GetDesiredSize(TableCell):Vector
-        protected static Vector GetDesiredSize(TableCell Source) {
+        #region M:GetDesiredSize(IDictionary<String,Vector>,TableCell):Vector
+        protected static Vector GetDesiredSize(IDictionary<String,Vector> context,TableCell Source) {
             if (Source == null) { return new Vector(0,0); }
-            var r = new Vector(0,0);
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return r; }
+            r = new Vector(0,0);
             foreach (var Block in Source.Blocks) {
-                var Target = GetDesiredSize(Block);
+                var Target = GetDesiredSize(context,Block);
                 r.X = Math.Max(r.X,Target.X);
                 r.Y += Target.Y;
                 }
             r.X += Source.Padding.Left + Source.Padding.Right  + Source.BorderThickness.Left + Source.BorderThickness.Right;
             r.Y += Source.Padding.Top  + Source.Padding.Bottom + Source.BorderThickness.Top  + Source.BorderThickness.Bottom;
-            SetDesiredSize(Source,new Size(r.X,r.Y));
+            context[Key] = r;
             return r;
             }
         #endregion
@@ -385,9 +428,10 @@ namespace BinaryStudio.PlatformUI.Documents
             }
         #endregion
 
-        internal static void DoAutoSize(Table Source) {
+        internal static void DoAutoSize(Table Source, IDictionary<String,Vector> context) {
             if (Source == null) { throw new ArgumentNullException(nameof(Source)); }
-            logger.Debug("BeforeDoAutoSize");
+            var Key = Diagnostics.GetKey(Source).ToString();
+            if (context.TryGetValue(Key, out var r)) { return; }
             var DesiredWidth = new Double[Source.Columns.Count];
             for (var i = 0; i < DesiredWidth.Length;i++) {
                 DesiredWidth[i] = -1;
@@ -398,7 +442,7 @@ namespace BinaryStudio.PlatformUI.Documents
                     for (var i = 0; i < Row.Cells.Count; i++) {
                         var Cell = Row.Cells[i];
                         if (Cell.ColumnSpan == 1) {
-                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(Cell).X);
+                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(context,Cell).X);
                             }
                         else
                             {
@@ -419,7 +463,10 @@ namespace BinaryStudio.PlatformUI.Documents
                     else if (GetIsAutoSize(Source.Columns[i])) { Source.Columns[i].Width = new GridLength(DesiredWidth[i],GridUnitType.Pixel); }
                     }
                 }
-            logger.Debug("AfterDoAutoSize");
+            }
+
+        internal static void DoAutoSize(Table Source) {
+            DoAutoSize(Source,new Dictionary<String,Vector>());
             }
         }
     }

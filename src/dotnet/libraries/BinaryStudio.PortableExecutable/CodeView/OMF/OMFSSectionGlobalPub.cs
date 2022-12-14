@@ -100,7 +100,7 @@ namespace BinaryStudio.PortableExecutable
                 writer.WriteAttributeString(nameof(Size),Size.ToString());
                 writer.WriteStartElement(nameof(Symbols));
                 foreach (var symbol in Symbols
-                    .Where(i => i.Type != DEBUG_SYMBOL_INDEX.S_PUB16)
+                    //.Where(i => i.Type != DEBUG_SYMBOL_INDEX.S_PUB16)
                     //.Where(i => i.Type != DEBUG_SYMBOL_INDEX.S_PUB16_32)
                     //.Where(i => i.Type != DEBUG_SYMBOL_INDEX.S_ALIGN)
                     ) {

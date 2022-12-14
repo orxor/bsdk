@@ -10,7 +10,7 @@
   <DataTemplate DataType="{x:Type e:ModelOMFSSectionSrcModule}">
     <Grid>
       <Grid.Resources>
-        <u:FlowDocumentConverter x:Key="Converter"/>
+        <u:FDConverter x:Key="Converter"/>
         <u:VisibilityInverter x:Key="VisibilityInverter"/>
         <XmlDataProvider x:Key="XSLT" XPath="*" IsAsynchronous="True" Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionSrcModule.xslt"/>
       </Grid.Resources>

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using BinaryStudio.PlatformUI;
 using BinaryStudio.PlatformUI.Shell;
 using log4net;
+using Microsoft.Web.WebView2.Wpf;
 using BMainWindow = BinaryStudio.PlatformUI.MainWindow;
 
 public partial class MainWindow : BMainWindow
@@ -29,7 +30,7 @@ public partial class MainWindow : BMainWindow
         }
 
     #region M:OnLoaded(Object,RoutedEventArgs)
-    private void OnLoaded(Object sender, RoutedEventArgs e)
+    private async void OnLoaded(Object sender, RoutedEventArgs e)
         {
         log.Debug("OnLoaded");
         Theme.Apply(Theme.Themes[1]);
@@ -54,9 +55,14 @@ public partial class MainWindow : BMainWindow
         }
     #endregion
     #region M:Initialize
-    private void Initialize()
-        {
+    private async void Initialize() {
         OpenDocument(@"C:\TFS\bsdk\src\dotnet\tests\UnitTestData\dll\mfc250d.dll");
+        var view = new WebView2 {
+            CreationProperties = new CoreWebView2CreationProperties {
+                BrowserExecutableFolder = "Microsoft.WebView2.FixedVersionRuntime.108.0.1462.46.x64"
+                }
+            };
+        await view.EnsureCoreWebView2Async(null);
         //LoadFrom(@"C:\TFS\bsdk\mdl\atl30\atl30.emx");
         //ObjectIdentifierInfoExecuted(null,null);
         //OpenRegistryKeyExecuted(Registry.CurrentConfig);

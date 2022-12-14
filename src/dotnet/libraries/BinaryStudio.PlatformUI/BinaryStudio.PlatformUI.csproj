@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net40;net45</TargetFrameworks>
+    <TargetFrameworks>net47;net5.0-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;1591;1570;0108;0109;0114;3021;0642;1998;0168;0169;0162;0649;0219;0067;0414;</NoWarn>
+    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Brushes.cs" />

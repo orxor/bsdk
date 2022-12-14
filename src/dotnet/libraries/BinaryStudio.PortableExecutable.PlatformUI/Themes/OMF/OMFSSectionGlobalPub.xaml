@@ -6,21 +6,37 @@
                     xmlns:u="http://schemas.helix.global"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:c="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Controls"
+                    xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+                    xmlns:wpf1="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
                     mc:Ignorable="d">
   <DataTemplate DataType="{x:Type e:ModelOMFSSectionGlobalPub}">
     <Grid>
       <Grid.Resources>
-        <u:FlowDocumentConverter x:Key="Converter"/>
+        <wpf1:CoreWebView2CreationProperties x:Key="BYOWebView2CreationProperties" BrowserExecutableFolder="Microsoft.WebView2.FixedVersionRuntime.108.0.1462.46.x64"/>
+        <u:HTConverter x:Key="Converter"/>
         <u:VisibilityInverter x:Key="VisibilityInverter"/>
-        <XmlDataProvider x:Key="XSLT" XPath="*" IsAsynchronous="True" Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/OMFSSectionGlobalPub.xslt"/>
+        <XmlDataProvider x:Key="FD-XSLT" XPath="*" IsAsynchronous="True" Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/FDOMFSSectionGlobalPub.xslt"/>
+        <XmlDataProvider x:Key="HT-XSLT" XPath="*" IsAsynchronous="True" Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/HTOMFSSectionGlobalPub.xslt"/>
       </Grid.Resources>
-      <TextBlock Margin="5" x:Name="LoadingControl" Grid.Column="0" HorizontalAlignment="Left">Loading...</TextBlock>
+      <!--<Border BorderThickness="1" BorderBrush="Red">
+        <wpf:ChromiumWebBrowser c:CefSharpBehaviors.Source="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource HT-XSLT},IsAsync=True}"
+                                VerticalAlignment="Top"/>
+      </Border>-->
+      <Border BorderThickness="1" BorderBrush="Red">
+        <wpf1:WebView2 c:CefSharpBehaviors.Source="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource HT-XSLT},IsAsync=True}"
+                       CreationProperties="{StaticResource BYOWebView2CreationProperties}"
+                       Height="500"/>
+      </Border>
+      <!--<WebBrowser u:WebBrowserBehaviors.Source="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource HT-XSLT},IsAsync=True}"/>-->
+      <!--<FlowDocumentScrollViewer VerticalScrollBarVisibility="Hidden"
+                                Document="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource FD-XSLT},IsAsync=True}"/>-->
+      <!--<TextBlock Margin="5" x:Name="LoadingControl" Grid.Column="0" HorizontalAlignment="Left">Loading...</TextBlock>
       <RichTextBox BorderThickness="0" Background="Transparent" Margin="2,5,2,5" IsReadOnly="True"
                    HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
                    IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
                    Foreground="{DynamicResource ControlTextBrushKey}" x:Name="Target"
                    Visibility="{Binding ElementName=LoadingControl,Path=Visibility,Converter={StaticResource VisibilityInverter},Mode=TwoWay}"
-                   u:RichTextBoxOptions.Document="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource XSLT},IsAsync=True}">
+                   u:RichTextBoxOptions.Document="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource FD-XSLT},IsAsync=True}">
         <RichTextBox.Resources>
           <Style TargetType="{x:Type TableCell}" x:Key="TableCell">
             <Setter Property="BorderThickness" Value="0,1,1,0"/>
@@ -38,7 +54,7 @@
         <i:Interaction.Behaviors>
           <c:WaitCursorBehavior/>
         </i:Interaction.Behaviors>
-      </RichTextBox>
+      </RichTextBox>-->
     </Grid>
   </DataTemplate>
 </ResourceDictionary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using BinaryStudio.DiagnosticServices;
+using BinaryStudio.DiagnosticServices.Tracing;
 using BinaryStudio.PlatformUI.Documents;
 using BinaryStudio.PlatformUI.Extensions.Transfer;
 using log4net;
@@ -22,45 +24,47 @@ namespace BinaryStudio.PlatformUI.Controls
             if (sender is RichTextBox source) {
                 try
                     {
-                    logger.Debug("BeforeClone");
                     var document = (FlowDocument)e.NewValue;
-                    if (document != null) {
-                        if (document.IsInitialized) {
-                            source.Document = (FlowDocument)Activator.CreateInstance(document.GetType());
-                            TransferFactory.CopyTo(source,document,Control.ForegroundProperty);
-                            TransferFactory.CopyTo(source,document,Control.FontFamilyProperty);
-                            TransferFactory.CopyTo(source,document,Control.FontSizeProperty);
-                            TransferFactory.CopyTo(source,document,Control.FontStretchProperty);
-                            TransferFactory.CopyTo(source,document,Control.FontStyleProperty);
-                            TransferFactory.CopyTo(source,document,Control.FontWeightProperty);
-                            TransferFactory.CopyTo(source,document,FrameworkElement.DataContextProperty);
-                            TransferFactory.GetFactory(document.GetType()).Transfer(document,source.Document);
-                            }
-                        else
-                            {
-                            document.DoAfterInitialization(()=>{
-                                source.Document = (FlowDocument)Activator.CreateInstance(document.GetType());
-                                TransferFactory.CopyTo(source,document,Control.ForegroundProperty);
-                                TransferFactory.CopyTo(source,document,Control.FontFamilyProperty);
-                                TransferFactory.CopyTo(source,document,Control.FontSizeProperty);
-                                TransferFactory.CopyTo(source,document,Control.FontStretchProperty);
-                                TransferFactory.CopyTo(source,document,Control.FontStyleProperty);
-                                TransferFactory.CopyTo(source,document,Control.FontWeightProperty);
-                                TransferFactory.CopyTo(source,document,FrameworkElement.DataContextProperty);
-                                TransferFactory.GetFactory(document.GetType()).Transfer(document,source.Document);
-                                });
-                            }
+                    //if (document != null) {
+                    //    if (document.IsInitialized) {
+                    //        source.Document = (FlowDocument)Activator.CreateInstance(document.GetType());
+                    //        TransferFactory.CopyTo(source,document,Control.ForegroundProperty);
+                    //        TransferFactory.CopyTo(source,document,Control.FontFamilyProperty);
+                    //        TransferFactory.CopyTo(source,document,Control.FontSizeProperty);
+                    //        TransferFactory.CopyTo(source,document,Control.FontStretchProperty);
+                    //        TransferFactory.CopyTo(source,document,Control.FontStyleProperty);
+                    //        TransferFactory.CopyTo(source,document,Control.FontWeightProperty);
+                    //        TransferFactory.CopyTo(source,document,FrameworkElement.DataContextProperty);
+                    //        TransferFactory.GetFactory(document.GetType()).Transfer(document,source.Document);
+                    //        }
+                    //    else
+                    //        {
+                    //        document.DoAfterInitialization(()=>{
+                    //            source.Document = (FlowDocument)Activator.CreateInstance(document.GetType());
+                    //            TransferFactory.CopyTo(source,document,Control.ForegroundProperty);
+                    //            TransferFactory.CopyTo(source,document,Control.FontFamilyProperty);
+                    //            TransferFactory.CopyTo(source,document,Control.FontSizeProperty);
+                    //            TransferFactory.CopyTo(source,document,Control.FontStretchProperty);
+                    //            TransferFactory.CopyTo(source,document,Control.FontStyleProperty);
+                    //            TransferFactory.CopyTo(source,document,Control.FontWeightProperty);
+                    //            TransferFactory.CopyTo(source,document,FrameworkElement.DataContextProperty);
+                    //            TransferFactory.GetFactory(document.GetType()).Transfer(document,source.Document);
+                    //            });
+                    //        }
+                    //    }
+                    using (new TraceScope("DoAutoSize")) {
+                        var context = new Dictionary<String,Vector>();
+                        document.LogicalDescendants().OfType<Table>().Reverse().ForAll(i =>{
+                            if (GetIsAutoSize(i)) {
+                                //DoAutoSize(i,context);
+                                }
+                            });
                         }
-                    logger.Debug("AfterClone");
+                    source.Document = document;
                     BindingOperations.SetBinding(source.Document, FlowDocument.PageWidthProperty, new Binding {
                         Mode = BindingMode.OneWay,
                         Path = new PropertyPath("ActualWidth"),
                         Source = source
-                        });
-                    source.Document.LogicalDescendants().OfType<Table>().Reverse().ForAll(i =>{
-                        if (GetIsAutoSize(i)) {
-                            DoAutoSize(i);
-                            }
                         });
                     }
                 catch (Exception x)
@@ -87,6 +91,9 @@ namespace BinaryStudio.PlatformUI.Controls
             }
 
         internal static void AutoFitTable(Table target) {
+            AutoFitTable(target,new Dictionary<String, Vector>());
+            }
+        internal static void AutoFitTable(Table target,IDictionary<String,Vector> context) {
             var DesiredWidth = new Double[target.Columns.Count];
             foreach (var RowGroup in target.RowGroups) {
                 foreach (var Row in RowGroup.Rows) {
@@ -94,7 +101,7 @@ namespace BinaryStudio.PlatformUI.Controls
                     for (var i = 0; i < Row.Cells.Count; i++) {
                         var Cell = Row.Cells[i];
                         if (Cell.ColumnSpan == 1) {
-                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(Cell).X +
+                            DesiredWidth[j] = Math.Max(DesiredWidth[j],GetDesiredSize(context,Cell).X +
                                 Cell.Padding.Left + Cell.Padding.Right
                                  + Cell.BorderThickness.Left
                                  + Cell.BorderThickness.Right
