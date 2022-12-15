@@ -396,9 +396,12 @@ namespace BinaryStudio.PlatformUI.Controls.Primitives
         /// <returns>The identifier for the <see cref="Offset" /> dependency property.</returns>
         public static readonly DependencyProperty OffsetProperty = OffsetPropertyKey.DependencyProperty;
         private static void OnOffsetChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) {
-            var source = (sender as ScrollableContentControl);
-            if (source != null) {
+            if (sender is ScrollableContentControl source) {
+                #if NET5_0
+                source.OnOffsetChanged(new ObjectPropertyChangedEventArgs<Vector>((Vector)e.OldValue,(Vector)e.NewValue));
+                #else
                 source.OnOffsetChanged(new ObjectPropertyChangedEventArgs<Vector>(e));
+                #endif
                 }
             }
 

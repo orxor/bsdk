@@ -306,9 +306,13 @@ namespace BinaryStudio.PlatformComponents
             var filename = Path.GetFileNameWithoutExtension(filepath);
             var type = typeof(T);
             var assemblyname = new AssemblyName($"{{{filename}}}"){ Version = GetVersion(filepath) };
+            #if NET5_0
+            var assembly = DefineDynamicAssembly(assemblyname, AssemblyBuilderAccess.Run);
+            var module = assembly.DefineDynamicModule($"{assemblyname.Name}");
+            #else
             var assembly = DefineDynamicAssembly(assemblyname, AssemblyBuilderAccess.RunAndSave);
             var module = assembly.DefineDynamicModule($"{assemblyname.Name}", $"{assemblyname.Name}.dll");
-            //var module = assembly.DefineDynamicModule($"{assemblyname.Name}");
+            #endif
             var target = IsDerived
                 ? module.DefineType("{Library}", TypeAttributes.Public|TypeAttributes.BeforeFieldInit, typeof(Library), new Type[]{ type })
                 : module.DefineType("{Library}", TypeAttributes.Public|TypeAttributes.BeforeFieldInit, typeof(Library), Type.EmptyTypes);
@@ -323,7 +327,9 @@ namespace BinaryStudio.PlatformComponents
                 }
             BuildConstructor(target);
             var r = target.CreateType();
+            #if !NET5_0
             assembly.Save($"{assemblyname.Name}");
+            #endif
             var ctor = r.GetConstructor(new Type[]{ typeof(String)});
             if (ctor == null) { throw new InvalidOperationException(); }
             return (Library)ctor.Invoke(new Object[]{ filepath });

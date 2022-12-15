@@ -1,5 +1,7 @@
 ﻿using System;
+#if UseWPF
 using System.Windows;
+#endif
 
 namespace BinaryStudio.DataProcessing
     {
@@ -12,9 +14,11 @@ namespace BinaryStudio.DataProcessing
             NewValue = n;
             }
 
+        #if UseWPF
         public ObjectPropertyChangedEventArgs(DependencyPropertyChangedEventArgs e) {
             OldValue = (T)e.OldValue;
             NewValue = (T)e.NewValue;
             }
+        #endif
         }
     }
