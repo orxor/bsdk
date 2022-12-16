@@ -22,6 +22,8 @@
     <PackageReference Include="stub.system.data.sqlite.core.netframework" Version="1.0.113">
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net40'">
     <None Include="$(Pkgstub_system_data_sqlite_core_netframework)\build\net40\x86\SQLite.Interop.dll" Link="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

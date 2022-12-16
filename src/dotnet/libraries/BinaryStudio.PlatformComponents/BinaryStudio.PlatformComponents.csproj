@@ -2,10 +2,9 @@
   <PropertyGroup>
     <TargetFrameworks>net40;net45;net7.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
 	<NoWarn>1701;1702;1591;1570;1522;0169;0649</NoWarn>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
-    <DefineConstants>TRACE;AA</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.13" />
@@ -35,10 +34,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(IsWindows)' == 'true'">
     <Win32Resource>$(ProjectDir)obj\$(Configuration)\$(TargetFramework)\Messages.res</Win32Resource>
   </PropertyGroup>
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(IsWindows)' == 'true'">
     <Exec Command="PowerShell.exe -File $(ProjectDir)Properties\Messages.ps1 -Source $(ProjectDir)Properties\Messages.xml -Target $(ProjectDir)obj\$(ConfigurationName)\$(TargetFramework)\Messages.mc" />
   </Target>
 </Project>

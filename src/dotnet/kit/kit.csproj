@@ -4,6 +4,9 @@
     <TargetFramework>net7.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\libraries\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
     <ProjectReference Include="..\libraries\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
