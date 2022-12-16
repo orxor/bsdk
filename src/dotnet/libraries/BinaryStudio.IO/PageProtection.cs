@@ -5,7 +5,7 @@ namespace BinaryStudio.IO
     [Flags]
     public enum PageProtection : uint
         {
-        #if UBUNTU_16_4
+        #if LINUX
         None      = 0,
         Read      = 1,
         Write     = 2,

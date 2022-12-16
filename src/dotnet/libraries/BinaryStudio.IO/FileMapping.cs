@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using Microsoft.Win32.SafeHandles;
 
@@ -15,7 +16,7 @@ namespace BinaryStudio.IO
         public Int64 Size { get; private set; }
         public String FileName { get; }
         #if LINUX
-        internal SafeHandle Mapping { get;private set; }
+        internal SafeFileHandle Mapping { get;private set; }
         #else
         internal FileMappingHandle Mapping { get;private set; }
         private SafeFileHandle FileHandle { get;set; }
@@ -32,8 +33,7 @@ namespace BinaryStudio.IO
                 var handle = Open(filename, OpenFlags.O_RDONLY, S_IROTH | S_IRUSR | S_IRGRP);
                 if (handle.IsInvalid) { throw HResultException.GetExceptionForHR((PosixError)Marshal.GetLastWin32Error()); }
                 FileStatus output;
-                if (FStat(handle, out output) != 0)
-                    {
+                if (FStat(handle, out output) != 0) {
                     handle.Dispose();
                     throw HResultException.GetExceptionForHR((PosixError)Marshal.GetLastWin32Error());
                     }
@@ -231,9 +231,11 @@ namespace BinaryStudio.IO
         private const Int32 FILE_ATTRIBUTE_TEMPORARY  = 0x00000100;
         #endif
 
+        #if !LINUX
         public static implicit operator IntPtr(FileMapping source) { return source.Mapping; }
         public static unsafe implicit operator void*(FileMapping source) { return source.Mapping; }
         public static unsafe implicit operator byte*(FileMapping source) { return source.Mapping; }
+        #endif
 
         public Int32 AddRef()
             {

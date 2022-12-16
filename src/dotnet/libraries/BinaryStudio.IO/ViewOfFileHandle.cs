@@ -27,7 +27,7 @@ namespace BinaryStudio.IO
             SetHandle(handle);
             }
 
-        #if UBUNTU_16_4
+        #if LINUX
         public Int64 Length { get;set; }
         #endif
 
@@ -39,14 +39,13 @@ namespace BinaryStudio.IO
         [ResourceExposure(ResourceScope.Machine)]
         [ResourceConsumption(ResourceScope.Machine)]
         protected override Boolean ReleaseHandle() {
-            #if UBUNTU_16_4
+            #if LINUX
             UnmapViewOfFile(handle, (IntPtr)Length);
             Length = 0;
             handle = IntPtr.Zero;
             return true;
             #else
-            if (UnmapViewOfFile(handle))
-                {
+            if (UnmapViewOfFile(handle)) {
                 handle = IntPtr.Zero;
                 return true;
                 }
@@ -54,7 +53,7 @@ namespace BinaryStudio.IO
             #endif
             }
 
-        #if UBUNTU_16_4
+        #if LINUX
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)] [DllImport("c", EntryPoint = "munmap")] private static extern Int32 UnmapViewOfFile(IntPtr lpBaseAddress, IntPtr length);
         #else
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)] [DllImport("kernel32.dll", ExactSpelling = true)] private static extern Boolean UnmapViewOfFile(IntPtr lpBaseAddress);

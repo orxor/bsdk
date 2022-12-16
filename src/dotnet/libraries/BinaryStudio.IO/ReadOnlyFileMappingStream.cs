@@ -50,8 +50,14 @@ namespace BinaryStudio.IO
                 var g = (n.QuadPart % AllocationGranularity) + count;
                 var j = n.QuadPart - r;
                 n.QuadPart = r;
+                #if LINUX
+                var view = MapViewOfFile(IntPtr.Zero, new IntPtr(g), PageProtection.Read, MAP_PRIVATE, (Int32)mapping.Mapping.DangerousGetHandle(), (IntPtr)n.QuadPart);
+                if (view.IsInvalid) { throw new Win32Exception(Marshal.GetLastWin32Error()); }
+                view.Length = g;
+                #else
                 var view = MapViewOfFile(mapping.Mapping, FileMappingAccess.Read, n.UHighPart, n.ULowPart, new IntPtr(g));
                 if (view.IsInvalid) { throw new Win32Exception(Marshal.GetLastWin32Error()); }
+                #endif
                 var ptr = (Byte*)view.Memory;
                 for (var i = offset; i < count; i++)
                     {
@@ -82,13 +88,23 @@ namespace BinaryStudio.IO
         private static readonly Int64 AllocationGranularity;
         static ReadOnlyFileMappingStream()
             {
+            #if LINUX
+            AllocationGranularity = GetPageSize();
+            #else
             var si = new SYSTEM_INFO();
             GetSystemInfo(ref si);
             AllocationGranularity = si.dwAllocationGranularity;
+            #endif
             }
 
+        #if LINUX
+        [DllImport("c", EntryPoint = "getpagesize")] private static extern Int32 GetPageSize();
+        [DllImport("c", EntryPoint = "mmap")] private static extern ViewOfFileHandle MapViewOfFile(IntPtr addr, IntPtr length, PageProtection protection, Int32 flags, Int32 fd, IntPtr offset);
+        private const Int32 MAP_PRIVATE = 0x02;
+        #else
         [DllImport("kernel32.dll", SetLastError = true)] private static extern void GetSystemInfo(ref SYSTEM_INFO systeminfo);
         [DllImport("kernel32.dll", SetLastError = true)][SecurityCritical, SuppressUnmanagedCodeSecurity] private static extern ViewOfFileHandle MapViewOfFile(FileMappingHandle filemappingobject, FileMappingAccess desiredaccess, UInt32 fileoffsethigh, UInt32 fileoffsetlow, IntPtr numberofbytestomap);
+        #endif
 
         #region M:Dispose(Boolean)
         /// <summary>Releases the unmanaged resources used by the <see cref="T:System.IO.Stream"/> and optionally releases the managed resources.</summary>

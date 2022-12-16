@@ -301,8 +301,8 @@ namespace BinaryStudio.PlatformComponents.Win32
             }
             
         public static Exception GetExceptionForHR(PosixError scode) {
-            var message = StrError(error);
-            switch (error) {
+            var message = StrError(scode);
+            switch (scode) {
                 case PosixError.EINVAL: { return new ArgumentException(); }
                 case PosixError.EPERM:
                 case PosixError.ENOENT:
@@ -337,7 +337,7 @@ namespace BinaryStudio.PlatformComponents.Win32
                 case PosixError.EPIPE:
                 case PosixError.EDOM:
                 case PosixError.ERANGE:
-                default : { return new PlatformException(error,message); }
+                default : { return new PlatformException(scode,message); }
                 }
             }
         #endif
