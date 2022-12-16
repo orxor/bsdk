@@ -282,5 +282,26 @@ namespace BinaryStudio.PlatformComponents.Win32
         private static readonly IDictionary<String,IntPtr> Libraries = new Dictionary<String,IntPtr>(StringComparer.OrdinalIgnoreCase);
         #endif
         private static readonly CultureInfo English = CultureInfo.GetCultureInfo("en-US");
+
+        #if LINUX
+        [DllImport("System.Native", EntryPoint = "SystemNative_StrErrorR")] private unsafe static extern IntPtr StrError(PosixError e, [MarshalAs(UnmanagedType.LPArray)] Byte[] buffer, int buffersize);
+        private static String StrError(PosixError errnum) {
+            for (var i = 1024;; i *= 2) {
+                var r = new Byte[i];
+                var n = StrError(errnum, r, r.Length);
+                var e = (PosixError)Marshal.GetLastWin32Error();
+                if (e == PosixError.ERANGE) { continue; }
+                var m = (n != IntPtr.Zero)
+                    ? Marshal.PtrToStringAnsi(n)
+                    : Encoding.ASCII.GetString(r);
+                return String.IsNullOrWhiteSpace(m)
+                    ? $"{errnum}"
+                    : $"{errnum}: {m}";
+                }
+            }
+            
+        public static Exception GetExceptionForHR(PosixError scode) {
+            }
+        #endif
         }
     }

@@ -207,6 +207,19 @@ namespace BinaryStudio.IO
         [DllImport("System.Native", EntryPoint = "SystemNative_FStat2", SetLastError = true)] internal static extern int FStat(SafeFileHandle fd, out FileStatus output);
         [DllImport("c", CharSet = CharSet.Ansi, SetLastError = true, CallingConvention = CallingConvention.Cdecl, EntryPoint ="__fxstat64")] private static extern Int32 Stat(Int32 version, Int32 handle, ref STAT32 r);
         [DllImport("c", CharSet = CharSet.Ansi, SetLastError = true, CallingConvention = CallingConvention.Cdecl, EntryPoint ="__fxstat64")] private static extern Int32 Stat(Int32 version, Int32 handle, ref STAT64 r);
+
+        private const Int32 S_IRWXU = 0x00700;
+        private const Int32 S_IRUSR = 0x00400;
+        private const Int32 S_IWUSR = 0x00200;
+        private const Int32 S_IXUSR = 0x00100;
+        private const Int32 S_IRWXG = 0x00070;
+        private const Int32 S_IRGRP = 0x00040;
+        private const Int32 S_IWGRP = 0x00020;
+        private const Int32 S_IXGRP = 0x00010;
+        private const Int32 S_IRWXO = 0x00007;
+        private const Int32 S_IROTH = 0x00004;
+        private const Int32 S_IWOTH = 0x00002;
+        private const Int32 S_IXOTH = 0x00001;
         #else
         [DllImport("kernel32.dll", SetLastError = true)] [SecurityCritical, SuppressUnmanagedCodeSecurity] private static extern Boolean GetFileSizeEx(SafeFileHandle file, ref LargeInteger filesize);
         [DllImport("kernel32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern SafeFileHandle CreateFile(String filename, FileGenericAccess desiredaccess, FileShare dwShareMode, SecurityAttributes security, FileMode creationdisposition, Int32 flags, IntPtr templatefile);
