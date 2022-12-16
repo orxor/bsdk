@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Reflection;
 using System.Text;
+#if UseWPF
 using System.Windows;
+#endif
 using BinaryStudio.DiagnosticServices.Logging;
 
 namespace BinaryStudio.DiagnosticServices
     {
     public static class Diagnostics
         {
+        #if UseWPF
         #region P:Diagnostics.Key:Object
         public static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached("Key", typeof(Object), typeof(Diagnostics), new PropertyMetadata(default(Object)));
         public static void SetKey(DependencyObject e, Object value)
@@ -28,6 +31,7 @@ namespace BinaryStudio.DiagnosticServices
             return null;
             }
         #endregion
+        #endif
 
         public static void Print(MethodBase value) {
             var r = new StringBuilder();

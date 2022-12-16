@@ -1,7 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;net5.0-windows;net6.0</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net7.0</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
     <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);UseWPF</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <UseWPF>true</UseWPF>
+    <DefineConstants>$(DefineConstants);UseWPF</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <UseWPF>false</UseWPF>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

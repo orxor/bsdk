@@ -306,7 +306,7 @@ namespace BinaryStudio.PlatformComponents
             var filename = Path.GetFileNameWithoutExtension(filepath);
             var type = typeof(T);
             var assemblyname = new AssemblyName($"{{{filename}}}"){ Version = GetVersion(filepath) };
-            #if NET5_0
+            #if NET5_0 || NET7_0
             var assembly = DefineDynamicAssembly(assemblyname, AssemblyBuilderAccess.Run);
             var module = assembly.DefineDynamicModule($"{assemblyname.Name}");
             #else
@@ -327,7 +327,7 @@ namespace BinaryStudio.PlatformComponents
                 }
             BuildConstructor(target);
             var r = target.CreateType();
-            #if !NET5_0
+            #if !NET5_0 && !NET7_0
             assembly.Save($"{assemblyname.Name}");
             #endif
             var ctor = r.GetConstructor(new Type[]{ typeof(String)});

@@ -1,13 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net7.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <UseWPF>true</UseWPF>
-    <DocumentationFile>$(OutDir)\BinaryStudio.PortableExecutable.xml</DocumentationFile>
+    <!--<DocumentationFile>$(OutDir)\BinaryStudio.PortableExecutable.xml</DocumentationFile>-->
     <NoWarn>1701;1702;1591;1570;0108;1522;0168;1587;0162</NoWarn>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>FEATURE_MUI</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
+    <DefineConstants>$(DefineConstants);UseWPF</DefineConstants>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <DefineConstants>$(DefineConstants);UseWPF</DefineConstants>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <UseWPF>false</UseWPF>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net40'">
     <Reference Include="System.ComponentModel.DataAnnotations" />
