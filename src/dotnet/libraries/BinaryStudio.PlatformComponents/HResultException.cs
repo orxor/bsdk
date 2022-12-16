@@ -301,6 +301,44 @@ namespace BinaryStudio.PlatformComponents.Win32
             }
             
         public static Exception GetExceptionForHR(PosixError scode) {
+            var message = StrError(error);
+            switch (error) {
+                case PosixError.EINVAL: { return new ArgumentException(); }
+                case PosixError.EPERM:
+                case PosixError.ENOENT:
+                case PosixError.ESRCH:
+                case PosixError.EINTR:
+                case PosixError.EIO:
+                case PosixError.ENXIO:
+                case PosixError.E2BIG:
+                case PosixError.ENOEXEC:
+                case PosixError.EBADF:
+                case PosixError.ECHILD:
+                case PosixError.EAGAIN:
+                case PosixError.ENOMEM:
+                case PosixError.EACCES:
+                case PosixError.EFAULT:
+                case PosixError.ENOTBLK:
+                case PosixError.EBUSY:
+                case PosixError.EEXIST:
+                case PosixError.EXDEV:
+                case PosixError.ENODEV:
+                case PosixError.ENOTDIR:
+                case PosixError.EISDIR:
+                case PosixError.ENFILE:
+                case PosixError.EMFILE:
+                case PosixError.ENOTTY:
+                case PosixError.ETXTBSY:
+                case PosixError.EFBIG:
+                case PosixError.ENOSPC:
+                case PosixError.ESPIPE:
+                case PosixError.EROFS:
+                case PosixError.EMLINK:
+                case PosixError.EPIPE:
+                case PosixError.EDOM:
+                case PosixError.ERANGE:
+                default : { return new PlatformException(error,message); }
+                }
             }
         #endif
         }
