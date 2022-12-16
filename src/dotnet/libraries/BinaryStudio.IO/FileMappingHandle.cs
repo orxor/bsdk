@@ -26,12 +26,18 @@ namespace BinaryStudio.IO
          * <returns>true if the handle is released successfully; otherwise, in the event of a catastrophic failure, false. In this case, it generates a releaseHandleFailed MDA Managed Debugging Assistant.</returns>
          * */
         [SecurityCritical]
-        protected override Boolean ReleaseHandle()
-            {
+        protected override Boolean ReleaseHandle() {
+            #if LINUX
+            Marshal.FreeHGlobal(handle);
+            return true;
+            #else
             return CloseHandle(handle);
+            #endif
             }
 
+        #if !LINUX
         [DllImport("kernel32.dll", SetLastError = true)][ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)] private static extern Boolean CloseHandle(IntPtr handle);
+        #endif
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

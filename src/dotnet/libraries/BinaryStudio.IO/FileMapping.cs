@@ -204,7 +204,7 @@ namespace BinaryStudio.IO
             }
 
         [DllImport("System.Native", EntryPoint = "SystemNative_Open", SetLastError = true)] private static extern SafeFileHandle Open(string filename, OpenFlags flags, int mode);
-        [DllImport("System.Native", EntryPoint = "SystemNative_FStat2", SetLastError = true)] internal static extern int FStat(SafeFileHandle fd, out FileStatus output);
+        [DllImport("System.Native", EntryPoint = "SystemNative_FStat", SetLastError = true)] internal static extern int FStat(SafeFileHandle fd, out FileStatus output);
         [DllImport("c", CharSet = CharSet.Ansi, SetLastError = true, CallingConvention = CallingConvention.Cdecl, EntryPoint ="__fxstat64")] private static extern Int32 Stat(Int32 version, Int32 handle, ref STAT32 r);
         [DllImport("c", CharSet = CharSet.Ansi, SetLastError = true, CallingConvention = CallingConvention.Cdecl, EntryPoint ="__fxstat64")] private static extern Int32 Stat(Int32 version, Int32 handle, ref STAT64 r);
 

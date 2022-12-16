@@ -5,7 +5,8 @@
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>1701;1702;1591;1570;0108;0109;0114;3021;0642;1998;0168;0169;0162;0649;0219;0067;0414;</NoWarn>
-    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Brushes.cs" />
