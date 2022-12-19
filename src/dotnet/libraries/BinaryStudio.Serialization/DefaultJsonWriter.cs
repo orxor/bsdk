@@ -79,6 +79,7 @@ namespace BinaryStudio.Serialization
                 }
             else
                 {
+                Writer.WritePropertyName(name);
                 Writer.WriteNull();
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
@@ -29,6 +30,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             LocalKeyId = (octet.Count == 0)
                 ? Encoding.ASCII.GetString(octet.Content.ToArray())
                 : Encoding.ASCII.GetString(octet[0].Content.ToArray());
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer)
+            {
+            base.WriteTo(writer);
             }
         }
     }

@@ -1,6 +1,7 @@
-﻿using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
-using System;
+﻿using System;
 using System.Linq;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
@@ -55,6 +56,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         public override String ToString()
             {
             return $"[{ToString(NotBefore)}]-[{ToString(NotAfter)}]";
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer)
+            {
+            base.WriteTo(writer);
             }
         }
     }

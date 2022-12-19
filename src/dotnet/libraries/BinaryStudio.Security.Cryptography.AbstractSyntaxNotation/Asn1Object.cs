@@ -743,5 +743,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         protected internal abstract void WriteHeader(Stream target);
+        protected static Boolean IsNullOrEmpty<T>(ICollection<T> value) {
+            return (value == null) || (value.Count == 0);
+            }
         }
     }

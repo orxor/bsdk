@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {   
@@ -110,6 +111,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 base.Dispose(disposing);
                 State |= ObjectState.Disposed;
                 }
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer)
+            {
+            throw new NotImplementedException(GetType().FullName);
+            base.WriteTo(writer);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
@@ -27,6 +28,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             if (octet == null)           { throw new ArgumentOutOfRangeException(nameof(source)); }
             if (octet.Count != 1)        { throw new ArgumentOutOfRangeException(nameof(source)); }
             if (!(octet[0] is Asn1Null)) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer)
+            {
+            base.WriteTo(writer);
             }
         }
     }

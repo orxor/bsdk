@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
-using log4net.Config;
 using log4net;
+using log4net.Config;
 
 internal class Program
     {

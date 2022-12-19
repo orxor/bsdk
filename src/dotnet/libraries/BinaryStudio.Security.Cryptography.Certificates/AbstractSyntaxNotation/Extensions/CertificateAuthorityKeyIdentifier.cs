@@ -59,5 +59,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 ? KeyIdentifier.ToString("x")
                 : base.ToString();
             }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer)
+            {
+            base.WriteTo(writer);
+            }
         }
     }

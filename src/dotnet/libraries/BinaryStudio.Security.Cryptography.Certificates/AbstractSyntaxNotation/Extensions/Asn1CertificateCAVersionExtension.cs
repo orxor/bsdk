@@ -1,4 +1,5 @@
 ﻿using System;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
@@ -52,6 +53,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
          * */
         public override String ToString() {
             return Version.ToString();
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer)
+            {
+            base.WriteTo(writer);
             }
         }
     }

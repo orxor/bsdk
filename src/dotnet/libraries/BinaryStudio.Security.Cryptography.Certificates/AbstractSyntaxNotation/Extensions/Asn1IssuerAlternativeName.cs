@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
@@ -40,6 +41,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             return ((AlternativeName != null) && (AlternativeName.Count > 0))
                 ? String.Join(";", AlternativeName.Select(i => $"{{{X509GeneralName.ToString(i.Type)}}}:{{{i}}}"))
                 : "{none}";
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer)
+            {
+            base.WriteTo(writer);
             }
         }
     }

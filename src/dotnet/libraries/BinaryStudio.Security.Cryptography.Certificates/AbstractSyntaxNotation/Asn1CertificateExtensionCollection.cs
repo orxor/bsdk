@@ -1,16 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Xml.Serialization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    [XmlRoot("Extensions")]
-    public class Asn1CertificateExtensionCollection : ReadOnlyCollection<Asn1CertificateExtension>
+    public class Asn1CertificateExtensionCollection : ReadOnlyCollection<Asn1CertificateExtension>,IJsonSerializable
         {
-        public Asn1CertificateExtensionCollection(IList<Asn1CertificateExtension> list)
-            : base(list)
+        public Asn1CertificateExtensionCollection(IList<Asn1CertificateExtension> source)
+            : base(source)
             {
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public void WriteTo(IJsonWriter writer) {
+            using (writer.ScopeObject()) {
+                writer.WriteValue(nameof(Count), Count);
+                writer.WritePropertyName("{Self}");
+                using (writer.ArrayObject()) {
+                    foreach (var i in this) {
+                        writer.WriteValue(i);
+                        }
+                    }
+                }
             }
         }
     }
