@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Cryptography;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
-namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
+namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     public class X509RelativeDistinguishedNameSequence :
         ReadOnlyCollection<KeyValuePair<Asn1ObjectIdentifier,String>>,
-        IJsonSerializable
+        IJsonSerializable,IX509GeneralName
         {
         public X509RelativeDistinguishedNameSequence(IList<KeyValuePair<Asn1ObjectIdentifier,String>> source)
             : base(source)
+            {
+            }
+
+        public X509RelativeDistinguishedNameSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier,String>> source)
+            : base(source.ToArray())
             {
             }
 
@@ -116,6 +121,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
             return new X509RelativeDistinguishedNameSequence(r);
             }
         #endregion
+
+        Boolean IX509GeneralName.IsEmpty { get {
+            return Count == 0;
+            }}
+
+        public X509GeneralNameType Type { get { return X509GeneralNameType.Directory; }}
 
         #region M:WriteTo(IJsonWriter)
         public void WriteTo(IJsonWriter writer) {

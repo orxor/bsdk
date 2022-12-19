@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 
@@ -108,6 +109,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 yield return o;
                 source.Position = offset + o.Size;
                 }
+            }
+        #endregion
+        #region M:Load(Stream):IEnumerable<Asn1Object>
+        public static IEnumerable<Asn1Object> Load(Stream source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (source is ReadOnlyMappingStream ro) { return Load(ro); }
+            return Load(ReadOnlyStream.Clone(source));
             }
         #endregion
         #region M:ReadNext(ReadOnlyMappingStream,Int64):Asn1Object
@@ -681,6 +689,58 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
         #endregion
+
+        protected internal static IDisposable ReadLock(ReaderWriterLockSlim o)            { return new ReadLockScope(o);            }
+        protected internal static IDisposable WriteLock(ReaderWriterLockSlim o)           { return new WriteLockScope(o);           }
+        protected internal static IDisposable UpgradeableReadLock(ReaderWriterLockSlim o) { return new UpgradeableReadLockScope(o); }
+
+        private class ReadLockScope : IDisposable
+            {
+            private ReaderWriterLockSlim o;
+            public ReadLockScope(ReaderWriterLockSlim o)
+                {
+                this.o = o;
+                o.EnterReadLock();
+                }
+
+            public void Dispose()
+                {
+                o.ExitReadLock();
+                o = null;
+                }
+            }
+
+        private class UpgradeableReadLockScope : IDisposable
+            {
+            private ReaderWriterLockSlim o;
+            public UpgradeableReadLockScope(ReaderWriterLockSlim o)
+                {
+                this.o = o;
+                o.EnterUpgradeableReadLock();
+                }
+
+            public void Dispose()
+                {
+                o.ExitUpgradeableReadLock();
+                o = null;
+                }
+            }
+
+        private class WriteLockScope : IDisposable
+            {
+            private ReaderWriterLockSlim o;
+            public WriteLockScope(ReaderWriterLockSlim o)
+                {
+                this.o = o;
+                o.EnterWriteLock();
+                }
+
+            public void Dispose()
+                {
+                o.ExitWriteLock();
+                o = null;
+                }
+            }
 
         protected internal abstract void WriteHeader(Stream target);
         }

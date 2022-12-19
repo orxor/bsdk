@@ -133,5 +133,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
         #endregion
+
+        public static implicit operator String(Asn1String source) { return source.Value; }
         }
     }

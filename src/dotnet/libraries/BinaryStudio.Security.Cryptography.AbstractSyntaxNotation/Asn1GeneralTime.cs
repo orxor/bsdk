@@ -15,6 +15,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public override Asn1ObjectType Type { get { return Asn1ObjectType.GeneralTime; }}
         public override DateTimeKind Kind { get { return DateTimeKind.Local; }}
 
+        internal Asn1GeneralTime()
+            {
+            }
+
+        public Asn1GeneralTime(Byte[] source)
+            {
+            Value = Parse(Encoding.ASCII.GetString(source), Asn1ObjectType.GeneralTime).GetValueOrDefault();
+            State |= ObjectState.Decoded;
+            }
+
         protected override Boolean Decode()
             {
             if (IsDecoded) { return true; }

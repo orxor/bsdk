@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.PlatformComponents.Win32;
 using log4net;
@@ -14,7 +16,20 @@ namespace BinaryStudio.PlatformComponents
     public class PlatformContext
         {
         private static Boolean? sc;
+        private static CultureInfo culture = CultureInfo.CurrentUICulture;
         private static readonly ILogger logger = new PlatformContextLogger(LogManager.GetLogger(nameof(PlatformContext)));
+
+        #region P:DefaultCulture:CultureInfo
+        public static CultureInfo DefaultCulture {
+            get { return culture; }
+            set
+                {
+                value = value ?? CultureInfo.CurrentUICulture;
+                culture = value;
+                DefaultCultureChanged?.Invoke(null, EventArgs.Empty);
+                }
+            }
+        #endregion
 
         #region P:IsRunningUnderServiceControl:Boolean
         public static Boolean IsRunningUnderServiceControl { get {
@@ -73,6 +88,7 @@ namespace BinaryStudio.PlatformComponents
         #endregion
 
         public static ILogger Logger { get{ return logger; }}
+        public static event EventHandler DefaultCultureChanged;
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)] private static extern Int32 GetCurrentProcessId();
         [DllImport("user32.dll")] private static extern Int32 GetSystemMetrics(Int32 index);

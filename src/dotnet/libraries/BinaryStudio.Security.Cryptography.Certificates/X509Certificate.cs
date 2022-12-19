@@ -7,7 +7,6 @@ using System.Security;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates

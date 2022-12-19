@@ -8,6 +8,7 @@ namespace BinaryStudio.IO
     {
     public sealed class ReadOnlyFileMappingStream : ReadOnlyMappingStream
         {
+        protected Boolean DeleteOnDispose;
         public override Int64 Offset { get; }
 
         /**
@@ -129,6 +130,20 @@ namespace BinaryStudio.IO
             mapping = source.mapping;
             Offset = offset;
             Length = length;
+            }
+
+        internal ReadOnlyFileMappingStream(String FileName, Boolean DeleteOnDispose)
+            {
+            if (FileName == null) { throw new ArgumentNullException(nameof(FileName)); }
+            #if NET35
+            if (String.IsNullOrEmpty(FileName)) { throw new ArgumentOutOfRangeException(nameof(FileName)); }
+            #else
+            if (String.IsNullOrWhiteSpace(FileName)) { throw new ArgumentOutOfRangeException(nameof(FileName)); }
+            #endif
+            mapping = new FileMapping(FileName);
+            Length = mapping.Size;
+            this.DeleteOnDispose = DeleteOnDispose;
+            Offset = 0;
             }
 
         public ReadOnlyFileMappingStream(FileMapping mapping)

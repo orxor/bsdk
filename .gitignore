@@ -43,12 +43,16 @@
 /src/dotnet/libraries/BinaryStudio.DirectoryServices/obj
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.PlatformUI/bin
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.PlatformUI/obj
-/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/bin
-/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/obj
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/bin
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.CryptographicMessageSyntax/obj
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/bin
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/obj
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj
 /src/dotnet/libraries/BinaryStudio.DataProcessing/bin
 /src/dotnet/libraries/BinaryStudio.DataProcessing/obj
+/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/bin
+/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Task/bin
@@ -64,16 +68,14 @@
 /src/dotnet/samples/PlatformUISample/bin
 /src/dotnet/samples/PlatformUISample/obj
 /src/delphi/tests/UnitTests.BinaryStudio.Task/Task.exe
-/src/dotnet/kit/bin
-/src/dotnet/kit/obj
-/src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/bin
-/src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/obj
 /help/Working
 /src/dotnet/tools/xhlp/bin
 /src/dotnet/tools/xhlp/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.PortableExecutable/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.PortableExecutable/obj
 /src/delphi/tests/UnitTests.BinaryStudio.Task/out
+/src/dotnet/kit/bin
+/src/dotnet/kit/obj
 
 /.intermediate
 /src/cc/clr/.intermediate
@@ -81,5 +83,3 @@
 /src/cc/ntdll/.intermediate
 /src/dotnet/shell/bin
 /src/dotnet/shell/obj
-/src/dotnet/libraries/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin/Debug
-/src/dotnet/libraries/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj

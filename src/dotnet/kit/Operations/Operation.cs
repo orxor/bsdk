@@ -13,6 +13,7 @@ namespace Operations
     {
     internal abstract class Operation
         {
+        public static readonly Object console = new Object();
         public static ILogger Logger { get;set; }
         public static LocalClient LocalClient { get;set; }
 

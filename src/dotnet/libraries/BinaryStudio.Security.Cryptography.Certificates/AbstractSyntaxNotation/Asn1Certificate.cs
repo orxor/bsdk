@@ -3,10 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.DirectoryServices;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
 
-namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
+namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
     /// <summary>
     /// Represents ASN.1 certificate structure.
