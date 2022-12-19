@@ -15,7 +15,7 @@ namespace BinaryStudio.IO
             if (mapping == null) { throw new ArgumentNullException(nameof(mapping)); }
             Mapping = mapping;
             #if LINUX
-            Handle = MapViewOfFile(IntPtr.Zero,new IntPtr(mapping.Size),PageProtection.Read,MAP_PRIVATE,(Int32)mapping.Mapping.DangerousGetHandle(),IntPtr.Zero);
+            Handle = MapViewOfFile(IntPtr.Zero,new IntPtr(mapping.Size),PageProtection.Read,MAP_PRIVATE,(Int32)mapping.FileHandle.DangerousGetHandle(),IntPtr.Zero);
             #else
             Handle = MapViewOfFile(mapping.Mapping, FileMappingAccess.Read, 0,0, IntPtr.Zero);
             #endif
