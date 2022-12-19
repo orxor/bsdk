@@ -12,5 +12,6 @@ namespace BinaryStudio.Serialization
         void WriteValue(Object value);
         void WriteValueIfNotNull(String name, Object value);
         void WritePropertyName(String name);
+        void WriteComment(String comment);
         }
     }

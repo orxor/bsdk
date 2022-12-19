@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
@@ -62,9 +64,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
-        public override void WriteTo(IJsonWriter writer)
-            {
-            base.WriteTo(writer);
+        public override void WriteTo(IJsonWriter writer) {
+            using (writer.ScopeObject()) {
+                writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
+                writer.WriteValue(nameof(Identifier), Identifier.ToString());
+                writer.WriteValue(nameof(IsCritical), IsCritical);
+                writer.WriteValue(nameof(KeyIdentifier), KeyIdentifier.ToString("x"));
+                writer.WriteValueIfNotNull(nameof(SerialNumber), SerialNumber);
+                writer.WriteValueIfNotNull(nameof(CertificateIssuer), CertificateIssuer);
+                }
             }
         }
     }

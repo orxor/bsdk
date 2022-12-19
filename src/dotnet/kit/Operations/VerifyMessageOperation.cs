@@ -1,8 +1,4 @@
-﻿using BinaryStudio.DiagnosticServices.Logging;
-using BinaryStudio.DirectoryServices;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
-using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
-using Operations;
+﻿using Operations;
 using Options;
 using System;
 using System.Collections.Generic;
@@ -10,6 +6,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BinaryStudio.DiagnosticServices.Logging;
+using BinaryStudio.DirectoryServices;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
 
 namespace Operations
     {

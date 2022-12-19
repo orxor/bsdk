@@ -220,5 +220,10 @@ namespace BinaryStudio.Serialization
                 }
             return Enum.Format(type, source, "G");;
             }
+
+        public void WriteComment(String comment)
+            {
+            Writer.WriteComment(comment);
+            }
         }
     }
