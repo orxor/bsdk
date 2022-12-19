@@ -6,8 +6,11 @@ using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography;
+using BinaryStudio.Serialization;
+using Newtonsoft.Json;
 using Options;
 using Options.Descriptors;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Operations
     {
@@ -123,5 +126,20 @@ namespace Operations
             {
             return (T)GetService(source, typeof(T));
             }
+
+        #region M:JsonSerialize(Object,TextWriter)
+        protected static void JsonSerialize(Object value, TextWriter output) {
+            using (var writer = new DefaultJsonWriter(new JsonTextWriter(output){
+                Formatting = Formatting.Indented,
+                Indentation = 2,
+                IndentChar = ' '}))
+                {
+                if (value is IJsonSerializable o)
+                    {
+                    o.WriteTo(writer);
+                    }
+                }
+            }
+        #endregion
         }
     }

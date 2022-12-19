@@ -17,6 +17,8 @@ public class LocalClient : ILocalClient
         {
         try
             {
+            Operation.Logger = Logger;
+            Logger.Log(LogLevel.Trace,"Starting...");
             var options = Operation.Parse(args);
             operation.Value = new UsageOperation(options);
             if (!HasOption(options, typeof(MultiThreadOption))) {

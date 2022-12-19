@@ -5,12 +5,16 @@ using System.Runtime.InteropServices;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using log4net.Config;
+using log4net;
 
 internal class Program
     {
     [MTAThread]
     private static void Main(String[] args) {
         var assembly = Assembly.GetEntryAssembly();
+        var repository = LogManager.GetRepository(assembly);
+        XmlConfigurator.Configure(repository,new FileInfo("log4net.config"));
         using (new ColorScope()) {
             #if !LINUX
             if (PlatformContext.IsParentProcess(Path.GetFileName(assembly.Location))) {

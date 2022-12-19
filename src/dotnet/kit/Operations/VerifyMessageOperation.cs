@@ -1,4 +1,5 @@
-﻿using BinaryStudio.DirectoryServices;
+﻿using BinaryStudio.DiagnosticServices.Logging;
+using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
 using Operations;
@@ -60,6 +61,11 @@ namespace Operations
         #endregion
         #region M:Execute(IFileService,Asn1CertificateRevocationList):FileOperationStatus
         private FileOperationStatus Execute(IFileService FileService, Asn1CertificateRevocationList Source) {
+            var builder = new StringBuilder();
+            using (var writer = new StringWriter(builder)) {
+                JsonSerialize(Source,writer);
+                }
+            Logger.Log(LogLevel.Debug,builder.ToString());
             return FileOperationStatus.Success;
             }
         #endregion
