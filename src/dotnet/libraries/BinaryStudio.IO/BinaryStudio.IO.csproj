@@ -7,8 +7,10 @@
     <NoWarn>1701</NoWarn>
     <Description>Contains types that allow reading and writing to files and data streams, and types that provide basic file and directory support.</Description>
     <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
@@ -19,7 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
   </ItemGroup>
-  <Target Name="BeforeBuild" BeforeTargets="Build">
+  <Target Name="BeforeBuild" AfterTargets="Build">
     <Message Importance="high" Text="'$(RuntimeIdentifier)'" />
     <Message Importance="high" Text="'$(RuntimeIdentifiers)'" />
   </Target>

@@ -5,8 +5,11 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <NoWarn>1701</NoWarn>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
@@ -16,7 +19,9 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
-    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj">
+      <SetConfiguration>$(Configuration)</SetConfiguration>
+    </ProjectReference>
     <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />

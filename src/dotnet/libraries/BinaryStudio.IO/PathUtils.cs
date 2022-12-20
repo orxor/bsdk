@@ -81,9 +81,10 @@ namespace BinaryStudio.DirectoryServices
             return r.ToString();
             }
 
-        #if !LINUX
+        #if LINUX
         /* <path>\<pre><uuuu>.TMP */
         private static Int32 GetTempFileName(String tmppath,String prefix,Int32 uniqueIdOrZero,[Out] StringBuilder tmpFileName) {
+            tmpFileName = new StringBuilder();
             if (uniqueIdOrZero == 0) { uniqueIdOrZero = (new Random()).Next(UInt16.MaxValue); }
             for (;;) {
                 var target = Path.Combine(tmppath,$"{prefix}{uniqueIdOrZero & 0xffff:x4}.tmp");
@@ -93,6 +94,7 @@ namespace BinaryStudio.DirectoryServices
                     continue;
                     }
                 Close(fd);
+                tmpFileName = new StringBuilder(target);
                 break;
                 }
             return uniqueIdOrZero;

@@ -7,6 +7,8 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>FEATURE_MUI</DefineConstants>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
     <DefineConstants>$(DefineConstants);UseWPF</DefineConstants>
@@ -17,6 +19,7 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
     <UseWPF>false</UseWPF>
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
@@ -33,7 +36,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
-    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj">
+      <SetConfiguration>$(Configuration)</SetConfiguration>
+    </ProjectReference>
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
   <ItemGroup>

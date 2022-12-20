@@ -5,8 +5,11 @@
     <NoWarn>1701;1702;1591</NoWarn>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
@@ -18,7 +21,9 @@
     <PackageReference Include="SharpCompress" Version="0.24.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj">
+      <SetConfiguration>$(Configuration)</SetConfiguration>
+    </ProjectReference>
     <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
   </ItemGroup>
 </Project>
