@@ -56,7 +56,12 @@ namespace Operations
         #endregion
         #region M:Execute(IFileService,Asn1Certificate):FileOperationStatus
         private FileOperationStatus Execute(IFileService FileService, Asn1Certificate Source) {
-            return FileOperationStatus.Skip;
+            var builder = new StringBuilder();
+            using (var writer = new StringWriter(builder)) {
+                JsonSerialize(Source,writer);
+                }
+            Logger.Log(LogLevel.Debug,builder.ToString());
+            return FileOperationStatus.Success;
             }
         #endregion
         #region M:Execute(IFileService,Asn1CertificateRevocationList):FileOperationStatus

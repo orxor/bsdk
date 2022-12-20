@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.DirectoryServices;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -86,6 +87,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }}
         public X509RelativeDistinguishedNameSequence Issuer  { get; }
         public X509RelativeDistinguishedNameSequence Subject { get; }
+        public Asn1CertificateExtensionCollection Extensions { get; }
 
         public Asn1Certificate(Asn1Object o)
             : base(o)
@@ -120,6 +122,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         return;
                         }
                     #endregion
+                    #region Extensions
+                    var contextspecifics = u[0].Where(i => (i.Class == Asn1ObjectClass.ContextSpecific)).ToArray();
+                    var specific = contextspecifics.FirstOrDefault(i => ((Asn1ContextSpecificObject)i).Type == 3);
+                    if (!ReferenceEquals(specific, null)) {
+                        Extensions = new Asn1CertificateExtensionCollection(specific[0].Select(i => Asn1CertificateExtension.From(new Asn1CertificateExtension(i))));
+                        }
+                    #endregion
                     Country = GetCountry(Subject) ?? GetCountry(Issuer);
                     State &= ~ObjectState.Failed;
                     }
@@ -138,6 +147,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 writer.WriteValue(nameof(Subject),Subject);
                 writer.WriteValue(nameof(Issuer),Issuer);
                 writer.WriteValue(nameof(Thumbprint),Thumbprint);
+                writer.WriteValueIfNotNull(nameof(Extensions),Extensions);
                 }
             }
         #endregion

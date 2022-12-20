@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Serialization;
 
@@ -9,6 +10,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         {
         public Asn1CertificateExtensionCollection(IList<Asn1CertificateExtension> source)
             : base(source)
+            {
+            }
+
+        public Asn1CertificateExtensionCollection(IEnumerable<Asn1CertificateExtension> source)
+            : base(source.ToArray())
             {
             }
 

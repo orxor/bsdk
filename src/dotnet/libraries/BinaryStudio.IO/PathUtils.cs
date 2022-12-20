@@ -84,7 +84,6 @@ namespace BinaryStudio.DirectoryServices
         #if LINUX
         /* <path>\<pre><uuuu>.TMP */
         private static Int32 GetTempFileName(String tmppath,String prefix,Int32 uniqueIdOrZero,[Out] StringBuilder tmpFileName) {
-            tmpFileName = new StringBuilder();
             if (uniqueIdOrZero == 0) { uniqueIdOrZero = (new Random()).Next(UInt16.MaxValue); }
             for (;;) {
                 var target = Path.Combine(tmppath,$"{prefix}{uniqueIdOrZero & 0xffff:x4}.tmp");
@@ -94,7 +93,7 @@ namespace BinaryStudio.DirectoryServices
                     continue;
                     }
                 Close(fd);
-                tmpFileName = new StringBuilder(target);
+                tmpFileName.Append(target);
                 break;
                 }
             return uniqueIdOrZero;
@@ -103,28 +102,47 @@ namespace BinaryStudio.DirectoryServices
         [Flags]
         internal enum OpenFlags
             {
-            O_RDONLY    = 0x000,
-            O_WRONLY    = 0x001,
-            O_RDWR      = 0x002,
-            O_CLOEXEC   = 0x010,
-            O_CREAT     = 0x020,
-            O_EXCL      = 0x040,
-            O_TRUNC     = 0x080,
-            O_SYNC      = 0x100
+            O_RDONLY    = 0x000000,
+            O_WRONLY    = 0x000001,
+            O_RDWR      = 0x000002,
+            O_CREAT     = 0x000040,
+            O_EXCL      = 0x000080,
+            O_NOCTTY    = 0x000100,
+            O_TRUNC     = 0x000200,
+            O_APPEND    = 0x000400,
+            O_NONBLOCK  = 0x000800,
+            O_SYNC      = 0x101000,
+            O_ASYNC     = 0x002000,
+            O_LARGEFILE = 0x008000,
+            O_DIRECTORY = 0x010000,
+            O_NOFOLLOW  = 0x020000,
+            O_CLOEXEC   = 0x080000,
+            O_DIRECT    = 0x004000,
+            O_NOATIME   = 0x040000,
+            O_PATH      = 0x200000,
+            O_DSYNC     = 0x001000,
+            O_TMPFILE   = (0x400000 | O_DIRECTORY),
+            O_NDELAY    = O_NONBLOCK
             }
 
-        private const Int32 S_IRWXU = 0x00700;
-        private const Int32 S_IRUSR = 0x00400;
-        private const Int32 S_IWUSR = 0x00200;
-        private const Int32 S_IXUSR = 0x00100;
-        private const Int32 S_IRWXG = 0x00070;
-        private const Int32 S_IRGRP = 0x00040;
-        private const Int32 S_IWGRP = 0x00020;
-        private const Int32 S_IXGRP = 0x00010;
-        private const Int32 S_IRWXO = 0x00007;
-        private const Int32 S_IROTH = 0x00004;
-        private const Int32 S_IWOTH = 0x00002;
-        private const Int32 S_IXOTH = 0x00001;
+        private const Int32 __S_ISUID  = 0x0800; /* Set user ID on execution.              */
+        private const Int32 __S_ISGID  = 0x0400; /* Set group ID on execution.             */
+        private const Int32 __S_ISVTX  = 0x0200; /* Save swapped text after use (sticky).  */
+        private const Int32 __S_IREAD  = 0x0100; /* Read by owner.                         */
+        private const Int32 __S_IWRITE = 0x0080; /* Write by owner.                        */
+        private const Int32 __S_IEXEC  = 0x0040; /* Execute by owner.                      */
+        private const Int32 S_IRUSR    = __S_IREAD;       /* Read by owner.     */
+        private const Int32 S_IWUSR    = __S_IWRITE;      /* Write by owner.    */
+        private const Int32 S_IXUSR    = __S_IEXEC;       /* Execute by owner.  */
+        private const Int32 S_IRGRP    = (S_IRUSR >> 3);  /* Read by group.     */
+        private const Int32 S_IWGRP    = (S_IWUSR >> 3);  /* Write by group.    */
+        private const Int32 S_IXGRP    = (S_IXUSR >> 3);  /* Execute by group.  */
+        private const Int32 S_IROTH    = (S_IRGRP >> 3);  /* Read by others.    */
+        private const Int32 S_IWOTH    = (S_IWGRP >> 3);  /* Write by others.   */
+        private const Int32 S_IXOTH    = (S_IXGRP >> 3);  /* Execute by others. */
+        private const Int32 S_IRWXO    = (S_IRWXG >> 3);
+        private const Int32 S_IRWXU    = (__S_IREAD|__S_IWRITE|__S_IEXEC);
+        private const Int32 S_IRWXG    = (S_IRWXU >> 3);
 
         [DllImport("c", CharSet = CharSet.Ansi, SetLastError = true, CallingConvention = CallingConvention.Cdecl, EntryPoint ="open64")] private static extern Int32 Open(String filename, OpenFlags flags, Int32 mode);
         [DllImport("c", CharSet = CharSet.Ansi, SetLastError = true, CallingConvention = CallingConvention.Cdecl, EntryPoint ="close")]  private static extern Int32 Close(Int32 fd);

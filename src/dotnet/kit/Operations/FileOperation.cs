@@ -94,7 +94,7 @@ namespace Operations
                     x.Add("Service", new
                         {
                         Type = service.GetType().FullName,
-                        Self = service
+                        Self = service.FullName
                         });
                     status = FileOperationStatus.Error;
                     Logger.Log(LogLevel.Warning, x);
