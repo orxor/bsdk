@@ -2,7 +2,8 @@
   "profiles": {
     "kit": {
       "commandName": "Project",
-      "commandLineArgs": "input:C:\\TFS\\icao\\ldif\\*.crl containers:*.rar;*.7z message verify"
+      "commandLineArgs": "input:C:\\TFS\\icao\\ldif\\*.crl containers:*.rar;*.7z message verify",
+      "remoteDebugEnabled": false
     }
   }
 }

@@ -4,9 +4,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!--<DocumentationFile>$(OutDir)\BinaryStudio.PortableExecutable.xml</DocumentationFile>-->
     <NoWarn>1701;1702;1591;1570;0108;1522;0168;1587;0162</NoWarn>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>FEATURE_MUI</DefineConstants>
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
     <DefineConstants>$(DefineConstants);UseWPF</DefineConstants>
@@ -18,6 +19,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
     <UseWPF>false</UseWPF>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net40'">
     <Reference Include="System.ComponentModel.DataAnnotations" />

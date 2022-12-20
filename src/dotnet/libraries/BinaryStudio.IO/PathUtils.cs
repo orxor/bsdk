@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
+using Microsoft.Win32.SafeHandles;
 
 namespace BinaryStudio.DirectoryServices
     {
@@ -75,12 +77,58 @@ namespace BinaryStudio.DirectoryServices
         /// <returns>The full path of the temporary file.</returns>
         public static String GetTempFileName(String folder, String prefix) {
             var r = new StringBuilder(MAX_PATH);
-            GetTempFileName(folder, prefix, 0U, r);
+            GetTempFileName(folder, prefix, 0, r);
             return r.ToString();
             }
 
+        #if !LINUX
+        /* <path>\<pre><uuuu>.TMP */
+        private static Int32 GetTempFileName(String tmppath,String prefix,Int32 uniqueIdOrZero,[Out] StringBuilder tmpFileName) {
+            if (uniqueIdOrZero == 0) { uniqueIdOrZero = (new Random()).Next(UInt16.MaxValue); }
+            for (;;) {
+                var target = Path.Combine(tmppath,$"{prefix}{uniqueIdOrZero & 0xffff:x4}.tmp");
+                var fd = Open(target,OpenFlags.O_CREAT|OpenFlags.O_EXCL,S_IRUSR|S_IWUSR);
+                if (fd == -1) {
+                    uniqueIdOrZero++;
+                    continue;
+                    }
+                Close(fd);
+                break;
+                }
+            return uniqueIdOrZero;
+            }
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false)] internal static extern UInt32 GetTempFileName(String tmppath,String prefix,UInt32 uniqueIdOrZero,[Out] StringBuilder tmpFileName);
+        [Flags]
+        internal enum OpenFlags
+            {
+            O_RDONLY    = 0x000,
+            O_WRONLY    = 0x001,
+            O_RDWR      = 0x002,
+            O_CLOEXEC   = 0x010,
+            O_CREAT     = 0x020,
+            O_EXCL      = 0x040,
+            O_TRUNC     = 0x080,
+            O_SYNC      = 0x100
+            }
+
+        private const Int32 S_IRWXU = 0x00700;
+        private const Int32 S_IRUSR = 0x00400;
+        private const Int32 S_IWUSR = 0x00200;
+        private const Int32 S_IXUSR = 0x00100;
+        private const Int32 S_IRWXG = 0x00070;
+        private const Int32 S_IRGRP = 0x00040;
+        private const Int32 S_IWGRP = 0x00020;
+        private const Int32 S_IXGRP = 0x00010;
+        private const Int32 S_IRWXO = 0x00007;
+        private const Int32 S_IROTH = 0x00004;
+        private const Int32 S_IWOTH = 0x00002;
+        private const Int32 S_IXOTH = 0x00001;
+
+        [DllImport("c", CharSet = CharSet.Ansi, SetLastError = true, CallingConvention = CallingConvention.Cdecl, EntryPoint ="open64")] private static extern Int32 Open(String filename, OpenFlags flags, Int32 mode);
+        [DllImport("c", CharSet = CharSet.Ansi, SetLastError = true, CallingConvention = CallingConvention.Cdecl, EntryPoint ="close")]  private static extern Int32 Close(Int32 fd);
+        #else
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, BestFitMapping = false)] private static extern Int32 GetTempFileName(String tmppath,String prefix,Int32 uniqueIdOrZero,[Out] StringBuilder tmpFileName);
+        #endif
 
         public static Boolean IsSame(String x, String y)
             {
