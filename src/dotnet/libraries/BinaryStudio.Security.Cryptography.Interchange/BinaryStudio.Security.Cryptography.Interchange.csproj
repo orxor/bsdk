@@ -5,7 +5,8 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <NoWarn>1701</NoWarn>
-    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>

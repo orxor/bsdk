@@ -7,7 +7,6 @@
     <NoWarn>1701</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <UseWPF>false</UseWPF>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net40'">

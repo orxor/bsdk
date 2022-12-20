@@ -5,9 +5,8 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <NoWarn>1701</NoWarn>
-    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+  <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
     <UseWPF>false</UseWPF>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net40'">

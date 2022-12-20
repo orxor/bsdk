@@ -4,6 +4,7 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <NoWarn>1701</NoWarn>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
     <UseWPF>true</UseWPF>
@@ -14,7 +15,6 @@
     <DefineConstants>$(DefineConstants);UseWPF</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
-    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <UseWPF>false</UseWPF>
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
