@@ -49,6 +49,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
             using (writer.ScopeObject()) {
+                writer.WriteIndent();
                 writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
                 writer.WriteValue(nameof(Identifier), Identifier.ToString());
                 writer.WriteValue(nameof(IsCritical), IsCritical);

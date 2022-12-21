@@ -70,6 +70,69 @@ namespace BinaryStudio.Serialization
             return new ArrayScopeObject(Writer);
             }
 
+        #region M:IJsonWriter.WriteValue(Object)
+        void IJsonWriter.WriteValue(Object value) {
+            if (value != null) {
+                WriteValue(value);
+                }
+            else
+                {
+                Writer.WriteNull();
+                }
+            }
+        #endregion
+        #region M:IJsonWriter.WriteComment(String)
+        /// <summary>
+        /// Writes a comment <c>/*...*/</c> containing the specified text.
+        /// </summary>
+        /// <param name="comment">Text to place inside the comment.</param>
+        void IJsonWriter.WriteComment(String comment)
+            {
+            Writer.WriteComment(comment);
+            }
+        #endregion
+        #region M:IJsonWriter.WriteWhitespace(String)
+        /// <summary>
+        /// Writes the given white space.
+        /// </summary>
+        /// <param name="whitespace">The string of white space characters.</param>
+        void IJsonWriter.WriteWhitespace(String whitespace)
+            {
+            Writer.WriteWhitespace(whitespace);
+            }
+        #endregion
+        #region M:IJsonWriter.WriteWhitespace(Int32)
+        /// <summary>
+        /// Writes the given white space.
+        /// </summary>
+        /// <param name="whitespace">The count of white space characters.</param>
+        void IJsonWriter.WriteWhitespace(Int32 whitespace) {
+            if (whitespace > 0) {
+                Writer.WriteWhitespace(new String(' ', whitespace));
+                }
+            }
+        #endregion
+        #region M:IJsonWriter.WriteRawString(String)
+        /// <summary>
+        /// Writes raw JSON without changing the writer's state.
+        /// </summary>
+        /// <param name="value">The raw JSON to write.</param>
+        void IJsonWriter.WriteRawString(String value) {
+            if (!String.IsNullOrEmpty(value)) {
+                Writer.WriteRaw(value);
+                }
+            }
+        #endregion
+        #region M:IJsonWriter.WriteIndent
+        void IJsonWriter.WriteIndent() {
+            var mi = Writer.GetType().GetMethod("WriteIndent",BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.Public);
+            if (mi != null) {
+                mi.Invoke(Writer,null);
+                }
+            }
+        #endregion
+
+        #region M:WriteValue(String,Object)
         public void WriteValue(String name, Object value) {
             if (name == null) { throw new ArgumentNullException(nameof(name)); }
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
@@ -83,7 +146,8 @@ namespace BinaryStudio.Serialization
                 Writer.WriteNull();
                 }
             }
-
+        #endregion
+        #region M:WriteValueIfNotNull(String,Object)
         public void WriteValueIfNotNull(String name, Object value) {
             if (name == null) { throw new ArgumentNullException(nameof(name)); }
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
@@ -92,23 +156,20 @@ namespace BinaryStudio.Serialization
                 WriteValue(value);
                 }
             }
-
+        #endregion
+        #region M:WritePropertyName(String)
+        /// <summary>
+        /// Writes the property name of a name/value pair of a JSON object.
+        /// </summary>
+        /// <param name="name">The name of the property.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void WritePropertyName(String name) {
             if (name == null) { throw new ArgumentNullException(nameof(name)); }
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
             Writer.WritePropertyName(name);
             }
-
-        void IJsonWriter.WriteValue(Object value) {
-            if (value != null) {
-                WriteValue(value);
-                }
-            else
-                {
-                Writer.WriteNull();
-                }
-            }
-
+        #endregion
         #region M:WriteValue(Object):Boolean
         private Boolean WriteValue(Object value) {
             if (value == null) { return false; }
@@ -219,11 +280,6 @@ namespace BinaryStudio.Serialization
                     }
                 }
             return Enum.Format(type, source, "G");;
-            }
-
-        public void WriteComment(String comment)
-            {
-            Writer.WriteComment(comment);
             }
         }
     }

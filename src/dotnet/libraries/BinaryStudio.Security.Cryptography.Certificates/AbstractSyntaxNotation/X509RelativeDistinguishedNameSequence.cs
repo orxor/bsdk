@@ -129,6 +129,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public X509GeneralNameType Type { get { return X509GeneralNameType.Directory; }}
 
         #region M:WriteTo(IJsonWriter)
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             using (writer.ScopeObject()) {
@@ -139,21 +141,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     writer.WritePropertyName("{Self}");
                     using (writer.ArrayObject()) {
                         var values = Items.ToArray();
-                        var formatting = writer.Formatting;
+                        var l = values.Select(j => j.Key.ToString().Length).Max();
+                        var f = writer.Formatting;
                         writer.Formatting = Formatting.None;
-                        var i = 0;
-                        foreach (var item in Items) {
-                            if (i > 0) {
-                                //
-                                }
+                        foreach (var item in values) {
                             writer.Formatting = Formatting.Indented;
                             using (writer.ScopeObject()) {
                                 writer.Formatting = Formatting.None;
-                                writer.WriteValue(item.Key.ToString(),item.Value);
+                                writer.WriteRawString($@"""{item.Key}""{new String(' ',l-item.Key.ToString().Length)}: ""{item.Value}""");
                                 }
-                            i++;
                             }
-                        writer.Formatting = formatting;
+                        writer.Formatting = f;
                         }
                     }
                 }
