@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
@@ -34,11 +36,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      */
     [Asn1CertificateExtension(IcaoObjectIdentifiers.IcaoMrtdSecurityExtensionsDocumentTypeList)]
     [Asn1CertificateExtension("2.23.136.1.1.4")]
-    internal class ICAODocumentTypeList : Asn1CertificateExtension
+    internal class IcaoDocumentTypeList : Asn1CertificateExtension
         {
         public Int32 Version { get; }
         public IList<String> TypeList { get; }
-        public ICAODocumentTypeList(Asn1CertificateExtension source)
+        public IcaoDocumentTypeList(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -72,9 +74,19 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
-        public override void WriteTo(IJsonWriter writer)
-            {
-            base.WriteTo(writer);
+        public override void WriteTo(IJsonWriter writer) {
+            using (writer.ScopeObject()) {
+                writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
+                writer.WriteValue(nameof(Identifier), Identifier.ToString());
+                writer.WriteValue(nameof(IsCritical), IsCritical);
+                writer.WriteValue(nameof(Version), Version);
+                writer.WritePropertyName(nameof(TypeList));
+                using (writer.ArrayObject()) {
+                    foreach (var i in TypeList) {
+                        writer.WriteValue(i);
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
@@ -31,9 +34,25 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
-        public override void WriteTo(IJsonWriter writer)
-            {
-            base.WriteTo(writer);
+        public override void WriteTo(IJsonWriter writer) {
+            using (writer.ScopeObject()) {
+                writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
+                writer.WriteValue(nameof(Identifier), Identifier.ToString());
+                writer.WriteValue(nameof(IsCritical), IsCritical);
+                var r = new List<String>();
+                var n = (Int32)Type;
+                if ((n & (Int32)NetscapeCertificateType.SslClient)       != 0) { r.Add(nameof(NetscapeCertificateType.SslClient      )); n &= ~(Int32)NetscapeCertificateType.SslClient;       }
+                if ((n & (Int32)NetscapeCertificateType.SslServer)       != 0) { r.Add(nameof(NetscapeCertificateType.SslServer      )); n &= ~(Int32)NetscapeCertificateType.SslServer;       }
+                if ((n & (Int32)NetscapeCertificateType.SMime)           != 0) { r.Add(nameof(NetscapeCertificateType.SMime          )); n &= ~(Int32)NetscapeCertificateType.SMime;           }
+                if ((n & (Int32)NetscapeCertificateType.ObjectSigning)   != 0) { r.Add(nameof(NetscapeCertificateType.ObjectSigning  )); n &= ~(Int32)NetscapeCertificateType.ObjectSigning;   }
+                if ((n & (Int32)NetscapeCertificateType.Reserved)        != 0) { r.Add(nameof(NetscapeCertificateType.Reserved       )); n &= ~(Int32)NetscapeCertificateType.Reserved;        }
+                if ((n & (Int32)NetscapeCertificateType.SslCA)           != 0) { r.Add(nameof(NetscapeCertificateType.SslCA          )); n &= ~(Int32)NetscapeCertificateType.SslCA;           }
+                if ((n & (Int32)NetscapeCertificateType.SMimeCA)         != 0) { r.Add(nameof(NetscapeCertificateType.SMimeCA        )); n &= ~(Int32)NetscapeCertificateType.SMimeCA;         }
+                if ((n & (Int32)NetscapeCertificateType.ObjectSigningCA) != 0) { r.Add(nameof(NetscapeCertificateType.ObjectSigningCA)); n &= ~(Int32)NetscapeCertificateType.ObjectSigningCA; }
+                if (!IsNullOrEmpty(r)) {
+                    writer.WriteValue(nameof(Type), r);
+                    }
+                }
             }
         }
     }

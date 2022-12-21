@@ -52,6 +52,9 @@ internal class ClientLogger : DefaultLogger
             case LogLevel.None: break;
             default: throw new ArgumentOutOfRangeException(nameof(loglevel), loglevel, null);
             }
+        #if LINUX
+        if ((loglevel != LogLevel.Debug) && (loglevel != LogLevel.Trace)) {
+        #endif
         var color = colors[loglevel];
         using ((color != null)
             ? new ColorScope(color.Value)
@@ -59,5 +62,8 @@ internal class ClientLogger : DefaultLogger
             {
             Console.Error.WriteLine(message);
             }
+        #if LINUX
+            }
+        #endif
         }
     }
