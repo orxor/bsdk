@@ -78,7 +78,7 @@ namespace Operations
         #region M:Execute(IDirectoryService):FileOperationStatus
         public FileOperationStatus Execute(IEnumerable<IFileService> InputSource) {
             var status = FileOperationStatus.Skip;
-            foreach (var service in InputSource) {
+            InputSource.AsParallel().ForAll(service=> {
                 var timer = new Stopwatch();
                 var e = new ExecuteActionEventArgs(service)
                     {
@@ -142,7 +142,7 @@ namespace Operations
                             }
                         break;
                         }
-                }
+                });
             return status;
             }
         #endregion

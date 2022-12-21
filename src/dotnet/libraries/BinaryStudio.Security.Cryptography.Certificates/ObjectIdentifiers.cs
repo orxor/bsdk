@@ -600,7 +600,7 @@ namespace BinaryStudio.Security.Cryptography
         public const String NSS_OID_X509_CERTIFICATE_ISSUER                         = "2.5.29.29";
         public const String NSS_OID_X509_NAME_CONSTRAINTS                           = "2.5.29.30";
         public const String NSS_OID_X509_CRL_DIST_POINTS                            = szOID_CRL_DIST_POINTS;
-        public const String NSS_OID_X509_CERTIFICATE_POLICIES                       = "2.5.29.32";
+        public const String NSS_OID_X509_CERTIFICATE_POLICIES                       = szOID_CERT_POLICIES;
         public const String NSS_OID_X509_POLICY_MAPPINGS                            = "2.5.29.33";
         public const String NSS_OID_X509_AUTH_KEY_ID                                = szOID_AUTHORITY_KEY_IDENTIFIER2;
         public const String NSS_OID_X509_POLICY_CONSTRAINTS                         = "2.5.29.36";

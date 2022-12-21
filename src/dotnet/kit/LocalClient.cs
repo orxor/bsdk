@@ -52,6 +52,7 @@ public class LocalClient : ILocalClient
                     {
                     }
                 }).Wait();
+            Logger.Log(LogLevel.Trace,"Finished");
             return 0;
             }
         catch (Exception e)

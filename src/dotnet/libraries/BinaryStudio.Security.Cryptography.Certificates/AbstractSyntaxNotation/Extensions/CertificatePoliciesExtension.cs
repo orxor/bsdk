@@ -13,10 +13,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERT_POLICIES)]
-    internal class Asn1CertificatePoliciesExtension : Asn1CertificateExtension
+    internal class CertificatePoliciesExtension : Asn1CertificateExtension
         {
         public Asn1ObjectIdentifierCollection CertificatePolicies { get; }
-        public Asn1CertificatePoliciesExtension(Asn1CertificateExtension source)
+        public CertificatePoliciesExtension(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
