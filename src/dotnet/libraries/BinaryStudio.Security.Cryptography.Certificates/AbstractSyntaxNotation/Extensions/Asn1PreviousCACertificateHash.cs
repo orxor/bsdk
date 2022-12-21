@@ -12,7 +12,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * {/ISO/Identified-Organization/6/1/4/1/311/21/2}
      * szOID_CERTSRV_PREVIOUS_CERT_HASH
      */
-    [Asn1CertificateExtension("1.3.6.1.4.1.311.21.2")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTSRV_PREVIOUS_CERT_HASH)]
     internal class Asn1PreviousCACertificateHash : Asn1CertificateExtension
         {
         public String HashValue { get; }

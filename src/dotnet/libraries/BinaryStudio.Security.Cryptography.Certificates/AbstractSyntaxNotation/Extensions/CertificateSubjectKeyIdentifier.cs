@@ -5,7 +5,7 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
-    [Asn1CertificateExtension("2.5.29.14")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_SUBJECT_KEY_ID)]
     public sealed class CertificateSubjectKeyIdentifier : Asn1CertificateExtension
         {
         public Byte[] KeyIdentifier { get; }

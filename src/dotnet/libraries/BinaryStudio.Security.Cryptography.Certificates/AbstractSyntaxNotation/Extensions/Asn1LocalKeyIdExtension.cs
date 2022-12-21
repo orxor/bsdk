@@ -20,7 +20,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      *   ID pkcs-9-at-localKeyId
      * }
      */
-    [Asn1CertificateExtension("1.2.840.113549.1.9.21")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_PKCS9_LOCAL_KEY_ID)]
     internal class Asn1LocalKeyIdExtension : Asn1CertificateExtension
         {
         public String LocalKeyId { get; }

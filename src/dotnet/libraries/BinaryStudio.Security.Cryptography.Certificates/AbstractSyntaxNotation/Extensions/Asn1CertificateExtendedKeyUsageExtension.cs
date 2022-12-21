@@ -14,7 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Extended key usage 
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.37")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_ENHANCED_KEY_USAGE)]
     internal sealed class Asn1CertificateExtendedKeyUsageExtension : Asn1CertificateExtension
         {
         public Asn1ObjectIdentifierCollection Value { get; }

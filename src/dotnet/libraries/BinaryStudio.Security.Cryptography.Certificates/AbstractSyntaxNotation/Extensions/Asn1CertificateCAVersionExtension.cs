@@ -11,7 +11,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * /ISO/Identified-Organization/6/1/4/1/311/21/1
      * Certificate services Certification Authority (CA) version
      * */
-    [Asn1CertificateExtension("1.3.6.1.4.1.311.21.1")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTSRV_CA_VERSION)]
     internal sealed class Asn1CertificateCAVersionExtension : Asn1CertificateExtension
         {
         public Version Version { get; }

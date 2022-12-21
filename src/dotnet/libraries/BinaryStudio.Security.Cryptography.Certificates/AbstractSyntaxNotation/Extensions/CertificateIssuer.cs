@@ -5,7 +5,7 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
-    [Asn1CertificateExtension("2.5.29.29")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_CERTIFICATE_ISSUER)]
     public sealed class CertificateIssuer : Asn1CertificateExtension
         {
         public IX509GeneralName Value { get; }

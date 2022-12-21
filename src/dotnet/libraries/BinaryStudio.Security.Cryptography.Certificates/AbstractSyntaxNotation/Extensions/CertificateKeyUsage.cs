@@ -15,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Key usage
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.15")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_KEY_USAGE)]
     internal sealed class CertificateKeyUsage : Asn1CertificateExtension
         {
         public X509KeyUsageFlags KeyUsage { get; }

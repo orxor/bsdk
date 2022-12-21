@@ -4,7 +4,7 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
-    [Asn1CertificateExtension("2.5.29.23")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_HOLD_INSTRUCTION_CODE)]
     public sealed class HoldInstructionCode : Asn1CertificateExtension
         {
         public Asn1ObjectIdentifier Value { get; }

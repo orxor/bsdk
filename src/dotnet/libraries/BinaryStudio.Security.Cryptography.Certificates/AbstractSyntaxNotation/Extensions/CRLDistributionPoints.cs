@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Certificate Revocation List (CRL) distribution points
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.31")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_CRL_DIST_POINTS)]
     public class CRLDistributionPoints : Asn1CertificateExtension
         {
         public IList<DistributionPoint> DistributionPoints { get; }

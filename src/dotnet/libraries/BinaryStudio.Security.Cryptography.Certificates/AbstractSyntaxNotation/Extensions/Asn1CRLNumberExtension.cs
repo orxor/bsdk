@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Certificate Revocation List (CRL) number
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.20")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_CRL_NUMBER)]
     internal class Asn1CRLNumberExtension : Asn1CertificateExtension
         {
         public String Value { get; }

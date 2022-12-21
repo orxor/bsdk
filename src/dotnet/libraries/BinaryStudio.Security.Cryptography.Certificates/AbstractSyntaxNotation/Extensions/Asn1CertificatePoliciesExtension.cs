@@ -12,7 +12,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Certificate policies
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.32")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERT_POLICIES)]
     internal class Asn1CertificatePoliciesExtension : Asn1CertificateExtension
         {
         public Asn1ObjectIdentifierCollection CertificatePolicies { get; }

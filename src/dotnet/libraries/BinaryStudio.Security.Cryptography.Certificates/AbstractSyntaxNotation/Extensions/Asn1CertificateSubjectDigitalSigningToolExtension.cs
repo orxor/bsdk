@@ -5,7 +5,7 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
-    [Asn1CertificateExtension("1.2.643.100.111")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szCPOID_SubjectSignTool)]
     internal sealed class Asn1CertificateSubjectDigitalSigningToolExtension : Asn1CertificateExtension
         {
         public String DigitalSigningTool { get; }

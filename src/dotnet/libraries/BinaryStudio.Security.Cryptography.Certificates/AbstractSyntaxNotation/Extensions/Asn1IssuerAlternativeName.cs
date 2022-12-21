@@ -16,7 +16,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Issuer alternative name
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.18")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_ISSUER_ALT_NAME2)]
     public class Asn1IssuerAlternativeName : Asn1CertificateExtension
         {
         public IList<IX509GeneralName> AlternativeName { get; }

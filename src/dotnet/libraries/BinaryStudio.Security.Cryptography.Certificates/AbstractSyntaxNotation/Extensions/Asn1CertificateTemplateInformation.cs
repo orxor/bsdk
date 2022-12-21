@@ -20,7 +20,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      *   templateMinorVersion    INTEGER (0..4294967295) OPTIONAL
      * }
      */
-    [Asn1CertificateExtension("1.3.6.1.4.1.311.21.7")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTIFICATE_TEMPLATE)]
     internal class Asn1CertificateTemplateInformation : Asn1CertificateExtension
         {
         public Asn1ObjectIdentifier TemplateId { get; }

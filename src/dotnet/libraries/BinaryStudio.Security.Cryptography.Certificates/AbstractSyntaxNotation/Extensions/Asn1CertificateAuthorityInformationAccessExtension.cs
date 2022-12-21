@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Certificate authority information access
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("1.3.6.1.5.5.7.1.1")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_AUTHORITY_INFO_ACCESS)]
     internal sealed class Asn1CertificateAuthorityInformationAccessExtension : Asn1CertificateExtension
         {
         public Asn1CertificateAuthorityInformationAccessCollection AccessDescriptions { get; }

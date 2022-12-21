@@ -7,7 +7,7 @@
      * "id-ce-freshestCRL"
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.46")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_FRESHEST_CRL)]
     internal class FreshestCRL : CRLDistributionPoints
         {
         public FreshestCRL(Asn1CertificateExtension u)

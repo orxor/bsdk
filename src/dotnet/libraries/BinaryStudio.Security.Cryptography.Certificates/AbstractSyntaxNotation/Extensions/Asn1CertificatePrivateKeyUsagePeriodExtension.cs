@@ -14,7 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Private key usage period
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.16")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_PRIVATEKEY_USAGE_PERIOD)]
     internal class Asn1CertificatePrivateKeyUsagePeriodExtension : Asn1CertificateExtension
         {
         public DateTime? NotBefore { get; }

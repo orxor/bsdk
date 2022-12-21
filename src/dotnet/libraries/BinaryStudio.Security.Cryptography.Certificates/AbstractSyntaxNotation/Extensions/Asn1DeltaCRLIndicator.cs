@@ -7,7 +7,7 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
-    [Asn1CertificateExtension("2.5.29.27")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_DELTA_CRL_INDICATOR)]
     internal class Asn1DeltaCRLIndicator : Asn1CertificateExtension
         {
         public BigInteger MinimumBaseCRLNumber { get; }

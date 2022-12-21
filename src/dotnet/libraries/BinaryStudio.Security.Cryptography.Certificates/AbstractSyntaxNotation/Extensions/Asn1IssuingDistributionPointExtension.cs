@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Issuing distribution point 
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.28")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_ISSUING_DIST_POINT)]
     internal class Asn1IssuingDistributionPointExtension : Asn1CertificateExtension
         {
         public DistributionPointName DistributionPoint { get; }

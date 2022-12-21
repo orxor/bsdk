@@ -14,7 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * /ISO/Identified-Organization/6/1/4/1/311/21/14
      * szOID_CRL_SELF_CDP
      * */
-    [Asn1CertificateExtension("1.3.6.1.4.1.311.21.14")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_CRL_SELF_CDP)]
     internal class Asn1PublishedCRLLocations : Asn1CertificateExtension
         {
         public IList<IX509GeneralName> PublishedCRLLocations { get; }

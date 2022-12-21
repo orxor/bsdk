@@ -5,7 +5,7 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
-    [Asn1CertificateExtension("1.3.6.1.4.1.311.20.2")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_ENROLL_CERTTYPE_EXTENSION)]
     internal sealed class Asn1CertificateTemplateNameExtension : Asn1CertificateExtension
         {
         public String TemplateName { get; }

@@ -7,7 +7,7 @@
      * Subject alternative name ("subjectAltName" extension)
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.17")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_SUBJECT_ALT_NAME)]
     public class Asn1SubjectAlternativeName : Asn1IssuerAlternativeName
         {
         public Asn1SubjectAlternativeName(Asn1CertificateExtension source)

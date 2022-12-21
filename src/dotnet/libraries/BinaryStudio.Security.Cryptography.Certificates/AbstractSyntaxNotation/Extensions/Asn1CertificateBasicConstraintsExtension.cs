@@ -19,7 +19,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      *   pathLenConstraint       INTEGER (0..MAX) OPTIONAL
      * }
      */
-    [Asn1CertificateExtension("2.5.29.19")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_BASIC_CONSTRAINTS2)]
     internal sealed class Asn1CertificateBasicConstraintsExtension : Asn1CertificateExtension
         {
         [Browsable(false)] public Boolean CertificateAuthority { get; }

@@ -5,7 +5,7 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
-    [Asn1CertificateExtension("2.5.29.24")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_INVALID_DATE)]
     public sealed class InvalidityDate : Asn1CertificateExtension
         {
         public DateTime Value { get; }

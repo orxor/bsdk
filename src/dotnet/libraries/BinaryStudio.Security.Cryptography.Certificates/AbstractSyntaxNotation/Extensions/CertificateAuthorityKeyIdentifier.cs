@@ -14,7 +14,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Authority key identifier
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension("2.5.29.35")]
+    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_AUTH_KEY_ID)]
     public sealed class CertificateAuthorityKeyIdentifier : Asn1CertificateExtension
         {
         public Byte[] KeyIdentifier { get; }
