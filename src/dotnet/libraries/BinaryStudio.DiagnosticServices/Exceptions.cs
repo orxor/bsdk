@@ -146,7 +146,7 @@ namespace BinaryStudio.DiagnosticServices
                 if ((a != null) && (a.InnerExceptions.Count < 2)) { a = null; }
                 if (e.StackTrace != null) {
                     var lineindex = 0;
-                    var lines = e.StackTrace.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    var lines = e.StackTrace.Split(new[] { '\r','\n' }, StringSplitOptions.RemoveEmptyEntries);
                     var c = lines.Length;
                     foreach (var line in lines.Reverse()) {
                         var regex = new Regex(@"(\p{Zs}{3}(\p{L}+)\p{Zs}(?<S>.+)\p{Zs}(\p{L}+)\p{Zs}(?<N>.+):(\p{L}+)\p{Zs}(?<L>\p{Nd}+))+");
@@ -155,7 +155,8 @@ namespace BinaryStudio.DiagnosticServices
                             for (var i = matches.Count - 1; i >= 0; i--) {
                                 ExceptionBlock block;
                                 var m = matches[i];
-                                var s = $"at {m.Groups["S"]} in {Path.GetFileName(m.Groups["N"].Value)}:line {m.Groups["L"]}";
+                                var N = m.Groups["N"].Value;
+                                var s = $"at {m.Groups["S"]} in {PathContext.GetFileName(N)}:line {m.Groups["L"]}";
                                 blocks.AddFirst(block = (lineindex == c - 1)
                                     ? new ExceptionBlock(s, index)
                                     : new ExceptionBlock(s, null));

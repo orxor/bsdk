@@ -3,9 +3,12 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using BinaryStudio.DiagnosticServices;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
@@ -115,9 +118,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
-        public override void WriteTo(IJsonWriter writer)
-            {
-            throw new NotImplementedException(GetType().FullName);
+        public override void WriteTo(IJsonWriter writer) {
+            throw new NotImplementedException()
+                .Add("Type",GetType().FullName)
+                .Add("Identifier",$"{Identifier} {{{OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)}}}");
             base.WriteTo(writer);
             }
         }

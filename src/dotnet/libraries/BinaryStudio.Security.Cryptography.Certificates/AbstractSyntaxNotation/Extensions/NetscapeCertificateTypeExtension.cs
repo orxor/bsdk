@@ -12,7 +12,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * {/Country/US/1/113730/1/1}
      * Netscape certificate type (a Rec. ITU-T X.509 v3 certificate extension used to identify whether the certificate subject is a Secure Sockets Layer (SSL) client, an SSL server or a Certificate Authority (CA))
      * */
-    [Asn1CertificateExtension("2.16.840.1.113730.1.1")]
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_NETSCAPE_CERT_TYPE)]
     public sealed class NetscapeCertificateTypeExtension : Asn1CertificateExtension
         {
         public NetscapeCertificateType Type { get; }
@@ -27,6 +27,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
 
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
         public override String ToString()
             {
             return Type.ToString();

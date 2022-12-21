@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BinaryStudio.Security.Cryptography.Certificates
+namespace BinaryStudio.Security.Cryptography
     {
     public class IcaoObjectIdentifiers
         {
