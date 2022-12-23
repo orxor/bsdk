@@ -1,11 +1,11 @@
-﻿
-using System;
+﻿using System;
+using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 
 namespace BinaryStudio.Security.Cryptography
     {
     public abstract class CryptographicContext : CryptographicObject
         {
-        public static CryptographicFactory Factory { get; }
+        public static CryptographicContext DefaultContext { get; }
 
         #region M:Dispose(Boolean)
         /// <summary>
@@ -18,9 +18,11 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
-        static CryptographicContext()
-            {
-            Factory = new CryptographicFactory();
+        static CryptographicContext() {
+            #if LINUX
+            #else
+            DefaultContext= new SCryptographicContext();
+            #endif
             }
         }
     }

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using BinaryStudio.DiagnosticServices;
-using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.Internal
@@ -20,16 +18,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             }
 
         public IEnumerable<X509Certificate> Certificates { get {
-            var o = CertEnumCertificatesInStore(Store, IntPtr.Zero);
+            var o = Entries.CertEnumCertificatesInStore(Store, IntPtr.Zero);
             while (o != IntPtr.Zero) {
                 yield return new X509Certificate(o);
-                o = CertEnumCertificatesInStore(Store, o);
+                o = Entries.CertEnumCertificatesInStore(Store, o);
                 }
             }}
-
-        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext);
-        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
-        [DllImport("crypt32.dll", SetLastError = true)] internal static extern Boolean CertCloseStore(IntPtr handle, UInt32 flags);
 
         private const UInt32 CERT_CLOSE_STORE_FORCE_FLAG = 0x00000001;
         private const UInt32 CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002;
@@ -45,7 +39,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                     if (Store != IntPtr.Zero) {
                         try
                             {
-                            Validate(CertCloseStore(Store, CERT_CLOSE_STORE_CHECK_FLAG));
+                            Validate(Entries.CertCloseStore(Store, CERT_CLOSE_STORE_CHECK_FLAG));
                             }
                         catch (Exception e)
                             {

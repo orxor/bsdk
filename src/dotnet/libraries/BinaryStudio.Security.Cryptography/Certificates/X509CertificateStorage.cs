@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates.Internal;
 using BinaryStudio.Serialization;
 
@@ -32,7 +31,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     case X509StoreName.TrustedDevices:       { StoreName = "TrustedDevices";   } break;
                     default: throw new ArgumentOutOfRangeException(nameof(name));
                     }
-                Store = new EX509CertificateStorage(CertOpenStore(
+                Store = new EX509CertificateStorage(Entries.CertOpenStore(
                     CERT_STORE_PROV_SYSTEM_W,
                     PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
                     IntPtr.Zero,
@@ -49,22 +48,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }}
 
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean PFN_CERT_ENUM_SYSTEM_STORE_LOCATION([MarshalAs(UnmanagedType.LPWStr)] String name,CERT_SYSTEM_STORE_FLAGS flags,IntPtr reserved,IntPtr arg);
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean PFN_CERT_ENUM_SYSTEM_STORE(IntPtr pvSystemStore, CERT_SYSTEM_STORE_FLAGS flags, ref CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved, IntPtr pvArg);
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean PFN_CERT_ENUM_PHYSICAL_STORE(IntPtr pvSystemStore, CERT_SYSTEM_STORE_FLAGS flags, [MarshalAs(UnmanagedType.LPWStr)] String name, ref CERT_PHYSICAL_STORE_INFO pStoreInfo, IntPtr pvReserved, IntPtr pvArg);
-
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
-        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern bool CertControlStore([In] IntPtr hCertStore, [In] uint dwFlags, [In] uint dwCtrlType, [In] IntPtr pvCtrlPara);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStoreLocation(Int32 flags, IntPtr args, PFN_CERT_ENUM_SYSTEM_STORE_LOCATION pfn);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr CertOpenStore(IntPtr lpszStoreProvider, UInt32 dwMsgAndCertEncodingType, IntPtr hCryptProv, UInt32 dwFlags, [In] String pvPara);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr CertOpenStore(IntPtr lpszStoreProvider, UInt32 dwMsgAndCertEncodingType, IntPtr hCryptProv, UInt32 dwFlags, [In] IntPtr pvPara);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStore(CERT_SYSTEM_STORE_FLAGS flags, IntPtr pvSystemStoreLocationPara, IntPtr pvArg, PFN_CERT_ENUM_SYSTEM_STORE pfnEnum);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumPhysicalStore(IntPtr pvSystemStore, CERT_SYSTEM_STORE_FLAGS flags, IntPtr pvArg, PFN_CERT_ENUM_PHYSICAL_STORE pfnEnum);
-        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] protected static extern IntPtr CertCreateCertificateContext(UInt32 dwCertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
-        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] protected static extern IntPtr CertCreateCRLContext(UInt32 dwCertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
 
         protected static readonly IntPtr CERT_STORE_PROV_MSG                 = new IntPtr(1);
         protected static readonly IntPtr CERT_STORE_PROV_MEMORY              = new IntPtr(2);

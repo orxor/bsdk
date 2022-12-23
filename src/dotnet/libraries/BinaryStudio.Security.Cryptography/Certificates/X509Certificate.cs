@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
-using System.Security;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
@@ -27,7 +24,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         public X509Certificate(IntPtr context) {
             if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
-            Context = CertDuplicateCertificateContext(context);
+            Context = Entries.CertDuplicateCertificateContext(context);
             Source = BuildSource(Context);
             }
 
@@ -35,9 +32,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             Source = BuildSource(source);
             }
-
-        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCertificateContext([In] IntPtr pCertContext);
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success), SuppressUnmanagedCodeSecurity][DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr pCertContext);
 
         #region M:BuildSource(CERT_CONTEXT*):Asn1Certificate
         private static unsafe Asn1Certificate BuildSource(CERT_CONTEXT* Context) {
@@ -76,7 +70,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     base.Dispose(disposing);
                     Dispose(ref Source);
                     if (Context != IntPtr.Zero) {
-                        CertFreeCertificateContext(Context);
+                        Entries.CertFreeCertificateContext(Context);
                         Context = IntPtr.Zero;
                         }
                     }

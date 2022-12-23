@@ -18,9 +18,6 @@
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Internal\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
     <ProjectReference Include="..\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
     <ProjectReference Include="..\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
