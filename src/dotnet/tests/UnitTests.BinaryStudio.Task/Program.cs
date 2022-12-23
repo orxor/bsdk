@@ -5,6 +5,7 @@ using BinaryStudio.DiagnosticServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnitTests.BinaryStudio.PortableExecutable;
 using UnitTests.BinaryStudio.Security.Cryptography.Certificates;
+using UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 
 namespace UnitTests.BinaryStudio.Task
     {
@@ -12,7 +13,7 @@ namespace UnitTests.BinaryStudio.Task
         {
         private static void Main(string[] args)
             {
-            Execute(typeof(MZMetadataObjectT),nameof(MZMetadataObjectT.JsonS));
+            Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
             }
 
         #region M:Execute(Action)

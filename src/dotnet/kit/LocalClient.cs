@@ -33,7 +33,8 @@ public class LocalClient : ILocalClient
             if (!HasOption(options, typeof(PinCodeRequestType)))  { options.Add(new PinCodeRequestType(PinCodeRequestTypeKind.Default)); }
             if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
             if (!HasOption(options, typeof(DateTimeOption)))      { options.Add(new DateTimeOption(DateTime.Now));                       }
-            if (HasOption(options, typeof(MessageGroupOption))) {
+                 if (HasOption(options, typeof(TestOption))) { operation.Value = new TestOperation(options); }
+            else if (HasOption(options, typeof(MessageGroupOption))) {
                 if (HasOption(options, typeof(VerifyOption)))  { operation.Value = new VerifyMessageOperation(options);  }
                 }
             else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new FileOperation(options); }

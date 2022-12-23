@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
@@ -30,6 +31,26 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             if (source == null) { return ReasonFlags.Unused; }
             var r = source.Content.ToArray();
             return (ReasonFlags)r[0];
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer) {
+            if (ReasonFlags != ReasonFlags.Unused) {
+                using (writer.ScopeObject()) {
+                    writer.WriteValue(nameof(ReasonFlags), ReasonFlags.ToString());
+                    if (Point != null) {
+                        writer.WriteValue("DistributionPoint", Point);
+                        }
+                    }
+                }
+            else
+                {
+                if (Point != null)
+                    {
+                    Point.WriteTo(writer);
+                    }
+                }
             }
         }
     }

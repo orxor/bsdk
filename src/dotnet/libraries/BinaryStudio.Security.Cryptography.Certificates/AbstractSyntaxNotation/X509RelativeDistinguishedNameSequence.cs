@@ -156,6 +156,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     }
                 }
             }
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        void IX509GeneralName.WriteTo(IJsonWriter writer) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            using (writer.ScopeObject()) {
+                writer.WriteValue("Type", Type.ToString());
+                writer.WriteValue("Value", this);
+                }
+            }
         #endregion
         }
     }

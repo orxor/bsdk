@@ -31,6 +31,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             Source = BuildSource(Context);
             }
 
+        public X509Certificate(Byte[] source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            Source = BuildSource(source);
+            }
+
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCertificateContext([In] IntPtr pCertContext);
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success), SuppressUnmanagedCodeSecurity][DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr pCertContext);
 

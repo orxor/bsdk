@@ -57,6 +57,8 @@
 /src/dotnet/tests/UnitTests.BinaryStudio.PlatformComponents/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Task/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.Task/obj
+/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin
+/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj
 /src/dotnet/samples/XYViewportSample/bin
 /src/dotnet/samples/XYViewportSample/obj
 /src/dotnet/samples/DllResources/bin
@@ -83,5 +85,3 @@
 /src/cc/ntdll/.intermediate
 /src/dotnet/shell/bin
 /src/dotnet/shell/obj
-/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin/Debug/net47
-/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj

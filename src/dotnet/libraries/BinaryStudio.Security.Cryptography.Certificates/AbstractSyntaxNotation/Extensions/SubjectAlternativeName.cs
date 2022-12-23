@@ -8,9 +8,9 @@
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_SUBJECT_ALT_NAME)]
-    public class Asn1SubjectAlternativeName : Asn1IssuerAlternativeName
+    public class SubjectAlternativeName : IssuerAlternativeName
         {
-        public Asn1SubjectAlternativeName(Asn1CertificateExtension source)
+        public SubjectAlternativeName(Asn1CertificateExtension source)
             : base(source)
             {
             }

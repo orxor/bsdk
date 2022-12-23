@@ -4,14 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
-using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
     public class DistributionPointName : Asn1LinkObject<Asn1ContextSpecificObject>
         {
         public IList<IX509GeneralName> FullName { get; }
-        //public RelativeDistinguishedName NameRelativeToCRLIssuer { get; }
 
         internal DistributionPointName(Asn1ContextSpecificObject source)
             : base(source)
@@ -36,6 +34,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         public override String ToString()
             {
             return String.Join(Environment.NewLine, FullName);
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer) {
+            if (FullName != null) {
+                using (writer.ArrayObject()) {
+                    foreach (var name in FullName) {
+                        name.WriteTo(writer);
+                        }
+                    }
+                }
             }
         }
     }

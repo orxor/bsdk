@@ -41,7 +41,7 @@ namespace BinaryStudio.IO
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (count < 0)  { throw new ArgumentOutOfRangeException(nameof(count));  }
             if (buffer.Length - offset < count) { throw new ArgumentOutOfRangeException(nameof(offset)); }
-            if (Disposed) { throw new ObjectDisposedException(nameof(mapping)); }
+            if (Disposed) { throw new ObjectDisposedException(nameof(Mapping)); }
                 {
                 var sz = Length - (Position + count);
                 if (sz < 0) { count += (Int32)sz; }
@@ -56,7 +56,7 @@ namespace BinaryStudio.IO
                 if (view.IsInvalid) { throw new Win32Exception(Marshal.GetLastWin32Error()); }
                 view.Length = g;
                 #else
-                var view = MapViewOfFile(mapping.Mapping, FileMappingAccess.Read, n.UHighPart, n.ULowPart, new IntPtr(g));
+                var view = MapViewOfFile(Mapping.Mapping, FileMappingAccess.Read, n.UHighPart, n.ULowPart, new IntPtr(g));
                 if (view.IsInvalid) { throw new Win32Exception(Marshal.GetLastWin32Error()); }
                 #endif
                 var ptr = (Byte*)view.Memory;
@@ -114,7 +114,7 @@ namespace BinaryStudio.IO
             lock(this) {
                 if (!Disposed) {
                     Disposed = true;
-                    mapping = null;
+                    Mapping = null;
                     }
                 base.Dispose(disposing);
                 }
@@ -126,10 +126,23 @@ namespace BinaryStudio.IO
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (length < 0) { throw new ArgumentOutOfRangeException(nameof(length)); }
-            if ((offset + length) > source.mapping.Size) { throw new ArgumentOutOfRangeException(nameof(length)); }
-            mapping = source.mapping;
+            if ((offset + length) > source.Mapping.Size) { throw new ArgumentOutOfRangeException(nameof(length)); }
+            Mapping = source.Mapping;
             Offset = offset;
             Length = length;
+            }
+
+        public ReadOnlyFileMappingStream(String FileName)
+            {
+            if (FileName == null) { throw new ArgumentNullException(nameof(FileName)); }
+            #if NET35
+            if (String.IsNullOrEmpty(FileName)) { throw new ArgumentOutOfRangeException(nameof(FileName)); }
+            #else
+            if (String.IsNullOrWhiteSpace(FileName)) { throw new ArgumentOutOfRangeException(nameof(FileName)); }
+            #endif
+            Mapping = new FileMapping(FileName);
+            Length = Mapping.Size;
+            Offset = 0;
             }
 
         internal ReadOnlyFileMappingStream(String FileName, Boolean DeleteOnDispose)
@@ -140,8 +153,8 @@ namespace BinaryStudio.IO
             #else
             if (String.IsNullOrWhiteSpace(FileName)) { throw new ArgumentOutOfRangeException(nameof(FileName)); }
             #endif
-            mapping = new FileMapping(FileName);
-            Length = mapping.Size;
+            Mapping = new FileMapping(FileName);
+            Length = Mapping.Size;
             this.DeleteOnDispose = DeleteOnDispose;
             Offset = 0;
             }
@@ -149,7 +162,7 @@ namespace BinaryStudio.IO
         public ReadOnlyFileMappingStream(FileMapping mapping)
             {
             if (mapping == null) { throw new ArgumentNullException(nameof(mapping)); }
-            this.mapping = mapping;
+            Mapping = mapping;
             Offset = 0;
             Length = mapping.Size;
             }
@@ -160,7 +173,7 @@ namespace BinaryStudio.IO
             if (offset < 0) { throw new ArgumentOutOfRangeException(nameof(offset)); }
             if (length < 0) { throw new ArgumentOutOfRangeException(nameof(length)); }
             if ((offset + length) > mapping.Size) { throw new ArgumentOutOfRangeException(nameof(length)); }
-            this.mapping = mapping;
+            Mapping = mapping;
             Offset = offset;
             Length = length;
             }
@@ -171,15 +184,15 @@ namespace BinaryStudio.IO
             if (length < 0) {
                 throw new ArgumentOutOfRangeException(nameof(length));
                 }
-            mapping = source.mapping;
+            Mapping = source.Mapping;
             Offset = source.Offset + source.Position;
-            if ((Offset + length) > mapping.Size) { throw new ArgumentOutOfRangeException(nameof(length)); }
+            if ((Offset + length) > Mapping.Size) { throw new ArgumentOutOfRangeException(nameof(length)); }
             Length = length;
             }
 
         public override ReadOnlyMappingStream Clone()
             {
-            var r = new ReadOnlyFileMappingStream(mapping, Offset, Length);
+            var r = new ReadOnlyFileMappingStream(Mapping, Offset, Length);
             r.Seek(Position, SeekOrigin.Begin);
             return r;
             }
@@ -187,6 +200,6 @@ namespace BinaryStudio.IO
         public override ReadOnlyMappingStream Clone(Int64 offset, Int64 length) { return new ReadOnlyFileMappingStream(this, offset, length); }
         public override ReadOnlyMappingStream Clone(Int64 length)               { return new ReadOnlyFileMappingStream(this, length);         }
 
-        private FileMapping mapping;
+        private FileMapping Mapping;
         }
     }

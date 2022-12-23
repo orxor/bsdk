@@ -46,6 +46,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.CryptographyServiceProvider", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj", "{5066E5C9-8B8A-48DE-9148-E3D31C558A47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider", "src\dotnet\tests\UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider\UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj", "{7D74EE24-E444-4C3B-A423-00973A8C4E49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -605,6 +607,36 @@ Global
 		{5066E5C9-8B8A-48DE-9148-E3D31C558A47}.Release|x64.Build.0 = Release|Any CPU
 		{5066E5C9-8B8A-48DE-9148-E3D31C558A47}.Release|x86.ActiveCfg = Release|Any CPU
 		{5066E5C9-8B8A-48DE-9148-E3D31C558A47}.Release|x86.Build.0 = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|x64.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Debug|x86.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|Any CPU.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|ARM.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|ARM.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|ARM64.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|ARM64.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|x64.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|x64.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|x86.ActiveCfg = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Linux{Debug}|x86.Build.0 = Debug|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|ARM.Build.0 = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|ARM64.Build.0 = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|x64.ActiveCfg = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|x64.Build.0 = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|x86.ActiveCfg = Release|Any CPU
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -614,6 +646,7 @@ Global
 		{9CEBE5EF-3845-4DBF-8058-AD9E0401B016} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
 		{397120FD-4B52-4D60-9E67-448E8EFE4FAC} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
 		{B37E2ED9-9F7B-414D-8380-492EC55683CF} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
+		{7D74EE24-E444-4C3B-A423-00973A8C4E49} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D635BC8-0B0E-4835-9367-310A2779B655}

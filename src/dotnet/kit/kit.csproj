@@ -25,6 +25,8 @@
     <ProjectReference Include="..\libraries\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj" />
     <ProjectReference Include="..\libraries\BinaryStudio.Security.Cryptography.Interchange\BinaryStudio.Security.Cryptography.Interchange.csproj" />
     <ProjectReference Include="..\libraries\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
+    <ProjectReference Include="..\libraries\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
+    <ProjectReference Include="..\libraries\BinaryStudio.IO\BinaryStudio.IO.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.13" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
@@ -22,5 +23,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
         X509GeneralNameType IX509GeneralName.Type { get { return InternalType; }}
         protected abstract X509GeneralNameType InternalType { get; }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer) {
+            using (writer.ScopeObject()) {
+                writer.WriteValue("Type", InternalType.ToString());
+                writer.WriteValue("Value", ToString());
+                }
+            }
         }
     }

@@ -6,13 +6,11 @@ namespace Options.Descriptors
     internal class HashOptionDescriptor : OptionDescriptor
         {
         public override String OptionName { get { return "hash"; }}
-        public override Boolean TryParse(String source, out OperationOption option)
-            {
+        public override Boolean TryParse(String source, out OperationOption option) {
             option = null;
             if (!String.IsNullOrWhiteSpace(source)) {
                 source = source.Trim();
-                if (source == "hash")
-                    {
+                if (source == "hash") {
                     option = new HashOption();
                     return true;
                     }
