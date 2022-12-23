@@ -52,7 +52,7 @@ namespace BinaryStudio.IO
                 var j = n.QuadPart - r;
                 n.QuadPart = r;
                 #if LINUX
-                var view = MapViewOfFile(IntPtr.Zero, new IntPtr(g), PageProtection.Read, MAP_PRIVATE, (Int32)mapping.FileHandle.DangerousGetHandle(), (IntPtr)n.QuadPart);
+                var view = MapViewOfFile(IntPtr.Zero, new IntPtr(g), PageProtection.Read, MAP_PRIVATE, (Int32)Mapping.FileHandle.DangerousGetHandle(), (IntPtr)n.QuadPart);
                 if (view.IsInvalid) { throw new Win32Exception(Marshal.GetLastWin32Error()); }
                 view.Length = g;
                 #else
