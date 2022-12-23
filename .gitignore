@@ -83,3 +83,5 @@
 /src/cc/ntdll/.intermediate
 /src/dotnet/shell/bin
 /src/dotnet/shell/obj
+/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin/Debug/net47
+/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj
