@@ -6,6 +6,11 @@
     <NoWarn>1701</NoWarn>
     <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
     <Configurations>Debug;Release;Linux{Debug}</Configurations>
+    <UseSQLITE>true</UseSQLITE>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    <UseSQLITE>false</UseSQLITE>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
     <UseWPF>true</UseWPF>
@@ -19,23 +24,23 @@
     <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
     <UseWPF>false</UseWPF>
   </PropertyGroup>
-  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
-    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UseSQLITE)' == 'true'">
+    <DefineConstants>$(DefineConstants);SQLITE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(UseSQLITE)' == 'true'">
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.2" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.2" />
     <PackageReference Include="stub.system.data.sqlite.core.netframework" Version="1.0.113">
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net40'">
+  <ItemGroup Condition="'$(UseSQLITE)' == 'true'">
     <None Include="$(Pkgstub_system_data_sqlite_core_netframework)\build\net40\x86\SQLite.Interop.dll" Link="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -2,13 +2,14 @@
   <PropertyGroup>
     <TargetFrameworks>net40;net7.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
-    <Configurations>Debug;Release;Linux{Debug}</Configurations>    
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net7.0'">
     <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
-    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>

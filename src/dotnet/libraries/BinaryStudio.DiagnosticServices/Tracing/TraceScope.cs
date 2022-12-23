@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -8,6 +7,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+#if SQLITE
+using System.Data.SQLite;
+#endif
 
 namespace BinaryStudio.DiagnosticServices.Tracing
     {
@@ -15,7 +17,9 @@ namespace BinaryStudio.DiagnosticServices.Tracing
         {
         private static readonly ReaderWriterLockSlim o = new ReaderWriterLockSlim();
         private static readonly CultureInfo culture = CultureInfo.InvariantCulture;
+        #if SQLITE
         private static SQLiteConnection connection;
+        #endif
         [ThreadStatic] private static Int32 Level;
         [ThreadStatic] private static Stack<Int32> Stack;
         private Int32 Identity { get;set; }
@@ -23,6 +27,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose() {
             using (new WriteLockScope(o)) {
+                #if SQLITE
                 using (var c = connection.CreateCommand()) {
                     c.CommandText = @"INSERT INTO TraceInfo([EntryTime],[LeavePoint]) VALUES (@EntryTime,@LeavePoint)";
                     c.Parameters.AddWithValue("@EntryTime", DateTime.Now.Ticks);
@@ -31,6 +36,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
                     Level--;
                     Stack.Pop();
                     }
+                #endif
                 }
             }
 
@@ -96,6 +102,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
             EnsureConnection();
             EnsureStack();
             using (new WriteLockScope(o)) {
+                #if SQLITE
                 using (var c = connection.CreateCommand()) {
                     Level++;
                     c.CommandText = @"INSERT INTO TraceInfo([ThreadId],[LongName],[EntryTime],[Size],[Level],[ParentId]) VALUES (@ThreadId,@LongName,@EntryTime,@Size,@Level,@ParentId)";
@@ -109,6 +116,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
                     Identity = (Int32)connection.LastInsertRowId;
                     Stack.Push(Identity);
                     }
+                #endif
                 }
             }
         #endregion
@@ -122,6 +130,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
             EnsureConnection();
             EnsureStack();
             using (new WriteLockScope(o)) {
+                #if SQLITE
                 using (var c = connection.CreateCommand()) {
                     Level++;
                     c.CommandText = @"INSERT INTO TraceInfo([ThreadId],[LongName],[ShortName],[EntryTime],[Size],[Level],[ParentId]) VALUES (@ThreadId,@LongName,@ShortName,@EntryTime,@Size,@Level,@ParentId)";
@@ -136,6 +145,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
                     Identity = (Int32)connection.LastInsertRowId;
                     Stack.Push(Identity);
                     }
+                #endif
                 }
             }
         #endregion
@@ -208,6 +218,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
         #region M:EnsureConnection
         private static void EnsureConnection() {
             lock(o) {
+                #if SQLITE
                 if (connection == null) {
                     var target = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), ".sqlite3");
                     if (!Directory.Exists(target)) {
@@ -235,6 +246,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
                         c.ExecuteNonQuery();
                         }
                     }
+                #endif
                 }
             }
         #endregion
@@ -305,6 +317,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             EnsureConnection();
             var summary = new Dictionary<String, TraceSummaryInfo>();
+            #if SQLITE
             using (var c = connection.CreateCommand()) {
                 c.CommandText = @"
                     WITH T AS
@@ -379,6 +392,7 @@ namespace BinaryStudio.DiagnosticServices.Tracing
                 writer.WriteLine("------------------------");
                 WriteTo(writer, summary, table, 0, 1.0, -1, 0);
                 }
+            #endif
             }
         #endregion
         #region M:WriteTo(TextWriter,Dictionary<String,TraceSummaryInfo>,Dictionary<Int64,TraceInfo>)
