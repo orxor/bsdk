@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
+using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
+    using HRESULT=HResult;
     public abstract class CryptographicObject : IDisposable, IServiceProvider
         {
         #region M:Dispose<T>([Ref]T)
@@ -52,6 +56,62 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (service.IsAssignableFrom(GetType())) { return this; }
             return null;
             }
+
+        #region M:Validate(Boolean)
+        protected virtual void Validate(Boolean status) {
+            if (!status) {
+                Exception e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                #if DEBUG
+                Debug.Print($"Validate:{e.Message}");
+                #endif
+                throw e;
+                }
+            }
+        #endregion
+        #region M:Validate([Out]Exception,Boolean):Boolean
+        protected virtual Boolean Validate(out Exception e, Boolean status) {
+            e = null;
+            if (!status) {
+                e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                #if DEBUG
+                Debug.Print($"Validate:{e.Message}");
+                #endif
+                return false;
+                }
+            return true;
+            }
+        #endregion
+        #region M:Validate(HRESULT)
+        protected virtual void Validate(HRESULT hr) {
+            if (hr != HRESULT.S_OK) {
+                throw HResultException.GetExceptionForHR((Int32)hr);
+                }
+            }
+        #endregion
+        #region M:GetExceptionForHR(Int32):Exception
+        protected virtual Exception GetExceptionForHR(Int32 hr)
+            {
+            return HResultException.GetExceptionForHR(hr);
+            }
+        #endregion
+        #region M:GetExceptionForHR(HRESULT):Exception
+        protected virtual Exception GetExceptionForHR(HRESULT hr)
+            {
+            return HResultException.GetExceptionForHR((Int32)hr);
+            }
+        #endregion
+        #region M:GetHRForLastWin32Error:HRESULT
+        protected static HRESULT GetHRForLastWin32Error()
+            {
+            return (HRESULT)(Marshal.GetHRForLastWin32Error());
+            }
+        #endregion
+        #region M:GetLastWin32Error:Int32
+        protected static Int32 GetLastWin32Error()
+            {
+            return Marshal.GetLastWin32Error();
+            }
+        #endregion
 
         #region {locks}
         protected static IDisposable ReadLock(ReaderWriterLockSlim o)            { return new ReadLockScope(o);            }

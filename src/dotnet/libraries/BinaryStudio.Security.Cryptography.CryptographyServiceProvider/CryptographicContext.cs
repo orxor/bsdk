@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 
@@ -15,6 +16,7 @@ namespace BinaryStudio.Security.Cryptography
     public class CryptographicContext : CryptographicObject
         {
         private const Int32 DefaultBufferSize = 1024;
+        private const UInt32 CMSG_INDEFINITE_LENGTH = 0xffffffff;
         private const UInt32 FintechEncMagic0 = 0x00055446;
         private const UInt32 FintechEncMagic1 = 0x01055446;
 
@@ -48,15 +50,16 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:DecryptMessage(Stream)
-        public void DecryptMessage(Stream InputStream) {
+        public unsafe void DecryptMessage(Stream InputStream, Stream OutputStream, out X509Certificate RecipientCertificate) {
             if (InputStream == null) { throw new ArgumentNullException(nameof(InputStream)); }
             if (!InputStream.CanSeek) { throw new ArgumentOutOfRangeException(nameof(InputStream)); }
+            RecipientCertificate = null;
             using (InputStream.PositionScope()) {
                 switch (ReadUInt32(InputStream)) {
                     case 0x00055446:
                     case 0x01055446:
                         {
-                        DecryptMessage(FetchMemoryBlocks(InputStream));
+                        DecryptMessage(FetchMemoryBlocks(InputStream),out RecipientCertificate);
                         }
                         return;
                     #region {verifies message and then decrypt content}
@@ -66,9 +69,9 @@ namespace BinaryStudio.Security.Cryptography
                         var TargetFileName = Path.GetTempFileName();
                         try
                             {
-                            using (var OutputStream = File.OpenWrite(TargetFileName)) { VerifyAttachedMessage(InputStream,OutputStream,out var certificates); }
-                            using (var OtherStream = File.OpenRead(TargetFileName)) {
-                                DecryptMessage(OtherStream);
+                            using (var EncryptedOutputStream = File.OpenWrite(TargetFileName)) { VerifyAttachedMessage(InputStream,OutputStream,out var certificates); }
+                            using (var EncryptedOutputStream = File.OpenRead(TargetFileName)) {
+                                DecryptMessage(EncryptedOutputStream,OutputStream,out RecipientCertificate);
                                 }
                             }
                         finally
@@ -80,34 +83,55 @@ namespace BinaryStudio.Security.Cryptography
                     #endregion
                     }
                 }
+            var si = new CMSG_STREAM_INFO(CMSG_INDEFINITE_LENGTH,delegate(IntPtr arg, Byte* data, UInt32 size, Boolean final) {
+                var bytes = new Byte[size];
+                for (var i = 0; i < size; i++) {
+                    bytes[i] = data[i];
+                    }
+                OutputStream.Write(bytes, 0, bytes.Length);
+                return true;
+                }, IntPtr.Zero);
+            var msg = CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING,
+                CRYPT_OPEN_MESSAGE_FLAGS.CMSG_NONE,
+                CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero,
+                ref si);
+            if (msg == IntPtr.Zero) { Validate(GetHRForLastWin32Error()); }
             }
         #endregion
         #region M:DecryptMessage(IEnumerable<MemoryBlock>)
-        private void DecryptMessage(IEnumerable<MemoryBlock> InputBlocks) {
+        private void DecryptMessage(IEnumerable<MemoryBlock> InputBlocks,out X509Certificate RecipientCertificate) {
             if (InputBlocks == null) { throw new ArgumentNullException(nameof(InputBlocks)); }
+            RecipientCertificate = null;
             using (ReaderWriterLockSlim
                 readL = new ReaderWriterLockSlim(),
                 wrteL = new ReaderWriterLockSlim(),
                 rsltL = new ReaderWriterLockSlim())
                 {
-                X509Certificate SigningCertificate = null;
+                X509Certificate Certificate = null;
                 var rsltT = new Thread(()=>{
                     });
                 var readT = Task.Factory.StartNew(()=>{
                     var e = InputBlocks.GetEnumerator();
                     if (e.MoveNext()) {
-                        DecryptBlock(e.Current,out SigningCertificate);
+                        DecryptBlock(e.Current,out Certificate);
                         AsEnumerable(e).AsParallel().ForAll(block=>{
                             });
                         }
                     });
                 Task.WaitAll(readT);
+                RecipientCertificate = Certificate;
                 }
             }
         #endregion
         #region M:DecryptBlock(MemoryBlock,{out}X509Certificate)
-        private void DecryptBlock(MemoryBlock InputBlock,out X509Certificate SigningCertificate) {
-            SigningCertificate = null;
+        private void DecryptBlock(MemoryBlock InputBlock,out X509Certificate RecipientCertificate) {
+            RecipientCertificate = null;
+            using (MemoryStream
+                InputStream  = new MemoryStream(InputBlock.Value),
+                OutputStream = new MemoryStream())
+                {
+                DecryptMessage(InputStream,OutputStream,out RecipientCertificate);
+                }
             }
         #endregion
 
@@ -191,5 +215,7 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+
+        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE dwMsgEncodingType, CRYPT_OPEN_MESSAGE_FLAGS flags, CMSG_TYPE type, IntPtr hCryptProv, IntPtr pRecipientInfo, ref CMSG_STREAM_INFO si);
         }
     }
