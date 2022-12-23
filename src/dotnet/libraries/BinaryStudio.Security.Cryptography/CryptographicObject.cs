@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography
     {
     using HRESULT=HResult;
-    using CRYPT_INTEGER_BLOB = CRYPT_BLOB;
-    using CERT_NAME_BLOB     = CRYPT_BLOB;
-
     public abstract class CryptographicObject : IDisposable, IServiceProvider
         {
         public abstract IntPtr Handle { get; }
@@ -54,9 +49,9 @@ namespace BinaryStudio.Security.Cryptography
 
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="service">An object that specifies the type of service object to get.</param>
-        /// <returns>A service object of type <paramref name="service" />.
+        /// <returns>A service object of type <paramref name="service"/>.
         /// -or-
-        /// <see langword="null" /> if there is no service object of type <paramref name="service" />.</returns>
+        /// <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
         public virtual Object GetService(Type service) {
             if (service == null) { return null; }
             if (service == GetType()) { return this; }
@@ -119,30 +114,6 @@ namespace BinaryStudio.Security.Cryptography
             return Marshal.GetLastWin32Error();
             }
         #endregion
-        #region M:DecodeSerialNumberString(ref CRYPT_INTEGER_BLOB):String
-        internal static unsafe String DecodeSerialNumberString(ref CRYPT_INTEGER_BLOB source) {
-            var c = source.Size;
-            var r = new StringBuilder();
-            var bytes = source.Data;
-            for (var i = 0U; i < c; ++i) {
-                r.AppendFormat("{0:x2}", bytes[c - i - 1]);
-                }
-            return r.ToString();
-            }
-        #endregion
-        #region M:DecodeNameString(ref CERT_NAME_BLOB):String
-        internal static String DecodeNameString(ref CERT_NAME_BLOB source) {
-            var r = CertNameToStr(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, IntPtr.Zero, 0);
-            if (r != 0) {
-                using (var buffer = new LocalMemory(r << 1)) {
-                    if (CertNameToStr(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, buffer, r) > 0) {
-                        return Marshal.PtrToStringUni(buffer);
-                        }
-                    }
-                }
-            return null;
-            }
-        #endregion
 
         #region {locks}
         protected static IDisposable ReadLock(ReaderWriterLockSlim o)            { return new ReadLockScope(o);            }
@@ -197,13 +168,5 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
-
-        protected const UInt32 X509_ASN_ENCODING         = 0x00000001;
-        protected const UInt32 PKCS_7_ASN_ENCODING       = 0x00010000;
-        private const UInt32 CERT_SIMPLE_NAME_STR        = 1;
-        private const UInt32 CERT_OID_NAME_STR           = CERT_SIMPLE_NAME_STR + 1;
-        private const UInt32 CERT_X500_NAME_STR          = CERT_OID_NAME_STR    + 1;
-
-        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern UInt32 CertNameToStr([In] UInt32 dwCertEncodingType, [In] ref CERT_NAME_BLOB pName, [In] UInt32 dwStrType, [In] [Out] IntPtr psz, [In] UInt32 csz);
         }
     }

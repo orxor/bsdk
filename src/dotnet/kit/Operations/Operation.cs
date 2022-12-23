@@ -5,7 +5,7 @@ using System.Security;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.DirectoryServices;
-using BinaryStudio.Security.Cryptography;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 using Options;
@@ -13,7 +13,7 @@ using Options.Descriptors;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace Operations
-    {
+{
     internal abstract class Operation
         {
         public static readonly Object console = new Object();

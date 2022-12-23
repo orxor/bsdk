@@ -13,7 +13,8 @@ namespace UnitTests.BinaryStudio.Task
         {
         private static void Main(string[] args)
             {
-            Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
+            //Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
+            Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
             }
 
         #region M:Execute(Action)

@@ -11,9 +11,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
         [TestMethod]
         public void DecryptFT()
             {
-            (new CryptographicContext()).DecryptMessage(
-                new ReadOnlyFileMappingStream(@"C:\DEV\ARM27_20221221095536.dat"),
-                new MemoryStream(), out var certificate);
+            //(new CryptographicContext()).DecryptMessage(
+            //    new ReadOnlyFileMappingStream(@"C:\DEV\ARM27_20221221095536.dat"),
+            //    new MemoryStream(), out var certificate);
             }
         }
     }
