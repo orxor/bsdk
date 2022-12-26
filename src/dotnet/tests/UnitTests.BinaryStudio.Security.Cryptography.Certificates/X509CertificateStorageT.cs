@@ -18,8 +18,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
         public void Certificates() {
             using (var store = new X509CertificateStorage(new Uri("folder://./UnitTestData/cer"))) {
                 foreach (var certificate in store.Certificates) {
+                    Console.WriteLine($"{(Int32)certificate.Handle:x8}:{certificate.Thumbprint}");
                     Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
-                    certificate.Dispose();
                     }
                 }
             }
