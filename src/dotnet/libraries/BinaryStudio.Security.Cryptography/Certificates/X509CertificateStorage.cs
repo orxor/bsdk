@@ -6,9 +6,9 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    public class X509CertificateStorage : X509Object
+    public class X509CertificateStorage : X509Object, IX509CertificateStorage
         {
-        private EX509CertificateStorage Store;
+        private IX509CertificateStorage Store;
         public override IntPtr Handle { get { return Store?.Handle ?? IntPtr.Zero; }}
 
         private X509CertificateStorage(IntPtr store) {
@@ -16,6 +16,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             Store = new EX509CertificateStorage(store);
             }
 
+        #region ctor{X509StoreName,X509StoreLocation}
         public X509CertificateStorage(X509StoreName name, X509StoreLocation location) {
             if ((location == X509StoreLocation.CurrentUser) || (location == X509StoreLocation.LocalMachine)) {
                 String StoreName = null;
@@ -41,6 +42,26 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             throw new ArgumentOutOfRangeException(nameof(location));
             }
+        #endregion
+        #region ctor{Uri,X509StoreLocation}
+        public X509CertificateStorage(Uri uri, X509StoreLocation location) {
+            if ((location == X509StoreLocation.CurrentUser) || (location == X509StoreLocation.LocalMachine)) {
+                if (String.Equals(uri.Scheme,"folder",StringComparison.OrdinalIgnoreCase)) {
+                    var source = uri.ToString();
+                    Store = new FX509CertificateStorage(source.Substring(9), location);
+                    return;
+                    }
+                throw new NotSupportedException(nameof(uri));
+                }
+            throw new ArgumentOutOfRangeException(nameof(location));
+            }
+        #endregion
+        #region ctor{Uri}
+        public X509CertificateStorage(Uri uri)
+            :this(uri,X509StoreLocation.CurrentUser)
+            {
+            }
+        #endregion
 
         public IEnumerable<X509Certificate> Certificates { get {
             foreach (var o in Store.Certificates) {
@@ -151,7 +172,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #region M:WriteTo(IJsonWriter)
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            Store.WriteTo(writer);
+            (Store as IJsonSerializable)?.WriteTo(writer);
             }
         #endregion
         }

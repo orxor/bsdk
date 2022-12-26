@@ -10,11 +10,14 @@ namespace BinaryStudio.Security.Cryptography
 
     internal interface ICryptoAPI
         {
-        IntPtr CertDuplicateCertificateContext([In] IntPtr pCertContext);
+        Boolean CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r);
+        Boolean CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, out IntPtr r);
         Boolean CertFreeCertificateContext(IntPtr pCertContext);
         Boolean CertCloseStore(IntPtr handle, UInt32 flags);
+        IntPtr CertDuplicateCertificateContext([In] IntPtr pCertContext);
         IntPtr CertOpenStore(IntPtr lpszStoreProvider, UInt32 dwMsgAndCertEncodingType, IntPtr hCryptProv, UInt32 dwFlags, [In] String pvPara);
         IntPtr CertOpenStore(IntPtr lpszStoreProvider, UInt32 dwMsgAndCertEncodingType, IntPtr hCryptProv, UInt32 dwFlags, [In] IntPtr pvPara);
         IntPtr CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext);
+        IntPtr CertCreateCertificateContext(UInt32 dwCertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
         }
     }

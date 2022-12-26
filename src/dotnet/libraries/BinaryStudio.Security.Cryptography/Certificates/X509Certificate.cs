@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
@@ -32,6 +33,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public X509Certificate(Byte[] source) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             Source = BuildSource(source);
+            Context = Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
+            if (Context == IntPtr.Zero) {
+                var hr = GetHRForLastWin32Error();
+                Marshal.ThrowExceptionForHR((Int32)hr);
+                }
             }
 
         #region M:BuildSource(CERT_CONTEXT*):Asn1Certificate

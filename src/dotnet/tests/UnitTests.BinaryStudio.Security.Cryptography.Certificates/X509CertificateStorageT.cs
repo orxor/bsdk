@@ -16,6 +16,17 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
 
         [TestMethod]
         public void Certificates() {
+            using (var store = new X509CertificateStorage(new Uri("folder://./UnitTestData/cer"))) {
+                foreach (var certificate in store.Certificates) {
+                    Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
+                    certificate.Dispose();
+                    }
+                }
+            }
+
+        #region M:CERTIFICATES_LOCALMACHINE_MY
+        [TestMethod]
+        public void CERTIFICATES_LOCALMACHINE_MY() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.LocalMachine)) {
                 foreach (var certificate in store.Certificates) {
                     Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
@@ -23,6 +34,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
                     }
                 }
             }
+        #endregion
 
         [TestMethod]
         public void JsonS() {
