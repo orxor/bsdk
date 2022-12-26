@@ -1,23 +1,24 @@
 ﻿using System;
+#if LINUX
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.PlatformComponents;
-using BinaryStudio.PlatformComponents.Unix;
 using BinaryStudio.PlatformComponents.Win32;
+#endif
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 
 namespace BinaryStudio.Security.Cryptography
     {
+    #if LINUX
     using Process=System.Diagnostics.Process;
+    #endif
     public abstract class CryptographicContext : CryptographicObject
         {
         public static CryptographicContext DefaultContext { get; }

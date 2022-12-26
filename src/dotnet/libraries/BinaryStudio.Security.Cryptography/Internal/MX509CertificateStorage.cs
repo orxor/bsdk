@@ -15,7 +15,5 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             }
 
         private static readonly IntPtr CERT_STORE_PROV_MEMORY = new IntPtr(2);
-        private const UInt32 PKCS_7_ASN_ENCODING = 0x00010000;
-        private const UInt32 X509_ASN_ENCODING   = 0x00000001;
         }
     }

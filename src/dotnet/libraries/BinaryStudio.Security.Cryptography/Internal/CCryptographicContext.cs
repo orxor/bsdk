@@ -35,6 +35,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("capi20", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
         [DllImport("capi20", SetLastError = true)] private static extern Boolean CertCloseStore(IntPtr handle, UInt32 flags);
 
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <param name="service">An object that specifies the type of service object to get.</param>
+        /// <returns>A service object of type <paramref name="service"/>.
+        /// -or-
+        /// <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
         public override object GetService(Type service) {
             if (service == typeof(ICryptoAPI)) { return this; }
             return base.GetService(service);
