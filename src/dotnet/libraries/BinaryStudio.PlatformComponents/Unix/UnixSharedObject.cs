@@ -6,10 +6,12 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using BinaryStudio.PlatformComponents.Win32;
 using Microsoft.Win32.SafeHandles;
 
 namespace BinaryStudio.PlatformComponents.Unix
     {
+    using Process=System.Diagnostics.Process;
     public sealed class UnixSharedObject : SharedObject
         {
         public override String FileName { get; }
@@ -41,9 +43,9 @@ namespace BinaryStudio.PlatformComponents.Unix
                 }
             }
 
-        [DllImport("dl", CharSet = CharSet.Ansi, EntryPoint = "dlopen")]  private static extern IntPtr DLOpen([MarshalAs(UnmanagedType.LPStr)] String filename, Int32 flags);
-        [DllImport("dl", CharSet = CharSet.Ansi, EntryPoint = "dlsym")]   private static extern IntPtr DLSym(SafeHandleZeroOrMinusOneIsInvalid module, String name);
-        [DllImport("dl", CharSet = CharSet.Ansi, EntryPoint = "dlerror")] [return: MarshalAs(UnmanagedType.LPStr)] private static extern String DLError();
+        [DllImport("libdl.so.2", CharSet = CharSet.Ansi, SetLastError = true, EntryPoint = "dlopen")]  private static extern IntPtr DLOpen([MarshalAs(UnmanagedType.LPStr)] String filename, Int32 flags);
+        [DllImport("libdl.so.2", CharSet = CharSet.Ansi, SetLastError = true, EntryPoint = "dlsym")]   private static extern IntPtr DLSym(SafeHandleZeroOrMinusOneIsInvalid module, String name);
+        [DllImport("libdl.so.2", CharSet = CharSet.Ansi, SetLastError = true, EntryPoint = "dlerror")] [return: MarshalAs(UnmanagedType.LPStr)] private static extern String DLError();
         [DllImport("c",  CharSet = CharSet.Ansi, EntryPoint = "getenv")]  private static extern IntPtr GetEnv(String name);
 
         private const Int32 RTLD_LAZY         = 0x00001;
@@ -163,12 +165,12 @@ namespace BinaryStudio.PlatformComponents.Unix
             }}
         #endregion
         #region M:EnsureOverride:SafeHandleZeroOrMinusOneIsInvalid
-        protected override SafeHandleZeroOrMinusOneIsInvalid EnsureOverride()
-            {
-            DLError();
+        protected override SafeHandleZeroOrMinusOneIsInvalid EnsureOverride() {
             var r = DLOpen(FileName, RTLD_NOW);
             if (r == IntPtr.Zero) {
-                throw new InvalidOperationException(DLError());
+                var e = HResultException.GetExceptionForHR((PosixError)Marshal.GetLastWin32Error());
+                var error = DLError();
+                throw e;
                 }
             return new UnixSharedObjectHandle(r);
             }

@@ -299,6 +299,11 @@ namespace BinaryStudio.PlatformComponents.Win32
                     : $"{errnum}: {m}";
                 }
             }
+        #else
+        private static String StrError(PosixError errnum) {
+            return $"{errnum}";
+            }
+        #endif
             
         public static Exception GetExceptionForHR(PosixError scode) {
             var message = StrError(scode);
@@ -340,6 +345,5 @@ namespace BinaryStudio.PlatformComponents.Win32
                 default : { return new PlatformException(scode,message); }
                 }
             }
-        #endif
         }
     }
