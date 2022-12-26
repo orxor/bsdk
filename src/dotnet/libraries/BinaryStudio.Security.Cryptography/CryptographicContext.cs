@@ -1,4 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Text.RegularExpressions;
+using BinaryStudio.DiagnosticServices.Logging;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 
 namespace BinaryStudio.Security.Cryptography
@@ -20,6 +24,18 @@ namespace BinaryStudio.Security.Cryptography
 
         static CryptographicContext() {
             #if LINUX
+            if (File.Exists("/etc/opt/cprocsp/config64.ini")) {
+                var cnfig = File.ReadAllText("/etc/opt/cprocsp/config64.ini");
+                var regex = new Regex(@"[""]libcapi20[.]so[""]\p{Zs}*[=]\p{Zs}*[""](.+libcapi20[.]so)[""]\n");
+                var match = regex.Match(cnfig);
+                if (match.Success) {
+                    var capiso = match.Groups[1].Value;
+                    if (File.Exists(capiso)) {
+                        PlatformContext.Logger.Log(LogLevel.Information, $"library:{capiso}");
+                        DefaultContext= new CCryptographicContext();
+                        }
+                    }
+                }
             #else
             DefaultContext= new SCryptographicContext();
             #endif

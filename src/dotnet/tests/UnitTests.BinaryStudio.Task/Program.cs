@@ -13,6 +13,8 @@ namespace UnitTests.BinaryStudio.Task
         {
         private static void Main(string[] args)
             {
+            Console.WriteLine("Press [ENTER] to continue...");
+            Console.ReadLine();
             //Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
             Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
             }

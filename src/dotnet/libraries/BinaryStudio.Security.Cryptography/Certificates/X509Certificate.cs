@@ -21,6 +21,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public DateTime NotAfter   { get { return Source.NotAfter;     }}
         public String Issuer       { get { return Source.Issuer.ToString();  }}
         public String Subject      { get { return Source.Subject.ToString(); }}
+        public String Country      { get { return Source.Country; }}
 
         public X509Certificate(IntPtr context) {
             if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
