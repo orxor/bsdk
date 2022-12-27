@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using BinaryStudio.DiagnosticServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UnitTests.BinaryStudio.PlatformComponents;
 using UnitTests.BinaryStudio.PortableExecutable;
 using UnitTests.BinaryStudio.Security.Cryptography.Certificates;
 using UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
@@ -16,7 +17,8 @@ namespace UnitTests.BinaryStudio.Task
             Console.WriteLine("Press [ENTER] to continue...");
             Console.ReadLine();
             //Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
-            Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
+            //Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
+            Execute(typeof(HResultT),nameof(HResultT.FormatMessage));
             }
 
         #region M:Execute(Action)

@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\libraries\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.PortableExecutable\UnitTests.BinaryStudio.PortableExecutable.csproj" />
+    <ProjectReference Include="..\UnitTests.BinaryStudio.PlatformComponents\UnitTests.BinaryStudio.PlatformComponents.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.Security.Cryptography.Certificates\UnitTests.BinaryStudio.Security.Cryptography.Certificates.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider\UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
   </ItemGroup>

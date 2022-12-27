@@ -1,5 +1,4 @@
 ﻿using System;
-using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
