@@ -24,6 +24,9 @@ namespace UnitTests.BinaryStudio.PlatformComponents
                 var scode = (Int32)(HResult)Enum.Parse<HResult>(name);
                 var value = HResultException.FormatMessage(unchecked((UInt32)scode));
                 Console.WriteLine($"{name}:{value}");
+  //              Console.WriteLine($@"  <data name=""{name}"" xml:space=""preserve"">
+  //  <value>{value}</value>
+  //</data>");
                 Assert.IsNotNull(value);
                 }
             #endif
