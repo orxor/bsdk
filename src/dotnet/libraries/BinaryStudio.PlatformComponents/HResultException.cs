@@ -35,6 +35,7 @@ namespace BinaryStudio.PlatformComponents.Win32
             }
 
         #region M:FormatMessage(UInt32,IntPtr,CultureInfo):String
+        #if !LINUX
         protected internal static unsafe String FormatMessage(UInt32 SCode, IntPtr Module, CultureInfo Culture) {
             void* o;
             var LangId = ((((UInt32)(SUBLANG_DEFAULT)) << 10) | (UInt32)(LANG_NEUTRAL));
@@ -63,8 +64,10 @@ namespace BinaryStudio.PlatformComponents.Win32
                 }
             return null;
             }
+        #endif
         #endregion
         #region M:FormatMessage(UInt32,String,CultureInfo):String
+        #if !LINUX
         protected internal static String FormatMessage(UInt32 SCode, String Module, CultureInfo Culture) {
             if (Module == null) { throw new ArgumentNullException(nameof(Module)); }
             #if NET35
@@ -93,9 +96,23 @@ namespace BinaryStudio.PlatformComponents.Win32
                 }
             return null;
             }
+        #endif
         #endregion
         #region M:FormatMessage(UInt32,CultureInfo):String
         public static String FormatMessage(UInt32 SCode, CultureInfo Culture = null) {
+            #if LINUX
+            var FacilityI = (SCode >> 16) & 0x1fff;
+            var FacilityE = (FACILITY)FacilityI;
+            var SCodeE = (HResult)(unchecked((Int32)SCode));
+            var r = Properties.HResult.ResourceManager.GetString(((HResult)SCode).ToString(),Culture);
+            if (r == null) {
+                r = (SCode >= 0xffff) || (SCode < 0)
+                    ? $"HRESULT:{{{SCodeE}}},Facility:{{{FacilityE}}}"
+                    : $"WIN32:{{{(Win32ErrorCode)SCode}}}";
+                Console.Error.WriteLine($"{{{SCode.ToString("x8")}}}:{r}");
+                }
+            return r;
+            #else
             var r = FormatMessage(SCode,IntPtr.Zero,Culture);
             if (r != null) {  return r; }
             var assembly = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
@@ -115,7 +132,7 @@ namespace BinaryStudio.PlatformComponents.Win32
                     case FACILITY_URT:         { r = LoadString("mscorrc.dll",(SCode & 0xffff) + 0x6000,Culture); } break;
                     }
                 if (r != null) {  return r; }
-                r = r ?? Properties.Resources.ResourceManager.GetString(((HResult)SCode).ToString(),Culture);
+                r = r ?? Properties.HResult.ResourceManager.GetString(((HResult)SCode).ToString(),Culture);
                 r = r ?? FormatMessage(SCode,assembly, Culture);
                 r = r ?? FormatMessage(SCode,assembly, English);
                 if (r == null) {
@@ -126,6 +143,7 @@ namespace BinaryStudio.PlatformComponents.Win32
                     }
                 return r;
                 }
+            #endif
             }
         #endregion
 
@@ -144,6 +162,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         private const Int32  FACILITY_URT                   = 0x0013;
         private const Int32  FACILITY_GRAPHICS              = 0x0026;
 
+        #if !LINUX
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  UInt32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  UInt32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr arguments);
@@ -152,8 +171,10 @@ namespace BinaryStudio.PlatformComponents.Win32
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern Int32 GetModuleFileName(IntPtr Module,StringBuilder FileName, Int32 Length);
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern Int32 LoadString(IntPtr Module,UInt32 Identifier,StringBuilder FileName, Int32 Length);
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true, EntryPoint = "K32EnumProcessModules")] private static extern IntPtr EnumProcessModules(IntPtr Process,[MarshalAs(UnmanagedType.LPArray)] IntPtr[] Modules, Int32 ModulesCount, out Int32 CountRequired);
+        #endif
 
         #region M:GetModuleFileName(IntPtr):String
+        #if !LINUX
         private static String GetModuleFileName(IntPtr Module) {
             var o = new StringBuilder(260);
             while (true) {
@@ -170,8 +191,10 @@ namespace BinaryStudio.PlatformComponents.Win32
                 }
             return o.ToString();
             }
+        #endif
         #endregion
         #region M:LoadString(IntPtr,UInt32):String
+        #if !LINUX
         private static String LoadString(IntPtr Module,UInt32 Identifier) {
             var o = new StringBuilder(260);
             while (true) {
@@ -188,8 +211,10 @@ namespace BinaryStudio.PlatformComponents.Win32
                 }
             return o.ToString();
             }
+        #endif
         #endregion
         #region M:LoadString(String,UInt32,CultureInfo):String
+        #if !LINUX
         private static String LoadString(String Module,UInt32 Identifier,CultureInfo Culture) {
             if (Module == null) { throw new ArgumentNullException(nameof(Module)); }
             #if NET35
@@ -218,8 +243,10 @@ namespace BinaryStudio.PlatformComponents.Win32
                 }
             return null;
             }
+        #endif
         #endregion
         #region M:LoadLibrary(String,String[],CultureInfo):IntPtr
+        #if !LINUX
         private static IntPtr LoadLibrary(String Module,String[] Modules,CultureInfo Culture) {
             #if NET40 || NET35
             Culture = Culture ?? CultureInfo.CurrentCulture;
@@ -253,12 +280,15 @@ namespace BinaryStudio.PlatformComponents.Win32
                 }
             return Library;
             }
+        #endif
         #endregion
         #region M:EnumProcessModules({out}IntPtr[])
+        #if !LINUX
         private static void EnumProcessModules(out IntPtr[] Modules) {
             EnumProcessModules(GetCurrentProcess(),null,0,out var CountRequired);
             EnumProcessModules(GetCurrentProcess(),Modules = new IntPtr[CountRequired],CountRequired,out CountRequired);
             }
+        #endif
         #endregion
 
         public static Exception GetExceptionForHR(Int32 scode) { return GetExceptionForHR(scode, null); }

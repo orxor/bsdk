@@ -32,12 +32,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     case X509StoreName.TrustedDevices:       { StoreName = "TrustedDevices";   } break;
                     default: throw new ArgumentOutOfRangeException(nameof(name));
                     }
-                Store = new EX509CertificateStorage(Entries.CertOpenStore(
+                Store = new EX509CertificateStorage(Validate(Entries.CertOpenStore(
                     CERT_STORE_PROV_SYSTEM_W,
                     PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
                     IntPtr.Zero,
                     MapX509StoreFlags(location,X509OpenFlags.MaxAllowed|X509OpenFlags.OpenExistingOnly),
-                    StoreName));
+                    StoreName),NotZero));
                 return;
                 }
             throw new ArgumentOutOfRangeException(nameof(location));

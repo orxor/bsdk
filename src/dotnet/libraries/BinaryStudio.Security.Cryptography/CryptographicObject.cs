@@ -90,6 +90,19 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+        #region M:Validate<T>(T,Func<T,Boolean>)
+        protected virtual T Validate<T>(T value, Func<T,Boolean> predicate) {
+            if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
+            if (!predicate(value)) {
+                Exception e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                #if DEBUG
+                Debug.Print($"Validate:{e.Message}");
+                #endif
+                throw e;
+                }
+            return value;
+            }
+        #endregion
         #region M:GetExceptionForHR(Int32):Exception
         protected virtual Exception GetExceptionForHR(Int32 hr)
             {
@@ -112,6 +125,11 @@ namespace BinaryStudio.Security.Cryptography
         protected static Int32 GetLastWin32Error()
             {
             return Marshal.GetLastWin32Error();
+            }
+        #endregion
+        #region M:NotZero(IntPtr):Boolean
+        protected static Boolean NotZero(IntPtr value) {
+            return value != IntPtr.Zero;
             }
         #endregion
 
