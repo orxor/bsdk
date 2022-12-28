@@ -73,70 +73,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
 
-        protected static readonly IntPtr CERT_STORE_PROV_MSG                 = new IntPtr(1);
-        protected static readonly IntPtr CERT_STORE_PROV_MEMORY              = new IntPtr(2);
-        protected static readonly IntPtr CERT_STORE_PROV_FILE                = new IntPtr(3);
-        protected static readonly IntPtr CERT_STORE_PROV_REG                 = new IntPtr(4);
-        protected static readonly IntPtr CERT_STORE_PROV_PKCS7               = new IntPtr(5);
-        protected static readonly IntPtr CERT_STORE_PROV_SERIALIZED          = new IntPtr(6);
-        protected static readonly IntPtr CERT_STORE_PROV_FILENAME_A          = new IntPtr(7);
-        protected static readonly IntPtr CERT_STORE_PROV_FILENAME_W          = new IntPtr(8);
-        protected static readonly IntPtr CERT_STORE_PROV_FILENAME            = CERT_STORE_PROV_FILENAME_W;
-        protected static readonly IntPtr CERT_STORE_PROV_SYSTEM_A            = new IntPtr(9);
-        protected static readonly IntPtr CERT_STORE_PROV_SYSTEM_W            = new IntPtr(10);
-        protected static readonly IntPtr CERT_STORE_PROV_SYSTEM              = CERT_STORE_PROV_SYSTEM_W;
-        protected static readonly IntPtr CERT_STORE_PROV_COLLECTION          = new IntPtr(11);
-        protected static readonly IntPtr CERT_STORE_PROV_SYSTEM_REGISTRY_A   = new IntPtr(12);
-        protected static readonly IntPtr CERT_STORE_PROV_SYSTEM_REGISTRY_W   = new IntPtr(13);
-        protected static readonly IntPtr CERT_STORE_PROV_SYSTEM_REGISTRY     = CERT_STORE_PROV_SYSTEM_REGISTRY_W;
-        protected static readonly IntPtr CERT_STORE_PROV_PHYSICAL_W          = new IntPtr(14);
-        protected static readonly IntPtr CERT_STORE_PROV_PHYSICAL            = CERT_STORE_PROV_PHYSICAL_W;
-        protected static readonly IntPtr CERT_STORE_PROV_SMART_CARD_W        = new IntPtr(15);
-        protected static readonly IntPtr CERT_STORE_PROV_SMART_CARD          = CERT_STORE_PROV_SMART_CARD_W;
-        protected static readonly IntPtr CERT_STORE_PROV_LDAP_W              = new IntPtr(16);
-        protected static readonly IntPtr CERT_STORE_PROV_LDAP                = CERT_STORE_PROV_LDAP_W;
-        protected static readonly IntPtr CERT_STORE_PROV_PKCS12              = new IntPtr(17);
-        protected static readonly String sz_CERT_STORE_PROV_MEMORY           = "Memory";
-        protected static readonly String sz_CERT_STORE_PROV_FILENAME_W       = "File";
-        protected static readonly String sz_CERT_STORE_PROV_FILENAME         = sz_CERT_STORE_PROV_FILENAME_W;
-        protected static readonly String sz_CERT_STORE_PROV_SYSTEM_W         = "System";
-        protected static readonly String sz_CERT_STORE_PROV_SYSTEM           = sz_CERT_STORE_PROV_SYSTEM_W;
-        protected static readonly String sz_CERT_STORE_PROV_PKCS7            = "PKCS7";
-        protected static readonly String sz_CERT_STORE_PROV_PKCS12           = "PKCS12";
-        protected static readonly String sz_CERT_STORE_PROV_SERIALIZED       = "Serialized";
-        protected static readonly String sz_CERT_STORE_PROV_COLLECTION       = "Collection";
-        protected static readonly String sz_CERT_STORE_PROV_SYSTEM_REGISTRY_W = "SystemRegistry";
-        protected static readonly String sz_CERT_STORE_PROV_SYSTEM_REGISTRY  = sz_CERT_STORE_PROV_SYSTEM_REGISTRY_W;
-        protected static readonly String sz_CERT_STORE_PROV_PHYSICAL_W       = "Physical";
-        protected static readonly String sz_CERT_STORE_PROV_PHYSICAL         = sz_CERT_STORE_PROV_PHYSICAL_W;
-        protected static readonly String sz_CERT_STORE_PROV_SMART_CARD_W     = "SmartCard";
-        protected static readonly String sz_CERT_STORE_PROV_SMART_CARD       = sz_CERT_STORE_PROV_SMART_CARD_W;
-        protected static readonly String sz_CERT_STORE_PROV_LDAP_W           = "Ldap";
-        protected static readonly String sz_CERT_STORE_PROV_LDAP             = sz_CERT_STORE_PROV_LDAP_W;
-
-        protected const UInt32 CERT_STORE_NO_CRYPT_RELEASE_FLAG                 = 0x00000001;
-        protected const UInt32 CERT_STORE_SET_LOCALIZED_NAME_FLAG               = 0x00000002;
-        protected const UInt32 CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG      = 0x00000004;
-        protected const UInt32 CERT_STORE_DELETE_FLAG                           = 0x00000010;
-        protected const UInt32 CERT_STORE_UNSAFE_PHYSICAL_FLAG                  = 0x00000020;
-        protected const UInt32 CERT_STORE_SHARE_STORE_FLAG                      = 0x00000040;
-        protected const UInt32 CERT_STORE_SHARE_CONTEXT_FLAG                    = 0x00000080;
-        protected const UInt32 CERT_STORE_MANIFOLD_FLAG                         = 0x00000100;
-        protected const UInt32 CERT_STORE_ENUM_ARCHIVED_FLAG                    = 0x00000200;
-        protected const UInt32 CERT_STORE_UPDATE_KEYID_FLAG                     = 0x00000400;
-        protected const UInt32 CERT_STORE_BACKUP_RESTORE_FLAG                   = 0x00000800;
-        protected const UInt32 CERT_STORE_READONLY_FLAG                         = 0x00008000;
-        protected const UInt32 CERT_STORE_OPEN_EXISTING_FLAG                    = 0x00004000;
-        protected const UInt32 CERT_STORE_CREATE_NEW_FLAG                       = 0x00002000;
-        protected const UInt32 CERT_STORE_MAXIMUM_ALLOWED_FLAG                  = 0x00001000;
-        protected const UInt32 CERT_SYSTEM_STORE_CURRENT_USER                   = 0x00010000;
-        protected const UInt32 CERT_SYSTEM_STORE_LOCAL_MACHINE                  = 0x00020000;
-        protected const UInt32 CERT_SYSTEM_STORE_CURRENT_SERVICE                = 0x00040000;
-        protected const UInt32 CERT_SYSTEM_STORE_SERVICES                       = 0x00050000;
-        protected const UInt32 CERT_SYSTEM_STORE_USERS                          = 0x00060000;
-        protected const UInt32 CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY      = 0x00070000;
-        protected const UInt32 CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY     = 0x00080000;
-        protected const UInt32 CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE       = 0x00090000;
 
         private const UInt32 PKCS_7_ASN_ENCODING         = 0x00010000;
         private const UInt32 X509_ASN_ENCODING           = 0x00000001;
@@ -179,14 +115,14 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #region M:GetSystemStores(X509StoreLocation):String[]
         public static String[] GetSystemStores(X509StoreLocation flags) {
             var r = new List<String>();
-            Validate(Entries.CertEnumSystemStore((CERT_SYSTEM_STORE_FLAGS)flags, IntPtr.Zero, IntPtr.Zero, delegate(IntPtr systemstore, CERT_SYSTEM_STORE_FLAGS storeflags, ref CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved, IntPtr pvArg) {
-                if (storeflags.HasFlag(CERT_SYSTEM_STORE_FLAGS.CERT_SYSTEM_STORE_RELOCATE_FLAG))
+            Validate(Entries.CertEnumSystemStore((CERT_SYSTEM_STORE_FLAGS)flags, IntPtr.Zero, IntPtr.Zero, delegate(String SystemStoreName, CERT_SYSTEM_STORE_FLAGS Storeflags, ref CERT_SYSTEM_STORE_INFO StoreInfo, IntPtr Reserved, IntPtr Arg) {
+                if (Storeflags.HasFlag(CERT_SYSTEM_STORE_FLAGS.CERT_SYSTEM_STORE_RELOCATE_FLAG))
                     {
                     throw new NotSupportedException();
                     }
                 else
                     {
-                    r.Add(Marshal.PtrToStringUni(systemstore));
+                    r.Add(SystemStoreName);
                     }
                 return true;
                 }));

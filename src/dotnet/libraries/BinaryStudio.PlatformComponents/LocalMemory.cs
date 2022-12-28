@@ -64,8 +64,26 @@ namespace BinaryStudio.PlatformComponents
         public static unsafe implicit operator void*(LocalMemory source) { return (void*)source.source; }
         public static unsafe implicit operator Byte*(LocalMemory source) { return (Byte*)source.source; }
 
+        #if LINUX
+        protected static IntPtr LocalFree(IntPtr ptr) {
+            Marshal.FreeCoTaskMem(ptr);
+            return IntPtr.Zero;
+            }
+
+        protected static unsafe IntPtr LocalAlloc(Int32 flags, IntPtr size) {
+            var r = Marshal.AllocCoTaskMem((Int32)size);
+            if (flags == LMEM_ZEROINIT) {
+                var target = (Byte*)r;
+                for (var i = 0; i < (Int32)size; i++) {
+                    target[i] = 0;
+                    }
+                }
+            return r;
+            }
+        #else
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] protected static extern IntPtr LocalAlloc([In] Int32 flags, [In] IntPtr size);
         [DllImport("kernel32.dll")] protected static extern IntPtr LocalFree(IntPtr ptr);
+        #endif
 
         public const Int32 LMEM_ZEROINIT = 0x0040;
         public const Int32 LMEM_FIXED    = 0x0000;

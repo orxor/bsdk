@@ -1,0 +1,38 @@
+﻿using System;
+using System.Globalization;
+using System.Numerics;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
+using BinaryStudio.Serialization;
+
+namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
+    {
+    [Asn1CertificateExtension("1.2.840.113556.1.5.284.7")]
+    internal class DRSJoinType : Asn1CertificateExtension
+        {
+        public Int32 Value { get; }
+        public DRSJoinType(Asn1CertificateExtension source)
+            : base(source)
+            {
+            var octet = Body;
+            if (!ReferenceEquals(octet, null)) {
+                if (octet.Count > 0) {
+                    Value = (Int32)(new BigInteger(octet[0].Content.ToArray()));
+                    }
+                }
+            }
+
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
+        public override void WriteTo(IJsonWriter writer) {
+            using (writer.Object()) {
+                writer.WriteIndent();
+                writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
+                writer.WriteValue(nameof(Identifier), Identifier.ToString());
+                writer.WriteValue(nameof(IsCritical), IsCritical);
+                writer.WriteValue(nameof(Value), (Value == '1')
+                    ? "Joined"
+                    : "Registered");
+                }
+            }
+        }
+    }

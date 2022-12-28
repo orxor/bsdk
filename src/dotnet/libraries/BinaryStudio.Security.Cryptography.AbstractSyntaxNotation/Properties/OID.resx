@@ -1671,4 +1671,22 @@
   <data name="1.2.643.7.1.2.1.2.3" xml:space="preserve">
     <value>GOST R 34.10-2012 512 bit, parameters TC26 C</value>
   </data>
+  <data name="1.2.840.113556.1.5.284.1" xml:space="preserve">
+    <value>The Invocation-Id attribute of the NTDS-DSA object for the directory server.</value>
+  </data>
+  <data name="1.2.840.113556.1.5.284.2" xml:space="preserve">
+    <value>The DRS server MUST generate a globally unique identifier (GUID) and include it as the value.</value>
+  </data>
+  <data name="1.2.840.113556.1.5.284.3" xml:space="preserve">
+    <value>The Object-Guid attribute of the User object on the directory server that corresponds to the authenticating user.</value>
+  </data>
+  <data name="1.2.840.113556.1.5.284.4" xml:space="preserve">
+    <value>The Object-Guid attribute of the Domain object on the directory server.</value>
+  </data>
+  <data name="1.2.840.113556.1.5.284.7" xml:space="preserve">
+    <value>JoinType</value>
+  </data>
+  <data name="1.2.840.113556.1.5.284.8" xml:space="preserve">
+    <value>Tenant Region</value>
+  </data>
 </root>

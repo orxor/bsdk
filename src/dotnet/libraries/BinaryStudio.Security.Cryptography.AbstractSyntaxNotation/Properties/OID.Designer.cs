@@ -19,7 +19,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class OID {
@@ -1614,6 +1614,60 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         internal static string _1_2_840_113549_3_7 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.3.7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Invocation-Id attribute of the NTDS-DSA object for the directory server..
+        /// </summary>
+        internal static string _1_2_840_113556_1_5_284_1 {
+            get {
+                return ResourceManager.GetString("1.2.840.113556.1.5.284.1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The DRS server MUST generate a globally unique identifier (GUID) and include it as the value..
+        /// </summary>
+        internal static string _1_2_840_113556_1_5_284_2 {
+            get {
+                return ResourceManager.GetString("1.2.840.113556.1.5.284.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Object-Guid attribute of the User object on the directory server that corresponds to the authenticating user..
+        /// </summary>
+        internal static string _1_2_840_113556_1_5_284_3 {
+            get {
+                return ResourceManager.GetString("1.2.840.113556.1.5.284.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Object-Guid attribute of the Domain object on the directory server..
+        /// </summary>
+        internal static string _1_2_840_113556_1_5_284_4 {
+            get {
+                return ResourceManager.GetString("1.2.840.113556.1.5.284.4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JoinType.
+        /// </summary>
+        internal static string _1_2_840_113556_1_5_284_7 {
+            get {
+                return ResourceManager.GetString("1.2.840.113556.1.5.284.7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant Region.
+        /// </summary>
+        internal static string _1_2_840_113556_1_5_284_8 {
+            get {
+                return ResourceManager.GetString("1.2.840.113556.1.5.284.8", resourceCulture);
             }
         }
         

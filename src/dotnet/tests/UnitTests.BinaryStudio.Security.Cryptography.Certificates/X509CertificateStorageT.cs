@@ -17,6 +17,12 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
         [TestMethod]
         public void Certificates()
             {
+            using (var store = new X509CertificateStorage(new Uri("folder://./UnitTestData/cer"))) {
+                foreach (var certificate in store.Certificates) {
+                    //Console.WriteLine($"{(Int32)certificate.Handle:x8}:{certificate.Thumbprint}");
+                    Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
+                    }
+                }
             }
 
         #region M:GetSystemStores
@@ -37,6 +43,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
                             }
                         }
                     }
+                Console.Out.WriteLine();
                 }
             ;
             }
@@ -47,10 +54,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             GetSystemStores(X509StoreLocation.LocalMachine);
             }
         #endregion
-        #region M:CERTIFICATES_LOCALMACHINE_MY
+        #region M:CertificatesLocalMachineMy
         [TestMethod]
-        [Ignore]
-        public void CERTIFICATES_LOCALMACHINE_MY() {
+        public void CertificatesLocalMachineMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.LocalMachine)) {
                 foreach (var certificate in store.Certificates) {
                     Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
@@ -59,10 +65,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
-        #region M:CERTIFICATES_CURRENTUSER_MY
+        #region M:CertificatesCurrentUserMy
         [TestMethod]
-        [Ignore]
-        public void CERTIFICATES_CURRENTUSER_MY() {
+        public void CertificatesCurrentUserMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)) {
                 foreach (var certificate in store.Certificates) {
                     Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
@@ -72,6 +77,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
         #endregion
 
         [TestMethod]
+        [Ignore]
         public void JsonS() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.LocalMachine)) {
                 using (var writer = new DefaultJsonWriter(new JsonTextWriter(Console.Out){
