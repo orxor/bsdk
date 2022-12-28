@@ -92,9 +92,16 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
         #region M:Validate<T>(T,Func<T,Boolean>)
         protected virtual T Validate<T>(T value, Func<T,Boolean> predicate) {
+            return Validate(value,null,predicate);
+            }
+        #endregion
+        #region M:Validate<T>(T,CryptographicObject,Func<T,Boolean>)
+        protected virtual T Validate<T>(T value, CryptographicObject o, Func<T,Boolean> predicate) {
             if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
             if (!predicate(value)) {
-                Exception e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                Exception e = HResultException.GetExceptionForHR((o != null)
+                    ? o.GetLastWin32Error()
+                    :   GetLastWin32Error());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif
@@ -122,7 +129,12 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:GetLastWin32Error:Int32
-        protected static Int32 GetLastWin32Error()
+        /// <summary>
+        /// Returns the error code returned by the last unmanaged function that was called.
+        /// using platform invoke that has the System.Runtime.InteropServices.DllImportAttribute.SetLastError flag set.
+        /// </summary>
+        /// <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
+        protected virtual Int32 GetLastWin32Error()
             {
             return Marshal.GetLastWin32Error();
             }

@@ -10338,4 +10338,397 @@
   <data name="ERROR_GRAPHICS_INTERNAL_ERROR" xml:space="preserve">
     <value>An internal error caused an operation to fail.</value>
   </data>
+<data name="PSX_EPERM" xml:space="preserve">
+<value>Operation not permitted.</value>
+</data>
+<data name="PSX_ENOENT" xml:space="preserve">
+<value>No such file or directory.</value>
+</data>
+<data name="PSX_ESRCH" xml:space="preserve">
+<value>No such process.</value>
+</data>
+<data name="PSX_EINTR" xml:space="preserve">
+<value>Interrupted system call.</value>
+</data>
+<data name="PSX_EIO" xml:space="preserve">
+<value>Input/output error.</value>
+</data>
+<data name="PSX_ENXIO" xml:space="preserve">
+<value>No such device or address.</value>
+</data>
+<data name="PSX_E2BIG" xml:space="preserve">
+<value>Argument list too long.</value>
+</data>
+<data name="PSX_ENOEXEC" xml:space="preserve">
+<value>Exec format error.</value>
+</data>
+<data name="PSX_EBADF" xml:space="preserve">
+<value>Bad file descriptor.</value>
+</data>
+<data name="PSX_ECHILD" xml:space="preserve">
+<value>No child processes.</value>
+</data>
+<data name="PSX_EAGAIN" xml:space="preserve">
+<value>Resource temporarily unavailable.</value>
+</data>
+<data name="PSX_ENOMEM" xml:space="preserve">
+<value>Cannot allocate memory.</value>
+</data>
+<data name="PSX_EACCES" xml:space="preserve">
+<value>Permission denied.</value>
+</data>
+<data name="PSX_EFAULT" xml:space="preserve">
+<value>Bad address.</value>
+</data>
+<data name="PSX_ENOTBLK" xml:space="preserve">
+<value>Block device required.</value>
+</data>
+<data name="PSX_EBUSY" xml:space="preserve">
+<value>Device or resource busy.</value>
+</data>
+<data name="PSX_EEXIST" xml:space="preserve">
+<value>File exists.</value>
+</data>
+<data name="PSX_EXDEV" xml:space="preserve">
+<value>Invalid cross-device link.</value>
+</data>
+<data name="PSX_ENODEV" xml:space="preserve">
+<value>No such device.</value>
+</data>
+<data name="PSX_ENOTDIR" xml:space="preserve">
+<value>Not a directory.</value>
+</data>
+<data name="PSX_EISDIR" xml:space="preserve">
+<value>Is a directory.</value>
+</data>
+<data name="PSX_EINVAL" xml:space="preserve">
+<value>Invalid argument.</value>
+</data>
+<data name="PSX_ENFILE" xml:space="preserve">
+<value>Too many open files in system.</value>
+</data>
+<data name="PSX_EMFILE" xml:space="preserve">
+<value>Too many open files.</value>
+</data>
+<data name="PSX_ENOTTY" xml:space="preserve">
+<value>Inappropriate ioctl for device.</value>
+</data>
+<data name="PSX_ETXTBSY" xml:space="preserve">
+<value>Text file busy.</value>
+</data>
+<data name="PSX_EFBIG" xml:space="preserve">
+<value>File too large.</value>
+</data>
+<data name="PSX_ENOSPC" xml:space="preserve">
+<value>No space left on device.</value>
+</data>
+<data name="PSX_ESPIPE" xml:space="preserve">
+<value>Illegal seek.</value>
+</data>
+<data name="PSX_EROFS" xml:space="preserve">
+<value>Read-only file system.</value>
+</data>
+<data name="PSX_EMLINK" xml:space="preserve">
+<value>Too many links.</value>
+</data>
+<data name="PSX_EPIPE" xml:space="preserve">
+<value>Broken pipe.</value>
+</data>
+<data name="PSX_EDOM" xml:space="preserve">
+<value>Numerical argument out of domain.</value>
+</data>
+<data name="PSX_ERANGE" xml:space="preserve">
+<value>Numerical result out of range.</value>
+</data>
+<data name="PSX_EDEADLK" xml:space="preserve">
+<value>Resource deadlock avoided.</value>
+</data>
+<data name="PSX_ENAMETOOLONG" xml:space="preserve">
+<value>File name too long.</value>
+</data>
+<data name="PSX_ENOLCK" xml:space="preserve">
+<value>No locks available.</value>
+</data>
+<data name="PSX_ENOSYS" xml:space="preserve">
+<value>Function not implemented.</value>
+</data>
+<data name="PSX_ENOTEMPTY" xml:space="preserve">
+<value>Directory not empty.</value>
+</data>
+<data name="PSX_ELOOP" xml:space="preserve">
+<value>Too many levels of symbolic links.</value>
+</data>
+<data name="PSX_ENOMSG" xml:space="preserve">
+<value>No message of desired type.</value>
+</data>
+<data name="PSX_EIDRM" xml:space="preserve">
+<value>Identifier removed.</value>
+</data>
+<data name="PSX_ECHRNG" xml:space="preserve">
+<value>Channel number out of range.</value>
+</data>
+<data name="PSX_EL2NSYNC" xml:space="preserve">
+<value>Level 2 not synchronized.</value>
+</data>
+<data name="PSX_EL3HLT" xml:space="preserve">
+<value>Level 3 halted.</value>
+</data>
+<data name="PSX_EL3RST" xml:space="preserve">
+<value>Level 3 reset.</value>
+</data>
+<data name="PSX_ELNRNG" xml:space="preserve">
+<value>Link number out of range.</value>
+</data>
+<data name="PSX_EUNATCH" xml:space="preserve">
+<value>Protocol driver not attached.</value>
+</data>
+<data name="PSX_ENOCSI" xml:space="preserve">
+<value>No CSI structure available.</value>
+</data>
+<data name="PSX_EL2HLT" xml:space="preserve">
+<value>Level 2 halted.</value>
+</data>
+<data name="PSX_EBADE" xml:space="preserve">
+<value>Invalid exchange.</value>
+</data>
+<data name="PSX_EBADR" xml:space="preserve">
+<value>Invalid request descriptor.</value>
+</data>
+<data name="PSX_EXFULL" xml:space="preserve">
+<value>Exchange full.</value>
+</data>
+<data name="PSX_ENOANO" xml:space="preserve">
+<value>No anode.</value>
+</data>
+<data name="PSX_EBADRQC" xml:space="preserve">
+<value>Invalid request code.</value>
+</data>
+<data name="PSX_EBADSLT" xml:space="preserve">
+<value>Invalid slot.</value>
+</data>
+<data name="PSX_EBFONT" xml:space="preserve">
+<value>Bad font file format.</value>
+</data>
+<data name="PSX_ENOSTR" xml:space="preserve">
+<value>Device not a stream.</value>
+</data>
+<data name="PSX_ENODATA" xml:space="preserve">
+<value>No data available.</value>
+</data>
+<data name="PSX_ETIME" xml:space="preserve">
+<value>Timer expired.</value>
+</data>
+<data name="PSX_ENOSR" xml:space="preserve">
+<value>Out of streams resources.</value>
+</data>
+<data name="PSX_ENONET" xml:space="preserve">
+<value>Machine is not on the network.</value>
+</data>
+<data name="PSX_ENOPKG" xml:space="preserve">
+<value>Package not installed.</value>
+</data>
+<data name="PSX_EREMOTE" xml:space="preserve">
+<value>Object is remote.</value>
+</data>
+<data name="PSX_ENOLINK" xml:space="preserve">
+<value>Link has been severed.</value>
+</data>
+<data name="PSX_EADV" xml:space="preserve">
+<value>Advertise error.</value>
+</data>
+<data name="PSX_ESRMNT" xml:space="preserve">
+<value>Srmount error.</value>
+</data>
+<data name="PSX_ECOMM" xml:space="preserve">
+<value>Communication error on send.</value>
+</data>
+<data name="PSX_EPROTO" xml:space="preserve">
+<value>Protocol error.</value>
+</data>
+<data name="PSX_EMULTIHOP" xml:space="preserve">
+<value>Multihop attempted.</value>
+</data>
+<data name="PSX_EDOTDOT" xml:space="preserve">
+<value>RFS specific error.</value>
+</data>
+<data name="PSX_EBADMSG" xml:space="preserve">
+<value>Bad message.</value>
+</data>
+<data name="PSX_EOVERFLOW" xml:space="preserve">
+<value>Value too large for defined data type.</value>
+</data>
+<data name="PSX_ENOTUNIQ" xml:space="preserve">
+<value>Name not unique on network.</value>
+</data>
+<data name="PSX_EBADFD" xml:space="preserve">
+<value>File descriptor in bad state.</value>
+</data>
+<data name="PSX_EREMCHG" xml:space="preserve">
+<value>Remote address changed.</value>
+</data>
+<data name="PSX_ELIBACC" xml:space="preserve">
+<value>Can not access a needed shared library.</value>
+</data>
+<data name="PSX_ELIBBAD" xml:space="preserve">
+<value>Accessing a corrupted shared library.</value>
+</data>
+<data name="PSX_ELIBSCN" xml:space="preserve">
+<value>.lib section in a.out corrupted.</value>
+</data>
+<data name="PSX_ELIBMAX" xml:space="preserve">
+<value>Attempting to link in too many shared libraries.</value>
+</data>
+<data name="PSX_ELIBEXEC" xml:space="preserve">
+<value>Cannot exec a shared library directly.</value>
+</data>
+<data name="PSX_EILSEQ" xml:space="preserve">
+<value>Invalid or incomplete multibyte or wide character.</value>
+</data>
+<data name="PSX_ERESTART" xml:space="preserve">
+<value>Interrupted system call should be restarted.</value>
+</data>
+<data name="PSX_ESTRPIPE" xml:space="preserve">
+<value>Streams pipe error.</value>
+</data>
+<data name="PSX_EUSERS" xml:space="preserve">
+<value>Too many users.</value>
+</data>
+<data name="PSX_ENOTSOCK" xml:space="preserve">
+<value>Socket operation on non-socket.</value>
+</data>
+<data name="PSX_EDESTADDRREQ" xml:space="preserve">
+<value>Destination address required.</value>
+</data>
+<data name="PSX_EMSGSIZE" xml:space="preserve">
+<value>Message too long.</value>
+</data>
+<data name="PSX_EPROTOTYPE" xml:space="preserve">
+<value>Protocol wrong type for socket.</value>
+</data>
+<data name="PSX_ENOPROTOOPT" xml:space="preserve">
+<value>Protocol not available.</value>
+</data>
+<data name="PSX_EPROTONOSUPPORT" xml:space="preserve">
+<value>Protocol not supported.</value>
+</data>
+<data name="PSX_ESOCKTNOSUPPORT" xml:space="preserve">
+<value>Socket type not supported.</value>
+</data>
+<data name="PSX_EOPNOTSUPP" xml:space="preserve">
+<value>Operation not supported.</value>
+</data>
+<data name="PSX_EPFNOSUPPORT" xml:space="preserve">
+<value>Protocol family not supported.</value>
+</data>
+<data name="PSX_EAFNOSUPPORT" xml:space="preserve">
+<value>Address family not supported by protocol.</value>
+</data>
+<data name="PSX_EADDRINUSE" xml:space="preserve">
+<value>Address already in use.</value>
+</data>
+<data name="PSX_EADDRNOTAVAIL" xml:space="preserve">
+<value>Cannot assign requested address.</value>
+</data>
+<data name="PSX_ENETDOWN" xml:space="preserve">
+<value>Network is down.</value>
+</data>
+<data name="PSX_ENETUNREACH" xml:space="preserve">
+<value>Network is unreachable.</value>
+</data>
+<data name="PSX_ENETRESET" xml:space="preserve">
+<value>Network dropped connection on reset.</value>
+</data>
+<data name="PSX_ECONNABORTED" xml:space="preserve">
+<value>Software caused connection abort.</value>
+</data>
+<data name="PSX_ECONNRESET" xml:space="preserve">
+<value>Connection reset by peer.</value>
+</data>
+<data name="PSX_ENOBUFS" xml:space="preserve">
+<value>No buffer space available.</value>
+</data>
+<data name="PSX_EISCONN" xml:space="preserve">
+<value>Transport endpoint is already connected.</value>
+</data>
+<data name="PSX_ENOTCONN" xml:space="preserve">
+<value>Transport endpoint is not connected.</value>
+</data>
+<data name="PSX_ESHUTDOWN" xml:space="preserve">
+<value>Cannot send after transport endpoint shutdown.</value>
+</data>
+<data name="PSX_ETOOMANYREFS" xml:space="preserve">
+<value>Too many references: cannot splice.</value>
+</data>
+<data name="PSX_ETIMEDOUT" xml:space="preserve">
+<value>Connection timed out.</value>
+</data>
+<data name="PSX_ECONNREFUSED" xml:space="preserve">
+<value>Connection refused.</value>
+</data>
+<data name="PSX_EHOSTDOWN" xml:space="preserve">
+<value>Host is down.</value>
+</data>
+<data name="PSX_EHOSTUNREACH" xml:space="preserve">
+<value>No route to host.</value>
+</data>
+<data name="PSX_EALREADY" xml:space="preserve">
+<value>Operation already in progress.</value>
+</data>
+<data name="PSX_EINPROGRESS" xml:space="preserve">
+<value>Operation now in progress.</value>
+</data>
+<data name="PSX_ESTALE" xml:space="preserve">
+<value>Stale file handle.</value>
+</data>
+<data name="PSX_EUCLEAN" xml:space="preserve">
+<value>Structure needs cleaning.</value>
+</data>
+<data name="PSX_ENOTNAM" xml:space="preserve">
+<value>Not a XENIX named type file.</value>
+</data>
+<data name="PSX_ENAVAIL" xml:space="preserve">
+<value>No XENIX semaphores available.</value>
+</data>
+<data name="PSX_EISNAM" xml:space="preserve">
+<value>Is a named type file.</value>
+</data>
+<data name="PSX_EREMOTEIO" xml:space="preserve">
+<value>Remote I/O error.</value>
+</data>
+<data name="PSX_EDQUOT" xml:space="preserve">
+<value>Disk quota exceeded.</value>
+</data>
+<data name="PSX_ENOMEDIUM" xml:space="preserve">
+<value>No medium found.</value>
+</data>
+<data name="PSX_EMEDIUMTYPE" xml:space="preserve">
+<value>Wrong medium type.</value>
+</data>
+<data name="PSX_ECANCELED" xml:space="preserve">
+<value>Operation canceled.</value>
+</data>
+<data name="PSX_ENOKEY" xml:space="preserve">
+<value>Required key not available.</value>
+</data>
+<data name="PSX_EKEYEXPIRED" xml:space="preserve">
+<value>Key has expired.</value>
+</data>
+<data name="PSX_EKEYREVOKED" xml:space="preserve">
+<value>Key has been revoked.</value>
+</data>
+<data name="PSX_EKEYREJECTED" xml:space="preserve">
+<value>Key was rejected by service.</value>
+</data>
+<data name="PSX_EOWNERDEAD" xml:space="preserve">
+<value>Owner died.</value>
+</data>
+<data name="PSX_ENOTRECOVERABLE" xml:space="preserve">
+<value>State not recoverable.</value>
+</data>
+<data name="PSX_ERFKILL" xml:space="preserve">
+<value>Operation not possible due to RF-kill.</value>
+</data>
+<data name="PSX_EHWPOISON" xml:space="preserve">
+<value>Memory page has hardware error.</value>
+</data>
 </root>

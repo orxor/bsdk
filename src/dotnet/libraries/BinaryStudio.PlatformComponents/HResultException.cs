@@ -104,14 +104,23 @@ namespace BinaryStudio.PlatformComponents.Win32
             var FacilityI = (SCode >> 16) & 0x1fff;
             var FacilityE = (FACILITY)FacilityI;
             var SCodeE = (HResult)(unchecked((Int32)SCode));
-            var r = Properties.HResult.ResourceManager.GetString(((HResult)SCode).ToString(),Culture);
-            if (r == null) {
-                r = (SCode >= 0xffff) || (SCode < 0)
-                    ? $"HRESULT:{{{SCodeE}}},Facility:{{{FacilityE}}}"
+            var SCodeS = SCodeE.ToString();
+            var o = (SCode >= 0xffff) || (SCode < 0)
+                    ? $"HRESULT:{{{SCodeE}:{FacilityE}}}"
                     : $"WIN32:{{{(Win32ErrorCode)SCode}}}";
-                Console.Error.WriteLine($"{{{SCode.ToString("x8")}}}:{r}");
+            if ((FacilityE == FACILITY.PSX) && (SCodeS.StartsWith("PSX_"))) {
+                o = $"POSIX:{{{SCodeS.Substring(4)}}}";
                 }
-            return r;
+            var r = (SCode >= 0xffff) || (SCode < 0)
+                ? Properties.HResult.ResourceManager.GetString(((HResult)SCode).ToString(),Culture)
+                : Properties.Win32ErrorCode.ResourceManager.GetString(((Win32ErrorCode)SCode).ToString(),Culture);
+            #if DEBUG
+            return (r != null)
+                ? $"{o}:{r}"
+                : o;
+            #else
+            return (r != null) ? r : o;
+            #endif
             #else
             var r = FormatMessage(SCode,IntPtr.Zero,Culture);
             if (r != null) {  return r; }
@@ -143,6 +152,39 @@ namespace BinaryStudio.PlatformComponents.Win32
                     }
                 return r;
                 }
+            #endif
+            }
+        #endregion
+        #region M:FormatMessage(Int32,CultureInfo):String
+        public static String FormatMessage(Int32 SCode, CultureInfo Culture = null) {
+            return FormatMessage(unchecked((UInt32)SCode), Culture);
+            }
+        #endregion
+        #region M:FormatMessage(HResult,CultureInfo):String
+        public static String FormatMessage(HResult SCode, CultureInfo Culture = null) {
+            return FormatMessage((Int32)SCode, Culture);
+            }
+        #endregion
+        #region M:FormatMessage(Win32ErrorCode,CultureInfo):String
+        public static String FormatMessage(Win32ErrorCode SCode, CultureInfo Culture = null) {
+            return FormatMessage((Int32)SCode, Culture);
+            }
+        #endregion
+        #region M:FormatMessage(PosixError,CultureInfo):String
+        public static String FormatMessage(PosixError SCode, CultureInfo Culture = null) {
+            var o = $"{SCode}";
+            #if LINUX
+            var r = StrError(SCode);
+            if (String.IsNullOrWhiteSpace(r)) {
+                r = null;
+                }
+            else if (!r.EndsWith('.'))
+                {
+                r = $"{r}.";
+                }
+            return r ?? FormatMessage(0x90000000|(unchecked((UInt32)SCode)),Culture);
+            #else
+            return FormatMessage(0x90000000|(unchecked((UInt32)SCode)),Culture);
             #endif
             }
         #endregion
@@ -324,19 +366,13 @@ namespace BinaryStudio.PlatformComponents.Win32
                 var m = (n != IntPtr.Zero)
                     ? Marshal.PtrToStringAnsi(n)
                     : Encoding.ASCII.GetString(r);
-                return String.IsNullOrWhiteSpace(m)
-                    ? $"{errnum}"
-                    : $"{errnum}: {m}";
+                return m;
                 }
-            }
-        #else
-        private static String StrError(PosixError errnum) {
-            return $"{errnum}";
             }
         #endif
             
         public static Exception GetExceptionForHR(PosixError scode) {
-            var message = StrError(scode);
+            var message = FormatMessage(scode);
             switch (scode) {
                 case PosixError.EINVAL: { return new ArgumentException(); }
                 case PosixError.EPERM:

@@ -34,6 +34,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcrypt32", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext);
         [DllImport("libcrypt32", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertCloseStore(IntPtr handle, UInt32 flags);
+        [DllImport("libkernel32")] private static extern Int32 GetLastError();
 
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="service">An object that specifies the type of service object to get.</param>
@@ -44,5 +45,17 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             if (service == typeof(ICryptoAPI)) { return this; }
             return base.GetService(service);
             }
+
+        #region M:GetLastWin32Error:Int32
+        /// <summary>
+        /// Returns the error code returned by the last unmanaged function that was called.
+        /// using platform invoke that has the System.Runtime.InteropServices.DllImportAttribute.SetLastError flag set.
+        /// </summary>
+        /// <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
+        protected override Int32 GetLastWin32Error()
+            {
+            return GetLastError();
+            }
+        #endregion
         }
     }

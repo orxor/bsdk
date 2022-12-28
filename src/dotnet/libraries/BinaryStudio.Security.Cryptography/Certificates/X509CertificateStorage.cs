@@ -37,7 +37,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
                     IntPtr.Zero,
                     MapX509StoreFlags(location,X509OpenFlags.MaxAllowed|X509OpenFlags.OpenExistingOnly),
-                    StoreName),NotZero));
+                    StoreName),Entries as CryptographicObject, NotZero));
                 return;
                 }
             throw new ArgumentOutOfRangeException(nameof(location));
