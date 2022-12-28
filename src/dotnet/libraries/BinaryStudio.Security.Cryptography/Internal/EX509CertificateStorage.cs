@@ -81,9 +81,9 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             var certificates = Certificates.ToArray();
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WritePropertyName(nameof(Certificates));
-                using (writer.ScopeObject()) {
+                using (writer.Object()) {
                     writer.WriteValue("Count", certificates.Length);
                     writer.WriteValue("{Self}", certificates);
                     }

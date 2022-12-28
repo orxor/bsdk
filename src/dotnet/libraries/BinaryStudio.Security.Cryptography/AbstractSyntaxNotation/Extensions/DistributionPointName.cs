@@ -40,7 +40,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
             if (FullName != null) {
-                using (writer.ArrayObject()) {
+                using (writer.Array()) {
                     foreach (var name in FullName) {
                         name.WriteTo(writer);
                         }

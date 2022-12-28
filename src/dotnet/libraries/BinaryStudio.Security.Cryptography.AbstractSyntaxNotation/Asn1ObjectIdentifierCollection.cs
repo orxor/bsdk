@@ -18,10 +18,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public void WriteTo(IJsonWriter writer) {
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(Count), Count);
                 writer.WritePropertyName("{Self}");
-                using (writer.ArrayObject()) {
+                using (writer.Array()) {
                     foreach (var i in this) {
                         writer.WriteValue(i.ToString());
                         }

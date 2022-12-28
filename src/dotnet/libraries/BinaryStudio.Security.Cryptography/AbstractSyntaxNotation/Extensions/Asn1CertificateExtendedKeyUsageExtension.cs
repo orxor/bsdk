@@ -45,13 +45,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteIndent();
                 writer.WriteComment($" {OID.ResourceManager.GetString(Identifier.ToString(), CultureInfo.InvariantCulture)} ");
                 writer.WriteValue(nameof(Identifier), Identifier.ToString());
                 writer.WriteValue(nameof(IsCritical), IsCritical);
                 writer.WritePropertyName("{Self}");
-                using (writer.ArrayObject()) {
+                using (writer.Array()) {
                     foreach (var i in Value)
                         {
                         writer.WriteValue(i.ToString());

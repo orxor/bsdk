@@ -37,7 +37,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
             if (ReasonFlags != ReasonFlags.Unused) {
-                using (writer.ScopeObject()) {
+                using (writer.Object()) {
                     writer.WriteValue(nameof(ReasonFlags), ReasonFlags.ToString());
                     if (Point != null) {
                         writer.WriteValue("DistributionPoint", Point);

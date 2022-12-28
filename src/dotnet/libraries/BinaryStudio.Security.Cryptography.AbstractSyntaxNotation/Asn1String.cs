@@ -126,7 +126,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #region M:WriteTo(IJsonWriter)
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(Type), TypeCode);
                 if (Offset >= 0) { writer.WriteValue(nameof(Offset), Offset); }
                 writer.WriteValue(nameof(Value), Value);

@@ -33,7 +33,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(SerialNumber), SerialNumber);
                 writer.WriteValue(nameof(RevocationDate), RevocationDate.ToString("O"));
                 writer.WriteValueIfNotNull(nameof(Extensions),Extensions);

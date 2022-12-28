@@ -116,7 +116,7 @@ namespace BinaryStudio.PortableExecutable
 
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValueIfNotNull(nameof(Level),Level);
                 writer.WriteValueIfNotNull("IsMUI",true);
                 if ((Level == IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE) && (Identifier.Identifier.HasValue)) {

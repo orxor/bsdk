@@ -60,14 +60,19 @@ namespace BinaryStudio.Serialization
             set { Writer.Formatting = value; }
             }
 
-        public IDisposable ScopeObject()
+        IDisposable IJsonWriter.Object()
             {
-            return new ObjectScopeObject(Writer);
+            return new Scope(Writer, '{');
             }
 
-        public IDisposable ArrayObject()
+        public IDisposable Array()
             {
-            return new ArrayScopeObject(Writer);
+            return new Scope(Writer, '[');
+            }
+
+        public IDisposable Constructor(String name)
+            {
+            return new Scope(Writer, '(', name);
             }
 
         #region M:IJsonWriter.WriteValue(Object)
@@ -190,7 +195,7 @@ namespace BinaryStudio.Serialization
         #region M:WriteValue(IList):Boolean
         private Boolean WriteValue(IList values) {
             if (values == null) { return false; } 
-            using (ArrayObject()) {
+            using (Array()) {
                 foreach (var value in values) {
                     WriteValue(value);
                     }
@@ -202,7 +207,7 @@ namespace BinaryStudio.Serialization
         private Boolean WriteValue(IList<String> values)
             {
             if (values == null) { return false; }
-            using (ArrayObject()) {
+            using (Array()) {
                 foreach (var value in values) {
                     WriteValue(value);
                     }
@@ -219,35 +224,21 @@ namespace BinaryStudio.Serialization
             }
         #endregion
 
-        #region T:ArrayScopeObject
-        private class ArrayScopeObject: IDisposable
+        #region T:Scope
+        private class Scope: IDisposable
             {
             private readonly JsonWriter writer;
-            public ArrayScopeObject(JsonWriter writer)
-                {
+            public Scope(JsonWriter writer, Char type, String name = null) {
                 this.writer = writer;
-                writer.WriteStartArray();
+                switch (type) {
+                    case '[' : { writer.WriteStartArray(); } break;
+                    case '{' : { writer.WriteStartObject(); } break;
+                    case '(' : { writer.WriteStartConstructor(name); } break;
+                    }
                 }
 
-            public void Dispose()
-                {
+            public void Dispose() {
                 writer.WriteEnd();
-                }
-            }
-        #endregion
-        #region T:ObjectScopeObject
-        private class ObjectScopeObject: IDisposable
-            {
-            private readonly JsonWriter writer;
-            public ObjectScopeObject(JsonWriter writer)
-                {
-                this.writer = writer;
-                writer.WriteStartObject();
-                }
-
-            public void Dispose()
-                {
-                writer.WriteEndObject();
                 }
             }
         #endregion

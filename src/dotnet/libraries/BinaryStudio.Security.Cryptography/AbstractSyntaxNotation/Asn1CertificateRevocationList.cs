@@ -68,7 +68,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(Version),Version);
                 writer.WriteValue(nameof(EffectiveDate),EffectiveDate);
                 writer.WriteValueIfNotNull(nameof(NextUpdate),NextUpdate);
@@ -76,10 +76,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 writer.WriteValueIfNotNull(nameof(Issuer),Issuer);
                 if (!IsNullOrEmpty(Entries)) {
                     writer.WritePropertyName(nameof(Entries));
-                    using (writer.ScopeObject()) {
+                    using (writer.Object()) {
                         writer.WriteValue(nameof(Entries.Count),Entries.Count);
                         writer.WritePropertyName("{Self}");
-                        using (writer.ArrayObject()) {
+                        using (writer.Array()) {
                             foreach (var e in Entries) {
                                 writer.WriteValue(e);
                                 }

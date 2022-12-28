@@ -52,7 +52,7 @@ namespace BinaryStudio.PortableExecutable
 
         public void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(Identifier),ToString());
                 }
             }

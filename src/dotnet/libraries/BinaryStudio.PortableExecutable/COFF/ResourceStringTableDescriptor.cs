@@ -130,7 +130,7 @@ namespace BinaryStudio.PortableExecutable
 
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValueIfNotNull(nameof(Level),Level);
                 if ((Level == IMAGE_RESOURCE_LEVEL.LEVEL_LANGUAGE) && (Identifier.Identifier.HasValue)) {
                     writer.WriteValue("CodePage", GetIetfLanguageTag(Identifier.Identifier.Value));

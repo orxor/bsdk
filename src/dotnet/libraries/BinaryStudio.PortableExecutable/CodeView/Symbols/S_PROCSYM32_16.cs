@@ -46,7 +46,7 @@ namespace BinaryStudio.PortableExecutable.CodeView
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(Offset),base.Offset.ToString("x8"));
                 writer.WriteValue(nameof(Type),Type);
                 writer.WriteValue(nameof(Parent),Parent.ToString("x8"));

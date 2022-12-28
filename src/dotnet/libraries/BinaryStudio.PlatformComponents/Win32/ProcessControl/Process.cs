@@ -424,7 +424,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         #endregion
 
         public void WriteTo(IJsonWriter writer) {
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(UniqueProcessId), UniqueProcessId);
                 writer.WriteValue(nameof(UniqueParentProcessId), UniqueParentProcessId);
                 writer.WriteValue(nameof(ImageName), ImageName);

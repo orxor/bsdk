@@ -133,20 +133,20 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 var c = Count;
                 writer.WriteValue(nameof(Count),c);
                 writer.WriteValue("(Self)", ToString());
                 if (c > 0) {
                     writer.WritePropertyName("{Self}");
-                    using (writer.ArrayObject()) {
+                    using (writer.Array()) {
                         var values = Items.ToArray();
                         var l = values.Select(j => j.Key.ToString().Length).Max();
                         var f = writer.Formatting;
                         writer.Formatting = Formatting.None;
                         foreach (var item in values) {
                             writer.Formatting = Formatting.Indented;
-                            using (writer.ScopeObject()) {
+                            using (writer.Object()) {
                                 writer.Formatting = Formatting.None;
                                 writer.WriteRawString($@"""{item.Key}""{new String(' ',l-item.Key.ToString().Length)}: ""{item.Value}""");
                                 }
@@ -160,7 +160,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         void IX509GeneralName.WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue("Type", Type.ToString());
                 writer.WriteValue("Value", this);
                 }

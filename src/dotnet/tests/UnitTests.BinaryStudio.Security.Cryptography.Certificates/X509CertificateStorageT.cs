@@ -15,15 +15,38 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             }
 
         [TestMethod]
-        public void Certificates() {
-            using (var store = new X509CertificateStorage(new Uri("folder://./UnitTestData/cer"))) {
-                foreach (var certificate in store.Certificates) {
-                    //Console.WriteLine($"{(Int32)certificate.Handle:x8}:{certificate.Thumbprint}");
-                    Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
-                    }
-                }
+        public void Certificates()
+            {
             }
 
+        #region M:GetSystemStores
+        private void GetSystemStores(X509StoreLocation location) {
+            using (IJsonWriter writer = new DefaultJsonWriter(new JsonTextWriter(Console.Out){
+                Formatting = Formatting.Indented,
+                Indentation = 2,
+                IndentChar = ' '
+                }))
+                {
+                using (writer.Constructor("GetSystemStores")) {
+                    using (writer.Object()) {
+                        writer.WritePropertyName("Output");
+                        using (writer.Array()) {
+                            foreach (var i in X509CertificateStorage.GetSystemStores(location)) {
+                                writer.WriteValue(i);
+                                }
+                            }
+                        }
+                    }
+                }
+            ;
+            }
+        #endregion
+        #region M:GetSystemStoresLocalMachine
+        [TestMethod]
+        public void GetSystemStoresLocalMachine() {
+            GetSystemStores(X509StoreLocation.LocalMachine);
+            }
+        #endregion
         #region M:CERTIFICATES_LOCALMACHINE_MY
         [TestMethod]
         [Ignore]
@@ -38,6 +61,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
         #endregion
         #region M:CERTIFICATES_CURRENTUSER_MY
         [TestMethod]
+        [Ignore]
         public void CERTIFICATES_CURRENTUSER_MY() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)) {
                 foreach (var certificate in store.Certificates) {

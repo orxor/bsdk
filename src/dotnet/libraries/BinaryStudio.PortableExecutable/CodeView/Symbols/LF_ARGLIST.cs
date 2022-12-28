@@ -26,11 +26,11 @@ namespace BinaryStudio.PortableExecutable.CodeView
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(LeafIndex),LeafIndex);
                 if (Indices.Count > 0) {
                     writer.WritePropertyName("Indices");
-                    using (writer.ArrayObject()) {
+                    using (writer.Array()) {
                         foreach (var e in Indices) {
                             writer.WriteValue(e.ToString("x4"));
                             }

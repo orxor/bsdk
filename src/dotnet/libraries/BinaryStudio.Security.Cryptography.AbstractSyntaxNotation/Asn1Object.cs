@@ -610,14 +610,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #region M:WriteTo(IJsonWriter)
         public virtual void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(Class), Class.ToString());
                 writer.WriteValue(nameof(Type), TypeCode);
                 if (Offset >= 0) { writer.WriteValue(nameof(Offset), Offset); }
                 var c = Count;
                 if (c > 0) {
                     writer.WritePropertyName("{Self}");
-                    using (writer.ArrayObject()) {
+                    using (writer.Array()) {
                         foreach (var Value in this) {
                             Value.WriteTo(writer);
                             }

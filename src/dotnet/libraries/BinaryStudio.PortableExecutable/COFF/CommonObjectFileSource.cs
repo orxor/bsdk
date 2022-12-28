@@ -475,7 +475,7 @@ namespace BinaryStudio.PortableExecutable
         #region M:WriteTo(IJsonWriter)
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(Identity),Identity.LocalName);
                 writer.WriteValue(nameof(Resources),Resources);
                 }

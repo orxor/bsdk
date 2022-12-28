@@ -87,7 +87,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #region M:WriteTo(IJsonWriter)
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
-            using (writer.ScopeObject()) {
+            using (writer.Object()) {
                 writer.WriteValue(nameof(Version),Version);
                 writer.WriteValue(nameof(NotBefore),NotBefore);
                 writer.WriteValue(nameof(NotAfter),NotAfter);

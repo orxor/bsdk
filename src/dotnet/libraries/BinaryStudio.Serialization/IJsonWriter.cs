@@ -3,11 +3,12 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Serialization
     {
-    public interface IJsonWriter
+    public interface IJsonWriter : IDisposable
         {
         Formatting Formatting { get;set; }
-        IDisposable ScopeObject();
-        IDisposable ArrayObject();
+        IDisposable Object();
+        IDisposable Array();
+        IDisposable Constructor(String name);
         void WriteValue(String name, Object value);
         void WriteValue(Object value);
         void WriteValueIfNotNull(String name, Object value);

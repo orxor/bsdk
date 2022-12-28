@@ -59,10 +59,12 @@ namespace BinaryStudio.Security.Cryptography
             return null;
             }
 
-        #region M:Validate(Boolean)
-        protected virtual void Validate(Boolean status) {
+        #region M:Validate(Boolean,CryptographicObject)
+        protected static void Validate(Boolean status,CryptographicObject o = null) {
             if (!status) {
-                Exception e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                Exception e = HResultException.GetExceptionForHR((o != null)
+                    ? o.GetLastWin32Error()
+                    : Marshal.GetLastWin32Error());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif

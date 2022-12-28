@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates.Internal;
 using BinaryStudio.Serialization;
 
@@ -173,6 +174,23 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             (Store as IJsonSerializable)?.WriteTo(writer);
+            }
+        #endregion
+        #region M:GetSystemStores(X509StoreLocation):String[]
+        public static String[] GetSystemStores(X509StoreLocation flags) {
+            var r = new List<String>();
+            Validate(Entries.CertEnumSystemStore((CERT_SYSTEM_STORE_FLAGS)flags, IntPtr.Zero, IntPtr.Zero, delegate(IntPtr systemstore, CERT_SYSTEM_STORE_FLAGS storeflags, ref CERT_SYSTEM_STORE_INFO pStoreInfo, IntPtr pvReserved, IntPtr pvArg) {
+                if (storeflags.HasFlag(CERT_SYSTEM_STORE_FLAGS.CERT_SYSTEM_STORE_RELOCATE_FLAG))
+                    {
+                    throw new NotSupportedException();
+                    }
+                else
+                    {
+                    r.Add(Marshal.PtrToStringUni(systemstore));
+                    }
+                return true;
+                }));
+            return r.ToArray();
             }
         #endregion
         }
