@@ -126,10 +126,16 @@ namespace BinaryStudio.PortableExecutable
                             }
 
                         foreach(var i in entries) {
-                            Load(Base,
-                                (IMAGE_DATA_DIRECTORY*)i.Item1.ToPointer(),
-                                (IMAGE_SECTION_HEADER*)i.Item2.ToPointer(),
-                                i.Item3, machine, rvami);
+                            try
+                                {
+                                Load(Base,
+                                    (IMAGE_DATA_DIRECTORY*)i.Item1.ToPointer(),
+                                    (IMAGE_SECTION_HEADER*)i.Item2.ToPointer(),
+                                    i.Item3, machine, rvami);
+                                }
+                            catch
+                                {
+                                }
                             }
                         }
                     return;
@@ -455,18 +461,25 @@ namespace BinaryStudio.PortableExecutable
         #endregion
 
         private MetadataObject LoadMUI(CultureInfo culture) { 
-            if (culture != null) {
-                var service = Identity.ServiceIdentity;
-                /*if (service == MetadataScope.FileServiceGuid)*/ {
-                    var filename = Path.GetFileName(Identity.LocalName);
-                    var r = Scope.Load(Is64Bit
-                        ? $@"C:\Windows\System32\{culture.IetfLanguageTag}\{filename}.mui"
-                        : $@"C:\Windows\SysWOW64\{culture.IetfLanguageTag}\{filename}.mui"
-                        );
-                    return r;
+            try
+                {
+                if (culture != null) {
+                    var service = Identity.ServiceIdentity;
+                    /*if (service == MetadataScope.FileServiceGuid)*/ {
+                        var filename = Path.GetFileName(Identity.LocalName);
+                        var r = Scope.Load(Is64Bit
+                            ? $@"C:\Windows\System32\{culture.IetfLanguageTag}\{filename}.mui"
+                            : $@"C:\Windows\SysWOW64\{culture.IetfLanguageTag}\{filename}.mui"
+                            );
+                        return r;
+                        }
                     }
+                return null;
                 }
-            return null;
+            catch
+                {
+                return null;
+                }
             }
 
         private unsafe void Load(Byte* address, IMAGE_RUNTIME_FUNCTION_ENTRY* entries, Int64 size, IMAGE_FILE_MACHINE machine, RVA rvami) {

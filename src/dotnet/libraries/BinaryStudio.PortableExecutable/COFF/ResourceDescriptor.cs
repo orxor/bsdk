@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
 
@@ -78,6 +79,21 @@ namespace BinaryStudio.PortableExecutable
                 }
             }
         #endregion
+        #region M:GetEncoding(Int32):Encoding
+        protected static Encoding GetEncoding(Int32 codepage)
+            {
+            try
+                {
+                return (!encodings.TryGetValue(codepage, out var encoding))
+                    ? encodings[codepage]=Encoding.GetEncoding(codepage)
+                    : encoding;
+                }
+            catch
+                {
+                return encodings[codepage] = Encoding.ASCII;
+                }
+            }
+        #endregion
 
         public virtual void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
@@ -97,5 +113,7 @@ namespace BinaryStudio.PortableExecutable
                 writer.WriteValueIfNotNull(nameof(Resources),Resources);
                 }
             }
+
+        private static IDictionary<Int32,Encoding> encodings = new Dictionary<Int32,Encoding>();
         }
     }

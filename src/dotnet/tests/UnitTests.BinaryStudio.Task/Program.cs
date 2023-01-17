@@ -19,7 +19,8 @@ namespace UnitTests.BinaryStudio.Task
             //Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
             //Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
             //Execute(typeof(HResultT));
-            Execute(typeof(X509CertificateStorageT));
+            //Execute(typeof(X509CertificateStorageT));
+            Execute(typeof(MZMetadataObjectT));
             }
 
         #region M:Execute(Action)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Serialization;
@@ -16,6 +18,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public X509RelativeDistinguishedNameSequence Issuer { get;private set; }
         public Asn1CertificateExtensionCollection Extensions { get; }
         public String Country { get; }
+
+        public String Thumbprint { get {
+            if (thumbprint == null) {
+                using (var engine = SHA1.Create())
+                using(var output = new MemoryStream()) {
+                    UnderlyingObject.WriteTo(output);
+                    output.Seek(0, SeekOrigin.Begin);
+                    thumbprint = engine.ComputeHash(output).ToString("x");
+                    }
+                }
+            return thumbprint;
+            }}
 
         public Asn1CertificateRevocationList(Asn1Object o) :
             base(o)
@@ -89,5 +103,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 writer.WriteValueIfNotNull(nameof(Extensions),Extensions);
                 }
             }
+
+        private String thumbprint;
         }
     }

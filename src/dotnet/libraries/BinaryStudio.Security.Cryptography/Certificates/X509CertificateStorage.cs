@@ -70,6 +70,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }}
 
+        public IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get {
+            foreach (var o in Store.CertificateRevocationLists) {
+                yield return o;
+                }
+            }}
+
         [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
         [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
 

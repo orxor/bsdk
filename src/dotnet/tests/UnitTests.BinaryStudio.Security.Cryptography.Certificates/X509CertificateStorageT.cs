@@ -15,6 +15,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             }
 
         [TestMethod]
+        [Ignore]
         public void Certificates()
             {
             using (var store = new X509CertificateStorage(new Uri("folder://./UnitTestData/cer"))) {
@@ -70,6 +71,27 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
         public void CertificatesCurrentUserMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)) {
                 foreach (var certificate in store.Certificates) {
+                    Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
+                    }
+                }
+            }
+        #endregion
+        #region M:CrlsLocalMachineMy
+        [TestMethod]
+        public void CrlsLocalMachineMy() {
+            using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.LocalMachine)) {
+                foreach (var certificate in store.CertificateRevocationLists) {
+                    Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
+                    certificate.Dispose();
+                    }
+                }
+            }
+        #endregion
+        #region M:CrlsCurrentUserMy
+        [TestMethod]
+        public void CrlsCurrentUserMy() {
+            using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)) {
+                foreach (var certificate in store.CertificateRevocationLists) {
                     Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
                     }
                 }

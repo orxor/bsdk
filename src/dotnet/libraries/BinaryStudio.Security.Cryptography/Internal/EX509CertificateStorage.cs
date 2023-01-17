@@ -25,6 +25,14 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 }
             }}
 
+        public IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get {
+            var o = Entries.CertEnumCRLsInStore(Store, IntPtr.Zero);
+            while (o != IntPtr.Zero) {
+                yield return new X509CertificateRevocationList(o);
+                o = Entries.CertEnumCRLsInStore(Store, o);
+                }
+            }}
+
         private const UInt32 CERT_CLOSE_STORE_FORCE_FLAG = 0x00000001;
         private const UInt32 CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002;
         protected const UInt32 CERT_STORE_NO_CRYPT_RELEASE_FLAG                 = 0x00000001;

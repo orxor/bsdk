@@ -61,7 +61,7 @@ namespace BinaryStudio.PortableExecutable
                                         var Size = entry->Length - 4;
                                         var encoding = (entry->Flags == MESSAGE_RESOURCE_ENTRY_ENCODING.UNICODE)
                                                 ? Encoding.Unicode
-                                                : Encoding.GetEncoding(ANSICodePage);
+                                                : GetEncoding(ANSICodePage);
                                         entry++;
                                         values.Add(j, encoding.GetString((Byte*)entry, Size).Trim('\0').Trim('\r','\n'));
                                         entry = (MESSAGE_RESOURCE_ENTRY*)(((Byte*)entry) + Size);

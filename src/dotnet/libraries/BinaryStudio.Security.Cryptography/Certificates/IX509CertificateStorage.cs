@@ -7,5 +7,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         {
         IntPtr Handle { get; }
         IEnumerable<X509Certificate> Certificates { get; }
+        IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get; }
         }
     }

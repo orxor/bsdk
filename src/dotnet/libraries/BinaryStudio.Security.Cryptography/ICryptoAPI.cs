@@ -20,6 +20,7 @@ namespace BinaryStudio.Security.Cryptography
         IntPtr CertOpenStore(IntPtr StoreProvider, UInt32 MsgAndCertEncodingType, IntPtr CryptProv, UInt32 Flags, [In] String Para);
         IntPtr CertOpenStore(IntPtr StoreProvider, UInt32 MsgAndCertEncodingType, IntPtr CryptProv, UInt32 Flags, [In] IntPtr Para);
         IntPtr CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext);
+        IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
         IntPtr CertCreateCertificateContext(UInt32 CertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
         }
     }
