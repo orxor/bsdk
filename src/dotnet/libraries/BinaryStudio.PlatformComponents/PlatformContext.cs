@@ -95,7 +95,7 @@ namespace BinaryStudio.PlatformComponents
         [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Auto)] private static extern Int32 RegOpenKeyEx(IntPtr key, String lpSubKey, Int32 ulOptions, RegistrySpecificAccessRights samDesired, out IntPtr hkResult);
         [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.Auto)] private static extern Int32 RegQueryValueEx(IntPtr key, String valuename, IntPtr reserved, IntPtr type, out Int32 data, ref Int32 size);
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, ExactSpelling = true)] private static extern Boolean ProcessIdToSessionId([In] Int32 process, out Int32 session);
-        [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)] [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)] internal static extern Int32 RegCloseKey(IntPtr key);
+        [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)] internal static extern Int32 RegCloseKey(IntPtr key);
 
         private const Int32 SM_REMOTESESSION = 0x1000;
         private const Int32 SM_REMOTECONTROL = 0x2001;

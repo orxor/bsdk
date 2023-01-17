@@ -43,7 +43,7 @@ namespace BinaryStudio.PlatformComponents.Win32
             }
 
         private Boolean? iswow64;
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)][DllImport("kernel32.dll", SetLastError = true)] internal static extern Boolean CloseHandle(IntPtr handle);
+        [DllImport("kernel32.dll", SetLastError = true)] internal static extern Boolean CloseHandle(IntPtr handle);
         [DllImport("ntdll.dll", CharSet = CharSet.Auto)] private static extern unsafe UInt32 NtQueryInformationProcess(ProcessHandle process, UInt32 iclass, void* pi, UInt32 pisz, UInt32* r);
 
         private const UInt32 ProcessWow64Information = 26;
