@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Security;
@@ -56,7 +55,7 @@ namespace BinaryStudio.IO
         #if LINUX
         [DllImport("c", EntryPoint = "munmap")] private static extern Int32 UnmapViewOfFile(IntPtr lpBaseAddress, IntPtr length);
         #else
-        [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)] [DllImport("kernel32.dll", ExactSpelling = true)] private static extern Boolean UnmapViewOfFile(IntPtr lpBaseAddress);
+        [DllImport("kernel32.dll", ExactSpelling = true)] private static extern Boolean UnmapViewOfFile(IntPtr lpBaseAddress);
         #endif
 
         public static unsafe explicit operator void*(ViewOfFileHandle source)

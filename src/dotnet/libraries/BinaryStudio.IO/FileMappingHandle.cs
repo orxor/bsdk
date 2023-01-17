@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using Microsoft.Win32.SafeHandles;
@@ -36,7 +35,7 @@ namespace BinaryStudio.IO
             }
 
         #if !LINUX
-        [DllImport("kernel32.dll", SetLastError = true)][ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)] private static extern Boolean CloseHandle(IntPtr handle);
+        [DllImport("kernel32.dll", SetLastError = true)] private static extern Boolean CloseHandle(IntPtr handle);
         #endif
 
         /**
