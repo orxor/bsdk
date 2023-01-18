@@ -20,7 +20,7 @@ namespace Options.Descriptors
 
         public override void Usage(TextWriter output)
             {
-            output.Write("mt:{number}");
+            output.Write("mt:{NoMultiThread|NumberOfThreads={number}}");
             }
         }
     }

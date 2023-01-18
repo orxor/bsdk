@@ -82,6 +82,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return length;
             }}
 
+        #region M:Body:Byte[]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)]
+        public virtual Byte[] Body { get {
+            using (var target = new MemoryStream())
+                {
+                WriteTo(target);
+                return target.ToArray();
+                }
+            }}
+        #endregion
+
         #region M:IServiceProvider.GetService(Type):Object
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="service">An object that specifies the type of service object to get.</param>

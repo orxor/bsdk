@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using BinaryStudio.PlatformComponents.Win32;
+using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace BinaryStudio.Security.Cryptography
     {
@@ -22,5 +23,6 @@ namespace BinaryStudio.Security.Cryptography
         IntPtr CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext);
         IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
         IntPtr CertCreateCertificateContext(UInt32 CertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
+        unsafe Boolean CertGetCertificateChain(IntPtr ChainEngine, IntPtr Context, ref FILETIME time, IntPtr AdditionalStore, ref CERT_CHAIN_PARA ChainPara, CERT_CHAIN_FLAGS Flags, IntPtr Reserved, CERT_CHAIN_CONTEXT** ChainContext);
         }
     }

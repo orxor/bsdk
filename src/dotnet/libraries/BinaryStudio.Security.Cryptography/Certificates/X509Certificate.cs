@@ -24,21 +24,35 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String Subject      { get { return Source.Subject.ToString(); }}
         public String Country      { get { return Source.Country; }}
 
+        #region ctor{IntPtr}
         public X509Certificate(IntPtr context) {
             if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
             Context = Entries.CertDuplicateCertificateContext(context);
             Source = BuildSource(Context);
             }
-
-        public X509Certificate(Byte[] source) {
+        #endregion
+        #region ctor{Asn1Certificate}
+        public X509Certificate(Asn1Certificate source) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            Source = BuildSource(source);
-            Context = Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
+            Source = source;
+            Context = CertCreateCertificateContext(source.UnderlyingObject.Body);
             if (Context == IntPtr.Zero) {
                 var hr = GetHRForLastWin32Error();
                 Marshal.ThrowExceptionForHR((Int32)hr);
                 }
             }
+        #endregion
+        #region ctor{Byte[]}
+        public X509Certificate(Byte[] source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            Source = BuildSource(source);
+            Context = CertCreateCertificateContext(source);
+            if (Context == IntPtr.Zero) {
+                var hr = GetHRForLastWin32Error();
+                Marshal.ThrowExceptionForHR((Int32)hr);
+                }
+            }
+        #endregion
 
         #region M:BuildSource(CERT_CONTEXT*):Asn1Certificate
         private static unsafe Asn1Certificate BuildSource(CERT_CONTEXT* Context) {
@@ -85,6 +99,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:WriteTo(IJsonWriter)
+        /// <summary>Writes the JSON representation of the object.</summary>
+        /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             using (writer.Object()) {
@@ -97,6 +113,18 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 writer.WriteValue(nameof(Thumbprint),Thumbprint);
                 writer.WriteValue(nameof(Source),Source);
                 }
+            }
+        #endregion
+        #region M:CertCreateCertificateContext(Byte[]):IntPtr
+        private static IntPtr CertCreateCertificateContext(Byte[] source)
+            {
+            return Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
+            }
+        #endregion
+
+        #region M:Verify(CertificateChainPolicy)
+        public void Verify(CertificateChainPolicy policy) {
+            CryptographicContext.DefaultContext.VerifyObject(this, policy);
             }
         #endregion
         }

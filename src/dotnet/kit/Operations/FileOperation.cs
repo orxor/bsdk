@@ -52,6 +52,75 @@ namespace Operations
             Execute(InputFileName);
             }
 
+        #region M:Execute(IFileService):FileOperationStatus
+        private FileOperationStatus Execute(IFileService service) {
+            var status = FileOperationStatus.Skip;
+            var timer = new Stopwatch();
+            var e = new ExecuteActionEventArgs(service)
+                {
+                OperationStatus = FileOperationStatus.Skip
+                };
+            timer.Start();
+            try
+                {
+                ExecuteAction?.Invoke(this,e);
+                }
+            catch (Exception x)
+                {
+                x.Add("Service", new
+                    {
+                    Type = service.GetType().FullName,
+                    Self = service.FullName
+                    });
+                status = FileOperationStatus.Error;
+                Logger.Log(LogLevel.Warning, x);
+                if (StopOnError)
+                    {
+                    throw;
+                    }
+                }
+            finally
+                {
+                timer.Stop();
+                }
+            status = Max(status,e.OperationStatus);
+            switch (e.OperationStatus) {
+                case FileOperationStatus.Success:
+                    lock(console) {
+                        Write(Console.Out,ConsoleColor.Green, "{ok}");
+                        Write(Console.Out,ConsoleColor.Gray, ":");
+                        Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
+                        WriteLine(Console.Out,ConsoleColor.Gray, $":{service.FileName}");
+                        }
+                    break;
+                case FileOperationStatus.Skip:
+                    lock(console) {
+                        Write(Console.Out,ConsoleColor.Yellow, "{skip}");
+                        Write(Console.Out,ConsoleColor.Gray, ":");
+                        Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
+                        WriteLine(Console.Out,ConsoleColor.Gray, $":{service.FileName}");
+                        }
+                    break;;
+                case FileOperationStatus.Warning:
+                    lock(console) {
+                        Write(Console.Out,ConsoleColor.Cyan, "{warning}");
+                        Write(Console.Out,ConsoleColor.Gray, ":");
+                        Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
+                        WriteLine(Console.Out,ConsoleColor.Gray, $":{service.FileName}");
+                        }
+                    break;;
+                case FileOperationStatus.Error:
+                    lock(console) {
+                        Write(Console.Out,ConsoleColor.Red, "{error}");
+                        Write(Console.Out,ConsoleColor.Gray, ":");
+                        Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
+                        WriteLine(Console.Out,ConsoleColor.Gray, $":{service.FileName}");
+                        }
+                    break;
+                    }
+            return status;
+            }
+        #endregion
         #region M:Execute(IEnumerable<String>):FileOperationStatus
         public FileOperationStatus Execute(IEnumerable<String> InputSource) {
             var Status = new InterlockedInternal<FileOperationStatus>(FileOperationStatus.Skip);
@@ -78,71 +147,17 @@ namespace Operations
         #region M:Execute(IDirectoryService):FileOperationStatus
         public FileOperationStatus Execute(IEnumerable<IFileService> InputSource) {
             var status = FileOperationStatus.Skip;
-            InputSource.AsParallel().ForAll(service=> {
-                var timer = new Stopwatch();
-                var e = new ExecuteActionEventArgs(service)
-                    {
-                    OperationStatus = FileOperationStatus.Skip
-                    };
-                timer.Start();
-                try
-                    {
-                    ExecuteAction?.Invoke(this,e);
+            if (MultiThreadOption.NoMultiThread) {
+                foreach (var service in InputSource) {
+                    status = Max(status,Execute(service));
                     }
-                catch (Exception x)
-                    {
-                    x.Add("Service", new
-                        {
-                        Type = service.GetType().FullName,
-                        Self = service.FullName
-                        });
-                    status = FileOperationStatus.Error;
-                    Logger.Log(LogLevel.Warning, x);
-                    if (StopOnError)
-                        {
-                        throw;
-                        }
-                    }
-                finally
-                    {
-                    timer.Stop();
-                    }
-                status = Max(status,e.OperationStatus);
-                switch (e.OperationStatus) {
-                    case FileOperationStatus.Success:
-                        lock(console) {
-                            Write(Console.Out,ConsoleColor.Green, "{ok}");
-                            Write(Console.Out,ConsoleColor.Gray, ":");
-                            Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
-                            WriteLine(Console.Out,ConsoleColor.Gray, $":{service.FileName}");
-                            }
-                        break;
-                    case FileOperationStatus.Skip:
-                        lock(console) {
-                            Write(Console.Out,ConsoleColor.Yellow, "{skip}");
-                            Write(Console.Out,ConsoleColor.Gray, ":");
-                            Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
-                            WriteLine(Console.Out,ConsoleColor.Gray, $":{service.FileName}");
-                            }
-                        break;;
-                    case FileOperationStatus.Warning:
-                        lock(console) {
-                            Write(Console.Out,ConsoleColor.Cyan, "{warning}");
-                            Write(Console.Out,ConsoleColor.Gray, ":");
-                            Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
-                            WriteLine(Console.Out,ConsoleColor.Gray, $":{service.FileName}");
-                            }
-                        break;;
-                    case FileOperationStatus.Error:
-                        lock(console) {
-                            Write(Console.Out,ConsoleColor.Red, "{error}");
-                            Write(Console.Out,ConsoleColor.Gray, ":");
-                            Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
-                            WriteLine(Console.Out,ConsoleColor.Gray, $":{service.FileName}");
-                            }
-                        break;
-                        }
-                });
+                }
+            else
+                {
+                InputSource.AsParallel().ForAll(service=> {
+                    status = Max(status,Execute(service));
+                    });
+                }
             return status;
             }
         #endregion

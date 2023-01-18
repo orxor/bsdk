@@ -8,6 +8,7 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <DefineConstants>$(DefineConstants);CERT_CHAIN_PARA_HAS_EXTRA_FIELDS</DefineConstants>
     <Configurations>Debug;Release;Linux{Debug}</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Linux{Debug}'">

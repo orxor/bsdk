@@ -6,6 +6,7 @@ namespace Options
     internal class MultiThreadOption : OperationOptionWithParameters
         {
         public Int32 NumberOfThreads { get;set; }
+        public Boolean NoMultiThread {get;set; }
         public MultiThreadOption(IList<String> values)
             :base(values)
             {
@@ -14,6 +15,7 @@ namespace Options
                 if (value.StartsWith("NumberOfThreads=", StringComparison.OrdinalIgnoreCase)) {
                     NumberOfThreads = Int32.Parse(value.Substring(6).Trim());
                     }
+                if (value.Equals("NoMultiThread",StringComparison.OrdinalIgnoreCase)) { NoMultiThread = true; }
                 }
             if (NumberOfThreads < 0) {
                 foreach(var value in values) {

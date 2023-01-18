@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -47,6 +48,13 @@ namespace BinaryStudio.Security.Cryptography
         ~CryptographicObject()
             {
             Dispose(false);
+            }
+        #endregion
+
+        #region M:IsNullOrEmpty(ICollection):Boolean
+        protected static Boolean IsNullOrEmpty(ICollection source)
+            {
+            return (source == null) || (source.Count == 0);
             }
         #endregion
 
