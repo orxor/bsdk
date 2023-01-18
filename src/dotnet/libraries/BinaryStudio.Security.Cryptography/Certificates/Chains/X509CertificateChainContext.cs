@@ -8,7 +8,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     public class X509CertificateChainContext :
         IReadOnlyList<X509CertificateChain>,IX509CertificateChainStatus
         {
-        private unsafe CERT_CHAIN_CONTEXT* ChainContext = null;
+        internal unsafe CERT_CHAIN_CONTEXT* ChainContext = null;
         private readonly IList<X509CertificateChain> source = new List<X509CertificateChain>();
 
         #region M:IReadOnlyList<X509CertificateChain>.GetEnumerator:IEnumerator<X509CertificateChain>
@@ -39,22 +39,22 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public CertificateChainErrorStatus ErrorStatus { get; }
         public CertificateChainInfoStatus  InfoStatus  { get; }
 
-        /// <summary>Initializes a new instance of the <see cref="X509CertificateChainContext"/> class from specified source.</summary>
-        /// <param name="context">Source of chain context.</param>
-        internal unsafe X509CertificateChainContext(ref CERT_CHAIN_CONTEXT context)
-            {
-            ErrorStatus = context.TrustStatus.ErrorStatus;
-            InfoStatus  = context.TrustStatus.InfoStatus;
-            if ((context.ChainCount > 0) && (context.ChainArray != null)) {
-                for (var i = 0; i < context.ChainCount; i++) {
-                    var chain = context.ChainArray[i];
-                    if (chain != null)
-                        {
-                        source.Add(new X509CertificateChain(chain, i));
-                        }
-                    }
-                }
-            }
+        ///// <summary>Initializes a new instance of the <see cref="X509CertificateChainContext"/> class from specified source.</summary>
+        ///// <param name="context">Source of chain context.</param>
+        //internal unsafe X509CertificateChainContext(ref CERT_CHAIN_CONTEXT context)
+        //    {
+        //    ErrorStatus = context.TrustStatus.ErrorStatus;
+        //    InfoStatus  = context.TrustStatus.InfoStatus;
+        //    if ((context.ChainCount > 0) && (context.ChainArray != null)) {
+        //        for (var i = 0; i < context.ChainCount; i++) {
+        //            var chain = context.ChainArray[i];
+        //            if (chain != null)
+        //                {
+        //                source.Add(new X509CertificateChain(chain, i));
+        //                }
+        //            }
+        //        }
+        //    }
 
         /// <summary>Initializes a new instance of the <see cref="X509CertificateChainContext"/> class from specified source.</summary>
         /// <param name="context">Source of chain context.</param>

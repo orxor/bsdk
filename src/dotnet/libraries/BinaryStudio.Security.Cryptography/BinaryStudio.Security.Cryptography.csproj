@@ -35,4 +35,7 @@
       <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
 </Project>

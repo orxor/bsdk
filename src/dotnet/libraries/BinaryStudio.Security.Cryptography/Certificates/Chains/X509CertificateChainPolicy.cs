@@ -1,14 +1,14 @@
-﻿using BinaryStudio.PlatformComponents.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
+    using HRESULT=HResult;
     public partial class X509CertificateChainPolicy
         {
-        private ICryptoAPI Entries;
+        internal ICryptoAPI Entries;
         private X509CertificateChainPolicy Source;
         public CertificateChainPolicy Policy { get; }
         internal X509CertificateChainPolicy(CertificateChainPolicy policy, ICryptoAPI entries)
@@ -26,9 +26,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             throw new ArgumentOutOfRangeException(nameof(policy));
             }
         #endregion
-        #region M:Validate(X509Certificate)
-        public virtual void Validate(X509CertificateChainContext context) {
+        #region M:Validate(X509Certificate,CERT_CHAIN_POLICY_FLAGS)
+        public virtual void Validate(X509CertificateChainContext context,CERT_CHAIN_POLICY_FLAGS flags) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
+            Source.Validate(context,flags);
             }
         #endregion
         #region M:EnsureSource
@@ -59,6 +60,37 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                         break;
                     default: throw new ArgumentOutOfRangeException(nameof(Policy));
                     }
+                }
+            }
+        #endregion
+        #region M:Validate([Out]Exception,Boolean):Boolean
+        protected virtual Boolean Validate(out Exception e, Boolean status) {
+            e = null;
+            if (!status) {
+                e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                #if DEBUG
+                Debug.Print($"Validate:{e.Message}");
+                #endif
+                return false;
+                }
+            return true;
+            }
+        #endregion
+        #region M:Validate(HRESULT)
+        protected virtual void Validate(HRESULT hr) {
+            if (hr != HRESULT.S_OK) {
+                throw HResultException.GetExceptionForHR((Int32)hr);
+                }
+            }
+        #endregion
+        #region M:Validate(Boolean)
+        protected virtual void Validate(Boolean status) {
+            if (!status) {
+                var e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                #if DEBUG
+                Debug.Print($"Validate:{e.Message}");
+                #endif
+                throw e;
                 }
             }
         #endregion

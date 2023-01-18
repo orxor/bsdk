@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
-using System.Runtime.InteropServices;
 #if LINUX
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,12 +14,11 @@ using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 #endif
+using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.PlatformComponents.Win32;
 using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
-using BinaryStudio.IO;
-using System.Linq;
 
 namespace BinaryStudio.Security.Cryptography
     {
@@ -103,7 +102,7 @@ namespace BinaryStudio.Security.Cryptography
             if (certificate == null) { throw new ArgumentNullException(nameof(certificate)); }
             if (policy == 0) { throw new ArgumentOutOfRangeException(nameof(policy)); }
             EnsureEntries();
-            (new X509CertificateChainPolicy(policy,Entries)).Validate(GetCertificateChain(certificate,null));
+            (new X509CertificateChainPolicy(policy,Entries)).Validate(GetCertificateChain(certificate,null),0);
             }
         #endregion
 
