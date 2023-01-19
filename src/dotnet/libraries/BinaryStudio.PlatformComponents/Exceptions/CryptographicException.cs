@@ -4,20 +4,28 @@ using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography
     {
+    using HRESULT=HResult;
     public class CryptographicException : AggregateException
         {
-        public CryptographicException(HResult SCode)
+        public CryptographicException(HRESULT SCode)
             :base(HResultException.FormatMessage(SCode))
             {
             HResult = (Int32)SCode;
             }
 
         public CryptographicException()
+            :this(HRESULT.CORSEC_E_CRYPTO)
             {
             }
 
-        public CryptographicException(String message)
+        public CryptographicException(HRESULT SCode,String message)
             :base(message)
+            {
+            HResult = (Int32)SCode;
+            }
+
+        public CryptographicException(String message)
+            :this(HRESULT.CORSEC_E_CRYPTO,message)
             {
             }
 
