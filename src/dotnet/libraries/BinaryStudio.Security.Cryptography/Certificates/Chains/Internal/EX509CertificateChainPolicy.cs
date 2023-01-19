@@ -46,8 +46,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     ref policyPara,
                     ref policyStatus));
                 if (policyStatus.Error != 0) {
-                    throw (new HResultException(policyStatus.Error)).
-                        Add("ChainContext", context);
+                    throw (HResultException.GetExceptionForHR((Int32)policyStatus.Error).
+                        Add("ChainContext", context));
                     }
                 }
             #endregion

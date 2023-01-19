@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BinaryStudio.Security.Cryptography;
+using System;
 #if !NET35
 using System.Collections.Concurrent;
 #endif
@@ -336,7 +337,9 @@ namespace BinaryStudio.PlatformComponents.Win32
         public static Exception GetExceptionForHR(Int32 scode) { return GetExceptionForHR(scode, null); }
         public static Exception GetExceptionForHR(Int32 scode, CultureInfo culture) {
             if ((scode > 0xFFFF) || (scode < 0)) {
-                switch ((HResult)scode) {
+                switch ((HRESULT)scode) {
+                    case HRESULT.CERT_E_CHAINING :            return new CertificateRevocationException((HRESULT)scode);
+                    case HRESULT.CRYPT_E_NO_REVOCATION_CHECK: return new CertificateRevocationException((HRESULT)scode);
                     }
                 }
             else
@@ -344,6 +347,7 @@ namespace BinaryStudio.PlatformComponents.Win32
                 switch ((Win32ErrorCode)scode) {
                     case Win32ErrorCode.ERROR_ACCESS_DENIED: return new UnauthorizedAccessException(FormatMessage(unchecked((UInt32)scode), culture));
                     }
+
                 }
             return new HResultException(scode, culture);
             }
