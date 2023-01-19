@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PortableExecutable.Win32;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {

@@ -148,7 +148,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 : (new CertificateException(scode,r)).SetStackTrace(new StackTrace(true)));
             }
         #endregion
-
+        #region M:ExceptionForStatus(HRESULT,X509CertificateChainContext):Exception
         protected static Exception ExceptionForStatus(HRESULT scode,X509CertificateChainContext context) {
             var r = new List<Exception>();
             foreach (var chainS in context) {
@@ -170,6 +170,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 ? r[0]
                 : new CertificateException(scode,r));
             }
+        #endregion
 
         private static readonly IDictionary<CertificateChainErrorStatus,Type> types = new Dictionary<CertificateChainErrorStatus,Type>();
         static X509CertificateChainPolicy() {

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="9000" xml:space="preserve">
+    <value>Контейнер</value>
+  </data>
+  <data name="AggregateException" xml:space="preserve">
+    <value>{0}{1}---&amp;gt; (Внутреннее исключение #{2}) {3}{4}{5}</value>
+  </data>
   <data name="CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID" xml:space="preserve">
     <value>A CTL used to create this chain did not have a valid signature.</value>
   </data>
@@ -127,16 +133,16 @@
     <value>A CTL used to create this chain is not valid for this usage.</value>
   </data>
   <data name="CERT_TRUST_HAS_EXCLUDED_NAME_CONSTRAINT" xml:space="preserve">
-    <value>The certificate or one of the certificates in the certificate chain has a name constraints extension, and one of the name choices in the end certificate is explicitly excluded.</value>
+    <value>Сертификат или один из сертификатов в цепочке сертификатов имеет расширение ограничений имени, и одно из вариантов имени в конечном сертификате явно исключено.</value>
   </data>
   <data name="CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT" xml:space="preserve">
-    <value>The certificate or one of the certificates in the certificate chain has a name constraints extension and a name constraint is missing for one of the name choices in the end certificate.</value>
+    <value>Сертификат или один из сертификатов в цепочке сертификатов имеет расширение ограничений имени, а ограничение имени отсутствует для одного из вариантов имени в конечном сертификате.</value>
   </data>
   <data name="CERT_TRUST_HAS_NOT_PERMITTED_NAME_CONSTRAINT" xml:space="preserve">
-    <value>The certificate or one of the certificates in the certificate chain has a name constraints extension, and there is not a permitted name constraint for one of the name choices in the end certificate.</value>
+    <value>Сертификат или один из сертификатов в цепочке сертификатов имеет расширение ограничений имени, и нет разрешенного ограничения имени для одного из вариантов имени в конечном сертификате.</value>
   </data>
   <data name="CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT" xml:space="preserve">
-    <value>The certificate does not support a critical extension.</value>
+    <value>Сертификат не поддерживает критическое расширение.</value>
   </data>
   <data name="CERT_TRUST_HAS_NOT_SUPPORTED_NAME_CONSTRAINT" xml:space="preserve">
     <value>The certificate or one of the certificates in the certificate chain has a name constraints extension that contains unsupported fields. The minimum and maximum fields are not supported. Thus minimum must always be zero and maximum must always be absent. Only UPN is supported for an Other Name.</value>
@@ -148,54 +154,93 @@
     <value>The certificate has not been strong signed. Typically this indicates that the MD2 or MD5 hashing algorithms were used to create a hash of the certificate.</value>
   </data>
   <data name="CERT_TRUST_INVALID_BASIC_CONSTRAINTS" xml:space="preserve">
-    <value>The certificate or one of the certificates in the certificate chain has a basic constraints extension, and either the certificate cannot be used to issue other certificates, or the chain path length has been exceeded.</value>
+    <value>Сертификат или один из сертификатов в цепочке сертификатов имеет расширение базовых ограничений, и либо сертификат не может быть использован для выдачи других сертификатов, либо длина пути цепочки превышена.</value>
   </data>
   <data name="CERT_TRUST_INVALID_EXTENSION" xml:space="preserve">
-    <value>One of the certificates has an extension that is not valid.</value>
+    <value>Один из сертификатов имеет недопустимое расширение.</value>
   </data>
   <data name="CERT_TRUST_INVALID_NAME_CONSTRAINTS" xml:space="preserve">
-    <value>The certificate or one of the certificates in the certificate chain has a name constraints extension that is not valid.</value>
+    <value>ертификат или один из сертификатов в цепочке сертификатов имеет недопустимое расширение ограничений имени.</value>
   </data>
   <data name="CERT_TRUST_INVALID_POLICY_CONSTRAINTS" xml:space="preserve">
-    <value>The certificate or one of the certificates in the certificate chain has a policy constraints extension, and one of the issued certificates has a disallowed policy mapping extension or does not have a required issuance policies extension.</value>
+    <value>Сертификат или один из сертификатов в цепочке сертификатов имеет расширение ограничений политики, а один из выданных сертификатов имеет запрещенное расширение сопоставления политик или не имеет необходимого расширения политик выдачи.</value>
   </data>
   <data name="CERT_TRUST_IS_CYCLIC" xml:space="preserve">
-    <value>One of the certificates in the chain was issued by a certification authority that the original certificate had certified.</value>
+    <value>Один из сертификатов в цепочке был выдан центром сертификации, который был сертифицирован исходным сертификатом.</value>
   </data>
   <data name="CERT_TRUST_IS_EXPLICIT_DISTRUST" xml:space="preserve">
-    <value>The certificate is explicitly distrusted.</value>
+    <value>Сертификату явно не доверяют.</value>
   </data>
   <data name="CERT_TRUST_IS_NOT_SIGNATURE_VALID" xml:space="preserve">
-    <value>The certificate or one of the certificates in the certificate chain does not have a valid signature.</value>
+    <value>Сертификат или один из сертификатов в цепочке сертификатов не имеет действительной подписи.</value>
   </data>
   <data name="CERT_TRUST_IS_NOT_TIME_NESTED" xml:space="preserve">
     <value>CERT_TRUST_IS_NOT_TIME_NESTED</value>
   </data>
   <data name="CERT_TRUST_IS_NOT_VALID_FOR_USAGE" xml:space="preserve">
-    <value>The certificate or certificate chain is not valid for its proposed usage.</value>
+    <value>Сертификат или цепочка сертификатов недействительны для предполагаемого использования.</value>
   </data>
   <data name="CERT_TRUST_IS_OFFLINE_REVOCATION" xml:space="preserve">
-    <value>The revocation status of the certificate or one of the certificates in the certificate chain is either offline or stale.</value>
+    <value>Статус отзыва сертификата или одного из сертификатов в цепочке сертификатов отключен или устарел.</value>
   </data>
   <data name="CERT_TRUST_IS_PARTIAL_CHAIN" xml:space="preserve">
-    <value>The certificate chain is not complete.</value>
+    <value>Цепочка сертификатов не завершена.</value>
   </data>
   <data name="CERT_TRUST_IS_REVOKED" xml:space="preserve">
-    <value>Trust for this certificate or one of the certificates in the certificate chain has been revoked.</value>
+    <value>Доверие к этому сертификату или одному из сертификатов в цепочке сертификатов было отозвано.</value>
   </data>
   <data name="CERT_TRUST_IS_UNTRUSTED_ROOT" xml:space="preserve">
-    <value>The certificate or certificate chain is based on an untrusted root.</value>
+    <value>Сертификат или цепочка сертификатов основаны на ненадежном корневом сертификате.</value>
   </data>
   <data name="CERT_TRUST_NO_ERROR" xml:space="preserve">
-    <value>No error found for this certificate or chain.</value>
+    <value>Для этого сертификата или цепочки ошибок не обнаружено.</value>
   </data>
   <data name="CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY" xml:space="preserve">
-    <value>The end certificate does not have any resultant issuance policies, and one of the issuing certification authority certificates has a policy constraints extension requiring it.</value>
+    <value>Конечный сертификат не имеет никаких результирующих политик выдачи, и один из сертификатов выдающего центра сертификации имеет расширение ограничений политики, требующее этого.</value>
   </data>
   <data name="CERT_TRUST_REVOCATION_STATUS_UNKNOWN" xml:space="preserve">
-    <value>The revocation status of the certificate or one of the certificates in the certificate chain is unknown.</value>
+    <value>Статус отзыва сертификата или одного из сертификатов в цепочке сертификатов неизвестен.</value>
   </data>
   <data name="TrustIsNotTimeValid" xml:space="preserve">
-    <value>This certificate or one of the certificates in the certificate chain is not time valid.</value>
+    <value>Этот сертификат или один из сертификатов в цепочке сертификатов недействителен в части времени.</value>
+  </data>
+  <data name="X509Certificate.Extensions" xml:space="preserve">
+    <value>Расширения</value>
+  </data>
+  <data name="X509Certificate.HashAlgorithm" xml:space="preserve">
+    <value>Алгоритм хэширования подписи</value>
+  </data>
+  <data name="X509Certificate.Issuer" xml:space="preserve">
+    <value>Издатель</value>
+  </data>
+  <data name="X509Certificate.NotAfter" xml:space="preserve">
+    <value>Действителен по</value>
+  </data>
+  <data name="X509Certificate.NotBefore" xml:space="preserve">
+    <value>Действителен с</value>
+  </data>
+  <data name="X509Certificate.PublicKey" xml:space="preserve">
+    <value>Открытый ключ</value>
+  </data>
+  <data name="X509Certificate.SerialNumber" xml:space="preserve">
+    <value>Серийный номер</value>
+  </data>
+  <data name="X509Certificate.Signature" xml:space="preserve">
+    <value>Сигнатура</value>
+  </data>
+  <data name="X509Certificate.SignatureAlgorithm" xml:space="preserve">
+    <value>Алгоритм подписи</value>
+  </data>
+  <data name="X509Certificate.Subject" xml:space="preserve">
+    <value>Субъект</value>
+  </data>
+  <data name="X509Certificate.Thumbprint" xml:space="preserve">
+    <value>Отпечаток</value>
+  </data>
+  <data name="X509Certificate.ThumbprintAlgorithm" xml:space="preserve">
+    <value>Алгоритм отпечатка</value>
+  </data>
+  <data name="X509Certificate.Version" xml:space="preserve">
+    <value>Версия</value>
   </data>
 </root>

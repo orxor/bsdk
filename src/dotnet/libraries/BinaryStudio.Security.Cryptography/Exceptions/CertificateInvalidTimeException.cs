@@ -1,6 +1,7 @@
 ﻿using System;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Properties;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography
     {
@@ -16,6 +17,7 @@ namespace BinaryStudio.Security.Cryptography
             }
 
         /// <summary>Initializes a new instance of the <see cref="CertificateInvalidTimeException"/> class with a system-supplied message that describes the error.</summary>
+        [UsedImplicitly]
         public CertificateInvalidTimeException()
             :this(Resources.ResourceManager.GetString(nameof(CertificateChainErrorStatus.TrustIsNotTimeValid)))
             {

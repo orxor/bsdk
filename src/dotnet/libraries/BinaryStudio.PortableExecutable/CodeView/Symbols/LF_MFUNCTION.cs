@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using BinaryStudio.PlatformComponents;
 using BinaryStudio.PortableExecutable.Win32;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.PortableExecutable.CodeView
     {

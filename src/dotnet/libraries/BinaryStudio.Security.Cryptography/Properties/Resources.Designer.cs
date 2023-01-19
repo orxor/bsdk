@@ -223,15 +223,6 @@ namespace BinaryStudio.Security.Cryptography.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This certificate or one of the certificates in the certificate chain is not time valid..
-        /// </summary>
-        internal static string CERT_TRUST_IS_NOT_TIME_VALID {
-            get {
-                return ResourceManager.GetString("CERT_TRUST_IS_NOT_TIME_VALID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The certificate or certificate chain is not valid for its proposed usage..
         /// </summary>
         internal static string CERT_TRUST_IS_NOT_VALID_FOR_USAGE {
@@ -300,6 +291,15 @@ namespace BinaryStudio.Security.Cryptography.Properties {
         internal static string CERT_TRUST_REVOCATION_STATUS_UNKNOWN {
             get {
                 return ResourceManager.GetString("CERT_TRUST_REVOCATION_STATUS_UNKNOWN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This certificate or one of the certificates in the certificate chain is not time valid..
+        /// </summary>
+        internal static string TrustIsNotTimeValid {
+            get {
+                return ResourceManager.GetString("TrustIsNotTimeValid", resourceCulture);
             }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using Microsoft.Win32.SafeHandles;
@@ -50,7 +49,7 @@ namespace BinaryStudio.IO
         public static LocalMemoryHandle Alloc(IntPtr size) { return new LocalMemoryHandle(Marshal.AllocHGlobal(size)); }
         public static LocalMemoryHandle Alloc(Int32  size) { return new LocalMemoryHandle(Marshal.AllocHGlobal((IntPtr)size)); }
         #else
-        [DllImport("kernel32.dll")] [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success), SecurityCritical, SuppressUnmanagedCodeSecurity] private static extern IntPtr LocalFree(IntPtr hMem);
+        [DllImport("kernel32.dll")] private static extern IntPtr LocalFree(IntPtr hMem);
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern LocalMemoryHandle LocalAlloc([In] UInt32 flags, [In] IntPtr size);
         internal const UInt32 LMEM_ZEROINIT = 0x0040;
         public static LocalMemoryHandle Alloc(IntPtr size) { return LocalAlloc(LMEM_ZEROINIT, size); }

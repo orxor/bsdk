@@ -100,6 +100,42 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
+        #region M:CertCreateCertificateContext(Byte[]):IntPtr
+        private static IntPtr CertCreateCertificateContext(Byte[] source)
+            {
+            return Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
+            }
+        #endregion
+
+        #region M:Verify(CertificateChainPolicy)
+        public void Verify(CertificateChainPolicy policy) {
+            CryptographicContext.DefaultContext.VerifyObject(this, policy);
+            }
+        #endregion
+
+        #region M:IExceptionSerializable.WriteTo(TextWriter)
+        void IExceptionSerializable.WriteTo(TextWriter target) {
+            using (var writer = new DefaultJsonWriter(new JsonTextWriter(target){
+                    Formatting = Formatting.Indented,
+                    Indentation = 2,
+                    IndentChar = ' '
+                    })) {
+                ((IExceptionSerializable)this).WriteTo(writer);
+                }
+            }
+        #endregion
+        #region M:IExceptionSerializable.WriteTo(IJsonWriter)
+        void IExceptionSerializable.WriteTo(IJsonWriter writer) {
+            using (writer.Object()) {
+                writer.WriteValue(nameof(NotBefore),NotBefore);
+                writer.WriteValue(nameof(NotAfter),NotAfter);
+                writer.WriteValue(nameof(SerialNumber),SerialNumber);
+                writer.WriteValue(nameof(Subject),Subject);
+                writer.WriteValue(nameof(Issuer),Issuer);
+                writer.WriteValue(nameof(Thumbprint),Thumbprint);
+                }
+            }
+        #endregion
         #region M:WriteTo(IJsonWriter)
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
@@ -117,38 +153,5 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
-        #region M:CertCreateCertificateContext(Byte[]):IntPtr
-        private static IntPtr CertCreateCertificateContext(Byte[] source)
-            {
-            return Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
-            }
-        #endregion
-
-        #region M:Verify(CertificateChainPolicy)
-        public void Verify(CertificateChainPolicy policy) {
-            CryptographicContext.DefaultContext.VerifyObject(this, policy);
-            }
-        #endregion
-
-        void IExceptionSerializable.WriteTo(TextWriter target) {
-            using (var writer = new DefaultJsonWriter(new JsonTextWriter(target){
-                    Formatting = Formatting.Indented,
-                    Indentation = 2,
-                    IndentChar = ' '
-                    })) {
-                ((IExceptionSerializable)this).WriteTo(writer);
-                }
-            }
-
-        void IExceptionSerializable.WriteTo(IJsonWriter writer) {
-            using (writer.Object()) {
-                writer.WriteValue(nameof(NotBefore),NotBefore);
-                writer.WriteValue(nameof(NotAfter),NotAfter);
-                writer.WriteValue(nameof(SerialNumber),SerialNumber);
-                writer.WriteValue(nameof(Subject),Subject);
-                writer.WriteValue(nameof(Issuer),Issuer);
-                writer.WriteValue(nameof(Thumbprint),Thumbprint);
-                }
-            }
         }
     }
