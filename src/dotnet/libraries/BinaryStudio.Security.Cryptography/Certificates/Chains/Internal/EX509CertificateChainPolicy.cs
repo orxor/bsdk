@@ -26,7 +26,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             #endregion
             #region M:Validate(X509Certificate,CERT_CHAIN_POLICY_FLAGS)
-            public unsafe override void Validate(X509CertificateChainContext context,CERT_CHAIN_POLICY_FLAGS flags) {
+            public override unsafe void Validate(X509CertificateChainContext context,CERT_CHAIN_POLICY_FLAGS flags) {
                 if (context == null) { throw new ArgumentNullException(nameof(context)); }
                 var policyPara = new CERT_CHAIN_POLICY_PARA {
                     Size = sizeof(CERT_CHAIN_POLICY_PARA),
@@ -46,8 +46,9 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     ref policyPara,
                     ref policyStatus));
                 if (policyStatus.Error != 0) {
-                    throw (HResultException.GetExceptionForHR((Int32)policyStatus.Error).
-                        Add("ChainContext", context));
+                    throw ExceptionForStatus(policyStatus.Error,context)
+                        .Add("ChainContext", context)
+                        .Add("Policy", Policy);
                     }
                 }
             #endregion

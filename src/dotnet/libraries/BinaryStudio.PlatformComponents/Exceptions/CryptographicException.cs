@@ -38,5 +38,13 @@ namespace BinaryStudio.Security.Cryptography
             : base(message, innerExceptions)
             {
             }
+
+        #region ctor{HRESULT,IEnumerable<Exception>}
+        public CryptographicException(HRESULT scode, IEnumerable<Exception> innerExceptions)
+            : base(HResultException.FormatMessage(scode),innerExceptions)
+            {
+            HResult = (Int32)scode;
+            }
+        #endregion
         }
     }

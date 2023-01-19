@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography
@@ -20,5 +21,12 @@ namespace BinaryStudio.Security.Cryptography
             :base(message)
             {
             }
+
+        #region ctor{HRESULT,IEnumerable<Exception>}
+        public CertificateException(HRESULT scode, IEnumerable<Exception> innerExceptions)
+            :base(scode,innerExceptions)
+            {
+            }
+        #endregion
         }
     }

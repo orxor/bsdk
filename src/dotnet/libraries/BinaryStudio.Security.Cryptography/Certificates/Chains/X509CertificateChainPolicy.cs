@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents.Win32;
+
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
@@ -94,5 +100,97 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
+
+        #region M:ExceptionForStatus(CertificateChainErrorStatus):Exception
+        private static Exception ExceptionForStatus(CertificateChainErrorStatus status) {
+            var e = (Exception)Activator.CreateInstance(types[status],
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance | BindingFlags.NonPublic,
+                null,
+                null,
+                null);
+            e.Data["Status"] = status;
+            return e;
+            }
+        #endregion
+        #region M:ExceptionForStatus(HRESULT,CertificateChainErrorStatus,UInt32):Exception
+        protected static Exception ExceptionForStatus(HRESULT scode, CertificateChainErrorStatus status, UInt32 mask) {
+            var o = ((Int32)status) & mask;
+            var r = new List<Exception>();
+            if ((o & (Int32)CertificateChainErrorStatus.TrustIsNotTimeValid)                          != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.TrustIsNotTimeValid));                          o &= ~(Int32)CertificateChainErrorStatus.TrustIsNotTimeValid;                          }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED)                != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED));                o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_TIME_NESTED;                }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED)                        != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED));                        o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_REVOKED;                        }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID)            != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID));            o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID;            }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_VALID_FOR_USAGE)            != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_VALID_FOR_USAGE));            o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_NOT_VALID_FOR_USAGE;            }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_UNTRUSTED_ROOT)                 != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_UNTRUSTED_ROOT));                 o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_UNTRUSTED_ROOT;                 }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_REVOCATION_STATUS_UNKNOWN)         != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_REVOCATION_STATUS_UNKNOWN));         o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_REVOCATION_STATUS_UNKNOWN;         }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_CYCLIC)                         != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_CYCLIC));                         o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_CYCLIC;                         }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_INVALID_EXTENSION)                 != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_INVALID_EXTENSION));                 o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_INVALID_EXTENSION;                 }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_INVALID_POLICY_CONSTRAINTS)        != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_INVALID_POLICY_CONSTRAINTS));        o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_INVALID_POLICY_CONSTRAINTS;        }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_INVALID_BASIC_CONSTRAINTS)         != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_INVALID_BASIC_CONSTRAINTS));         o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_INVALID_BASIC_CONSTRAINTS;         }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_INVALID_NAME_CONSTRAINTS)          != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_INVALID_NAME_CONSTRAINTS));          o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_INVALID_NAME_CONSTRAINTS;          }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_SUPPORTED_NAME_CONSTRAINT) != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_SUPPORTED_NAME_CONSTRAINT)); o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_SUPPORTED_NAME_CONSTRAINT; }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT)   != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT));   o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT;   }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_PERMITTED_NAME_CONSTRAINT) != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_PERMITTED_NAME_CONSTRAINT)); o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_PERMITTED_NAME_CONSTRAINT; }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_EXCLUDED_NAME_CONSTRAINT)      != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_HAS_EXCLUDED_NAME_CONSTRAINT));      o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_EXCLUDED_NAME_CONSTRAINT;      }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_OFFLINE_REVOCATION)             != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_OFFLINE_REVOCATION));             o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_OFFLINE_REVOCATION;             }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY)          != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY));          o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY;          }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_EXPLICIT_DISTRUST)              != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_EXPLICIT_DISTRUST));              o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_EXPLICIT_DISTRUST;              }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT)    != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT));    o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT;    }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_IS_PARTIAL_CHAIN)                  != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_IS_PARTIAL_CHAIN));                  o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_IS_PARTIAL_CHAIN;                  }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_TIME_VALID)             != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_TIME_VALID));             o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_TIME_VALID;             }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID)        != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID));        o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID;        }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_VALID_FOR_USAGE)        != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_VALID_FOR_USAGE));        o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_CTL_IS_NOT_VALID_FOR_USAGE;        }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_WEAK_SIGNATURE)                != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_HAS_WEAK_SIGNATURE));                o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_WEAK_SIGNATURE;                }
+            if ((o & (Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_WEAK_HYGIENE)                  != 0) { r.Add(ExceptionForStatus(CertificateChainErrorStatus.CERT_TRUST_HAS_WEAK_HYGIENE));                  o &= ~(Int32)CertificateChainErrorStatus.CERT_TRUST_HAS_WEAK_HYGIENE;                  }
+            if (o != 0) { throw new NotSupportedException(); }
+            return ((r.Count == 1)
+                ? r[0]
+                : new CertificateException(scode,r));
+            }
+        #endregion
+
+        protected static Exception ExceptionForStatus(HRESULT scode,X509CertificateChainContext context) {
+            var r = new List<Exception>();
+            foreach (var chainS in context) {
+                var o = new List<Exception>();
+                foreach (var chainE in chainS) {
+                    if (chainE.ErrorStatus != 0) {
+                        o.Add(ExceptionForStatus(scode,chainE.ErrorStatus,0xffffffff)
+                            .Add("ChainElement",chainE));
+                        }
+                    }
+                if (o.Count > 0) {
+                    r.Add(((o.Count == 1)
+                        ? o[0]
+                        : new CertificateException(scode,o))
+                        .Add("ChainIndex",chainS.ChainIndex));
+                    }
+                }
+            return ((r.Count == 1)
+                ? r[0]
+                : new CertificateException(scode,r));
+            }
+
+        private static readonly IDictionary<CertificateChainErrorStatus,Type> types = new Dictionary<CertificateChainErrorStatus,Type>();
+        static X509CertificateChainPolicy() {
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(i => i.IsSubclassOf(typeof(Exception)))) {
+                var status = (CertificateChainErrorStatusAttribute)type.GetCustomAttributes(typeof(CertificateChainErrorStatusAttribute),false).FirstOrDefault();
+                if (status != null) {
+                    try
+                        {
+                        types.Add(status.Status,type);
+                        }
+                    catch(ArgumentException e)
+                        {
+                        e.Data["Key"] = status.Status;
+                        e.Data["Type"] = type.FullName;
+                        if (types.TryGetValue(status.Status, out var r)) {
+                            e.Data["ExistingType"] = r.FullName;
+                            }
+                        throw;
+                        }
+                    }
+                }
+            }
         }
     }
