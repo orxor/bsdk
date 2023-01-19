@@ -2,14 +2,16 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    public class X509Certificate : X509Object
+    public class X509Certificate : X509Object,IExceptionSerializable
         {
         private IntPtr Context;
         internal Asn1Certificate Source;
@@ -127,5 +129,26 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             CryptographicContext.DefaultContext.VerifyObject(this, policy);
             }
         #endregion
+
+        void IExceptionSerializable.WriteTo(TextWriter target) {
+            using (var writer = new DefaultJsonWriter(new JsonTextWriter(target){
+                    Formatting = Formatting.Indented,
+                    Indentation = 2,
+                    IndentChar = ' '
+                    })) {
+                ((IExceptionSerializable)this).WriteTo(writer);
+                }
+            }
+
+        void IExceptionSerializable.WriteTo(IJsonWriter writer) {
+            using (writer.Object()) {
+                writer.WriteValue(nameof(NotBefore),NotBefore);
+                writer.WriteValue(nameof(NotAfter),NotAfter);
+                writer.WriteValue(nameof(SerialNumber),SerialNumber);
+                writer.WriteValue(nameof(Subject),Subject);
+                writer.WriteValue(nameof(Issuer),Issuer);
+                writer.WriteValue(nameof(Thumbprint),Thumbprint);
+                }
+            }
         }
     }

@@ -31,7 +31,7 @@
     <DefineConstants>$(DefineConstants);SQLITE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseSQLITE)' == 'true'">
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.2" />
@@ -47,5 +47,8 @@
     <None Include="$(Pkgstub_system_data_sqlite_core_netframework)\build\net40\x64\SQLite.Interop.dll" Link="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
 </Project>

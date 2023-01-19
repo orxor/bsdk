@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.DiagnosticServices
     {
@@ -393,25 +394,23 @@ namespace BinaryStudio.DiagnosticServices
             }
 
         private static void WriteTo(TextWriter target, IEnumerable source) {
-            using (var writer = new JsonTextWriter(target){
+            using (var writer = new DefaultJsonWriter(new JsonTextWriter(target){
                     Formatting = Formatting.Indented,
                     Indentation = 2,
                     IndentChar = ' '
-                    }) {
-                var serializer = new JsonSerializer();
-                writer.WriteStartArray();
-                foreach (var value in source) {
-                    if (value is IExceptionSerializable S)
-                        {
-                        S.WriteTo(writer, serializer);
-                        }
-                    else
-                        {
-                        writer.WriteValue(value);
+                    })) {
+                using (writer.Array()) {
+                    foreach (var value in source) {
+                        if (value is IExceptionSerializable S)
+                            {
+                            S.WriteTo(writer);
+                            }
+                        else
+                            {
+                            ((IJsonWriter)writer).WriteValue(value);
+                            }
                         }
                     }
-                writer.WriteEnd();
-                writer.Flush();
                 }
             }
         }

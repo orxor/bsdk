@@ -103,13 +103,13 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         #region M:ExceptionForStatus(CertificateChainErrorStatus):Exception
         private static Exception ExceptionForStatus(CertificateChainErrorStatus status) {
-            var e = (Exception)Activator.CreateInstance(types[status],
+            var e = (CryptographicException)Activator.CreateInstance(types[status],
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.CreateInstance | BindingFlags.NonPublic,
                 null,
                 null,
                 null);
             e.Data["Status"] = status;
-            return e;
+            return e.SetStackTrace(new StackTrace(true));
             }
         #endregion
         #region M:ExceptionForStatus(HRESULT,CertificateChainErrorStatus,UInt32):Exception
@@ -145,7 +145,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (o != 0) { throw new NotSupportedException(); }
             return ((r.Count == 1)
                 ? r[0]
-                : new CertificateException(scode,r));
+                : (new CertificateException(scode,r)).SetStackTrace(new StackTrace(true)));
             }
         #endregion
 
@@ -153,16 +153,16 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             var r = new List<Exception>();
             foreach (var chainS in context) {
                 var o = new List<Exception>();
-                foreach (var chainE in chainS) {
-                    if (chainE.ErrorStatus != 0) {
-                        o.Add(ExceptionForStatus(scode,chainE.ErrorStatus,0xffffffff)
-                            .Add("ChainElement",chainE));
-                        }
+                foreach (var chainE in chainS)
+                    {
+                    if (chainE.ErrorStatus == 0) { continue; }
+                    o.Add(ExceptionForStatus(scode,chainE.ErrorStatus,0xffffffff)
+                        .Add("ChainElement",chainE));
                     }
                 if (o.Count > 0) {
                     r.Add(((o.Count == 1)
                         ? o[0]
-                        : new CertificateException(scode,o))
+                        : (new CertificateException(scode,o)).SetStackTrace(new StackTrace(true)))
                         .Add("ChainIndex",chainS.ChainIndex));
                     }
                 }

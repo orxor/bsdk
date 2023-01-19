@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography
@@ -7,6 +8,7 @@ namespace BinaryStudio.Security.Cryptography
     using HRESULT=HResult;
     public class CryptographicException : AggregateException
         {
+        private StackTrace ExternalStackTrace;
         public CryptographicException(HRESULT SCode)
             :base(HResultException.FormatMessage(SCode))
             {
@@ -44,6 +46,21 @@ namespace BinaryStudio.Security.Cryptography
             : base(HResultException.FormatMessage(scode),innerExceptions)
             {
             HResult = (Int32)scode;
+            }
+        #endregion
+
+        #region P:StackTrace:String
+        public override String StackTrace { get{
+            return (ExternalStackTrace != null)
+                ? ExternalStackTrace.ToString()
+                : base.StackTrace;
+            }}
+        #endregion
+        #region M:SetStackTrace(StackTrace):CryptographicException
+        public CryptographicException SetStackTrace(StackTrace source)
+            {
+            ExternalStackTrace = source;
+            return this;
             }
         #endregion
         }

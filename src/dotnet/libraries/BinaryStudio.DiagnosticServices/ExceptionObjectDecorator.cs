@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.DiagnosticServices
@@ -34,29 +35,26 @@ namespace BinaryStudio.DiagnosticServices
             }
 
         /// <inheritdoc/>
-        public void WriteTo(TextWriter target)
-            {
-            using (var writer = new JsonTextWriter(target){
+        public void WriteTo(TextWriter target) {
+            using (var writer = new DefaultJsonWriter(new JsonTextWriter(target){
                     Formatting = Formatting.Indented,
                     Indentation = 2,
                     IndentChar = ' '
-                    }) {
-                var serializer = new JsonSerializer();
-                ((IExceptionSerializable)this).WriteTo(writer, serializer);
-                writer.Flush();
+                    })) {
+                ((IExceptionSerializable)this).WriteTo(writer);
                 }
             }
 
         /// <inheritdoc/>
-        public void WriteTo(JsonWriter writer, JsonSerializer serializer) {
+        public void WriteTo(IJsonWriter writer) {
             if (Source is IExceptionSerializable r) {
-                r.WriteTo(writer, serializer);
+                r.WriteTo(writer);
                 }
             else
                 {
-                using (writer.ObjectScope(serializer)) {
+                using (writer.Object()) {
                     foreach (var descriptor in TypeDescriptor.GetProperties(Source).OfType<PropertyDescriptor>()) {
-                        writer.WriteValue(serializer, descriptor.Name, descriptor.GetValue(Source));
+                        writer.WriteValue(descriptor.Name, descriptor.GetValue(Source));
                         }
                     }
                 }

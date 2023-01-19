@@ -1,11 +1,11 @@
 ﻿using System.IO;
-using Newtonsoft.Json;
+using BinaryStudio.Serialization;
 
 namespace BinaryStudio.DiagnosticServices
     {
     public interface IExceptionSerializable
         {
-        void WriteTo(TextWriter target);
-        void WriteTo(JsonWriter writer, JsonSerializer serializer);
+        void WriteTo(TextWriter writer);
+        void WriteTo(IJsonWriter writer);
         }
     }
