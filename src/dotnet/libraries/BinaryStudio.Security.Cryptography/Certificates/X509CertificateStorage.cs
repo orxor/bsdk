@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates.Internal;
 using BinaryStudio.Serialization;
+
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
@@ -20,7 +22,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #region ctor{X509StoreName,X509StoreLocation}
         public X509CertificateStorage(X509StoreName name, X509StoreLocation location) {
             if ((location == X509StoreLocation.CurrentUser) || (location == X509StoreLocation.LocalMachine)) {
-                String StoreName = null;
+                String StoreName;
                 switch (name) {
                     case X509StoreName.AddressBook:          { StoreName = "AddressBook";      } break;
                     case X509StoreName.AuthRoot:             { StoreName = "AuthRoot";         } break;
@@ -31,7 +33,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     case X509StoreName.TrustedPeople:        { StoreName = "TrustedPeople";    } break;
                     case X509StoreName.TrustedPublisher:     { StoreName = "TrustedPublisher"; } break;
                     case X509StoreName.TrustedDevices:       { StoreName = "TrustedDevices";   } break;
-                    default: throw new ArgumentOutOfRangeException(nameof(name));
+                    default: throw new ArgumentOutOfRangeException(nameof(name))
+                            .Add("StoreName",name);
                     }
                 Store = new EX509CertificateStorage(Validate(Entries.CertOpenStore(
                     CERT_STORE_PROV_SYSTEM_W,
@@ -75,13 +78,6 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 yield return o;
                 }
             }}
-
-        [DllImport("kernel32.dll", SetLastError = true)] internal static extern unsafe IntPtr LocalFree(void* handle);
-        [DllImport("kernel32.dll", BestFitMapping = true, CharSet = CharSet.Unicode, SetLastError = true)] private static extern unsafe Boolean FormatMessage(UInt32 flags, IntPtr source,  Int32 dwMessageId, UInt32 dwLanguageId, void* lpBuffer, Int32 nSize, IntPtr[] arguments);
-
-
-        private const UInt32 PKCS_7_ASN_ENCODING         = 0x00010000;
-        private const UInt32 X509_ASN_ENCODING           = 0x00000001;
 
         #region M:MapX509StoreFlags(X509StoreLocation,X509OpenFlags):UInt32
         protected internal static UInt32 MapX509StoreFlags(X509StoreLocation storeLocation, X509OpenFlags flags) {

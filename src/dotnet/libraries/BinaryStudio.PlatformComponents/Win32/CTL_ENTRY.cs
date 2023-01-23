@@ -9,8 +9,8 @@ namespace BinaryStudio.PlatformComponents.Win32
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
     internal struct CTL_ENTRY
         {
-        CRYPT_DATA_BLOB     SubjectIdentifier;
-        DWORD               cAttribute;
-        CRYPT_ATTRIBUTE     rgAttribute;
+        CRYPT_DATA_BLOB SubjectIdentifier;
+        DWORD           cAttribute;
+        CRYPT_ATTRIBUTE rgAttribute;
         }
     }

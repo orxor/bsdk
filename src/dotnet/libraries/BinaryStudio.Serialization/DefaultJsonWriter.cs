@@ -140,7 +140,11 @@ namespace BinaryStudio.Serialization
         #region M:WriteValue(String,Object)
         public void WriteValue(String name, Object value) {
             if (name == null) { throw new ArgumentNullException(nameof(name)); }
+            #if NET35
+            if (String.IsNullOrEmpty(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
+            #else
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
+            #endif
             if (value != null) {
                 Writer.WritePropertyName(name);
                 WriteValue(value);
@@ -155,7 +159,11 @@ namespace BinaryStudio.Serialization
         #region M:WriteValueIfNotNull(String,Object)
         public void WriteValueIfNotNull(String name, Object value) {
             if (name == null) { throw new ArgumentNullException(nameof(name)); }
+            #if NET35
+            if (String.IsNullOrEmpty(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
+            #else
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
+            #endif
             if (value != null) {
                 Writer.WritePropertyName(name);
                 WriteValue(value);
@@ -171,7 +179,11 @@ namespace BinaryStudio.Serialization
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void WritePropertyName(String name) {
             if (name == null) { throw new ArgumentNullException(nameof(name)); }
+            #if NET35
+            if (String.IsNullOrEmpty(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
+            #else
             if (String.IsNullOrWhiteSpace(name)) { throw new ArgumentOutOfRangeException(nameof(name)); }
+            #endif
             Writer.WritePropertyName(name);
             }
         #endregion
@@ -258,14 +270,20 @@ namespace BinaryStudio.Serialization
                 if (field.IsLiteral) {
                     var value = field.GetValue(source);
                     if (Equals(value,source)) {
-                        #if NET40
+                        #if NET40 || NET35
                         var DisplayName = field.GetCustomAttributes(false).OfType<DisplayAttribute>().FirstOrDefault();
                         #else
                         var DisplayName = (DisplayAttribute)field.GetCustomAttribute(typeof(DisplayAttribute));
                         #endif
+                        #if NET35
+                        if ((DisplayName != null) && !String.IsNullOrEmpty(DisplayName.Name)) {
+                            return DisplayName.Name;
+                            }
+                        #else
                         if ((DisplayName != null) && !String.IsNullOrWhiteSpace(DisplayName.Name)) {
                             return DisplayName.Name;
                             }
+                        #endif
                         break;
                         }
                     }
