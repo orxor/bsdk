@@ -111,6 +111,12 @@ namespace BinaryStudio.Security.Cryptography
             (new X509CertificateChainPolicy(policy,Entries)).Validate(GetCertificateChain(certificate,null),0);
             }
         #endregion
+        #region M:VerifyAttachedMessageSignature(Stream)
+        public virtual void VerifyAttachedMessageSignature(Stream InputStream) {
+            if (InputStream == null) { throw new ArgumentNullException(nameof(InputStream)); }
+            VerifyAttachedMessageSignature(InputStream,null,out var signers);
+            }
+        #endregion
         #region M:VerifyAttachedMessageSignature(Stream,Stream,{out}IList<X509Certificate>)
         public virtual void VerifyAttachedMessageSignature(Stream InputStream,Stream OutputStream,out IList<X509Certificate> Signers)
             {

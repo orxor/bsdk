@@ -11,6 +11,7 @@ using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace Operations
@@ -105,7 +106,10 @@ namespace Operations
         #endregion
         #region M:Execute(IFileService,CmsMessage):FileOperationStatus
         private FileOperationStatus Execute(IFileService FileService, CmsMessage Source) {
-            return FileOperationStatus.Skip;
+            using (var InputStream = FileService.OpenRead()) {
+                CryptographicContext.DefaultContext.VerifyAttachedMessageSignature(InputStream);
+                }
+            return FileOperationStatus.Success;
             }
         #endregion
         }
