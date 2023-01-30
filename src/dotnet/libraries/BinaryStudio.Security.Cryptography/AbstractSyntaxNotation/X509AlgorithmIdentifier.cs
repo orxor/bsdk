@@ -1,5 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
+using BinaryStudio.DiagnosticServices;
+using BinaryStudio.Serialization;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -15,7 +19,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     /// </pre>
     /// </remarks>
     [DefaultProperty(nameof(Identifier))]
-    public class X509AlgorithmIdentifier
+    public class X509AlgorithmIdentifier : IExceptionSerializable
         {
         public Asn1ObjectIdentifier Identifier { get; }
         public Object Parameters { get; }
@@ -41,5 +45,27 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             return Identifier.ToString();
             }
+
+        #region M:IExceptionSerializable.WriteTo(TextWriter)
+        void IExceptionSerializable.WriteTo(TextWriter target) {
+            using (var writer = new DefaultJsonWriter(new JsonTextWriter(target){
+                    Formatting = Formatting.Indented,
+                    Indentation = 2,
+                    IndentChar = ' '
+                    })) {
+                ((IExceptionSerializable)this).WriteTo(writer);
+                }
+            }
+        #endregion
+        #region M:IExceptionSerializable.WriteTo(IJsonWriter)
+        void IExceptionSerializable.WriteTo(IJsonWriter writer) {
+            var x = Identifier.ToString();
+            var y = Identifier.FriendlyName;
+            writer.WriteValue(
+                (x != y)
+                ? $"{x} {{{y}}}"
+                : $"{x}");
+            }
+        #endregion
         }
     }
