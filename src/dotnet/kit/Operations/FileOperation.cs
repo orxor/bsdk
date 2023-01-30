@@ -84,9 +84,9 @@ namespace Operations
                 timer.Stop();
                 }
             status = Max(status,e.OperationStatus);
-            switch (e.OperationStatus) {
+            switch (status) {
                 case FileOperationStatus.Success:
-                    lock(console) {
+                    lock(ColorScope.SyncRoot) {
                         Write(Console.Out,ConsoleColor.Green, "{ok}");
                         Write(Console.Out,ConsoleColor.Gray, ":");
                         Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
@@ -94,7 +94,7 @@ namespace Operations
                         }
                     break;
                 case FileOperationStatus.Skip:
-                    lock(console) {
+                    lock(ColorScope.SyncRoot) {
                         Write(Console.Out,ConsoleColor.Yellow, "{skip}");
                         Write(Console.Out,ConsoleColor.Gray, ":");
                         Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
@@ -102,7 +102,7 @@ namespace Operations
                         }
                     break;;
                 case FileOperationStatus.Warning:
-                    lock(console) {
+                    lock(ColorScope.SyncRoot) {
                         Write(Console.Out,ConsoleColor.Cyan, "{warning}");
                         Write(Console.Out,ConsoleColor.Gray, ":");
                         Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");
@@ -110,7 +110,7 @@ namespace Operations
                         }
                     break;;
                 case FileOperationStatus.Error:
-                    lock(console) {
+                    lock(ColorScope.SyncRoot) {
                         Write(Console.Out,ConsoleColor.Red, "{error}");
                         Write(Console.Out,ConsoleColor.Gray, ":");
                         Write(Console.Out,ConsoleColor.Cyan, $"{{{timer.Elapsed.ToString("hh\\:mm\\:ss\\.fffff")}}}");

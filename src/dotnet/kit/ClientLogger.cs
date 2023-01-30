@@ -55,12 +55,14 @@ internal class ClientLogger : DefaultLogger
         #if LINUX
         if ((loglevel != LogLevel.Debug) && (loglevel != LogLevel.Trace)) {
         #endif
-        var color = colors[loglevel];
-        using ((color != null)
-            ? new ColorScope(color.Value)
-            : null)
-            {
-            Console.Error.WriteLine(message);
+        lock(ColorScope.SyncRoot) {
+            var color = colors[loglevel];
+            using ((color != null)
+                ? new ColorScope(color.Value)
+                : null)
+                {
+                Console.Error.WriteLine(message);
+                }
             }
         #if LINUX
             }

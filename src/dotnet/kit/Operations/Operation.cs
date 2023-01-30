@@ -72,22 +72,28 @@ namespace Operations
 
         #region M:WriteLine(ConsoleColor,String,Object[])
         protected void WriteLine(TextWriter writer, ConsoleColor color, String format, params Object[] args) {
-            using (new ColorScope(color)) {
-                writer.WriteLine(format, args);
+            lock(ColorScope.SyncRoot) {
+                using (new ColorScope(color)) {
+                    writer.WriteLine(format, args);
+                    }
                 }
             }
         #endregion
         #region M:WriteLine(ConsoleColor,String)
         protected void WriteLine(TextWriter writer, ConsoleColor color, String message) {
-            using (new ColorScope(color)) {
-                writer.WriteLine(message);
+            lock(ColorScope.SyncRoot) {
+                using (new ColorScope(color)) {
+                    writer.WriteLine(message);
+                    }
                 }
             }
         #endregion
         #region M:Write(ConsoleColor,String)
         protected void Write(TextWriter writer, ConsoleColor color, String message) {
-            using (new ColorScope(color)) {
-                writer.Write(message);
+            lock(ColorScope.SyncRoot) {
+                using (new ColorScope(color)) {
+                    writer.Write(message);
+                    }
                 }
             }
         #endregion

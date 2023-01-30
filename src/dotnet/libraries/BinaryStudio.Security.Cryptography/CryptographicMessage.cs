@@ -53,18 +53,18 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:GetParameter(CMSG_PARAM,Int32,[Out]HRESULT):Byte[]
-        internal Byte[] GetParameter(CMSG_PARAM parameter, Int32 signerindex, out HRESULT hr) {
+        internal Byte[] GetParameter(CMSG_PARAM parameter, Int32 signerindex, out HRESULT e) {
             var c = 0;
             if (!Entries.CryptMsgGetParam(Handle, parameter, signerindex, null, ref c)) {
-                hr = (HRESULT)Marshal.GetLastWin32Error();
+                e = (HRESULT)Marshal.GetLastWin32Error();
                 return EmptyArray<Byte>.Value;
                 }
             var r = new Byte[c];
             if (!Entries.CryptMsgGetParam(Handle, parameter, signerindex, r, ref c)) {
-                hr = (HRESULT)Marshal.GetLastWin32Error();
+                e = (HRESULT)Marshal.GetLastWin32Error();
                 return EmptyArray<Byte>.Value;
                 }
-            hr = 0;
+            e = 0;
             return r;
             }
         #endregion

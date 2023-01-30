@@ -50,6 +50,17 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                 }
             }
 
+        /**
+         * <summary>Gets the service object of the specified type.</summary>
+         * <param name="service">An object that specifies the type of service object to get.</param>
+         * <returns>A service object of type <paramref name="service"/>.-or- null if there is no service object of type <paramref name="service"/>.</returns>
+         * <filterpriority>2</filterpriority>
+         * */
+        public override Object GetService(Type service) {
+            if (service == typeof(CmsSignedDataContentInfo)) { return ContentInfo as CmsSignedDataContentInfo; }
+            return base.GetService(service);
+            }
+
         private const String OID_Data          = "1.2.840.113549.1.7.1";
         private const String OID_SignedData    = "1.2.840.113549.1.7.2";
         private const String OID_EnvelopedData = "1.2.840.113549.1.7.3";

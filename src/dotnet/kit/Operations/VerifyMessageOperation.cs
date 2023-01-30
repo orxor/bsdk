@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
@@ -106,10 +107,21 @@ namespace Operations
         #endregion
         #region M:Execute(IFileService,CmsMessage):FileOperationStatus
         private FileOperationStatus Execute(IFileService FileService, CmsMessage Source) {
-            using (var InputStream = FileService.OpenRead()) {
-                CryptographicContext.DefaultContext.VerifyAttachedMessageSignature(InputStream);
+            try
+                {
+                using (var InputStream = FileService.OpenRead()) {
+                    CryptographicContext.DefaultContext.VerifyAttachedMessageSignature(InputStream);
+                    }
+                return FileOperationStatus.Success;
                 }
-            return FileOperationStatus.Success;
+            catch (Exception e) {
+                var ci = (CmsSignedDataContentInfo)Source.GetService(typeof(CmsSignedDataContentInfo));
+                if (ci != null) {
+                    e.Add("Certificates",ci.Certificates);
+                    e.Add("DigestAlgorithms",ci.DigestAlgorithms);
+                    }
+                throw;
+                }
             }
         #endregion
         }

@@ -11,7 +11,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
     {
     internal class EX509CertificateStorage : X509Object, IX509CertificateStorage
         {
-        private IntPtr Store;
+        protected IntPtr Store;
         public override IntPtr Handle { get { return Store; }}
         public virtual X509StoreLocation Location { get { return X509StoreLocation.CurrentService; }}
 
@@ -37,11 +37,16 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             }}
 
         #region M:Find(CERT_INFO*):X509Certificate
-        public unsafe X509Certificate Find(CERT_INFO* Info) {
+        public virtual unsafe X509Certificate Find(CERT_INFO* Info) {
             if (Info == null) { throw new ArgumentNullException(nameof(Info)); }
             var r = Entries.CertGetSubjectCertificateFromStore(Store,PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,Info);
             if (r == IntPtr.Zero) {
-                throw HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                var e = Marshal.GetHRForLastWin32Error();
+                var CertificateSerialNumber = DecodeSerialNumberString(ref Info->SerialNumber);
+                var CertificateIssuer = DecodeNameString(Entries,ref Info->Issuer);
+                throw HResultException.GetExceptionForHR(e)
+                    .Add("CertificateSerialNumber",CertificateSerialNumber)
+                    .Add("CertificateIssuer",CertificateIssuer);
                 }
             return new X509Certificate(r);
             }

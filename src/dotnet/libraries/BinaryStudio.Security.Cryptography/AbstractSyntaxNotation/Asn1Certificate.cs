@@ -2,9 +2,11 @@
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Serialization;
+using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -67,7 +69,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     ///   }
     /// </pre>
     /// </remarks>
-    public class Asn1Certificate : Asn1LinkObject
+    public class Asn1Certificate : Asn1LinkObject, IExceptionSerializable
         {
         public Int32 Version { get; }
         public String SerialNumber { get; }
@@ -151,6 +153,29 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
         #endregion
+        #region M:IExceptionSerializable.WriteTo(TextWriter)
+        void IExceptionSerializable.WriteTo(TextWriter target) {
+            using (var writer = new DefaultJsonWriter(new JsonTextWriter(target){
+                    Formatting = Formatting.Indented,
+                    Indentation = 2,
+                    IndentChar = ' '
+                    })) {
+                ((IExceptionSerializable)this).WriteTo(writer);
+                }
+            }
+        #endregion
+        #region M:IExceptionSerializable.WriteTo(IJsonWriter)
+        void IExceptionSerializable.WriteTo(IJsonWriter writer) {
+            using (writer.Object()) {
+                writer.WriteValue(nameof(NotBefore),NotBefore);
+                writer.WriteValue(nameof(NotAfter),NotAfter);
+                writer.WriteValue(nameof(SerialNumber),SerialNumber);
+                writer.WriteValue(nameof(Subject),Subject);
+                writer.WriteValue(nameof(Issuer),Issuer);
+                }
+            }
+        #endregion
+
         private static String GetCountry(X509RelativeDistinguishedNameSequence source) {
             var o = source.TryGetValue("2.5.4.6", out var r)
                 ? r.ToString().ToLower()

@@ -29,8 +29,7 @@ namespace BinaryStudio.DiagnosticServices
             if (info == null) { throw new ArgumentNullException(nameof(info)); }
             }
 
-        public ExceptionObjectDecorator(Object source)
-            {
+        public ExceptionObjectDecorator(Object source) {
             Source = source;
             }
 

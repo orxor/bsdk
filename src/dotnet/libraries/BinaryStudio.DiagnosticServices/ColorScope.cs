@@ -4,6 +4,7 @@ namespace BinaryStudio.DiagnosticServices
     {
     public sealed class ColorScope : IDisposable
         {
+        public static readonly Object SyncRoot = new Object();
         private readonly ConsoleColor color;
         public ColorScope()
             {

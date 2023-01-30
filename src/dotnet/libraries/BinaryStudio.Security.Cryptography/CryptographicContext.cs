@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -28,6 +29,7 @@ using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace BinaryStudio.Security.Cryptography
     {
+    using HRESULT=HResult;
     #if LINUX
     using Process=System.Diagnostics.Process;
     #endif
@@ -136,7 +138,7 @@ namespace BinaryStudio.Security.Cryptography
                 message.Update(EmptyArray<Byte>.Value, 0, true);
                 using (var store = new MessageCertificateStorage(message.Handle)) {
                     for (var signerindex = 0;; signerindex++) {
-                        var r = message.GetParameter(CMSG_PARAM.CMSG_SIGNER_CERT_INFO_PARAM, signerindex);
+                        var r = message.GetParameter(CMSG_PARAM.CMSG_SIGNER_CERT_INFO_PARAM, signerindex, out var hr);
                         if (r.Length != 0) {
                             unsafe {
                                 fixed (Byte* blob = r) {
@@ -147,20 +149,20 @@ namespace BinaryStudio.Security.Cryptography
                                     Debug.Print("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.Select(i => i.ToString("X2")).ToArray()));
                                     Debug.Print("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.Select(i => i.ToString("X2")).ToArray()), encdigest.Length);
                                     #else
-                                    Console.WriteLine("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.ToString("X")));
-                                    Console.WriteLine("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.ToString("X")), encdigest.Length);
+                                    Debug.Print("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.ToString("X")));
+                                    Debug.Print("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.ToString("X")), encdigest.Length);
                                     #endif
                                     #endif
                                     var certinfo = (CERT_INFO*)blob;
                                     var certificate = store.Find(certinfo);
                                     if (certificate == null) { throw new Exception(); }
                                     if (certificate != null) {
-                                        if (message.Control(
+                                        if (!message.Control(
                                             CRYPT_MESSAGE_FLAGS.CRYPT_MESSAGE_NONE,
                                             CMSG_CTRL.CMSG_CTRL_VERIFY_SIGNATURE,
                                             (IntPtr)((CERT_CONTEXT*)certificate.Handle)->CertInfo))
                                             {
-                                            throw HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                                            throw HResultException.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
                                             }
                                         }
                                     }
@@ -168,7 +170,8 @@ namespace BinaryStudio.Security.Cryptography
                             }
                         else
                             {
-                            throw HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                            if (hr == HRESULT.CRYPT_E_INVALID_INDEX) { break; }
+                            throw HResultException.GetExceptionForHR((Int32)hr);
                             }
                         }
                     }
