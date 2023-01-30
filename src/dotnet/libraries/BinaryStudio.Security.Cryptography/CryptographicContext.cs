@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
 #if LINUX
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,7 +37,33 @@ namespace BinaryStudio.Security.Cryptography
     public abstract class CryptographicContext : CryptographicObject
         {
         public static CryptographicContext DefaultContext { get; }
+        public static IEnumerable<RegisteredProviderInfo> RegisteredProviders { get { return DefaultContext.GetRegisteredProviders(); }}
 
+        #region M:GetRegisteredProviders:IEnumerable<RegisteredProviderInfo>
+        private IEnumerable<RegisteredProviderInfo> GetRegisteredProviders() {
+            EnsureEntries();
+            var i = 0;
+            var r = new Dictionary<String,CRYPT_PROVIDER_TYPE>();
+            var builder = new StringBuilder(512);
+            for (;;) {
+                var sz = builder.Capacity;
+                if (!Entries.CryptEnumProviders(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
+                    var e = (Win32ErrorCode)GetLastWin32Error();
+                    if (e == Win32ErrorCode.ERROR_MORE_DATA) {
+                        builder.Capacity = sz + 1;
+                        continue;
+                        }
+                    break;
+                    }
+                r.Add(builder.ToString(), (CRYPT_PROVIDER_TYPE)type);
+                i++;
+                }
+            foreach (var o in r)
+                {
+                yield return new RegisteredProviderInfo(o.Value, o.Key);
+                }
+            }
+        #endregion
         #region M:GetCertificateChain(X509Certificate,X509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IntPtr)
         /// <summary>Builds a certificate chain context starting from an end certificate and going back, if possible, to a trusted root certificate.</summary>
         /// <param name="certificate">The end certificate, the certificate for which a chain is being built. This certificate context will be the zero-index element in the first simple chain.</param>

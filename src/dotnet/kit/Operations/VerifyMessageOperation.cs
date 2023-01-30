@@ -110,6 +110,10 @@ namespace Operations
             try
                 {
                 using (var InputStream = FileService.OpenRead()) {
+                    var ci = (CmsSignedDataContentInfo)Source.GetService(typeof(CmsSignedDataContentInfo));
+                    if (ci != null) {
+                        var algid = ci.Signers.FirstOrDefault()?.SignatureAlgorithm?.ToString();
+                        }
                     CryptographicContext.DefaultContext.VerifyAttachedMessageSignature(InputStream);
                     }
                 return FileOperationStatus.Success;
