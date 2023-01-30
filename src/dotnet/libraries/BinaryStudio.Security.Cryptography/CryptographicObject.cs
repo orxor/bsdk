@@ -157,6 +157,16 @@ namespace BinaryStudio.Security.Cryptography
             return value != IntPtr.Zero;
             }
         #endregion
+        #region M:Yield
+        protected static Boolean Yield()
+            {
+            #if NET35
+            return SwitchToThread();
+            #else
+            return Thread.Yield();
+            #endif
+            }
+        #endregion
 
         #region {locks}
         protected static IDisposable ReadLock(ReaderWriterLockSlim o)            { return new ReadLockScope(o);            }
@@ -212,8 +222,6 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
-        protected static readonly IntPtr CERT_STORE_PROV_MSG                 = new IntPtr(1);
-        protected static readonly IntPtr CERT_STORE_PROV_MEMORY              = new IntPtr(2);
         protected static readonly IntPtr CERT_STORE_PROV_FILE                = new IntPtr(3);
         protected static readonly IntPtr CERT_STORE_PROV_REG                 = new IntPtr(4);
         protected static readonly IntPtr CERT_STORE_PROV_PKCS7               = new IntPtr(5);

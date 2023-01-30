@@ -5,7 +5,7 @@ using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.Internal
     {
-    internal class FX509CertificateStorage : MX509CertificateStorage
+    internal class FX509CertificateStorage : MemoryCertificateStorage
         {
         private String Folder;
         private Boolean FetchedFromFolder;

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using BinaryStudio.DiagnosticServices;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.Internal
@@ -11,6 +13,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         {
         private IntPtr Store;
         public override IntPtr Handle { get { return Store; }}
+        public virtual X509StoreLocation Location { get { return X509StoreLocation.CurrentService; }}
 
         public EX509CertificateStorage(IntPtr store)
             {
@@ -32,6 +35,17 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 o = Entries.CertEnumCRLsInStore(Store, o);
                 }
             }}
+
+        #region M:Find(CERT_INFO*):X509Certificate
+        public unsafe X509Certificate Find(CERT_INFO* Info) {
+            if (Info == null) { throw new ArgumentNullException(nameof(Info)); }
+            var r = Entries.CertGetSubjectCertificateFromStore(Store,PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,Info);
+            if (r == IntPtr.Zero) {
+                throw HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                }
+            return new X509Certificate(r);
+            }
+        #endregion
 
         private const UInt32 CERT_CLOSE_STORE_FORCE_FLAG = 0x00000001;
         private const UInt32 CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002;

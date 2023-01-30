@@ -12,6 +12,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     public class X509CertificateStorage : X509Object, IX509CertificateStorage
         {
         private IX509CertificateStorage Store;
+        public virtual X509StoreLocation Location { get; }
         public override IntPtr Handle { get { return Store?.Handle ?? IntPtr.Zero; }}
 
         private X509CertificateStorage(IntPtr store) {
@@ -21,6 +22,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         #region ctor{X509StoreName,X509StoreLocation}
         public X509CertificateStorage(X509StoreName name, X509StoreLocation location) {
+            Location = location;
             if ((location == X509StoreLocation.CurrentUser) || (location == X509StoreLocation.LocalMachine)) {
                 String StoreName;
                 switch (name) {
@@ -49,6 +51,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #endregion
         #region ctor{Uri,X509StoreLocation}
         public X509CertificateStorage(Uri uri, X509StoreLocation location) {
+            Location = location;
             if ((location == X509StoreLocation.CurrentUser) || (location == X509StoreLocation.LocalMachine)) {
                 if (String.Equals(uri.Scheme,"folder",StringComparison.OrdinalIgnoreCase)) {
                     var source = uri.ToString();
@@ -79,6 +82,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }}
 
+        #region M:Find(CERT_INFO*):X509Certificate
+        public unsafe X509Certificate Find(CERT_INFO* Info)
+            {
+            return Store.Find(Info);
+            }
+        #endregion
         #region M:MapX509StoreFlags(X509StoreLocation,X509OpenFlags):UInt32
         protected internal static UInt32 MapX509StoreFlags(X509StoreLocation storeLocation, X509OpenFlags flags) {
             var r = 0U;

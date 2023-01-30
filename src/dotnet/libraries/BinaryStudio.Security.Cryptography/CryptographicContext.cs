@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 #if LINUX
 using System.Collections.Generic;
@@ -15,9 +18,12 @@ using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 #endif
 using BinaryStudio.IO;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography.Internal;
+using BinaryStudio.Serialization;
 using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace BinaryStudio.Security.Cryptography
@@ -33,12 +39,12 @@ namespace BinaryStudio.Security.Cryptography
         /// <summary>Builds a certificate chain context starting from an end certificate and going back, if possible, to a trusted root certificate.</summary>
         /// <param name="certificate">The end certificate, the certificate for which a chain is being built. This certificate context will be the zero-index element in the first simple chain.</param>
         /// <param name="store">The additional store to search for supporting certificates and certificate trust lists (CTLs). This parameter can be null if no additional store is to be searched.</param>
-        /// <param name="applicationpolicy">Application policy.</param>
-        /// <param name="issuancepolicy">Issuance policy.</param>
+        /// <param name="applicationPolicy">Application policy.</param>
+        /// <param name="issuancePolicy">Issuance policy.</param>
         /// <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
         /// <param name="datetime">Indicates the time for which the chain is to be validated.</param>
         /// <param name="flags">Flag values that indicate special processing.</param>
-        /// <param name="chainengine">A handle of the chain engine.</param>
+        /// <param name="chainEngine">A handle of the chain engine.</param>
         /// <returns>Returns chain context created.</returns>
         private unsafe X509CertificateChainContext GetCertificateChain(X509Certificate certificate, X509CertificateStorage store,
             OidCollection applicationPolicy, OidCollection issuancePolicy, TimeSpan timeout, DateTime datetime,
@@ -105,6 +111,64 @@ namespace BinaryStudio.Security.Cryptography
             (new X509CertificateChainPolicy(policy,Entries)).Validate(GetCertificateChain(certificate,null),0);
             }
         #endregion
+        #region M:VerifyAttachedMessageSignature(Stream,Stream,{out}IList<X509Certificate>)
+        public virtual void VerifyAttachedMessageSignature(Stream InputStream,Stream OutputStream,out IList<X509Certificate> Signers)
+            {
+            if (InputStream == null) { throw new ArgumentNullException(nameof(InputStream)); }
+            Signers = EmptyList<X509Certificate>.Value;
+            using (var message = CryptographicMessage.OpenToDecode((Bytes,Final)=> {
+                OutputStream?.Write(Bytes,0,Bytes.Length);
+                }))
+                {
+                var Block = new Byte[SIGNATURE_BUFFER_SIZE];
+                for (;;) {
+                    Yield();
+                    var sz = InputStream.Read(Block, 0, Block.Length);
+                    if (sz == 0) { break; }
+                    message.Update(Block, sz, false);
+                    }
+                message.Update(EmptyArray<Byte>.Value, 0, true);
+                using (var store = new MessageCertificateStorage(message.Handle)) {
+                    for (var signerindex = 0;; signerindex++) {
+                        var r = message.GetParameter(CMSG_PARAM.CMSG_SIGNER_CERT_INFO_PARAM, signerindex);
+                        if (r.Length != 0) {
+                            unsafe {
+                                fixed (Byte* blob = r) {
+                                    var digest    = message.GetParameter(CMSG_PARAM.CMSG_COMPUTED_HASH_PARAM, signerindex);
+                                    var encdigest = message.GetParameter(CMSG_PARAM.CMSG_ENCRYPTED_DIGEST,    signerindex);
+                                    #if DEBUG
+                                    #if NET35
+                                    Debug.Print("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.Select(i => i.ToString("X2")).ToArray()));
+                                    Debug.Print("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.Select(i => i.ToString("X2")).ToArray()), encdigest.Length);
+                                    #else
+                                    Console.WriteLine("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.ToString("X")));
+                                    Console.WriteLine("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.ToString("X")), encdigest.Length);
+                                    #endif
+                                    #endif
+                                    var certinfo = (CERT_INFO*)blob;
+                                    var certificate = store.Find(certinfo);
+                                    if (certificate == null) { throw new Exception(); }
+                                    if (certificate != null) {
+                                        if (message.Control(
+                                            CRYPT_MESSAGE_FLAGS.CRYPT_MESSAGE_NONE,
+                                            CMSG_CTRL.CMSG_CTRL_VERIFY_SIGNATURE,
+                                            (IntPtr)((CERT_CONTEXT*)certificate.Handle)->CertInfo))
+                                            {
+                                            throw HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        else
+                            {
+                            throw HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                            }
+                        }
+                    }
+                }
+            }
+        #endregion
 
         #region M:Dispose(Boolean)
         /// <summary>
@@ -125,7 +189,7 @@ namespace BinaryStudio.Security.Cryptography
             {
             EnsureEntries();
             var ft = default(FILETIME);
-            *(long*)(&ft) = time.ToFileTime();
+            *(Int64*)(&ft) = time.ToFileTime();
             return Entries.CertGetCertificateChain(chainEngine,
                 context, ref ft, additionalStore, ref chainPara, flags,
                 IntPtr.Zero, chainContext);
@@ -264,12 +328,15 @@ namespace BinaryStudio.Security.Cryptography
             return r;
             }
         #endregion
-
+        #region M:EnsureEntries
         private ICryptoAPI Entries;
         private void EnsureEntries() {
             if (Entries == null) {
                 Entries = (ICryptoAPI)GetService(typeof(ICryptoAPI));
                 }
             }
+        #endregion
+
+        private const Int32 SIGNATURE_BUFFER_SIZE = 64*1024;
         }
     }
