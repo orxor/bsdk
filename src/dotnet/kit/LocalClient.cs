@@ -37,6 +37,7 @@ public class LocalClient : ILocalClient
             else if (HasOption(options, typeof(MessageGroupOption))) {
                 if (HasOption(options, typeof(VerifyOption)))  { operation.Value = new VerifyMessageOperation(options);  }
                 }
+            else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(options); }
             else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new FileOperation(options); }
             operation.Value.ValidatePermission();
             var trace = options.OfType<TraceOption>().FirstOrDefault()?.Values;

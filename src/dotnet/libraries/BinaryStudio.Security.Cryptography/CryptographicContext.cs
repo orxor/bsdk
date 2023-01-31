@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -38,16 +39,18 @@ namespace BinaryStudio.Security.Cryptography
         {
         public static CryptographicContext DefaultContext { get; }
         public static IEnumerable<RegisteredProviderInfo> RegisteredProviders { get { return DefaultContext.GetRegisteredProviders(); }}
+        public static IDictionary<CRYPT_PROVIDER_TYPE,String> AvailableTypes { get { return DefaultContext.GetAvailableTypes(); }}
+        public virtual IDictionary<ALG_ID,String> SupportedAlgorithms { get { return new ReadOnlyDictionary<ALG_ID,String>(new Dictionary<ALG_ID,String>()); }}
 
         #region M:GetRegisteredProviders:IEnumerable<RegisteredProviderInfo>
         private IEnumerable<RegisteredProviderInfo> GetRegisteredProviders() {
-            EnsureEntries();
+            EnsureEntries(out var entries);
             var i = 0;
             var r = new Dictionary<String,CRYPT_PROVIDER_TYPE>();
             var builder = new StringBuilder(512);
             for (;;) {
                 var sz = builder.Capacity;
-                if (!Entries.CryptEnumProviders(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
+                if (!entries.CryptEnumProviders(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
                     var e = (Win32ErrorCode)GetLastWin32Error();
                     if (e == Win32ErrorCode.ERROR_MORE_DATA) {
                         builder.Capacity = sz + 1;
@@ -62,6 +65,28 @@ namespace BinaryStudio.Security.Cryptography
                 {
                 yield return new RegisteredProviderInfo(o.Value, o.Key);
                 }
+            }
+        #endregion
+        #region P:GetAvailableTypes:IDictionary<CRYPT_PROVIDER_TYPE,String>
+        private IDictionary<CRYPT_PROVIDER_TYPE,String> GetAvailableTypes() {
+            EnsureEntries(out var entries);
+            var r = new Dictionary<CRYPT_PROVIDER_TYPE, String>();
+            var i = 0;
+            var builder = new StringBuilder(512);
+            for (;;) {
+                var sz = builder.Capacity;
+                if (!entries.CryptEnumProviderTypes(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
+                    var e = (Win32ErrorCode)GetLastWin32Error();
+                    if (e == Win32ErrorCode.ERROR_MORE_DATA) {
+                        builder.Capacity = sz + 1;
+                        continue;
+                        }
+                    break;
+                    }
+                r.Add((CRYPT_PROVIDER_TYPE)type, builder.ToString());
+                i++;
+                }
+            return new ReadOnlyDictionary<CRYPT_PROVIDER_TYPE,String>(r);
             }
         #endregion
         #region M:GetCertificateChain(X509Certificate,X509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IntPtr)
@@ -136,8 +161,8 @@ namespace BinaryStudio.Security.Cryptography
         public virtual void VerifyObject(X509Certificate certificate,CertificateChainPolicy policy) {
             if (certificate == null) { throw new ArgumentNullException(nameof(certificate)); }
             if (policy == 0) { throw new ArgumentOutOfRangeException(nameof(policy)); }
-            EnsureEntries();
-            (new X509CertificateChainPolicy(policy,Entries)).Validate(GetCertificateChain(certificate,null),0);
+            EnsureEntries(out var entries);
+            (new X509CertificateChainPolicy(policy,entries)).Validate(GetCertificateChain(certificate,null),0);
             }
         #endregion
         #region M:VerifyAttachedMessageSignature(Stream)
@@ -223,14 +248,37 @@ namespace BinaryStudio.Security.Cryptography
             ref CERT_CHAIN_PARA chainPara, CERT_CHAIN_FLAGS flags,
             CERT_CHAIN_CONTEXT** chainContext)
             {
-            EnsureEntries();
+            EnsureEntries(out var entries);
             var ft = default(FILETIME);
             *(Int64*)(&ft) = time.ToFileTime();
-            return Entries.CertGetCertificateChain(chainEngine,
+            return entries.CertGetCertificateChain(chainEngine,
                 context, ref ft, additionalStore, ref chainPara, flags,
                 IntPtr.Zero, chainContext);
             }
         #endregion
+        #region M:CertOIDToAlgId(Oid):ALG_ID
+        private ALG_ID CertOIDToAlgId(Oid value) {
+            if (value == null) { throw new ArgumentNullException(nameof(value)); }
+            switch (value.Value) {
+                case ObjectIdentifiers.szOID_NIST_sha256: { return ALG_ID.CALG_SHA_256; }
+                case ObjectIdentifiers.szOID_NIST_sha384: { return ALG_ID.CALG_SHA_384; }
+                case ObjectIdentifiers.szOID_NIST_sha512: { return ALG_ID.CALG_SHA_512; }
+                case ObjectIdentifiers.szOID_CP_GOST_R3411_12_256: { return ALG_ID.CALG_GR3411_2012_256; }
+                case ObjectIdentifiers.szOID_CP_GOST_R3411_12_512: { return ALG_ID.CALG_GR3411_2012_512; }
+                }
+            EnsureEntries(out var entries);
+            return entries.CertOIDToAlgId(value.Value);
+            }
+        #endregion
+        #region M:OidToAlgId(Oid):ALG_ID
+        public static ALG_ID OidToAlgId(Oid value) {
+            return DefaultContext.CertOIDToAlgId(value);
+            }
+        #endregion
+        public ALG_ID FindAlgId(Oid AlgId, Int32 KeyType)
+            {
+            return (ALG_ID)(-1);
+            }
 
         #if LINUX
         private class LDConfigItem
@@ -366,10 +414,11 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
         #region M:EnsureEntries
         private ICryptoAPI Entries;
-        private void EnsureEntries() {
+        internal virtual void EnsureEntries(out ICryptoAPI entries) {
             if (Entries == null) {
                 Entries = (ICryptoAPI)GetService(typeof(ICryptoAPI));
                 }
+            entries = Entries;
             }
         #endregion
 

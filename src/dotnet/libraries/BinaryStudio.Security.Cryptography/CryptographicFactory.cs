@@ -1,11 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography.Internal;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    public class CryptographicFactory
+    public class CryptographicFactory : CryptographicObject
         {
+        public override IntPtr Handle { get { return IntPtr.Zero; }}
+        public CryptographicContext AcquireContext(Oid algid, CryptographicContextFlags flags) {
+            if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
+            EnsureAlgIdCache();
+            if (!SAlgId.TryGetValue(algid.Value,out var nalgid)) { nalgid = CryptographicContext.OidToAlgId(algid); }
+            var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
+            foreach (var type in CryptographicContext.RegisteredProviders) {
+                if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)flags)) {
+                    var context = new ECryptographicContext(r);
+                    foreach (var alg in context.SupportedAlgorithms) {
+                        if (alg.Key == nalgid) {
+                            return context;
+                            }
+                        }
+                    }
+                }
+            return null;
+            }
+
+        public CryptographicContext AcquireContext(String container, String provider, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
+            var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
+            Validate(entries.CryptAcquireContext(out var r,container,provider,(Int32)providertype,(Int32)flags));
+            return new ECryptographicContext(r);
+            }
+
+        private static IDictionary<String,ALG_ID> SAlgId;
+        private static void EnsureAlgIdCache() {
+            if (SAlgId == null) {
+                SAlgId = new Dictionary<String,ALG_ID>();
+                var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
+                entries.CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID.CRYPT_SIGN_ALG_OID_GROUP_ID, IntPtr.Zero, delegate(IntPtr info,IntPtr arg) {
+                    unsafe
+                        {
+                        var i = (CRYPT_OID_INFO*)info;
+                        if (i->OID != IntPtr.Zero) {
+                            var o = Marshal.PtrToStringAnsi(i->OID);
+                            SAlgId[o] = *(ALG_ID*)i->ExtraInfo.Data;
+                            }
+                        }
+                    return true;
+                    });
+                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA1]   = ALG_ID.CALG_ECDSA;
+                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA256] = ALG_ID.CALG_ECDSA;
+                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA384] = ALG_ID.CALG_ECDSA;
+                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA512] = ALG_ID.CALG_ECDSA;
+                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA224] = ALG_ID.CALG_ECDSA;
+                }
+            }
         }
     }

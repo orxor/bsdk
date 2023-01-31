@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using BinaryStudio.DiagnosticServices;
@@ -113,8 +114,11 @@ namespace Operations
                     var ci = (CmsSignedDataContentInfo)Source.GetService(typeof(CmsSignedDataContentInfo));
                     if (ci != null) {
                         var algid = ci.Signers.FirstOrDefault()?.SignatureAlgorithm?.ToString();
+                        CryptographicContext.DefaultContext.VerifyAttachedMessageSignature(InputStream);
+                        //using (var context = (new CryptographicFactory()).AcquireContext(new Oid(algid), CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                        //    context.VerifyAttachedMessageSignature(InputStream);
+                        //    }
                         }
-                    CryptographicContext.DefaultContext.VerifyAttachedMessageSignature(InputStream);
                     }
                 return FileOperationStatus.Success;
                 }

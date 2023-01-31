@@ -33,6 +33,7 @@ namespace Operations
                 }
             output.Write("\n# Samples:");
             output.WriteLine(@"
+  infrastructure:csp,types
   input:{file-name}.ldif output:{folder} batch:extract
   input:{file-name}.ldif output:{folder} batch:extract,group
   input:{file-name}.ldif filter:*.cer batch:{un}install storelocation:LocalMachine storename:Root
