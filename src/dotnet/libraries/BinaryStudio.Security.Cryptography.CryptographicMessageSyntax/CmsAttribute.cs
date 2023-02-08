@@ -50,7 +50,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
          */
         public override String ToString()
             {
-            return Type.ToString();
+            return Type.FriendlyName ?? Type.Value;
             }
 
         private static readonly IDictionary<String, Type> types = new ConcurrentDictionary<String, Type>();

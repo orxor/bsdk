@@ -16,7 +16,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             EncryptionAlgorithm = new EncryptionAlgorithmIdentifier((Asn1Sequence)o[0]);
             EncryptedData = EmptyArray<Byte>.Value;
             if (o[1] != null) {
-                EncryptedData = o[1].Body;
+                EncryptedData = o[1].InnerBody;
                 }
             State &= ~ObjectState.Failed;
             State |= ObjectState.DisposeUnderlyingObject;

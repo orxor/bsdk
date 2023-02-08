@@ -85,9 +85,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #region M:Body:Byte[]
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)]
         public virtual Byte[] Body { get {
-            using (var target = new MemoryStream())
-                {
+            using (var target = new MemoryStream()) {
                 WriteTo(target);
+                return target.ToArray();
+                }
+            }}
+        #endregion
+        #region M:InnerBody:Byte[]
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)]
+        public virtual Byte[] InnerBody { get {
+            using (var target = new MemoryStream()) {
+                WriteContent(target);
                 return target.ToArray();
                 }
             }}

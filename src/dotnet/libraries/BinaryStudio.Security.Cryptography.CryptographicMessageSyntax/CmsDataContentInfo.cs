@@ -21,7 +21,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             Content = EmptyArray<CmsContentInfo>.Value;
             State |= ObjectState.Failed;
             State &= ~ObjectState.DisposeUnderlyingObject;
-            if (source[1][0] is Asn1OctetString OctetString) {
+            if (Context[0] is Asn1OctetString OctetString) {
                 if (OctetString.Count > 0) {
                     var content = new List<CmsContentInfo>();
                     try

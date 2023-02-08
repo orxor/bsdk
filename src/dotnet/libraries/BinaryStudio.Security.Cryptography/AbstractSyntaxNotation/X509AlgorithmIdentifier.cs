@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Security.Cryptography;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
@@ -21,15 +22,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     [DefaultProperty(nameof(Identifier))]
     public class X509AlgorithmIdentifier : IExceptionSerializable
         {
-        public Asn1ObjectIdentifier Identifier { get; }
+        public Oid Identifier { get; }
         public Object Parameters { get; }
 
         #region ctor{Asn1Sequence}
         public X509AlgorithmIdentifier(Asn1Sequence o) {
             if (o == null) { throw new ArgumentNullException(nameof(o)); }
             var c = o.Count;
-            if (c == 0)                               { throw new ArgumentOutOfRangeException(nameof(o)); }
-            if (c >  2)                               { throw new ArgumentOutOfRangeException(nameof(o)); }
+            if (c == 0) { throw new ArgumentOutOfRangeException(nameof(o)); }
+            if (c >  2) { throw new ArgumentOutOfRangeException(nameof(o)); }
             if (!(o[0] is Asn1ObjectIdentifier)) { throw new ArgumentOutOfRangeException(nameof(o)); }
             Identifier = (Asn1ObjectIdentifier)o[0];
             if (c == 2) {
@@ -44,7 +45,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// <returns>A string that represents the current object.</returns>
         public override String ToString()
             {
-            return Identifier.ToString();
+            return Identifier.FriendlyName ?? Identifier.Value;
             }
 
         #region M:IExceptionSerializable.WriteTo(TextWriter)

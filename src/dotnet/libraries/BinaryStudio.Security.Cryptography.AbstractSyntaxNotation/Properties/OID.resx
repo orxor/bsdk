@@ -1695,4 +1695,13 @@
   <data name="1.2.840.113549.1.12.1.80" xml:space="preserve">
     <value>Password-Based CryptoPro CSP Encryption Algorithm</value>
   </data>
+  <data name="1.2.840.113549.1.9.20" xml:space="preserve">
+    <value>PKCS #9 FriendlyName</value>
+  </data>
+  <data name="1.3.6.1.4.1.311.17.1" xml:space="preserve">
+    <value>PKCS #12 KeyProviderName</value>
+  </data>
+  <data name="1.2.840.113549.1.12.1.3" xml:space="preserve">
+    <value>PKCS #12 Password Based Encryption With SHA-1 and 3-key Triple</value>
+  </data>
 </root>

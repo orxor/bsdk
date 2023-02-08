@@ -15,6 +15,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     public class CmsContentInfo : CmsObject
         {
         public Oid ContentType { get; }
+        protected Asn1ContextSpecificObject Context { get; }
 
         #region ctor{Asn1Object}
         /// <summary>
@@ -25,9 +26,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             : base(o)
             {
             if (o is null) { throw new ArgumentNullException(nameof(o)); }
-            if (!(o[1] is Asn1ContextSpecificObject))  { throw new ArgumentOutOfRangeException(nameof(o)); }
             ContentType = (Asn1ObjectIdentifier)o[0];
-            if (((Asn1ContextSpecificObject)o[1]).Type != 0) { throw new ArgumentOutOfRangeException(nameof(o)); }
+            Context = o.OfType<Asn1ContextSpecificObject>().FirstOrDefault();
+            if (Context == null) { throw new ArgumentOutOfRangeException(nameof(o)); }
+            if (Context.Type != 0) { throw new ArgumentOutOfRangeException(nameof(o)); }
             }
         #endregion
 

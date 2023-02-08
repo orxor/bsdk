@@ -1330,6 +1330,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PKCS #12 Password Based Encryption With SHA-1 and 3-key Triple.
+        /// </summary>
+        internal static string _1_2_840_113549_1_12_1_3 {
+            get {
+                return ResourceManager.GetString("1.2.840.113549.1.12.1.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password-Based CryptoPro CSP Encryption Algorithm.
         /// </summary>
         internal static string _1_2_840_113549_1_12_1_80 {
@@ -1497,6 +1506,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         internal static string _1_2_840_113549_1_9_2 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.9.2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PKCS #9 FriendlyName.
+        /// </summary>
+        internal static string _1_2_840_113549_1_9_20 {
+            get {
+                return ResourceManager.GetString("1.2.840.113549.1.9.20", resourceCulture);
             }
         }
         
@@ -2568,6 +2586,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         internal static string _1_3_6_1_4_1_311_13_2_3 {
             get {
                 return ResourceManager.GetString("1.3.6.1.4.1.311.13.2.3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PKCS #12 KeyProviderName.
+        /// </summary>
+        internal static string _1_3_6_1_4_1_311_17_1 {
+            get {
+                return ResourceManager.GetString("1.3.6.1.4.1.311.17.1", resourceCulture);
             }
         }
         
