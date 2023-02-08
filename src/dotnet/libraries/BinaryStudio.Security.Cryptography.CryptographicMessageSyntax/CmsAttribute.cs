@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 
@@ -23,25 +24,23 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     [DefaultProperty(nameof(Value))]
     public class CmsAttribute : CmsObject
         {
-        public Asn1ObjectIdentifier Type { get; }
-        public virtual Object Value { get { return Values; }}
-        protected ISet<Asn1Object> Values { get; }
+        public Oid Type { get; }
+        public virtual Object Value { get; }
 
         protected CmsAttribute(CmsAttribute o)
             : base(o)
             {
             Type  = o.Type;
-            Values = o.Values;
+            Value = o.Value;
             }
 
         internal CmsAttribute(Asn1Object o)
             : base(o)
             {
-            Values = new HashSet<Asn1Object>();
-            if (o is Asn1Sequence u)
-                {
-                Type   = (Asn1ObjectIdentifier)u[0];
-                Values = new HashSet<Asn1Object>(u[1]);
+            Value = o[1];
+            if (o is Asn1Sequence u) {
+                Type  = (Asn1ObjectIdentifier)u[0];
+                Value = new HashSet<Asn1Object>(u[1]);
                 }
             }
 

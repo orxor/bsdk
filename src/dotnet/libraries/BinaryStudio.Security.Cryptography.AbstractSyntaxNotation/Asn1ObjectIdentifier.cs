@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
@@ -19,7 +20,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Int64[] Sequence { get;private set; }
         public String FriendlyName { get {
             var value = ToString();
-            var r = OID.ResourceManager.GetString(value);
+            var r = OID.ResourceManager.GetString(value,CultureInfo.InvariantCulture);
             #if NET35
             return (!String.IsNullOrEmpty(r))
                     ? r
@@ -95,13 +96,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
 
+        public static implicit operator Oid(Asn1ObjectIdentifier source) { return (Oid)source.GetService(typeof(Oid)); }
+
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="service">An object that specifies the type of service object to get.</param>
         /// <returns>A service object of type <paramref name="service"/>.-or- null if there is no service object of type <paramref name="service"/>.</returns>
         /// <filterpriority>2</filterpriority>
-        public override Object GetService(Type service)
-            {
+        public override Object GetService(Type service) {
             if (service == typeof(Asn1ObjectIdentifier)) { return this; }
+            if (service == typeof(Oid)) { return new Oid(ToString(),FriendlyName); }
             return base.GetService(service);
             }
 

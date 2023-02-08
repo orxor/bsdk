@@ -4,11 +4,11 @@ using JetBrains.Annotations;
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
     [UsedImplicitly]
-    [CmsSpecific(ObjectIdentifiers.szOID_PKCS_7_ENCRYPTED)]
-    public class CmsEncryptedDataContentInfo : CmsContentInfo
+    [CmsSpecific(ObjectIdentifiers.NSS_OID_PKCS12_CERT_BAG)]
+    public class PKCS12CertBag : PKCS12SafeBag
         {
-        internal CmsEncryptedDataContentInfo(Asn1Object source)
-            : base(source)
+        internal PKCS12CertBag(Asn1Object o)
+            : base(o)
             {
             }
         }

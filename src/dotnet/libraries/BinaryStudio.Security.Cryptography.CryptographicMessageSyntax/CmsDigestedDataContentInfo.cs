@@ -3,11 +3,11 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
-    [CmsSpecific(ObjectIdentifiers.szOID_PKCS_7_DIGESTED)]
     [UsedImplicitly]
+    [CmsSpecific(ObjectIdentifiers.szOID_PKCS_7_DIGESTED)]
     public class CmsDigestedDataContentInfo : CmsContentInfo
         {
-        public CmsDigestedDataContentInfo(Asn1Object source)
+        internal CmsDigestedDataContentInfo(Asn1Object source)
             : base(source)
             {
             }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using JetBrains.Annotations;
@@ -8,13 +9,13 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
-    [CmsSpecific(ObjectIdentifiers.szOID_PKCS_7_DATA)]
     [UsedImplicitly]
+    [CmsSpecific(ObjectIdentifiers.szOID_PKCS_7_DATA)]
     public class CmsDataContentInfo : CmsContentInfo
         {
         public new IList<CmsContentInfo> Content { get; }
         #region ctor{Asn1Object}
-        public CmsDataContentInfo(Asn1Object source)
+        internal CmsDataContentInfo(Asn1Object source)
             : base(source)
             {
             Content = EmptyArray<CmsContentInfo>.Value;

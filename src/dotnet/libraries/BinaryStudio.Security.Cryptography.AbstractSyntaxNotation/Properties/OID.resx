@@ -1689,4 +1689,10 @@
   <data name="1.2.840.113556.1.5.284.8" xml:space="preserve">
     <value>Tenant Region</value>
   </data>
+  <data name="1.2.840.113549.1.12.10.1.2" xml:space="preserve">
+    <value>PKCS #12 PKCS #8-Shrouded Key Bag</value>
+  </data>
+  <data name="1.2.840.113549.1.12.1.80" xml:space="preserve">
+    <value>Password-Based CryptoPro CSP Encryption Algorithm</value>
+  </data>
 </root>

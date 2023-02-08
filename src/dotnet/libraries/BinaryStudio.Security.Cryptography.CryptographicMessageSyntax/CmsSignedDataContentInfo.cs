@@ -39,7 +39,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         public ISet<Asn1CertificateRevocationList> CertificateRevocationList { get; }
         public ISet<CmsSignerInfo> Signers { get; }
 
-        public CmsSignedDataContentInfo(Asn1Object source)
+        internal CmsSignedDataContentInfo(Asn1Object source)
             : base(source)
             {
             var sequence = source[0][1];

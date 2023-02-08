@@ -24,20 +24,21 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1ObjectIdentifier Identifier { get; }
         public Object Parameters { get; }
 
-        public X509AlgorithmIdentifier(Asn1Sequence source)
-            {
-            if (source == null) { throw new ArgumentNullException(nameof(source)); }
-            var c = source.Count;
-            if (c == 0)                               { throw new ArgumentOutOfRangeException(nameof(source)); }
-            if (c >  2)                               { throw new ArgumentOutOfRangeException(nameof(source)); }
-            if (!(source[0] is Asn1ObjectIdentifier)) { throw new ArgumentOutOfRangeException(nameof(source)); }
-            Identifier = (Asn1ObjectIdentifier)source[0];
+        #region ctor{Asn1Sequence}
+        public X509AlgorithmIdentifier(Asn1Sequence o) {
+            if (o == null) { throw new ArgumentNullException(nameof(o)); }
+            var c = o.Count;
+            if (c == 0)                               { throw new ArgumentOutOfRangeException(nameof(o)); }
+            if (c >  2)                               { throw new ArgumentOutOfRangeException(nameof(o)); }
+            if (!(o[0] is Asn1ObjectIdentifier)) { throw new ArgumentOutOfRangeException(nameof(o)); }
+            Identifier = (Asn1ObjectIdentifier)o[0];
             if (c == 2) {
                 Parameters = X509PublicKeyParameters.From(
                     Identifier.ToString(),
-                    source[1]);
+                    o[1]);
                 }
             }
+        #endregion
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>

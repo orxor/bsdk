@@ -19,7 +19,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class OID {
@@ -1326,6 +1326,24 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties {
         internal static string _1_2_840_113549_1_1_9 {
             get {
                 return ResourceManager.GetString("1.2.840.113549.1.1.9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password-Based CryptoPro CSP Encryption Algorithm.
+        /// </summary>
+        internal static string _1_2_840_113549_1_12_1_80 {
+            get {
+                return ResourceManager.GetString("1.2.840.113549.1.12.1.80", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PKCS #12 PKCS #8-Shrouded Key Bag.
+        /// </summary>
+        internal static string _1_2_840_113549_1_12_10_1_2 {
+            get {
+                return ResourceManager.GetString("1.2.840.113549.1.12.10.1.2", resourceCulture);
             }
         }
         

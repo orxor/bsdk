@@ -17,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Int64 Length { get { return UnderlyingObject.Length; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Int64 Size   { get { return UnderlyingObject.Size;   }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Int32 Count  { get { return UnderlyingObject.Count;  }}
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override ReadOnlyMappingStream Content { get { return UnderlyingObject?.Content; }}
+        [Browsable(false)] public sealed override ReadOnlyMappingStream Content { get { return UnderlyingObject?.Content; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]protected internal override Object TypeCode { get { return $"Complex{{{U.TypeCode}}}"; }}
 
         protected Asn1LinkObject(T o)

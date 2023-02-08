@@ -26,7 +26,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             {
             if (o is null) { throw new ArgumentNullException(nameof(o)); }
             if (!(o[1] is Asn1ContextSpecificObject))  { throw new ArgumentOutOfRangeException(nameof(o)); }
-            ContentType = new Oid(((Asn1ObjectIdentifier)o[0]).ToString());
+            ContentType = (Asn1ObjectIdentifier)o[0];
             if (((Asn1ContextSpecificObject)o[1]).Type != 0) { throw new ArgumentOutOfRangeException(nameof(o)); }
             }
         #endregion
@@ -36,7 +36,10 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             if (o is null) { throw new ArgumentNullException(nameof(o)); }
             var key = ((Asn1ObjectIdentifier)o[0]).ToString();
             if (Types.TryGetValue(key, out var type)) {
-                return (CmsContentInfo)Activator.CreateInstance(type,o);
+                //var ctor = type.GetConstructor(BindingFlags.Instance|BindingFlags.NonPublic|BindingFlags.Public, null, new[]{ typeof(Asn1Object)}, null);
+                return (CmsContentInfo)Activator.CreateInstance(
+                    type,BindingFlags.NonPublic | BindingFlags.Instance,
+                    null,new Object[]{ o },null);
                 }
             throw new ArgumentOutOfRangeException(nameof(o),key,"Specified argument was out of the range of valid values.");
             }

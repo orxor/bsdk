@@ -3,11 +3,11 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
-    [CmsSpecific(ObjectIdentifiers.szOID_PKCS_7_SIGNEDANDENVELOPED)]
     [UsedImplicitly]
+    [CmsSpecific(ObjectIdentifiers.szOID_PKCS_7_SIGNEDANDENVELOPED)]
     internal class CmsSignEnvDataContentInfo : CmsContentInfo
         {
-        public CmsSignEnvDataContentInfo(Asn1Object source)
+        internal CmsSignEnvDataContentInfo(Asn1Object source)
             : base(source)
             {
             }
