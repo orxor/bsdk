@@ -41,17 +41,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #if NET35
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return ((State & ObjectState.Decoded)==ObjectState.Decoded); }}
         [Browsable(false)] public virtual Boolean IsFailed  { get { return ((State & ObjectState.Failed)==ObjectState.Failed);  }}
-        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return ((State & ObjectState.ExplicitConstructed)==ObjectState.ExplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return ((State & ObjectState.ImplicitConstructed)==ObjectState.ImplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return ((State & ObjectState.Indefinite)==ObjectState.Indefinite); }}
-        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return ((State & ObjectState.Disposed)==ObjectState.Disposed);     }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return ((State & ObjectState.ExplicitConstructed)==ObjectState.ExplicitConstructed); }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return ((State & ObjectState.ImplicitConstructed)==ObjectState.ImplicitConstructed); }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return ((State & ObjectState.Indefinite)==ObjectState.Indefinite); }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] protected internal virtual Boolean IsDisposed { get { return ((State & ObjectState.Disposed)==ObjectState.Disposed);     }}
         #else
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return State.HasFlag(ObjectState.Decoded); }}
         [Browsable(false)] public virtual Boolean IsFailed  { get { return State.HasFlag(ObjectState.Failed);  }}
-        [Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return State.HasFlag(ObjectState.ExplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return State.HasFlag(ObjectState.ImplicitConstructed); }}
-        [Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return State.HasFlag(ObjectState.Indefinite);          }}
-        [Browsable(false)] protected internal virtual Boolean IsDisposed { get { return State.HasFlag(ObjectState.Disposed);            }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return State.HasFlag(ObjectState.ExplicitConstructed); }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return State.HasFlag(ObjectState.ImplicitConstructed); }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return State.HasFlag(ObjectState.Indefinite);          }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] protected internal virtual Boolean IsDisposed { get { return State.HasFlag(ObjectState.Disposed);            }}
         #endif
 
         protected internal abstract Object TypeCode { get; }

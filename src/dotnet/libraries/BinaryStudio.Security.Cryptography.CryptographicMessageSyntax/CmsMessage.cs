@@ -22,7 +22,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             }}
 
         public CmsContentInfo ContentInfo { get; }
-        public Oid ContentType { get; }
+        public Oid ContentType { get { return ContentInfo.ContentType; }}
 
         public CmsMessage(Asn1Object o)
             : base(o)
@@ -35,16 +35,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                 if (!(o[0] is Asn1ObjectIdentifier))       { return; }
                 if (!(o[1] is Asn1ContextSpecificObject))  { throw new ArgumentOutOfRangeException(nameof(o)); }
                 if (((Asn1ContextSpecificObject)o[1]).Type != 0) { throw new ArgumentOutOfRangeException(nameof(o)); }
-                ContentType = new Oid(((Asn1ObjectIdentifier)o[0]).ToString());
-                switch (((Asn1ObjectIdentifier)o[0]).ToString()) {
-                    case OID_Data:          { ContentInfo = new CmsDataContentInfo(o[1]);          } break;
-                    case OID_SignedData:    { ContentInfo = new CmsSignedDataContentInfo(o[1]);    } break;
-                    case OID_EnvelopedData: { ContentInfo = new CmsEnvelopedDataContentInfo(o[1]); } break;
-                    case OID_SignEnvData:   { ContentInfo = new CmsSignEnvDataContentInfo(o[1]);   } break;
-                    case OID_DigestedData:  { ContentInfo = new CmsDigestedDataContentInfo(o[1]);  } break;
-                    case OID_EncryptedData: { ContentInfo = new CmsEncryptedDataContentInfo(o[1]); } break;
-                    default : { throw new ArgumentOutOfRangeException(nameof(o)); }
-                    }
+                ContentInfo = CmsContentInfo.Create(o);
                 State &= ~ObjectState.Failed;
                 State |= ObjectState.DisposeUnderlyingObject;
                 }
@@ -60,12 +51,5 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
             if (service == typeof(CmsSignedDataContentInfo)) { return ContentInfo as CmsSignedDataContentInfo; }
             return base.GetService(service);
             }
-
-        private const String OID_Data          = "1.2.840.113549.1.7.1";
-        private const String OID_SignedData    = "1.2.840.113549.1.7.2";
-        private const String OID_EnvelopedData = "1.2.840.113549.1.7.3";
-        private const String OID_SignEnvData   = "1.2.840.113549.1.7.4";
-        private const String OID_DigestedData  = "1.2.840.113549.1.7.5";
-        private const String OID_EncryptedData = "1.2.840.113549.1.7.6";
         }
     }

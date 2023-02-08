@@ -1,6 +1,6 @@
 ﻿namespace BinaryStudio.PlatformComponents.Win32
     {
-    public enum CMSG_PARAM : uint
+    public enum CMSG_PARAM
         {
         CMSG_TYPE_PARAM = 1,
         CMSG_CONTENT_PARAM = 2,

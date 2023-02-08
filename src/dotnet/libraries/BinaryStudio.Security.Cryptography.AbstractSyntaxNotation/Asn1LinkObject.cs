@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using BinaryStudio.IO;
 using BinaryStudio.Serialization;
@@ -9,15 +10,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     public abstract class Asn1LinkObject<T> : Asn1Object
         where T: Asn1Object
         {
-        [Browsable(false)] private T U;
-        [Browsable(false)] public virtual Asn1Object UnderlyingObject { get { return U; }}
-        [Browsable(false)] public sealed override Asn1ObjectClass Class { get { return UnderlyingObject.Class; }}
-        [Browsable(false)] public sealed override Int64 Offset { get { return UnderlyingObject.Offset; }}
-        [Browsable(false)] public sealed override Int64 Length { get { return UnderlyingObject.Length; }}
-        [Browsable(false)] public sealed override Int64 Size   { get { return UnderlyingObject.Size;   }}
-        [Browsable(false)] public sealed override Int32 Count  { get { return UnderlyingObject.Count;  }}
-        [Browsable(false)] public sealed override ReadOnlyMappingStream Content { get { return UnderlyingObject?.Content; }}
-        protected internal override Object TypeCode { get { return $"Complex{{{U.TypeCode}}}"; }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] private T U;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Asn1Object UnderlyingObject { get { return U; }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Asn1ObjectClass Class { get { return UnderlyingObject.Class; }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Int64 Offset { get { return UnderlyingObject.Offset; }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Int64 Length { get { return UnderlyingObject.Length; }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Int64 Size   { get { return UnderlyingObject.Size;   }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Int32 Count  { get { return UnderlyingObject.Count;  }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override ReadOnlyMappingStream Content { get { return UnderlyingObject?.Content; }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]protected internal override Object TypeCode { get { return $"Complex{{{U.TypeCode}}}"; }}
 
         protected Asn1LinkObject(T o)
             {

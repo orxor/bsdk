@@ -25,6 +25,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     ///   SignerInfos ::= SET OF SignerInfo
     /// </pre>
     /// </summary>
+    [CmsSpecific(ObjectIdentifiers.szOID_PKCS_7_SIGNED)]
     public class CmsSignedDataContentInfo : CmsContentInfo
         {
         private const Int32 INDEX_VERSION                   = 0;
@@ -41,7 +42,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         public CmsSignedDataContentInfo(Asn1Object source)
             : base(source)
             {
-            var sequence = source[0];
+            var sequence = source[0][1];
             var c = sequence.Count;
             Certificates = new HashSet<Asn1Certificate>();
             CertificateRevocationList = new HashSet<Asn1CertificateRevocationList>();

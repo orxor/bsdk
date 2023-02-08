@@ -7,6 +7,7 @@ using UnitTests.BinaryStudio.PlatformComponents;
 using UnitTests.BinaryStudio.PortableExecutable;
 using UnitTests.BinaryStudio.Security.Cryptography.Certificates;
 using UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
+using UnitTests.BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax;
 
 namespace UnitTests.BinaryStudio.Task
     {
@@ -14,13 +15,13 @@ namespace UnitTests.BinaryStudio.Task
         {
         private static void Main(string[] args)
             {
-            Console.WriteLine("Press [ENTER] to continue...");
-            Console.ReadLine();
+            //Console.WriteLine("Press [ENTER] to continue...");
+            //Console.ReadLine();
             //Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
             //Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
             //Execute(typeof(HResultT));
             //Execute(typeof(X509CertificateStorageT));
-            Execute(typeof(MZMetadataObjectT));
+            Execute(typeof(PfxFileT));
             }
 
         #region M:Execute(Action)

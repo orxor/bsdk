@@ -49,6 +49,8 @@
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.Interchange/obj
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax/bin
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax/obj
 /src/dotnet/libraries/BinaryStudio.DataProcessing/bin
 /src/dotnet/libraries/BinaryStudio.DataProcessing/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Certificates/bin
@@ -59,6 +61,8 @@
 /src/dotnet/tests/UnitTests.BinaryStudio.Task/obj
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider/bin
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider/obj
+/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax/bin
+/src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax/obj
 /src/dotnet/samples/XYViewportSample/bin
 /src/dotnet/samples/XYViewportSample/obj
 /src/dotnet/samples/DllResources/bin

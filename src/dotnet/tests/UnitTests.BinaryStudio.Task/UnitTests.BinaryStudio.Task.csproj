@@ -26,6 +26,7 @@
     <ProjectReference Include="..\UnitTests.BinaryStudio.PlatformComponents\UnitTests.BinaryStudio.PlatformComponents.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.Security.Cryptography.Certificates\UnitTests.BinaryStudio.Security.Cryptography.Certificates.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider\UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
+    <ProjectReference Include="..\UnitTests.BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax\UnitTests.BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTestData\cer\" />
