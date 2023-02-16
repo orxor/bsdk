@@ -17,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
 
         private X509CertificateStorage(IntPtr store) {
             if (store == null) { throw new ArgumentNullException(nameof(store)); }
-            Store = new EX509CertificateStorage(store);
+            throw new NotImplementedException();
             }
 
         #region ctor{X509StoreName,X509StoreLocation}
@@ -38,12 +38,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     default: throw new ArgumentOutOfRangeException(nameof(name))
                             .Add("StoreName",name);
                     }
-                Store = new EX509CertificateStorage(Validate(Entries.CertOpenStore(
-                    CERT_STORE_PROV_SYSTEM_W,
-                    PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
-                    IntPtr.Zero,
-                    MapX509StoreFlags(location,X509OpenFlags.MaxAllowed|X509OpenFlags.OpenExistingOnly),
-                    StoreName),Entries as CryptographicObject, NotZero));
+                throw new NotImplementedException();
                 return;
                 }
             throw new ArgumentOutOfRangeException(nameof(location));

@@ -11,13 +11,9 @@ namespace BinaryStudio.Security.Cryptography.Internal
         {
         public override X509StoreLocation Location { get { return X509StoreLocation.CurrentUser; }}
         public MessageCertificateStorage(IntPtr message)
-            :base(Entries.CertOpenStore(
-                    CERT_STORE_PROV_MSG,
-                    PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
-                    IntPtr.Zero,
-                    MapX509StoreFlags(X509StoreLocation.CurrentUser,X509OpenFlags.MaxAllowed|X509OpenFlags.OpenExistingOnly),
-                    message))
+            :base(IntPtr.Zero, "Message")
             {
+            throw new NotImplementedException();
             }
 
         #region M:Find(CERT_INFO*):X509Certificate

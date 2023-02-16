@@ -25,6 +25,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String Issuer       { get { return Source.Issuer.ToString();  }}
         public String Subject      { get { return Source.Subject.ToString(); }}
         public String Country      { get { return Source.Country; }}
+        internal Boolean IsMachineKeySet { get;set; }
+        internal String Container {get;set; }
 
         #region ctor{IntPtr}
         public X509Certificate(IntPtr context) {
@@ -53,6 +55,13 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 var hr = GetHRForLastWin32Error();
                 Marshal.ThrowExceptionForHR((Int32)hr);
                 }
+            }
+        #endregion
+        #region ctor{Byte[],CryptKey}
+        internal unsafe X509Certificate(Byte[] source,CryptKey key) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (key == null) { throw new ArgumentOutOfRangeException(nameof(key)); }
+            throw new NotImplementedException();
             }
         #endregion
 

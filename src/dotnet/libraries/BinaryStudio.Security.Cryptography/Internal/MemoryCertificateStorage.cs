@@ -11,7 +11,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                     PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
                     IntPtr.Zero,
                     MapX509StoreFlags(location,X509OpenFlags.MaxAllowed|X509OpenFlags.ReadWrite),
-                    IntPtr.Zero))
+                    IntPtr.Zero),"Memory")
             {
             Location = location;
             }

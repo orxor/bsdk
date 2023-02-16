@@ -13,12 +13,16 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         {
         protected IntPtr Store;
         public override IntPtr Handle { get { return Store; }}
+        public virtual String StoreName { get; }
         public virtual X509StoreLocation Location { get { return X509StoreLocation.CurrentService; }}
 
-        public EX509CertificateStorage(IntPtr store)
+        #region ctor{IntPtr,String}
+        public EX509CertificateStorage(IntPtr store, String storeName)
             {
             Store = store;
+            StoreName = storeName;
             }
+        #endregion
 
         public virtual IEnumerable<X509Certificate> Certificates { get {
             var o = Entries.CertEnumCertificatesInStore(Store, IntPtr.Zero);

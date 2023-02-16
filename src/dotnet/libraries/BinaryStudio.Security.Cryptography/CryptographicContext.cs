@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 #if LINUX
@@ -41,6 +42,48 @@ namespace BinaryStudio.Security.Cryptography
         public static IEnumerable<RegisteredProviderInfo> RegisteredProviders { get { return DefaultContext.GetRegisteredProviders(); }}
         public static IDictionary<CRYPT_PROVIDER_TYPE,String> AvailableTypes { get { return DefaultContext.GetAvailableTypes(); }}
         public virtual IDictionary<ALG_ID,String> SupportedAlgorithms { get { return new ReadOnlyDictionary<ALG_ID,String>(new Dictionary<ALG_ID,String>()); }}
+        public virtual String ProviderName { get { return "Auto"; }}
+        public virtual String Container { get; }
+        public virtual KEY_SPEC_TYPE KeySpec { get; }
+        public virtual CRYPT_PROVIDER_TYPE ProviderType { get { return CRYPT_PROVIDER_TYPE.AUTO; }}
+        public virtual Boolean IsMachineKeySet { get; }
+        public virtual CryptographicContextFlags ProviderFlags { get; }
+
+        #region P:Version:Version
+        public virtual Version Version { get {
+            var r = GetParameter<UInt32>(CRYPT_PARAM.PP_VERSION, 0, null);
+            return new Version((Int32)(r & 0xFF00) >> 8, (Int32)(r & 0xFF));
+            }}
+        #endregion
+        #region P:Keys:IEnumerable<CryptKey>
+        public virtual IEnumerable<CryptKey> Keys { get {
+            throw new NotImplementedException();
+            }}
+        #endregion
+        #region P:FullQualifiedContainerName:String
+        public String FullQualifiedContainerName { get {
+            var r = GetParameter<String>(CRYPT_PARAM.PP_FQCN, 0, Encoding.ASCII);
+            return (r != null)
+                    ? r
+                    : null;
+            }}
+        #endregion
+        #region P:UniqueContainer:String
+        public String UniqueContainer { get {
+            var r = GetParameter<String>(CRYPT_PARAM.PP_UNIQUE_CONTAINER, 0, Encoding.ASCII);
+            return (r != null)
+                    ? r
+                    : null;
+            }}
+        #endregion
+        #region P:SecureCode:SecureString
+        public SecureString SecureCode {
+            set
+                {
+                throw new NotImplementedException();
+                }
+            }
+        #endregion
 
         #region M:GetRegisteredProviders:IEnumerable<RegisteredProviderInfo>
         private IEnumerable<RegisteredProviderInfo> GetRegisteredProviders() {
@@ -352,6 +395,32 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endif
+
+        #region M:GetParameter(CRYPT_PARAM,Int32):void*
+        internal Byte[] GetParameter(CRYPT_PARAM key, Int32 flags) {
+            throw new NotImplementedException();
+            }
+        #endregion
+        #region M:GetParameter<T>(CRYPT_PARAM,Int32,Encoding):T
+        internal unsafe T GetParameter<T>(CRYPT_PARAM key, Int32 flags, Encoding encoding) {
+            var r = GetParameter(key, flags);
+            if (r == null) { return default; }
+            if (typeof(T) == typeof(String)) { return (T)(Object)encoding.GetString(r, 0, r.Length).TrimEnd('\0'); }
+            fixed (Byte* i = r)
+                {
+                if (typeof(T) == typeof(Int32))  { return (T)(Object)(*(Int32*)i);  }
+                if (typeof(T) == typeof(UInt32)) { return (T)(Object)(*(UInt32*)i); }
+                if (typeof(T) == typeof(IntPtr)) { return (T)(Object)(*(IntPtr*)i); }
+                }
+            return default(T);
+            }
+        #endregion
+        #region M:GetUserKey(KEY_SPEC_TYPE,String):CryptKey
+        private CryptKey GetUserKey(KEY_SPEC_TYPE keyspec, String container)
+            {
+            throw new NotImplementedException();
+            }
+        #endregion
 
         static CryptographicContext() {
             #if LINUX
