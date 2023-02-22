@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
-using BinaryStudio.DiagnosticServices;
+using log4net;
+using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UnitTests.BinaryStudio.Common;
 using UnitTests.BinaryStudio.PlatformComponents;
 using UnitTests.BinaryStudio.PortableExecutable;
 using UnitTests.BinaryStudio.Security.Cryptography.Certificates;
 using UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using UnitTests.BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax;
+using ColorScope = BinaryStudio.DiagnosticServices.ColorScope;
 
 namespace UnitTests.BinaryStudio.Task
     {
@@ -15,84 +19,30 @@ namespace UnitTests.BinaryStudio.Task
         {
         private static void Main(string[] args)
             {
-            //Console.WriteLine("Press [ENTER] to continue...");
-            //Console.ReadLine();
-            //Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
-            //Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
-            Execute(typeof(HResultT));
-            //Execute(typeof(X509CertificateStorageT));
-            //Execute(typeof(PfxFileT));
+            var assembly = Assembly.GetEntryAssembly();
+            var repository = LogManager.GetRepository(assembly);
+            XmlConfigurator.Configure(repository,new FileInfo("log4net.config"));
+            for (var i = 0; i < 16;i++) {
+                Write((ConsoleColor)i,$" {{{((ConsoleColor)i)}}}");
+                if ((i + 1) % 8 == 0) {
+                    Console.WriteLine();
+                    }
+                }
+            for (var i = 0; i < args.Length; i++) {
+                if (String.Equals(args[i],"wait",StringComparison.OrdinalIgnoreCase)) {
+                    Console.WriteLine("Press [ENTER] to continue...");
+                    Debug.WriteLine("Waiting for user action...");
+                    Console.ReadLine();
+                    }
+                }
+
+            //(new Executor()).Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
+            //(new Executor()).Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
+            //(new Executor()).Execute(typeof(HResultT));
+            (new Executor()).Execute(typeof(X509CertificateStorageT));
+            //(new Executor()).Execute(typeof(PfxFileT));
             }
 
-        #region M:Execute(Action)
-        private static void Execute(Action action)
-            {
-            Execute(null, action);
-            }
-        #endregion
-        #region M:Execute(String,Action)
-        private static void Execute(String source, Action action) {
-            if (action == null) { throw new ArgumentNullException(nameof(action)); }
-            try
-                {
-                action();
-                if (source != null) {
-                    Write(ConsoleColor.Green, "{ok}");
-                    Write(ConsoleColor.Gray, $":{{{source}}}");
-                    Console.WriteLine();
-                    }
-                }
-            catch (Exception e)
-                {
-                Debug.WriteLine(Exceptions.ToString(e));
-                WriteLine(ConsoleColor.Gray,$"Exception:{e.GetType().FullName}");
-                WriteLine(ConsoleColor.Cyan,$"Message:{e.Message}");
-                WriteLine(ConsoleColor.Yellow,Exceptions.ToString(e));
-                if (source != null) {
-                    Write(ConsoleColor.Red, "{error}");
-                    Write(ConsoleColor.Gray, $":{{{source}}}");
-                    Console.WriteLine();
-                    }
-                }
-            }
-        #endregion
-        #region M:Execute(Type)
-        private static void Execute(Type type)
-            {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            Execute(()=>
-                {
-                var engine = Activator.CreateInstance(type);
-                foreach (var methodinfo in type.GetMethods(BindingFlags.Instance|BindingFlags.Public)) {
-                    if ((methodinfo.GetCustomAttribute<TestMethodAttribute>() != null) &&
-                        (methodinfo.GetCustomAttribute<IgnoreAttribute>() == null))
-                        {
-                        Execute($"{type.Name}.{methodinfo.Name}", () => methodinfo.Invoke(engine, null));
-                        }
-                    }
-                });
-            }
-        #endregion
-        #region M:Execute(String,Type,String)
-        private static void Execute(Type type,String MethodName) {
-            if (type == null) { throw new ArgumentNullException(nameof(type)); }
-            Execute(()=>
-                {
-                var engine = Activator.CreateInstance(type);
-                foreach (var methodinfo in type.GetMethods(BindingFlags.Instance|BindingFlags.Public)) {
-                    if ((methodinfo.GetCustomAttribute<TestMethodAttribute>() != null) &&
-                        (methodinfo.GetCustomAttribute<IgnoreAttribute>() == null))
-                        {
-                        if (MethodName == methodinfo.Name)
-                            {
-                            Execute($"{type.Name}.{methodinfo.Name}", () => methodinfo.Invoke(engine, null));
-                            return;
-                            }
-                        }
-                    }
-                });
-            }
-        #endregion
         #region M:Write(ConsoleColor,String)
         private static void Write(ConsoleColor color, String message) {
             using (new ColorScope(color)) {
@@ -107,20 +57,5 @@ namespace UnitTests.BinaryStudio.Task
                 }
             }
         #endregion
-
-        private class ColorScope : IDisposable
-            {
-            private readonly ConsoleColor color;
-            public ColorScope(ConsoleColor color)
-                {
-                this.color = Console.ForegroundColor;
-                Console.ForegroundColor = color;
-                }
-
-            void IDisposable.Dispose()
-                {
-                Console.ForegroundColor = color;
-                }
-            }
         }
     }

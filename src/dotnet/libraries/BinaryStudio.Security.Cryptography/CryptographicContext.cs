@@ -414,7 +414,18 @@ namespace BinaryStudio.Security.Cryptography
 
         #region M:GetParameter(CRYPT_PARAM,Int32):void*
         internal Byte[] GetParameter(CRYPT_PARAM key, Int32 flags) {
-            throw new NotImplementedException();
+            EnsureEntries(out var entries);
+            for (var i = 0x200;;) {
+                var r = new Byte[i];
+                if (entries.CryptGetProvParam(Handle, key, r, ref i, flags)) { return r; }
+                var e = (Win32ErrorCode)GetLastWin32Error();
+                if (e == Win32ErrorCode.ERROR_MORE_DATA)
+                    {
+                    continue;
+                    }
+                break;
+                }
+            return null;
             }
         #endregion
         #region M:GetParameter<T>(CRYPT_PARAM,Int32,Encoding):T

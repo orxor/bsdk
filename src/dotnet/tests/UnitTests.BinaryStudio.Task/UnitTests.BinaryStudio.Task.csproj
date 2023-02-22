@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libraries\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
+    <ProjectReference Include="..\UnitTests.BinaryStudio.Common\UnitTests.BinaryStudio.Common.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.PortableExecutable\UnitTests.BinaryStudio.PortableExecutable.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.PlatformComponents\UnitTests.BinaryStudio.PlatformComponents.csproj" />
     <ProjectReference Include="..\UnitTests.BinaryStudio.Security.Cryptography.Certificates\UnitTests.BinaryStudio.Security.Cryptography.Certificates.csproj" />
@@ -4410,6 +4411,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\UnitTestData\cer\{us}{fff9f385ada8a013a725d4f0ad4a54a2256401f2}.cer" Link="UnitTestData\cer\{us}{fff9f385ada8a013a725d4f0ad4a54a2256401f2}.cer">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

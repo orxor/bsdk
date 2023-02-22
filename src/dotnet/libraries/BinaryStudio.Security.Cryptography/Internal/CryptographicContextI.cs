@@ -25,7 +25,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
             var sz = 1024;
             var buffer = new LocalMemory(sz);
             var cflags = CRYPT_FIRST;
-            while (entries.CryptGetProvParam(Handle,(Int32)CRYPT_PARAM.PP_ENUMALGS, buffer, ref sz, cflags)) {
+            while (entries.CryptGetProvParam(Handle,CRYPT_PARAM.PP_ENUMALGS, buffer, ref sz, cflags)) {
                 var alg = (PROV_ENUMALGS*)buffer;
                 r.Add(alg->AlgId, ToString(&(alg->Name), alg->NameLength, Encoding.ASCII));
                 cflags = CRYPT_NEXT;

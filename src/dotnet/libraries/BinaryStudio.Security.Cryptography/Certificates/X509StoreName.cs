@@ -11,6 +11,7 @@
         TrustedPeople,
         TrustedPublisher,
         TrustedDevices,
-        NTAuth
+        NTAuth,
+        Device
         }
     }

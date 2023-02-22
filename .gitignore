@@ -89,3 +89,5 @@
 /src/cc/ntdll/.intermediate
 /src/dotnet/shell/bin
 /src/dotnet/shell/obj
+/src/dotnet/tests/UnitTests.BinaryStudio.Common/bin
+/src/dotnet/tests/UnitTests.BinaryStudio.Common/obj

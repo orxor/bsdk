@@ -11,6 +11,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         public override String StoreName { get { return "Device"; }}
         public CRYPT_PROVIDER_TYPE ProviderType { get; }
 
+        #region ctor{CRYPT_PROVIDER_TYPE,X509StoreLocation}
         public DeviceCertificateStorage(CRYPT_PROVIDER_TYPE provider, X509StoreLocation location)
             : base(location)
             {
@@ -19,7 +20,9 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512;
                 }
             }
+        #endregion
 
+        #region P:Certificates:IEnumerable<X509Certificate>
         public override IEnumerable<X509Certificate> Certificates { get {
             if (FetchedFromContext) {
                 var o = Entries.CertEnumCertificatesInStore(Handle, IntPtr.Zero);
@@ -32,24 +35,24 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 }
             else
                 {
-                throw new NotImplementedException();
-                //using (var context = new CryptographicContextI(ProviderType,
-                //    CryptographicContextFlags.CRYPT_VERIFYCONTEXT|
-                //    ((Location == X509StoreLocation.CurrentUser)
-                //        ? CryptographicContextFlags.CRYPT_NONE
-                //        : CryptographicContextFlags.CRYPT_MACHINE_KEYSET)))
-                //    {
-                //    foreach (var key in context.Keys) {
-                //        var r = key.GetParameter(KEY_PARAM.KP_CERTIFICATE);
-                //        if (r != null) {
-                //            var o = new X509Certificate(r, key);
-                //            Validate(Entries.CertAddCertificateContextToStore(Handle, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
-                //            yield return o;
-                //            }
-                //        }
-                //    }
+                using (var context = new CryptographicContextI(ProviderType,
+                    CryptographicContextFlags.CRYPT_VERIFYCONTEXT|
+                    ((Location == X509StoreLocation.CurrentUser)
+                        ? CryptographicContextFlags.CRYPT_NONE
+                        : CryptographicContextFlags.CRYPT_MACHINE_KEYSET)))
+                    {
+                    foreach (var key in context.Keys) {
+                        var r = key.GetParameter(KEY_PARAM.KP_CERTIFICATE);
+                        if (r != null) {
+                            var o = new X509Certificate(r, key);
+                            Validate(Entries.CertAddCertificateContextToStore(Handle, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
+                            yield return o;
+                            }
+                        }
+                    }
                 FetchedFromContext = true;
                 }
             }}
+        #endregion
         }
     }

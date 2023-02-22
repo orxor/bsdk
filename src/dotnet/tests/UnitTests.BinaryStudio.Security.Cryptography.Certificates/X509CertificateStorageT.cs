@@ -3,10 +3,12 @@ using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using UnitTests.BinaryStudio.Common;
 
 namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
     {
     [TestClass]
+    [ParallelOptions(MaxDegreeOfParallelism = 32)]
     public class X509CertificateStorageT
         {
         [TestInitialize]
@@ -49,13 +51,13 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             ;
             }
         #endregion
-        #region M:GetSystemStoresLocalMachine
+        #region M:GetSystemStores:LocalMachine
         [TestMethod]
         public void GetSystemStoresLocalMachine() {
             GetSystemStores(X509StoreLocation.LocalMachine);
             }
         #endregion
-        #region M:CertificatesLocalMachineMy
+        #region M:Certificates:LocalMachine:My
         [TestMethod]
         public void CertificatesLocalMachineMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.LocalMachine)) {
@@ -66,7 +68,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
-        #region M:CertificatesCurrentUserMy
+        #region M:Certificates:CurrentUser:My
         [TestMethod]
         public void CertificatesCurrentUserMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)) {
@@ -76,7 +78,20 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
-        #region M:CrlsLocalMachineMy
+        #region M:Certificates:CurrentUser:Device
+        [TestMethod]
+        public void CertificatesCurrentUserDevice() {
+            using (var store = new X509CertificateStorage(X509StoreName.Device,X509StoreLocation.CurrentUser)) {
+                foreach (var certificate in store.Certificates) {
+                    Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
+                    #if FEATURE_PRINT_CERTIFICATE
+                    WriteLine(ConsoleColor.DarkGray,$"{(Int32)certificate.Handle:x8}:{certificate.Thumbprint}");
+                    #endif
+                    }
+                }
+            }
+        #endregion
+        #region M:Crls:LocalMachine:My
         [TestMethod]
         public void CrlsLocalMachineMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.LocalMachine)) {
@@ -87,7 +102,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
-        #region M:CrlsCurrentUserMy
+        #region M:Crls:CurrentUser:My
         [TestMethod]
         public void CrlsCurrentUserMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)) {
