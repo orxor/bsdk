@@ -1,4 +1,5 @@
 ﻿using System;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,7 +10,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
     {
     [TestClass]
     [ParallelOptions(MaxDegreeOfParallelism = 32)]
-    public class X509CertificateStorageT
+    public class X509CertificateStorageT : ClassT
         {
         [TestInitialize]
         public void Setup()
@@ -85,7 +86,16 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
                 foreach (var certificate in store.Certificates) {
                     Assert.AreNotEqual(IntPtr.Zero, certificate.Handle);
                     #if FEATURE_PRINT_CERTIFICATE
-                    WriteLine(ConsoleColor.DarkGray,$"{(Int32)certificate.Handle:x8}:{certificate.Thumbprint}");
+                    WriteLine(ConsoleColor.DarkGray,(IntPtr.Size == sizeof(Int64))
+                        ? $"{(Int64)certificate.Handle:x16}:{certificate.Thumbprint}"
+                        : $"{(Int32)certificate.Handle:x8}:{certificate.Thumbprint}");
+                    using (var writer = new DefaultJsonWriter(new JsonTextWriter(Console.Out){
+                            Formatting = Formatting.Indented,
+                            Indentation = 2,
+                            IndentChar = ' '
+                            })) {
+                        ((IExceptionSerializable)certificate).WriteTo(writer);
+                        }
                     #endif
                     }
                 }

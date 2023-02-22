@@ -2,6 +2,7 @@
 
 namespace BinaryStudio.PlatformComponents.Win32
     {
+    [Flags]
     public enum CryptographicContextFlags
         {
         CRYPT_NONE = 0,

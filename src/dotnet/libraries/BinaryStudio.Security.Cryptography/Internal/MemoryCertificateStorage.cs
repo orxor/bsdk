@@ -6,7 +6,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         {
         public override X509StoreLocation Location { get; }
         public MemoryCertificateStorage(X509StoreLocation location)
-            :base(Entries.CertOpenStore(
+            :base(Entries.CertOpenStoreA(
                     CERT_STORE_PROV_MEMORY,
                     PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
                     IntPtr.Zero,

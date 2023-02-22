@@ -2,8 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.IO;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
@@ -11,7 +13,8 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    public class X509Certificate : X509Object,IExceptionSerializable
+    using HRESULT=HResult;
+    public sealed class X509Certificate : X509Object,IExceptionSerializable
         {
         private IntPtr Context;
         internal Asn1Certificate Source;
@@ -25,8 +28,11 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String Issuer       { get { return Source.Issuer.ToString();  }}
         public String Subject      { get { return Source.Subject.ToString(); }}
         public String Country      { get { return Source.Country; }}
+        public Oid SignatureAlgorithm { get; }
+        public Oid HashAlgorithm { get; }
         internal Boolean IsMachineKeySet { get;set; }
         internal String Container {get;set; }
+        internal KEY_SPEC_TYPE KeySpec { get; }
 
         #region ctor{IntPtr}
         public X509Certificate(IntPtr context) {
@@ -61,7 +67,26 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         internal unsafe X509Certificate(Byte[] source,CryptKey key) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (key == null) { throw new ArgumentOutOfRangeException(nameof(key)); }
-            throw new NotImplementedException();
+            Source = BuildSource(source);
+            Context = Validate(Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length),NotZero);
+            SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
+            HashAlgorithm = (Source.SignatureAlgorithm.HashAlgorithm != null)
+                ? Source.SignatureAlgorithm.HashAlgorithm
+                : null;
+            KeySpec = key.KeySpec;
+            using (var manager = new LocalMemoryManager()) {
+                var pi = new CRYPT_KEY_PROV_INFO {
+                    ContainerName = 
+                        (Environment.OSVersion.Platform <= PlatformID.WinCE)
+                         ? (IntPtr)manager.StringToMem(key.Context.FullQualifiedContainerName, Entries.UnicodeEncoding)
+                         : (IntPtr)manager.StringToMem(key.Context.Container, Entries.UnicodeEncoding),
+                    ProviderName = (IntPtr)manager.StringToMem(key.Context.ProviderName, Entries.UnicodeEncoding),
+                    ProviderFlags = key.Context.ProviderFlags & (~CryptographicContextFlags.CRYPT_SILENT),
+                    ProviderType = key.Context.ProviderType,
+                    KeySpec = key.KeySpec
+                    };
+                SetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, 0, ref pi);
+                }
             }
         #endregion
 
@@ -91,6 +116,31 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 throw new InvalidDataException();
                 }
             return r;
+            }
+        #endregion
+        #region M:SetProperty(CERT_PROP_ID,{ref}CRYPT_KEY_PROV_INFO)
+        private void SetProperty(CERT_PROP_ID index, Int32 flags, ref CRYPT_KEY_PROV_INFO value) {
+            Validate(Entries.CertSetCertificateContextProperty(Handle, index, flags, ref value));
+            }
+        #endregion
+        #region M:GetProperty(CERT_PROP_ID,{out}CRYPT_KEY_PROV_INFO):HRESULT
+        internal unsafe HRESULT GetProperty(CERT_PROP_ID index, out CRYPT_KEY_PROV_INFO value) {
+            value = new CRYPT_KEY_PROV_INFO();
+            var r = GetProperty(index, out Byte[] o);
+            if (r != HRESULT.S_OK) { return r; }
+            fixed (Byte* B = o) {
+                value = *(CRYPT_KEY_PROV_INFO*)B;
+                }
+            return HRESULT.S_OK;
+            }
+        #endregion
+        #region M:GetProperty(CERT_PROP_ID,{out}Byte[]):HRESULT
+        private HRESULT GetProperty(CERT_PROP_ID index,out Byte[] r) {
+            r = EmptyArray<Byte>.Value;
+            var c = 0;
+            if (!Entries.CertGetCertificateContextProperty(Handle, index, null, ref c)) { return (HRESULT)Entries.GetLastError(); } r = new Byte[c];
+            if (!Entries.CertGetCertificateContextProperty(Handle, index, r,    ref c)) { return (HRESULT)Entries.GetLastError(); }
+            return HRESULT.S_OK;
             }
         #endregion
         #region M:Dispose(Boolean)

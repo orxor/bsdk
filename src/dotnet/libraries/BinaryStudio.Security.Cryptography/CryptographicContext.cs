@@ -445,7 +445,31 @@ namespace BinaryStudio.Security.Cryptography
         #region M:GetUserKey(KEY_SPEC_TYPE,String):CryptKey
         private CryptKey GetUserKey(KEY_SPEC_TYPE keyspec, String container)
             {
-            throw new NotImplementedException();
+            EnsureEntries(out var entries);
+            try
+                {
+                IntPtr r;
+                     if (keyspec == KEY_SPEC_TYPE.AT_KEYEXCHANGE)  { Validate(entries.CryptGetUserKey(Handle, keyspec, out r)); }
+                else if (keyspec == KEY_SPEC_TYPE.AT_SIGNATURE)    { Validate(entries.CryptGetUserKey(Handle, keyspec, out r)); }
+                else
+                     {
+                     if (!entries.CryptGetUserKey(Handle, KEY_SPEC_TYPE.AT_KEYEXCHANGE, out r)) {
+                        keyspec = KEY_SPEC_TYPE.AT_SIGNATURE;
+                        Validate(entries.CryptGetUserKey(Handle,keyspec, out r));
+                        }
+                     else
+                        {
+                        keyspec = KEY_SPEC_TYPE.AT_KEYEXCHANGE;
+                        }
+                     }
+                return new CryptKey(this,r,keyspec,container);
+                }
+            catch (Exception e)
+                {
+                e.Data.Add("KeySpec", keyspec);
+                e.Data.Add("Container", container);
+                throw;
+                }
             }
         #endregion
         #region M:CryptGetKeyParam(IntPtr,KEY_PARAM,Byte[],{ref}Int32,Int32):Boolean

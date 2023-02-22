@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Globalization;
+using System.Security.Cryptography;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 
 namespace BinaryStudio.Security.Cryptography
     {
@@ -7,6 +10,11 @@ namespace BinaryStudio.Security.Cryptography
     #endif
     internal static class ObjectIdentifiers
         {
+        public static Oid GetOID(String value)
+            {
+            return new Oid(value,OID.ResourceManager.GetString(value,CultureInfo.InvariantCulture));
+            }
+
         private const String RSADSIPKCS = "1.2.840.113549.1";
         private const String RSADSIHASH = "1.2.840.113549.2";
         private const String RSADSIENC = "1.2.840.113549.3";

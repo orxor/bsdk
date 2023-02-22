@@ -100,13 +100,13 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         #endregion
 
         #region M:MapX509StoreFlags(X509StoreLocation,X509OpenFlags):UInt32
-        protected internal static UInt32 MapX509StoreFlags(X509StoreLocation storeLocation, X509OpenFlags flags) {
-            var r = 0U;
-            var mode = ((UInt32)flags) & 0x3;
+        protected internal static Int32 MapX509StoreFlags(X509StoreLocation storeLocation, X509OpenFlags flags) {
+            var r = 0;
+            var mode = ((Int32)flags) & 0x3;
             switch (mode)
                 {
-                case (UInt32)X509OpenFlags.ReadOnly:    { r |= CERT_STORE_READONLY_FLAG; }          break;
-                case (UInt32)X509OpenFlags.MaxAllowed:  { r |= CERT_STORE_MAXIMUM_ALLOWED_FLAG; }   break;
+                case (Int32)X509OpenFlags.ReadOnly:    { r |= CERT_STORE_READONLY_FLAG; }          break;
+                case (Int32)X509OpenFlags.MaxAllowed:  { r |= CERT_STORE_MAXIMUM_ALLOWED_FLAG; }   break;
                 }
             if ((flags & X509OpenFlags.OpenExistingOnly) == X509OpenFlags.OpenExistingOnly) { r |= CERT_STORE_OPEN_EXISTING_FLAG; }
             if ((flags & X509OpenFlags.IncludeArchived)  == X509OpenFlags.IncludeArchived)  { r |= CERT_STORE_ENUM_ARCHIVED_FLAG; }
