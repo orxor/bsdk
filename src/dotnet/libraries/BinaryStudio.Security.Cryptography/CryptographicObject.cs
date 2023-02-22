@@ -140,7 +140,7 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:GetHRForLastWin32Error:HRESULT
-        protected static HRESULT GetHRForLastWin32Error()
+        protected virtual HRESULT GetHRForLastWin32Error()
             {
             return (HRESULT)(Marshal.GetHRForLastWin32Error());
             }
@@ -151,7 +151,7 @@ namespace BinaryStudio.Security.Cryptography
         /// using platform invoke that has the System.Runtime.InteropServices.DllImportAttribute.SetLastError flag set.
         /// </summary>
         /// <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
-        protected virtual Int32 GetLastWin32Error()
+        protected internal virtual Int32 GetLastWin32Error()
             {
             return Marshal.GetLastWin32Error();
             }

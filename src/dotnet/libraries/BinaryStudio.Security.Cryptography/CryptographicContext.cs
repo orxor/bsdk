@@ -57,7 +57,23 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
         #region P:Keys:IEnumerable<CryptKey>
         public virtual IEnumerable<CryptKey> Keys { get {
-            throw new NotImplementedException();
+            using (var contextA = new CryptographicContextI(this,
+                CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT| (IsMachineKeySet
+                    ? CryptographicContextFlags.CRYPT_MACHINE_KEYSET
+                    : CryptographicContextFlags.CRYPT_NONE))) {
+                var c = contextA.GetParameter<String>(CRYPT_PARAM.PP_ENUMCONTAINERS, CRYPT_FIRST, Encoding.ASCII);
+                while (c != null) {
+                    using (var contextB = new CryptographicContextI(this,c,
+                        CryptographicContextFlags.CRYPT_SILENT| (IsMachineKeySet
+                            ? CryptographicContextFlags.CRYPT_MACHINE_KEYSET
+                            : CryptographicContextFlags.CRYPT_NONE))) {
+                        yield return contextB.GetUserKey(
+                            KEY_SPEC_TYPE.AT_KEYEXCHANGE|KEY_SPEC_TYPE.AT_SIGNATURE,
+                            contextB.FullQualifiedContainerName);
+                        }
+                    c = contextA.GetParameter<String>(CRYPT_PARAM.PP_ENUMCONTAINERS, CRYPT_NEXT, Encoding.ASCII);
+                    }
+                }
             }}
         #endregion
         #region P:FullQualifiedContainerName:String
@@ -421,6 +437,12 @@ namespace BinaryStudio.Security.Cryptography
             throw new NotImplementedException();
             }
         #endregion
+        #region M:CryptGetKeyParam(IntPtr,KEY_PARAM,Byte[],{ref}Int32,Int32):Boolean
+        internal Boolean CryptGetKeyParam(IntPtr Key, KEY_PARAM Param, Byte[] Data, ref Int32 DataSize, Int32 Flags) {
+            EnsureEntries(out var entries);
+            return entries.CryptGetKeyParam(Key,Param,Data,ref DataSize, Flags);
+            }
+        #endregion
 
         static CryptographicContext() {
             #if LINUX
@@ -492,5 +514,7 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
 
         private const Int32 SIGNATURE_BUFFER_SIZE = 64*1024;
+        private const Int32 CRYPT_FIRST = 1;
+        private const Int32 CRYPT_NEXT  = 2;
         }
     }

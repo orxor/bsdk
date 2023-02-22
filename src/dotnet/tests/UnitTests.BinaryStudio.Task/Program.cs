@@ -19,9 +19,9 @@ namespace UnitTests.BinaryStudio.Task
             //Console.ReadLine();
             //Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
             //Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
-            //Execute(typeof(HResultT));
+            Execute(typeof(HResultT));
             //Execute(typeof(X509CertificateStorageT));
-            Execute(typeof(PfxFileT));
+            //Execute(typeof(PfxFileT));
             }
 
         #region M:Execute(Action)

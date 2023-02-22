@@ -17,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography
             var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
             foreach (var type in CryptographicContext.RegisteredProviders) {
                 if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)flags)) {
-                    var context = new ECryptographicContext(r);
+                    var context = new CryptographicContextI(r);
                     foreach (var alg in context.SupportedAlgorithms) {
                         if (alg.Key == nalgid) {
                             return context;
@@ -31,7 +31,7 @@ namespace BinaryStudio.Security.Cryptography
         public CryptographicContext AcquireContext(String container, String provider, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
             var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
             Validate(entries.CryptAcquireContext(out var r,container,provider,(Int32)providertype,(Int32)flags));
-            return new ECryptographicContext(r);
+            return new CryptographicContextI(r);
             }
 
         private static IDictionary<String,ALG_ID> SAlgId;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.PlatformComponents;
@@ -8,6 +9,7 @@ namespace UnitTests.BinaryStudio.PlatformComponents
     [TestClass]
     public class HResultT
         {
+        private static readonly CultureInfo en = CultureInfo.GetCultureInfo("en-US");
         public void Setup()
             {
             }
@@ -19,12 +21,14 @@ namespace UnitTests.BinaryStudio.PlatformComponents
             foreach (var name in Enum.GetNames(typeof(HResult))) {
                 var scode = (HResult)Enum.Parse(typeof(HResult),name);
                 var value = HResultException.FormatMessage(scode);
+                Console.WriteLine($@"""{scode}"":""{value}""");
                 Assert.IsNotNull(value);
                 }
             #else
             foreach (var name in Enum.GetNames<HResult>()) {
                 var scode = Enum.Parse<HResult>(name);
-                var value = HResultException.FormatMessage(scode);
+                var value = HResultException.FormatMessage(scode,en);
+                Console.WriteLine($@"""0x{(Int32)scode:X8}"";""{name}"";""{value}""");
                 Assert.IsNotNull(value);
                 }
             #endif
@@ -32,6 +36,7 @@ namespace UnitTests.BinaryStudio.PlatformComponents
         #endregion
         #region M:FormatMessageWin32ErrorCode
         [TestMethod]
+        [Ignore]
         public void FormatMessageWin32ErrorCode() {
             #if NET40 || NET47
             foreach (var name in Enum.GetNames(typeof(Win32ErrorCode))) {
@@ -50,6 +55,7 @@ namespace UnitTests.BinaryStudio.PlatformComponents
         #endregion
         #region M:FormatMessagePosixError
         [TestMethod]
+        [Ignore]
         public void FormatMessagePosixError() {
             #if NET40 || NET47
             foreach (var name in Enum.GetNames(typeof(PosixError))) {

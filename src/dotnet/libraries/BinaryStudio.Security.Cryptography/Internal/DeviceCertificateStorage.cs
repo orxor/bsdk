@@ -33,7 +33,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             else
                 {
                 throw new NotImplementedException();
-                //using (var context = new ECryptographicContext(ProviderType,
+                //using (var context = new CryptographicContextI(ProviderType,
                 //    CryptographicContextFlags.CRYPT_VERIFYCONTEXT|
                 //    ((Location == X509StoreLocation.CurrentUser)
                 //        ? CryptographicContextFlags.CRYPT_NONE
