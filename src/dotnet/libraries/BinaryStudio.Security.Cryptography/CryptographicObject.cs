@@ -74,6 +74,19 @@ namespace BinaryStudio.Security.Cryptography
             return null;
             }
 
+
+        #region M:Validate(ILastErrorProvider,Boolean)
+        protected static void Validate(ILastErrorProvider provider, Boolean status) {
+            if (provider == null) { throw new ArgumentNullException(nameof(provider)); }
+            if (!status) {
+                var e = HResultException.GetExceptionForHR(provider.GetLastError());
+                #if DEBUG
+                Debug.Print($"Validate:{e.Message}");
+                #endif
+                throw e;
+                }
+            }
+        #endregion
         #region M:Validate(Boolean,CryptographicObject)
         protected static void Validate(Boolean status,CryptographicObject o = null) {
             if (!status) {

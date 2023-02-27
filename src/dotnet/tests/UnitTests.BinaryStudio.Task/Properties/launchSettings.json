@@ -2,7 +2,7 @@
   "profiles": {
     "UnitTests.BinaryStudio.Task": {
       "commandName": "Project",
-      "nativeDebugging": true
+      "nativeDebugging": false
     }
   }
 }

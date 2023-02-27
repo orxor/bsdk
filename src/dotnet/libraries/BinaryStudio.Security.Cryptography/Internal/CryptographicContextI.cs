@@ -46,7 +46,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
             IsMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
             try
                 {
-                Validate(entries.CryptAcquireContext(out var r,container,provider,(Int32)providertype,(Int32)flags));
+                Validate(entries,entries.CryptAcquireContext(out var r,container,provider,(Int32)providertype,(Int32)flags));
                 Container = container;
                 ProviderType = providertype;
                 ProviderName = provider;
@@ -149,6 +149,17 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 Entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
                 }
             entries = Entries;
+            }
+        #endregion
+        #region M:GetLastWin32Error:Int32
+        /// <summary>
+        /// Returns the error code returned by the last unmanaged function that was called.
+        /// using platform invoke that has the System.Runtime.InteropServices.DllImportAttribute.SetLastError flag set.
+        /// </summary>
+        /// <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
+        protected internal override Int32 GetLastWin32Error() {
+            EnsureEntries(out var entries);
+            return entries.GetLastError();
             }
         #endregion
         }

@@ -85,7 +85,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     ProviderType = key.Context.ProviderType,
                     KeySpec = key.KeySpec
                     };
-                SetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, 0, ref pi);
+                //SetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, 0, ref pi);
                 }
             }
         #endregion
@@ -120,7 +120,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #endregion
         #region M:SetProperty(CERT_PROP_ID,{ref}CRYPT_KEY_PROV_INFO)
         private void SetProperty(CERT_PROP_ID index, Int32 flags, ref CRYPT_KEY_PROV_INFO value) {
-            Validate(Entries.CertSetCertificateContextProperty(Handle, index, flags, ref value));
+            Validate(Entries,Entries.CertSetCertificateContextProperty(Handle, index, flags, ref value));
             }
         #endregion
         #region M:GetProperty(CERT_PROP_ID,{out}CRYPT_KEY_PROV_INFO):HRESULT

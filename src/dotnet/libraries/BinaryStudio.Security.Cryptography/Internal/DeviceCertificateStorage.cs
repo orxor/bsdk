@@ -17,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             {
             ProviderType = provider;
             if (provider == CRYPT_PROVIDER_TYPE.AUTO) {
-                ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512;
+                ProviderType = CryptographicContext.DefaultContext.ProviderType;
                 }
             }
         #endregion

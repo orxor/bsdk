@@ -11,6 +11,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         {
         public override IntPtr Handle { get; }
         public Encoding UnicodeEncoding { get { return Encoding.Unicode; }}
+        public override CRYPT_PROVIDER_TYPE ProviderType { get { return CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512; }}
 
         Boolean ICryptoAPI.CertFreeCertificateContext(IntPtr pCertContext) { return CertFreeCertificateContext(pCertContext); }
         Boolean ICryptoAPI.CertCloseStore(IntPtr handle, UInt32 flags) { return CertCloseStore(handle, flags); }
