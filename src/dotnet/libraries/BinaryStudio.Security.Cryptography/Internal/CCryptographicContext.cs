@@ -43,13 +43,21 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         ALG_ID ICryptoAPI.CertOIDToAlgId(String Id) { return CertOIDToAlgId(Id); }
         IntPtr ICryptoAPI.CryptFindOIDInfo(CRYPT_OID_INFO_KEY_TYPE KeyType,IntPtr Key,Int32 GroupId) { return CryptFindOIDInfo((Int32)KeyType,Key,GroupId); }
         Boolean ICryptoAPI.CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID GroupId,IntPtr Arg,CryptEnumOidInfoCallback Callback) { return CryptEnumOIDInfo((Int32)GroupId,0,Arg,Callback); }
-        Boolean ICryptoAPI.CryptGetKeyParam(IntPtr Key, KEY_PARAM Param, Byte[] Data, ref Int32 DataSize, Int32 Flags) { return CryptGetKeyParam(Key,Param,Data,ref DataSize,Flags); }
         Boolean ICryptoAPI.CryptAcquireCertificatePrivateKey(IntPtr Certificate, CRYPT_ACQUIRE_FLAGS Flags, IntPtr Parameters,out IntPtr CryptProvOrNCryptKey, out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey) { return CryptAcquireCertificatePrivateKey(Certificate,Flags,Parameters,out CryptProvOrNCryptKey,out KeySpec,out CallerFreeProvOrNCryptKey); }
-        Boolean ICryptoAPI.CryptGetUserKey(IntPtr Provider, KEY_SPEC_TYPE KeySpec, out IntPtr Key) { return CryptGetUserKey(Provider,(Int32)KeySpec,out Key); }
         Int32 ILastErrorProvider.GetLastError() { return GetLastWin32Error(); }
         Boolean ICryptoAPI.CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Byte[] Data, ref Int32 Size) { return CertGetCertificateContextProperty(Context,PropertyIndex,Data,ref Size); }
         Boolean ICryptoAPI.CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, ref CRYPT_KEY_PROV_INFO Data) { return CertSetCertificateContextProperty(Context,PropertyIndex,Flags,ref Data); }
         Boolean ICryptoAPI.CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, IntPtr Data) { return CertSetCertificateContextProperty(Context,PropertyIndex,Flags,Data); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptDeriveKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r) { return CryptDeriveKey(C)
+        Boolean KeyGenerationAndExchangeFunctions.CryptDestroyKey(IntPtr Key);
+        Boolean KeyGenerationAndExchangeFunctions.CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r);
+        Boolean KeyGenerationAndExchangeFunctions.CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags, Byte[] Data,ref Int32 DataLen);
+        Boolean KeyGenerationAndExchangeFunctions.CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
+        Boolean KeyGenerationAndExchangeFunctions.CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer);
+        Boolean KeyGenerationAndExchangeFunctions.CryptGetKeyParam(IntPtr Key, KEY_PARAM Param, Byte[] Data, ref Int32 DataSize, Int32 Flags) { return CryptGetKeyParam(Key,Param,Data,ref DataSize,Flags); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptGetUserKey(IntPtr Context, KEY_SPEC_TYPE KeySpec, out IntPtr r) { return CryptGetUserKey(Context,KeySpec,out r); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptImportKey(IntPtr Context,Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr r);
+        Boolean KeyGenerationAndExchangeFunctions.CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,Int32 Flags);
 
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr pCertContext);
         [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCertificateContext([In] IntPtr pCertContext);
@@ -88,9 +96,19 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptFindOIDInfo(Int32 KeyType,IntPtr Key,Int32 GroupId);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptEnumOIDInfo(Int32 GroupId,Int32 Flags,IntPtr Arg,CryptEnumOidInfoCallback Callback);
         [DllImport("librdrsup")] private static extern Int32 GetLastError();
-        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetKeyParam(IntPtr Key, KEY_PARAM Param, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, ref Int32 DataSize, Int32 Flags);
+        #region Key Generation and Exchange Functions
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDeriveKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDestroyKey(IntPtr Key);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data,ref Int32 DataLen);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGenRandom(IntPtr Context,Int32 Length,[MarshalAs(UnmanagedType.LPArray)] Byte[] Buffer);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,ref Int32 DataLen,Int32 Flags);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetUserKey(IntPtr Context,KEY_SPEC_TYPE KeySpec,out IntPtr UserKey);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptImportKey(IntPtr Context,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr r);
+        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 Flags);
+        #endregion
         [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptAcquireCertificatePrivateKey(IntPtr Certificate, CRYPT_ACQUIRE_FLAGS Flags, IntPtr Parameters,out IntPtr CryptProvOrNCryptKey, out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey);
-        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetUserKey(IntPtr Provider, Int32 KeySpec, out IntPtr Key);
         [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, ref Int32 Size);
         [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, ref CRYPT_KEY_PROV_INFO Data);
         [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, IntPtr Data);

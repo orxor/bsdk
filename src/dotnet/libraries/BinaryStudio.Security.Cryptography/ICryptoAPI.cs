@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography
     [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean PFN_CERT_ENUM_PHYSICAL_STORE(IntPtr SystemStore, CERT_SYSTEM_STORE_FLAGS Flags, [MarshalAs(UnmanagedType.LPWStr)] String Name, ref CERT_PHYSICAL_STORE_INFO StoreInfo, IntPtr Reserved, IntPtr Arg);
     [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean CryptEnumOidInfoCallback(IntPtr Info,IntPtr Arg);
 
-    internal interface ICryptoAPI : ILastErrorProvider
+    internal interface ICryptoAPI : ILastErrorProvider, KeyGenerationAndExchangeFunctions
         {
         Encoding UnicodeEncoding { get; }
         Boolean CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r);
@@ -45,8 +45,6 @@ namespace BinaryStudio.Security.Cryptography
         Boolean CryptGetProvParam(IntPtr Provider, CRYPT_PARAM Parameter, IntPtr Data, ref Int32 DataSize, Int32 Flags);
         Boolean CryptGetProvParam(IntPtr Provider, CRYPT_PARAM Parameter, Byte[] Data, ref Int32 DataSize, Int32 Flags);
         Boolean CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID GroupId,IntPtr Arg,CryptEnumOidInfoCallback Callback);
-        Boolean CryptGetKeyParam(IntPtr Key, KEY_PARAM Param, Byte[] Data, ref Int32 DataSize, Int32 Flags);
-        Boolean CryptGetUserKey(IntPtr Provider, KEY_SPEC_TYPE KeySpec, out IntPtr Key);
         ALG_ID CertOIDToAlgId(String Id);
         IntPtr CryptFindOIDInfo(CRYPT_OID_INFO_KEY_TYPE KeyType,IntPtr Key,Int32 GroupId);
         Boolean CryptAcquireCertificatePrivateKey(IntPtr Certificate, CRYPT_ACQUIRE_FLAGS Flags, IntPtr Parameters,out IntPtr CryptProvOrNCryptKey, out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey);
