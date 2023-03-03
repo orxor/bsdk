@@ -59,7 +59,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Certificates:LocalMachine:My
-        [TestMethod]
+        [TestCategory("Certificates")]
+        [TestMethod("Certificates:LocalMachine:My")]
         public void CertificatesLocalMachineMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.LocalMachine)) {
                 foreach (var certificate in store.Certificates) {
@@ -70,7 +71,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Certificates:CurrentUser:My
-        [TestMethod]
+        [TestCategory("Certificates")]
+        [TestMethod("Certificates:CurrentUser:My")]
         public void CertificatesCurrentUserMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)) {
                 foreach (var certificate in store.Certificates) {
@@ -80,7 +82,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Certificates:CurrentUser:Device
-        [TestMethod]
+        [TestCategory("Certificates")]
+        [TestMethod("Certificates:CurrentUser:Device")]
         public void CertificatesCurrentUserDevice() {
             using (var store = new X509CertificateStorage(X509StoreName.Device,X509StoreLocation.CurrentUser)) {
                 foreach (var certificate in store.Certificates) {
@@ -102,7 +105,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Crls:LocalMachine:My
-        [TestMethod]
+        [TestCategory("Crls")]
+        [TestMethod("Crls:LocalMachine:My")]
         public void CrlsLocalMachineMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.LocalMachine)) {
                 foreach (var certificate in store.CertificateRevocationLists) {
@@ -113,7 +117,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Crls:CurrentUser:My
-        [TestMethod]
+        [TestCategory("Crls")]
+        [TestMethod("Crls:CurrentUser:My")]
         public void CrlsCurrentUserMy() {
             using (var store = new X509CertificateStorage(X509StoreName.My,X509StoreLocation.CurrentUser)) {
                 foreach (var certificate in store.CertificateRevocationLists) {

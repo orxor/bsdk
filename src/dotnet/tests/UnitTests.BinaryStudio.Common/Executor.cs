@@ -118,7 +118,8 @@ namespace UnitTests.BinaryStudio.Common
                         },methodinfo =>
                     {
                     var timerS = String.Empty;
-                    var source = $"{type.Name}.{methodinfo.Name}";
+                    var TestMethodAttribute = methodinfo.GetCustomAttribute<TestMethodAttribute>() ?? new TestMethodAttribute(methodinfo.Name);
+                    var source = $"{type.Name}.{TestMethodAttribute.DisplayName}";
                     var engine = Activator.CreateInstance(type);
                     var timerT = new Stopwatch();
                     var status = true;

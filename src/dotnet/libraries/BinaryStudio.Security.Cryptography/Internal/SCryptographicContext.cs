@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
+using Microsoft.Win32;
 using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
@@ -11,6 +12,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         {
         public override IntPtr Handle { get; }
         public Encoding UnicodeEncoding { get { return Encoding.Unicode; }}
+        public override CRYPT_PROVIDER_TYPE ProviderType { get; }
 
         Boolean ICryptoAPI.CertFreeCertificateContext(IntPtr pCertContext) { return CertFreeCertificateContext(pCertContext); }
         Boolean ICryptoAPI.CertCloseStore(IntPtr handle, UInt32 flags) { return CertCloseStore(handle, flags); }
@@ -138,5 +140,37 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     return Callback(Marshal.PtrToStringUni(SystemStore), StoreFlags,ref StoreInfo,Reserved,StoreArg);
                     });
             }
+
+
+        #region ctor
+        internal SCryptographicContext() {
+            ProviderType = CRYPT_PROVIDER_TYPE.AUTO;
+            #if !NET5_0
+            using (var registryKey = Registry.ClassesRoot.OpenSubKey(@"Installer\Products")) {
+                if (registryKey != null) {
+                    foreach (var subkey in registryKey.GetSubKeyNames()) {
+                        using(var registrySubKey = registryKey.OpenSubKey(subkey)) {
+                            if (registrySubKey == null) { continue; }
+                            var productObject = registrySubKey.GetValue("ProductName");
+                            if (productObject == null) { continue; }
+                            var displayName = (String)productObject;
+                            if (String.IsNullOrEmpty(displayName)) { continue; }
+                            if (displayName.Equals("КриптоПро CSP", StringComparison.OrdinalIgnoreCase)) {
+                                ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512;
+                                return;
+                                }
+                            if (displayName.Equals("ViPNet CSP", StringComparison.OrdinalIgnoreCase)) {
+                                ProviderType = CRYPT_PROVIDER_TYPE.VPN_PROV_TYPE_2012_1024;
+                                return;
+                                }
+                            }
+                        }
+                    }
+                }
+            #else
+            ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512;
+            #endif
+            }
+        #endregion
         }
     }
