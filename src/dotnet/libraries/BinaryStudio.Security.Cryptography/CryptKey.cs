@@ -7,7 +7,7 @@ namespace BinaryStudio.Security.Cryptography
     using HRESULT=HResult;
     public class CryptKey : CryptographicObject
         {
-        public override IntPtr Handle { get; }
+        public override IntPtr Handle { get { return handle; }}
         public KEY_SPEC_TYPE KeySpec { get; }
         public String Container { get; }
         public CryptographicContext Context { get; }
@@ -16,14 +16,15 @@ namespace BinaryStudio.Security.Cryptography
         public CryptKey(IntPtr handle)
             {
             if (handle == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(handle)); }
-            Handle = handle;
+            this.handle = handle;
+            Context = CryptographicContext.DefaultContext;
             }
         #endregion
         #region ctor{IntPtr,KEY_SPEC_TYPE,String}
-        public CryptKey(CryptographicContext context, IntPtr handle, KEY_SPEC_TYPE keySpec, String container) {
+        internal CryptKey(CryptographicContext context, IntPtr handle, KEY_SPEC_TYPE keySpec, String container) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (handle == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(handle)); }
-            Handle = handle;
+            this.handle = handle;
             KeySpec = keySpec;
             Container = container;
             Context = context;
@@ -71,5 +72,20 @@ namespace BinaryStudio.Security.Cryptography
             return null;
             }
         #endregion
+        #region M:Dispose(Boolean)
+        /// <summary>
+        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+        /// </summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposing) {
+            if (handle != IntPtr.Zero) {
+                ((KeyGenerationAndExchangeFunctions)Context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptDestroyKey(handle);
+                handle = IntPtr.Zero;
+                }
+            base.Dispose(disposing);
+            }
+        #endregion
+
+        private IntPtr handle;
         }
     }

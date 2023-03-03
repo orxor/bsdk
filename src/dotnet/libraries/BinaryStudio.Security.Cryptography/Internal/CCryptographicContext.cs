@@ -48,16 +48,18 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean ICryptoAPI.CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Byte[] Data, ref Int32 Size) { return CertGetCertificateContextProperty(Context,PropertyIndex,Data,ref Size); }
         Boolean ICryptoAPI.CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, ref CRYPT_KEY_PROV_INFO Data) { return CertSetCertificateContextProperty(Context,PropertyIndex,Flags,ref Data); }
         Boolean ICryptoAPI.CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, IntPtr Data) { return CertSetCertificateContextProperty(Context,PropertyIndex,Flags,Data); }
-        Boolean KeyGenerationAndExchangeFunctions.CryptDeriveKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r) { return CryptDeriveKey(C)
-        Boolean KeyGenerationAndExchangeFunctions.CryptDestroyKey(IntPtr Key);
-        Boolean KeyGenerationAndExchangeFunctions.CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r);
-        Boolean KeyGenerationAndExchangeFunctions.CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags, Byte[] Data,ref Int32 DataLen);
-        Boolean KeyGenerationAndExchangeFunctions.CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
-        Boolean KeyGenerationAndExchangeFunctions.CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer);
-        Boolean KeyGenerationAndExchangeFunctions.CryptGetKeyParam(IntPtr Key, KEY_PARAM Param, Byte[] Data, ref Int32 DataSize, Int32 Flags) { return CryptGetKeyParam(Key,Param,Data,ref DataSize,Flags); }
-        Boolean KeyGenerationAndExchangeFunctions.CryptGetUserKey(IntPtr Context, KEY_SPEC_TYPE KeySpec, out IntPtr r) { return CryptGetUserKey(Context,KeySpec,out r); }
-        Boolean KeyGenerationAndExchangeFunctions.CryptImportKey(IntPtr Context,Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr r);
-        Boolean KeyGenerationAndExchangeFunctions.CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,Int32 Flags);
+        #region Key Generation and Exchange Functions
+        Boolean KeyGenerationAndExchangeFunctions.CryptDeriveKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r) { return CryptDeriveKey(Context,AlgId,Flags,out r); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptDestroyKey(IntPtr Key) { return CryptDestroyKey(Key); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r) { return CryptDuplicateKey(Key,Reserved,Flags,out r); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags,Byte[] Data,ref Int32 DataLen) { return CryptExportKey(Key,ExpKey,BlobType,Flags,Data,ref DataLen); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r) { return CryptGenKey(Context,AlgId,Flags,out r); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer) { return CryptGenRandom(Context,Length,Buffer); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,ref Int32 DataSize, Int32 Flags) { return CryptGetKeyParam(Key,Param,Data,ref DataSize,Flags); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptGetUserKey(IntPtr Context,KEY_SPEC_TYPE KeySpec,out IntPtr r) { return CryptGetUserKey(Context,KeySpec,out r); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptImportKey(IntPtr Context,Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr r) { return CryptImportKey(Context,Data,DataLen,PubKey,Flags,out r); }
+        Boolean KeyGenerationAndExchangeFunctions.CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,Int32 Flags) { return CryptSetKeyParam(Key,Param,Data,Flags); }
+        #endregion
 
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr pCertContext);
         [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCertificateContext([In] IntPtr pCertContext);
@@ -118,8 +120,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         /// <returns>A service object of type <paramref name="service"/>.
         /// -or-
         /// <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
-        public override object GetService(Type service) {
+        public override Object GetService(Type service) {
             if (service == typeof(ICryptoAPI)) { return this; }
+            if (service == typeof(KeyGenerationAndExchangeFunctions)) { return this; }
             return base.GetService(service);
             }
 

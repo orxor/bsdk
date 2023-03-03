@@ -479,6 +479,17 @@ namespace BinaryStudio.Security.Cryptography
             return entries.CryptGetKeyParam(Key,Param,Data,ref DataSize, Flags);
             }
         #endregion
+        #region M:GetService(Type):Object
+        /// <summary>Gets the service object of the specified type.</summary>
+        /// <param name="service">An object that specifies the type of service object to get.</param>
+        /// <returns>A service object of type <paramref name="service"/>.
+        /// -or-
+        /// <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+        public override Object GetService(Type service) {
+            if (service == typeof(KeyGenerationAndExchangeFunctions)) { return DefaultContext.GetService(service); }
+            return base.GetService(service);
+            }
+        #endregion
 
         static CryptographicContext() {
             #if LINUX
