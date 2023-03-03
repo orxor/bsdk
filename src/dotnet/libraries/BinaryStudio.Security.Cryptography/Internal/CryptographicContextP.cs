@@ -7,7 +7,7 @@ using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     using CERT_NAME_BLOB = CRYPT_BLOB;
-    internal class PCryptographicContext : CryptographicContext, ICryptoAPI
+    internal class CryptographicContextP : CryptographicContext, ICryptoAPI
         {
         public override IntPtr Handle { get; }
         public Encoding UnicodeEncoding { get { return Encoding.UTF32; }}

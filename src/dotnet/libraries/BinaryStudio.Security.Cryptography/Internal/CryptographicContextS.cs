@@ -8,7 +8,7 @@ using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     using CERT_NAME_BLOB = CRYPT_BLOB;
-    internal class SCryptographicContext : CryptographicContext, ICryptoAPI
+    internal class CryptographicContextS : CryptographicContext, ICryptoAPI
         {
         public override IntPtr Handle { get; }
         public Encoding UnicodeEncoding { get { return Encoding.Unicode; }}
@@ -143,7 +143,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
 
         #region ctor
-        internal SCryptographicContext() {
+        internal CryptographicContextS() {
             ProviderType = CRYPT_PROVIDER_TYPE.AUTO;
             #if !NET5_0
             using (var registryKey = Registry.ClassesRoot.OpenSubKey(@"Installer\Products")) {

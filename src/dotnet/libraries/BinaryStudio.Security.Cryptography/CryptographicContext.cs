@@ -503,7 +503,7 @@ namespace BinaryStudio.Security.Cryptography
                         throw new InvalidProgramException($"ViPNet CSP installed at '{ITCSLibraryPath}' but does not configured for run-time bindings. Use {{ldconfig}} to configure dynamic linker run-time bindings or set {{LD_LIBRARY_PATH}} environment variable to specify library path explicitly.");
                         }
                     }
-                DefaultContext= new PCryptographicContext();
+                DefaultContext= new CryptographicContextP();
                 return;
                 }
             #endregion
@@ -516,13 +516,13 @@ namespace BinaryStudio.Security.Cryptography
                     var capiso = match.Groups[1].Value;
                     if (File.Exists(capiso)) {
                         PlatformContext.Logger.Log(LogLevel.Information, $"library:{capiso}");
-                        DefaultContext= new CCryptographicContext();
+                        DefaultContext= new CryptographicContextC();
                         }
                     }
                 }
             #endregion
             #else
-            DefaultContext= new SCryptographicContext();
+            DefaultContext= new CryptographicContextS();
             #endif
             }
 
