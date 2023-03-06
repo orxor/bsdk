@@ -39,7 +39,7 @@ namespace UnitTests.BinaryStudio.Task
             //(new Executor()).Execute(typeof(CryptographicContextT),nameof(CryptographicContextT.DecryptFT));
             //(new Executor()).Execute(typeof(X509CertificateStorageT),nameof(X509CertificateStorageT.Certificates));
             //(new Executor()).Execute(typeof(HResultT));
-            (new Executor()).Execute(typeof(X509CertificateStorageT));
+            (new Executor()).Execute(typeof(CryptKeyGOST));
             //(new Executor()).Execute(typeof(PfxFileT));
             }
 

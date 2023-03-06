@@ -37,6 +37,14 @@ namespace BinaryStudio.Security.Cryptography
             return new CryptKey(context,r);
             }
 
+        public static CryptKey GetUserKey(CryptographicContext context, KEY_SPEC_TYPE keyspec) {
+            if (context == null) { throw new ArgumentNullException(nameof(context)); }
+            ((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptGetUserKey(context.Handle,keyspec,out var r);
+            return (r != IntPtr.Zero)
+                ? new CryptKey(context,r)
+                : null;
+            }
+
         #region P:Certificate:X509Certificate
         public X509Certificate Certificate { get{
             var r = GetParameter(KEY_PARAM.KP_CERTIFICATE);

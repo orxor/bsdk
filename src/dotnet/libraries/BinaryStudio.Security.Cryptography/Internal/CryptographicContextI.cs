@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
@@ -13,10 +14,10 @@ namespace BinaryStudio.Security.Cryptography.Internal
         {
         public override IntPtr Handle { get; }
         public override Boolean IsMachineKeySet { get; }
-        public override String ProviderName { get; }
+        public override String ProviderName { get { return providername; }}
         public override String Container { get; }
         public override CRYPT_PROVIDER_TYPE ProviderType { get; }
-        public override KEY_SPEC_TYPE KeySpec { get; }
+        public override KEY_SPEC_TYPE KeySpec { get { return keyspec; }}
         public override CryptographicContextFlags ProviderFlags { get; }
 
         public override unsafe IDictionary<ALG_ID,String> SupportedAlgorithms { get {
@@ -49,8 +50,12 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 Validate(entries,entries.CryptAcquireContext(out var r,container,provider,(Int32)providertype,(Int32)flags));
                 Container = container;
                 ProviderType = providertype;
-                ProviderName = provider;
+                providername = provider;
                 Handle = r;
+                keyspec = (KEY_SPEC_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_KEYSPEC,0,null);
+                Task.Factory.StartNew(() => {
+                    if (String.IsNullOrEmpty(providername)) { providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII); }
+                    });
                 }
             catch (Exception e)
                 {
@@ -70,7 +75,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 {
                 Validate(entries.CryptAcquireCertificatePrivateKey(certificate.Handle,flags,IntPtr.Zero,out var r, out var keyspec, out var freeprov));
                 Handle = r;
-                KeySpec = keyspec;
+                this.keyspec = keyspec;
                 }
             catch(Exception e)
                 {
@@ -79,7 +84,9 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 throw;
                 }
             ProviderType = (CRYPT_PROVIDER_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_PROVTYPE,0,null);
-            ProviderName = GetParameter<String>(CRYPT_PARAM.PP_NAME,0,Encoding.ASCII);
+            Task.Factory.StartNew(() => {
+                providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII);
+                });
             }
         #endregion
         #region ctor{CryptographicContext,CryptographicContextFlags}
@@ -88,14 +95,14 @@ namespace BinaryStudio.Security.Cryptography.Internal
             var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
             Container = context.Container;
             ProviderType = context.ProviderType;
-            ProviderName = context.ProviderName;
+            providername = context.ProviderName;
             ProviderFlags = flags;
             IsMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
             Validate(entries.CryptAcquireContext(out var r,Container,ProviderName,(Int32)ProviderType,(Int32)flags));
             Handle = r;
             ProviderType = (CRYPT_PROVIDER_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_PROVTYPE,0,null);
-            ProviderName = GetParameter<String>(CRYPT_PARAM.PP_NAME,0,Encoding.ASCII);
-            KeySpec = context.KeySpec;
+            Task.Factory.StartNew(() => { providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII); });
+            keyspec = context.KeySpec;
             }
         #endregion
         #region ctor{CryptographicContext,String,CryptographicContextFlags}
@@ -104,14 +111,14 @@ namespace BinaryStudio.Security.Cryptography.Internal
             var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
             Container = container;
             ProviderType = context.ProviderType;
-            ProviderName = context.ProviderName;
+            providername = context.ProviderName;
             ProviderFlags = flags;
             IsMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
             Validate(entries.CryptAcquireContext(out var r,container,ProviderName,(Int32)ProviderType,(Int32)flags));
             Handle = r;
             ProviderType = (CRYPT_PROVIDER_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_PROVTYPE,0,null);
-            ProviderName = GetParameter<String>(CRYPT_PARAM.PP_NAME,0,Encoding.ASCII);
-            KeySpec = context.KeySpec;
+            Task.Factory.StartNew(() => { providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII); });
+            keyspec = context.KeySpec;
             }
         #endregion
         #region ctor{CRYPT_PROVIDER_TYPE,CryptographicContextFlags}
@@ -162,5 +169,8 @@ namespace BinaryStudio.Security.Cryptography.Internal
             return entries.GetLastError();
             }
         #endregion
+
+        private String providername;
+        private KEY_SPEC_TYPE keyspec;
         }
     }

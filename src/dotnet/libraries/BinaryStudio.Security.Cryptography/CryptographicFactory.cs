@@ -7,10 +7,10 @@ using BinaryStudio.Security.Cryptography.Internal;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    public class CryptographicFactory : CryptographicObject
+    public abstract partial class CryptographicContext
         {
-        public override IntPtr Handle { get { return IntPtr.Zero; }}
-        public CryptographicContext AcquireContext(Oid algid, CryptographicContextFlags flags) {
+        #region M:AcquireContext(Oid,CryptographicContextFlags):CryptographicContext
+        public static CryptographicContext AcquireContext(Oid algid, CryptographicContextFlags flags) {
             if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
             EnsureAlgIdCache();
             if (!SAlgId.TryGetValue(algid.Value,out var nalgid)) { nalgid = CryptographicContext.OidToAlgId(algid); }
@@ -27,12 +27,24 @@ namespace BinaryStudio.Security.Cryptography
                 }
             return null;
             }
-
-        public CryptographicContext AcquireContext(String container, String provider, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
+        #endregion
+        #region M:AcquireContext(String,String,CRYPT_PROVIDER_TYPE,CryptographicContextFlags):CryptographicContext
+        public static CryptographicContext AcquireContext(String container, String provider, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
             var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
             Validate(entries.CryptAcquireContext(out var r,container,provider,(Int32)providertype,(Int32)flags));
             return new CryptographicContextI(r);
             }
+        #endregion
+        #region M:AcquireContext(CRYPT_PROVIDER_TYPE,CryptographicContextFlags):CryptographicContext
+        public static CryptographicContext AcquireContext(CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
+            return new CryptographicContextI(providertype,flags);
+            }
+        #endregion
+        #region M:AcquireContext(CRYPT_PROVIDER_TYPE,String,CryptographicContextFlags):CryptographicContext
+        public static CryptographicContext AcquireContext(CRYPT_PROVIDER_TYPE providertype, String container, CryptographicContextFlags flags) {
+            return new CryptographicContextI(container,null,providertype,flags);
+            }
+        #endregion
 
         private static IDictionary<String,ALG_ID> SAlgId;
         private static void EnsureAlgIdCache() {

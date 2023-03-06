@@ -43,7 +43,7 @@ namespace Operations
                     if (Flags.HasFlag(InfrastructureFlags.CSPalgs)) {
                         try
                             {
-                            using (var context = (new CryptographicFactory()).AcquireContext(null, type.ProviderName, type.ProviderType, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                            using (var context = CryptographicContext.AcquireContext(null, type.ProviderName, type.ProviderType, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                                 foreach (var algid in context.SupportedAlgorithms) {
                                     WriteLine(Console.Out, ConsoleColor.Gray, $"    {algid.Key}:{algid.Value}");
                                     }

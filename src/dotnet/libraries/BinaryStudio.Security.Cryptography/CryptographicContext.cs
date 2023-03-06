@@ -36,7 +36,7 @@ namespace BinaryStudio.Security.Cryptography
     #if LINUX
     using Process=System.Diagnostics.Process;
     #endif
-    public abstract class CryptographicContext : CryptographicObject
+    public abstract partial class CryptographicContext : CryptographicObject
         {
         public static CryptographicContext DefaultContext { get; }
         public static IEnumerable<RegisteredProviderInfo> RegisteredProviders { get { return DefaultContext.GetRegisteredProviders(); }}
