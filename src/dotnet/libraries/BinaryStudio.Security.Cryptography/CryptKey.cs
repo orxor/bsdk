@@ -31,12 +31,14 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
-        public static CryptKey GenKey(CryptographicContext context,ALG_ID algid, Int32 flags) {
+        #region M:GenKey(CryptographicContext,ALG_ID,CryptGenKeyFlags):CryptKey
+        public static CryptKey GenKey(CryptographicContext context,ALG_ID algid, CryptGenKeyFlags flags) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
-            Validate(((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptGenKey(context.Handle,algid,flags,out var r));
+            Validate(((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptGenKey(context.Handle,algid,(Int32)flags,out var r));
             return new CryptKey(context,r);
             }
-
+        #endregion
+        #region M:GetUserKey(CryptographicContext,KEY_SPEC_TYPE):CryptKey
         public static CryptKey GetUserKey(CryptographicContext context, KEY_SPEC_TYPE keyspec) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             ((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptGetUserKey(context.Handle,keyspec,out var r);
@@ -44,6 +46,7 @@ namespace BinaryStudio.Security.Cryptography
                 ? new CryptKey(context,r)
                 : null;
             }
+        #endregion
 
         #region P:Certificate:X509Certificate
         public X509Certificate Certificate { get{

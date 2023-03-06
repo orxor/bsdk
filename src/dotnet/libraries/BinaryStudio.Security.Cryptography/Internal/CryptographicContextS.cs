@@ -8,22 +8,20 @@ using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
     using CERT_NAME_BLOB = CRYPT_BLOB;
+    using HCERT_SERVER_OCSP_RESPONSE=IntPtr;
+    using HCRYPTPROV_OR_NCRYPT_KEY_HANDLE=IntPtr;
+    using HCERTSTORE=IntPtr;
+
     internal class CryptographicContextS : CryptographicContext, ICryptoAPI
         {
         public override IntPtr Handle { get; }
         public Encoding UnicodeEncoding { get { return Encoding.Unicode; }}
         public override CRYPT_PROVIDER_TYPE ProviderType { get; }
 
-        Boolean ICryptoAPI.CertFreeCertificateContext(IntPtr pCertContext) { return CertFreeCertificateContext(pCertContext); }
         Boolean ICryptoAPI.CertCloseStore(IntPtr handle, UInt32 flags) { return CertCloseStore(handle, flags); }
-        Boolean ICryptoAPI.CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r) { return CertAddCertificateContextToStore(store,context,disposition,r); }
-        Boolean ICryptoAPI.CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, out IntPtr r) { return CertAddCertificateContextToStore(store,context,disposition,out r); }
         Boolean ICryptoAPI.CertVerifyCertificateChainPolicy(IntPtr Policy, IntPtr ChainContext, ref CERT_CHAIN_POLICY_PARA PolicyPara, ref CERT_CHAIN_POLICY_STATUS PolicyStatus) { return CertVerifyCertificateChainPolicy(Policy,ChainContext,ref PolicyPara,ref PolicyStatus); }
-        IntPtr ICryptoAPI.CertDuplicateCertificateContext([In] IntPtr pCertContext){ return CertDuplicateCertificateContext(pCertContext); }
         IntPtr ICryptoAPI.CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, IntPtr Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
         IntPtr ICryptoAPI.CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, String Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
-        IntPtr ICryptoAPI.CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext) { return CertEnumCertificatesInStore(CertStore,PrevCertContext); }
-        IntPtr ICryptoAPI.CertCreateCertificateContext(UInt32 CertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size) { return CertCreateCertificateContext(CertEncodingType,blob,size); }
         IntPtr ICryptoAPI.CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext) { return CertEnumCRLsInStore(CertStore,PrevCrlContext); }
         unsafe Boolean ICryptoAPI.CertGetCertificateChain(IntPtr ChainEngine, IntPtr Context, ref FILETIME time, IntPtr AdditionalStore, ref CERT_CHAIN_PARA ChainPara, CERT_CHAIN_FLAGS Flags, IntPtr Reserved, CERT_CHAIN_CONTEXT** ChainContext) { return CertGetCertificateChain(ChainEngine,Context,ref time,AdditionalStore,ref ChainPara,Flags,Reserved,ChainContext); }
         IntPtr ICryptoAPI.CryptMsgOpenToDecode(CRYPT_MSG_TYPE MsgEncodingType, CRYPT_OPEN_MESSAGE_FLAGS Flags, CMSG_TYPE Type, IntPtr CryptProv, IntPtr RecipientInfo, ref CMSG_STREAM_INFO si) { return CryptMsgOpenToDecode(MsgEncodingType,Flags,Type,CryptProv,RecipientInfo,ref si); }
@@ -34,7 +32,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean ICryptoAPI.CryptMsgUpdate(IntPtr Message, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data, Int32 Size, Boolean Final) { return CryptMsgUpdate(Message,Data,Size,Final); }
         Boolean ICryptoAPI.CryptMsgUpdate(IntPtr Message, IntPtr Data, Int32 Size, Boolean Final) { return CryptMsgUpdate(Message,Data,Size,Final); }
         Boolean ICryptoAPI.CryptMsgGetParam(IntPtr Message, CMSG_PARAM Parameter, Int32 SignerIndex, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data, ref Int32 Size) { return CryptMsgGetParam(Message,Parameter,SignerIndex,Data,ref Size); }
-        unsafe IntPtr ICryptoAPI.CertGetSubjectCertificateFromStore(IntPtr CertStore, Int32 MsgAndCertEncodingType, CERT_INFO* CertId) { return CertGetSubjectCertificateFromStore(CertStore,MsgAndCertEncodingType,CertId); }
         Int32 ICryptoAPI.CertNameToStr(Int32 CertEncodingType, ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStr(CertEncodingType,ref Name,StrType,psz,csz); }
         Boolean ICryptoAPI.CryptEnumProviders(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, StringBuilder name, ref Int32 sz) { return CryptEnumProviders(index,reserved,flags,out type,name,ref sz); }
         Boolean ICryptoAPI.CryptEnumProviderTypes(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, StringBuilder name, ref Int32 sz) { return CryptEnumProviderTypes(index,reserved,flags,out type,name,ref sz); }
@@ -61,22 +58,41 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean KeyGenerationAndExchangeFunctions.CryptImportKey(IntPtr Context,Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr r) { return CryptImportKey(Context,Data,DataLen,PubKey,Flags,out r); }
         Boolean KeyGenerationAndExchangeFunctions.CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,Int32 Flags) { return CryptSetKeyParam(Key,Param,Data,Flags); }
         #endregion
+        #region Certificate Functions
+        void CertificateFunctions.CertAddRefServerOcspResponseContext(HCERT_SERVER_OCSP_RESPONSE ServerOcspResponseContext) { CertAddRefServerOcspResponseContext(ServerOcspResponseContext); }
+        void CertificateFunctions.CertCloseServerOcspResponse(HCERT_SERVER_OCSP_RESPONSE ServerOcspResponse,Int32 Flags) { CertCloseServerOcspResponse(ServerOcspResponse,Flags); }
+        IntPtr CertificateFunctions.CertCreateCertificateContext(Int32 CertEncodingType,Byte[] CertEncodedBytes,Int32 CertEncodedLength) { return CertCreateCertificateContext(CertEncodingType,CertEncodedBytes,CertEncodedLength); }
+        IntPtr CertificateFunctions.CertDuplicateCertificateContext(IntPtr CertContext) { return CertDuplicateCertificateContext(CertContext); }
+        IntPtr CertificateFunctions.CertEnumCertificatesInStore(HCERTSTORE CertStore,IntPtr PrevCertContext) { return CertEnumCertificatesInStore(CertStore,PrevCertContext); }
+        IntPtr CertificateFunctions.CertFindCertificateInStore(HCERTSTORE CertStore,Int32 CertEncodingType,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext) { return CertFindCertificateInStore(CertStore,CertEncodingType,FindFlags,FindType,FindPara,PrevCertContext); }
+        IntPtr CertificateFunctions.CertGetIssuerCertificateFromStore(HCERTSTORE CertStore,IntPtr SubjectContext,IntPtr PrevIssuerContext,ref Int32 Flags) { return CertGetIssuerCertificateFromStore(CertStore,SubjectContext,PrevIssuerContext,ref Flags); }
+        Boolean CertificateFunctions.CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext) { return CertAddCertificateContextToStore(CertStore,CertContext,AddDisposition,out StoreContext); }
+        Boolean CertificateFunctions.CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,IntPtr Zero) { return CertAddCertificateContextToStore(CertStore,CertContext,AddDisposition,Zero); }
+        Boolean CertificateFunctions.CertAddCertificateLinkToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext) { return CertAddCertificateLinkToStore(CertStore,CertContext,AddDisposition,out StoreContext); }
+        Boolean CertificateFunctions.CertAddEncodedCertificateToStore(HCERTSTORE CertStore,Int32 CertEncodingType,Byte[] CertEncodedData,Int32 CertEncodedLength,Int32 AddDisposition,out IntPtr CertContext) { return CertAddEncodedCertificateToStore(CertStore,CertEncodingType,CertEncodedData,CertEncodedLength,AddDisposition,out CertContext); }
+        Boolean CertificateFunctions.CertDeleteCertificateFromStore(IntPtr CertContext) { return CertDeleteCertificateFromStore(CertContext); }
+        Boolean CertificateFunctions.CertFreeCertificateContext(IntPtr CertContext) { return CertFreeCertificateContext(CertContext); }
+        Boolean CertificateFunctions.CertRetrieveLogoOrBiometricInfo(IntPtr CertContext,String LogoOrBiometricType,Int32 RetrievalFlags,Int32 Timeout,Int32 Flags,IntPtr Reserved,out IntPtr ppbData,out Int32 pcbData,out IntPtr ppwszMimeType) { return CertRetrieveLogoOrBiometricInfo(CertContext,LogoOrBiometricType,RetrievalFlags,Timeout,Flags,Reserved,out ppbData,out pcbData,out ppwszMimeType); }
+        Boolean CertificateFunctions.CertSerializeCertificateStoreElement(IntPtr CertContext,Int32 Flags,Byte[] pbElement,ref Int32 pcbElement) { return CertSerializeCertificateStoreElement(CertContext,Flags,pbElement,ref pcbElement); }
+        Boolean CertificateFunctions.CertVerifySubjectCertificateContext(IntPtr Subject,IntPtr Issuer,ref Int32 Flags) { return CertVerifySubjectCertificateContext(Subject,Issuer,ref Flags); }
+        unsafe HCERT_SERVER_OCSP_RESPONSE CertificateFunctions.CertAddRefServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara) { return CertAddRefServerOcspResponse(ChainContext,Flags,OpenPara); }
+        unsafe HCERT_SERVER_OCSP_RESPONSE CertificateFunctions.CertOpenServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara) { return CertOpenServerOcspResponse(ChainContext,Flags,OpenPara); }
+        unsafe CERT_SERVER_OCSP_RESPONSE_CONTEXT* CertificateFunctions.CertGetServerOcspResponseContext(HCERT_SERVER_OCSP_RESPONSE ServerOcspResponse,Int32 Flags,IntPtr Reserved) { return CertGetServerOcspResponseContext(ServerOcspResponse,Flags,Reserved); }
+        unsafe IntPtr CertificateFunctions.CertCreateSelfSignCertificate(HCRYPTPROV_OR_NCRYPT_KEY_HANDLE CryptProvOrNCryptKey,CERT_NAME_BLOB* SubjectIssuerBlob,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions) { return CertCreateSelfSignCertificate(CryptProvOrNCryptKey,SubjectIssuerBlob,Flags,KeyProvInfo,SignatureAlgorithm,StartTime,EndTime,Extensions); }
+        unsafe IntPtr CertificateFunctions.CertGetSubjectCertificateFromStore(HCERTSTORE CertStore,Int32 CertEncodingType,CERT_INFO* CertId) { return CertGetSubjectCertificateFromStore(CertStore,CertEncodingType,CertId); }
+        unsafe Boolean CertificateFunctions.CertGetValidUsages(Int32 cCerts,CERT_CONTEXT* rghCerts,Int32* cNumOIDs,IntPtr rghOIDs,Int32* pcbOIDs) { return CertGetValidUsages(cCerts,rghCerts,cNumOIDs,rghOIDs,pcbOIDs); }
+        unsafe Boolean CertificateFunctions.CertSelectCertificateChains(ref Guid SelectionContext,Int32 Flags,CERT_SELECT_CHAIN_PARA* ChainParameters,Int32 cCriteria,CERT_SELECT_CRITERIA* rgpCriteria,HCERTSTORE Store,out Int32 pcSelection,out CERT_CHAIN_CONTEXT* pprgpSelection) { return CertSelectCertificateChains(ref SelectionContext,Flags,ChainParameters,cCriteria,rgpCriteria,Store,out pcSelection,out pprgpSelection); }
+        #endregion
 
-        [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr pCertContext);
-        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCertificateContext([In] IntPtr pCertContext);
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern bool CertControlStore([In] IntPtr CertStore, [In] uint Flags, [In] uint CtrlType, [In] IntPtr CtrlPara);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStoreLocation(Int32 flags, IntPtr args, PFN_CERT_ENUM_SYSTEM_STORE_LOCATION pfn);
         [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true,EntryPoint="CertOpenStore")] private static extern IntPtr CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, IntPtr Para);
         [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true,EntryPoint="CertOpenStore")] private static extern IntPtr CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, [MarshalAs(UnmanagedType.LPStr)] String Para);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r);
-        [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, out IntPtr r);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr store, IntPtr context, CERT_STORE_ADD disposition, IntPtr r);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStore(CERT_SYSTEM_STORE_FLAGS flags, IntPtr pvSystemStoreLocationPara, IntPtr pvArg, CertEnumSystemStoreCallbackIntPtr Callback);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumPhysicalStore(IntPtr pvSystemStore, CERT_SYSTEM_STORE_FLAGS flags, IntPtr pvArg, PFN_CERT_ENUM_PHYSICAL_STORE Callback);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertVerifyCertificateChainPolicy(IntPtr Policy, IntPtr ChainContext, ref CERT_CHAIN_POLICY_PARA PolicyPara, ref CERT_CHAIN_POLICY_STATUS PolicyStatus);
-        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertCreateCertificateContext(UInt32 CertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertCreateCRLContext(UInt32 CertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
-        [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCertificatesInStore(IntPtr CertStore, IntPtr PrevCertContext);
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
         [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertCloseStore(IntPtr handle, UInt32 flags);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CertGetCertificateChain(IntPtr ChainEngine, IntPtr Context, ref FILETIME time, IntPtr AdditionalStore, ref CERT_CHAIN_PARA ChainPara, CERT_CHAIN_FLAGS Flags, IntPtr Reserved, CERT_CHAIN_CONTEXT** ChainContext);
@@ -88,7 +104,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgUpdate(IntPtr Message, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data, Int32 Size, Boolean Final);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgUpdate(IntPtr Message, IntPtr Data, Int32 Size, Boolean Final);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptMsgGetParam(IntPtr Message, CMSG_PARAM Parameter, Int32 SignerIndex, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data, ref Int32 Size);
-        [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern unsafe IntPtr CertGetSubjectCertificateFromStore(IntPtr CertStore, Int32 MsgAndCertEncodingType, CERT_INFO* CertId);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.Auto, SetLastError = true)] private static extern Int32 CertNameToStr(Int32 CertEncodingType, ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz);
         [DllImport("crypt32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern ALG_ID CertOIDToAlgId([MarshalAs(UnmanagedType.LPStr)] String Id);
         [DllImport("crypt32.dll", SetLastError = true)] private static extern IntPtr CryptFindOIDInfo(Int32 KeyType,IntPtr Key,Int32 GroupId);
@@ -113,6 +128,31 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetUserKey(IntPtr Context,KEY_SPEC_TYPE KeySpec,out IntPtr UserKey);
         [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptImportKey(IntPtr Context,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr r);
         [DllImport("advapi32.dll", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 Flags);
+        #endregion
+        #region Certificate Functions
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern void CertAddRefServerOcspResponseContext(HCERT_SERVER_OCSP_RESPONSE ServerOcspResponseContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern void CertCloseServerOcspResponse(HCERT_SERVER_OCSP_RESPONSE ServerOcspResponse,Int32 Flags);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,IntPtr Zero);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertAddCertificateLinkToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertAddEncodedCertificateToStore(HCERTSTORE CertStore,Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPArray)] Byte[] CertEncodedData,Int32 CertEncodedLength,Int32 AddDisposition,out IntPtr CertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertDeleteCertificateFromStore(IntPtr CertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr CertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertRetrieveLogoOrBiometricInfo(IntPtr CertContext,String LogoOrBiometricType,Int32 RetrievalFlags,Int32 Timeout,Int32 Flags,IntPtr Reserved,out IntPtr ppbData,out Int32 pcbData,out IntPtr ppwszMimeType);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSerializeCertificateStoreElement(IntPtr CertContext,Int32 Flags,[MarshalAs(UnmanagedType.LPArray)]Byte[] pbElement,ref Int32 pcbElement);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertVerifySubjectCertificateContext(IntPtr Subject,IntPtr Issuer,ref Int32 Flags);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertCreateCertificateContext(Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPArray)]Byte[] CertEncodedBytes,Int32 CertEncodedLength);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCertificateContext(IntPtr CertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertEnumCertificatesInStore(HCERTSTORE CertStore,IntPtr PrevCertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertFindCertificateInStore(HCERTSTORE CertStore,Int32 CertEncodingType,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertGetIssuerCertificateFromStore(HCERTSTORE CertStore,IntPtr SubjectContext,IntPtr PrevIssuerContext,ref Int32 Flags);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern unsafe HCERT_SERVER_OCSP_RESPONSE CertAddRefServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern unsafe HCERT_SERVER_OCSP_RESPONSE CertOpenServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern unsafe CERT_SERVER_OCSP_RESPONSE_CONTEXT* CertGetServerOcspResponseContext(HCERT_SERVER_OCSP_RESPONSE ServerOcspResponse,Int32 Flags,IntPtr Reserved);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern unsafe IntPtr CertCreateSelfSignCertificate(HCRYPTPROV_OR_NCRYPT_KEY_HANDLE CryptProvOrNCryptKey,CERT_NAME_BLOB* SubjectIssuerBlob,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern unsafe IntPtr CertGetSubjectCertificateFromStore(HCERTSTORE CertStore,Int32 CertEncodingType,CERT_INFO* CertId);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CertGetValidUsages(Int32 cCerts,CERT_CONTEXT* rghCerts,Int32* cNumOIDs,IntPtr rghOIDs,Int32* pcbOIDs);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CertSelectCertificateChains(ref Guid SelectionContext,Int32 Flags,CERT_SELECT_CHAIN_PARA* ChainParameters,Int32 cCriteria,CERT_SELECT_CRITERIA* rgpCriteria,HCERTSTORE Store,out Int32 pcSelection,out CERT_CHAIN_CONTEXT* pprgpSelection);
         #endregion
 
         /// <summary>Gets the service object of the specified type.</summary>

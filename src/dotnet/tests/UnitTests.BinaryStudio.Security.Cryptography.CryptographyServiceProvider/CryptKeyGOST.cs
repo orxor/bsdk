@@ -28,10 +28,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
             var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
             using (var context = CryptographicContext.AcquireContext(
                     CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512, container,
-                    CryptographicContextFlags.CRYPT_NEWKEYSET|CryptographicContextFlags.CRYPT_SILENT)) {
-                var K = CryptKey.GenKey(context,)
-                var A = CryptKey.GetUserKey(context,KEY_SPEC_TYPE.AT_SIGNATURE);
-                var B = CryptKey.GetUserKey(context,KEY_SPEC_TYPE.AT_KEYEXCHANGE);
+                    CryptographicContextFlags.CRYPT_NEWKEYSET)) {
                 return;
                 }
             }
