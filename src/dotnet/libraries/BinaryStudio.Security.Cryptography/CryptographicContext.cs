@@ -64,14 +64,13 @@ namespace BinaryStudio.Security.Cryptography
                 var c = contextA.GetParameter<String>(CRYPT_PARAM.PP_ENUMCONTAINERS, CRYPT_FIRST, Encoding.ASCII);
                 while (c != null) {
                     Debug.WriteLine($"Container:{{{c}}}");
-                    using (var contextB = new CryptographicContextI(this,c,
+                    var contextB = new CryptographicContextI(this,c,
                         CryptographicContextFlags.CRYPT_SILENT| (IsMachineKeySet
                             ? CryptographicContextFlags.CRYPT_MACHINE_KEYSET
-                            : CryptographicContextFlags.CRYPT_NONE))) {
-                        yield return contextB.GetUserKey(
-                            KEY_SPEC_TYPE.AT_KEYEXCHANGE|KEY_SPEC_TYPE.AT_SIGNATURE,
-                            contextB.FullQualifiedContainerName);
-                        }
+                            : CryptographicContextFlags.CRYPT_NONE));
+                    yield return contextB.GetUserKey(
+                        KEY_SPEC_TYPE.AT_KEYEXCHANGE|KEY_SPEC_TYPE.AT_SIGNATURE,
+                        contextB.FullQualifiedContainerName);
                     c = contextA.GetParameter<String>(CRYPT_PARAM.PP_ENUMCONTAINERS, CRYPT_NEXT, Encoding.ASCII);
                     }
                 }

@@ -4,6 +4,7 @@
     <Configurations>Debug;Release;Linux{Debug}</Configurations>
     <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
     <IsPackable>false</IsPackable>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
     <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
@@ -21,5 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
+    <ProjectReference Include="..\UnitTests.BinaryStudio.Common\UnitTests.BinaryStudio.Common.csproj" />
   </ItemGroup>
 </Project>

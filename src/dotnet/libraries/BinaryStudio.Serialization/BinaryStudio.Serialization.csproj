@@ -6,7 +6,7 @@
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <Deterministic>false</Deterministic>
-    <NoWarn>1701</NoWarn>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
     <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
     <Configurations>Debug;Release;Linux{Debug}</Configurations>
   </PropertyGroup>

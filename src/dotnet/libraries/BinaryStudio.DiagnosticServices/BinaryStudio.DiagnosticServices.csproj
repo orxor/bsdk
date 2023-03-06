@@ -3,7 +3,7 @@
     <TargetFrameworks>net40;net45;net5.0</TargetFrameworks>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <NoWarn>1701</NoWarn>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
     <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
     <Configurations>Debug;Release;Linux{Debug}</Configurations>
     <UseSQLITE>true</UseSQLITE>
@@ -34,10 +34,15 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
   <ItemGroup Condition="'$(UseSQLITE)' == 'true'">
-    <PackageReference Include="System.Data.SQLite" Version="1.0.113.2" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.113.2">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.2">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
     <PackageReference Include="stub.system.data.sqlite.core.netframework" Version="1.0.113">
       <GeneratePathProperty>true</GeneratePathProperty>
+      <NoWarn>NU1701</NoWarn>
     </PackageReference>
   </ItemGroup>
   <ItemGroup Condition="'$(UseSQLITE)' == 'true'">

@@ -6,7 +6,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <NoWarn>1701</NoWarn>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
     <Description>Contains types that allow reading and writing to files and data streams, and types that provide basic file and directory support.</Description>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">

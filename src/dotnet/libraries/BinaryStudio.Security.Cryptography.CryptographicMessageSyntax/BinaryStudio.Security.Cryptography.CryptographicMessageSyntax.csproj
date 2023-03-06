@@ -4,7 +4,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <NoWarn>1701</NoWarn>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
     <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
     <Configurations>Debug;Release;Linux{Debug}</Configurations>
   </PropertyGroup>

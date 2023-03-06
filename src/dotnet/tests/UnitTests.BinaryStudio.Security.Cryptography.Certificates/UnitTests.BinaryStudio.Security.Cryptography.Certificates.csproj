@@ -4,6 +4,7 @@
     <Configurations>Debug;Release;Linux{Debug}</Configurations>
     <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
     <IsPackable>false</IsPackable>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
     <DefineConstants>FEATURE_PRINT_CERTIFICATE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">

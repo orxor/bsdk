@@ -3,7 +3,7 @@
     <TargetFrameworks>net40;net45;net5.0</TargetFrameworks>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!--<DocumentationFile>$(OutDir)\BinaryStudio.PortableExecutable.xml</DocumentationFile>-->
-    <NoWarn>1701;1702;1591;1570;0108;1522;0168;1587;0162</NoWarn>
+    <NoWarn>1701;1702;1591;1570;0108;1522;0168;1587;0162;NETSDK1138</NoWarn>
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <DefineConstants>FEATURE_MUI</DefineConstants>

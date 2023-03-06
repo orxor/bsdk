@@ -48,6 +48,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                             Validate(Entries.CertAddCertificateContextToStore(Handle, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
                             yield return o;
                             }
+                        key.Dispose();
                         }
                     }
                 FetchedFromContext = true;

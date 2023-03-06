@@ -10,14 +10,14 @@ namespace BinaryStudio.Security.Cryptography
         public override IntPtr Handle { get { return handle; }}
         public KEY_SPEC_TYPE KeySpec { get; }
         public String Container { get; }
-        public CryptographicContext Context { get; }
+        public CryptographicContext Context { get { return context; }}
 
-        #region ctor{IntPtr}
-        public CryptKey(IntPtr handle)
+        #region ctor{CryptographicContext,IntPtr}
+        internal CryptKey(CryptographicContext context,IntPtr handle)
             {
             if (handle == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(handle)); }
             this.handle = handle;
-            Context = CryptographicContext.DefaultContext;
+            this.context = context;
             }
         #endregion
         #region ctor{IntPtr,KEY_SPEC_TYPE,String}
@@ -25,11 +25,17 @@ namespace BinaryStudio.Security.Cryptography
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (handle == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(handle)); }
             this.handle = handle;
+            this.context = context;
             KeySpec = keySpec;
             Container = container;
-            Context = context;
             }
         #endregion
+
+        public static CryptKey GenKey(CryptographicContext context,ALG_ID algid, Int32 flags) {
+            if (context == null) { throw new ArgumentNullException(nameof(context)); }
+            Validate(((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptGenKey(context.Handle,algid,flags,out var r));
+            return new CryptKey(context,r);
+            }
 
         #region P:Certificate:X509Certificate
         public X509Certificate Certificate { get{
@@ -78,6 +84,7 @@ namespace BinaryStudio.Security.Cryptography
         /// </summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
+            context = null;
             if (handle != IntPtr.Zero) {
                 ((KeyGenerationAndExchangeFunctions)Context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptDestroyKey(handle);
                 handle = IntPtr.Zero;
@@ -87,5 +94,6 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
 
         private IntPtr handle;
+        private CryptographicContext context;
         }
     }
