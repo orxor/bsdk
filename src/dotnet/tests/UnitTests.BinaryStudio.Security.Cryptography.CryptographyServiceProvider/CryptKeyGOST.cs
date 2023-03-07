@@ -30,7 +30,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
             var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
             using (var contextS = CryptographicContext.AcquireContext(
                     CRYPT_PROVIDER_TYPE.PROV_GOST_2012_256, container,
-                    CryptographicContextFlags.CRYPT_NEWKEYSET)) {
+                    CryptographicContextFlags.CRYPT_NEWKEYSET|CryptographicContextFlags.CRYPT_SILENT)) {
                 var contextT = new CryptoProCSPCryptographicContext(contextS);
                 var rngs = contextT.RNGSources.ToArray();
                 contextS.SecureCode = CryptographicContext.GetSecureString("SomePassword");

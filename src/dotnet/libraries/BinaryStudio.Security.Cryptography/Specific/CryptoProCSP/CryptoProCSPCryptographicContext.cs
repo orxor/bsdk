@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
@@ -19,22 +21,43 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
             }
 
         public IEnumerable<CryptoProCSPRNGSource> RNGSources { get {
+            var o = new List<CryptoProCSPRNGSource>();
             #if NET5_0
-            yield break;
+            return EmptyArray<CryptoProCSPRNGSource>.Value;
             #else
-            using (var registry = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Crypto Pro\CurrentVersion\Random", false)) {
-                if (registry != null) {
-                    foreach (var SubKeyName in registry.GetSubKeyNames()) {
-                        using (var SourceSubKey = registry.OpenSubKey(SubKeyName,false)) {
-                            using (var DefaultSourceKey = registry.OpenSubKey("Default",false)) {
-                                if (DefaultSourceKey != null) {
-                                    yield return new CryptoProCSPRNGSource(SourceSubKey);
+            String ImagePath = null;
+            using (var r = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Crypto Pro\Cryptography\CurrentVersion\Provider", false)) {
+                if (r != null) {
+                    foreach (var ProviderName in r.GetSubKeyNames()) {
+                        using (var ProviderKey = r.OpenSubKey(ProviderName,false)) {
+                            if (ProviderKey != null) {
+                                ImagePath = ProviderKey.GetValue("Image Path") as String;
+                                if (!String.IsNullOrEmpty(ImagePath)) {
+                                    break;
                                     }
                                 }
                             }
                         }
                     }
                 }
+            if (ImagePath != null) {
+                var Folder = Path.GetDirectoryName(ImagePath);
+                using (var r = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Crypto Pro\Cryptography\CurrentVersion\Random", false)) {
+                    if (r != null) {
+                        foreach (var SubKeyName in r.GetSubKeyNames()) {
+                            using (var SourceSubKey = r.OpenSubKey(SubKeyName,false)) {
+                                using (var DefaultSourceKey = SourceSubKey?.OpenSubKey("Default",false)) {
+                                    if (DefaultSourceKey != null) {
+                                        var order = (Int32)DefaultSourceKey.GetValue("Level",0);
+                                        o.Add(new CryptoProCSPRNGSource(SourceSubKey,Folder,order));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            return o.OrderBy(i => i.Order);
             #endif
             }}
 

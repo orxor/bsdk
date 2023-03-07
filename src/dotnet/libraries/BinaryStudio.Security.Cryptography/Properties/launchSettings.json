@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "UnitTests.BinaryStudio.Task": {
+    "BinaryStudio.Security.Cryptography": {
       "commandName": "Project",
       "nativeDebugging": true
     }
