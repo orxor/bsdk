@@ -17,7 +17,7 @@ namespace UnitTests.BinaryStudio.PlatformComponents
         #region M:FormatMessageHResult
         [TestMethod]
         public void FormatMessageHResult() {
-            #if NET40 || NET47
+            #if NET40 || NET47 || NET45
             foreach (var name in Enum.GetNames(typeof(HResult))) {
                 var scode = (HResult)Enum.Parse(typeof(HResult),name);
                 var value = HResultException.FormatMessage(scode);
@@ -38,7 +38,7 @@ namespace UnitTests.BinaryStudio.PlatformComponents
         [TestMethod]
         [Ignore]
         public void FormatMessageWin32ErrorCode() {
-            #if NET40 || NET47
+            #if NET40 || NET47 || NET45
             foreach (var name in Enum.GetNames(typeof(Win32ErrorCode))) {
                 var scode = (Win32ErrorCode)Enum.Parse(typeof(Win32ErrorCode),name);
                 var value = HResultException.FormatMessage(scode);
@@ -57,7 +57,7 @@ namespace UnitTests.BinaryStudio.PlatformComponents
         [TestMethod]
         [Ignore]
         public void FormatMessagePosixError() {
-            #if NET40 || NET47
+            #if NET40 || NET47 || NET45
             foreach (var name in Enum.GetNames(typeof(PosixError))) {
                 var scode = (PosixError)Enum.Parse(typeof(PosixError),name);
                 var value = HResultException.FormatMessage(scode);

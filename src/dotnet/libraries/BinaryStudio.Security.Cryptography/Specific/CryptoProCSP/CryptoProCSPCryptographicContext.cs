@@ -1,20 +1,42 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
+using Microsoft.Win32;
 
-namespace BinaryStudio.Security.Cryptography.Internal
+namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
     {
-    public class CPROSpecificCryptographicContext : CryptographicObject
+    public class CryptoProCSPCryptographicContext : CryptographicObject
         {
         public CryptographicContext Context { get; }
         public override IntPtr Handle { get { return Context.Handle; }}
 
-        public CPROSpecificCryptographicContext(CryptographicContext context)
+        public CryptoProCSPCryptographicContext(CryptographicContext context)
             {
             Context = context;
             }
+
+        public IEnumerable<CryptoProCSPRNGSource> RNGSources { get {
+            #if NET5_0
+            yield break;
+            #else
+            using (var registry = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Crypto Pro\CurrentVersion\Random", false)) {
+                if (registry != null) {
+                    foreach (var SubKeyName in registry.GetSubKeyNames()) {
+                        using (var SourceSubKey = registry.OpenSubKey(SubKeyName,false)) {
+                            using (var DefaultSourceKey = registry.OpenSubKey("Default",false)) {
+                                if (DefaultSourceKey != null) {
+                                    yield return new CryptoProCSPRNGSource(SourceSubKey);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            #endif
+            }}
 
         public unsafe X509Certificate CreateSelfSignCertificate(String name) {
             var entries = (ICryptoAPI)Context.GetService(typeof(ICryptoAPI));

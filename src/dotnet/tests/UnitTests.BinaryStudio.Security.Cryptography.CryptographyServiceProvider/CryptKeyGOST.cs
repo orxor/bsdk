@@ -8,7 +8,7 @@ using UnitTests.BinaryStudio.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BinaryStudio.Security.Cryptography;
 using BinaryStudio.PlatformComponents.Win32;
-using BinaryStudio.Security.Cryptography.Internal;
+using BinaryStudio.Security.Cryptography.Specific.CryptoProCSP;
 
 namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvider
     {
@@ -27,16 +27,16 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
 
         [TestMethod]
         public void GenKey() {
-            var x = new CRYPT_OID_INFO();
             var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
-            using (var context = CryptographicContext.AcquireContext(
+            using (var contextS = CryptographicContext.AcquireContext(
                     CRYPT_PROVIDER_TYPE.PROV_GOST_2012_256, container,
                     CryptographicContextFlags.CRYPT_NEWKEYSET)) {
-                context.SecureCode = CryptographicContext.GetSecureString("SomePassword");
-                using (var key = CryptKey.GenKey(context, ALG_ID.AT_SIGNATURE, CryptGenKeyFlags.CRYPT_EXPORTABLE)) {
+                var contextT = new CryptoProCSPCryptographicContext(contextS);
+                var rngs = contextT.RNGSources.ToArray();
+                contextS.SecureCode = CryptographicContext.GetSecureString("SomePassword");
+                using (var key = CryptKey.GenKey(contextS, ALG_ID.AT_SIGNATURE, CryptGenKeyFlags.CRYPT_EXPORTABLE)) {
                     var AlgId = key.AlgId;
-                    var cpro = new CPROSpecificCryptographicContext(context);
-                    var certificate = cpro.CreateSelfSignCertificate("CN=ROOT, C=us");
+                    var certificate = contextT.CreateSelfSignCertificate("CN=ROOT, C=us");
                     }
                 return;
                 }

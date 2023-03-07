@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net5.0</TargetFrameworks>
+    <TargetFrameworks>net45</TargetFrameworks>
     <IsPackable>false</IsPackable>
     <Configurations>Debug;Release;Linux{Debug}</Configurations>
     <NoWarn>NU1701;NETSDK1138</NoWarn>
