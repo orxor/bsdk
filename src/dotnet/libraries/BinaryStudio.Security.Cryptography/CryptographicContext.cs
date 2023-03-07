@@ -32,6 +32,7 @@ using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace BinaryStudio.Security.Cryptography
     {
+    using CERT_NAME_BLOB=CRYPT_BLOB;
     using HRESULT=HResult;
     #if LINUX
     using Process=System.Diagnostics.Process;
@@ -49,12 +50,13 @@ namespace BinaryStudio.Security.Cryptography
         public virtual Boolean IsMachineKeySet { get; }
         public virtual CryptographicContextFlags ProviderFlags { get; }
 
-        #region P:Version:Version
-        public virtual Version Version { get {
-            var r = GetParameter<UInt32>(CRYPT_PARAM.PP_VERSION, 0, null);
-            return new Version((Int32)(r & 0xFF00) >> 8, (Int32)(r & 0xFF));
-            }}
-        #endregion
+        public virtual String SignatureOID { get { return GetParameter<String>(CRYPT_PARAM.PP_CP_SIGNATUREOID, 0, Encoding.ASCII); }}
+        public virtual String CipherOID { get { return GetParameter<String>(CRYPT_PARAM.PP_CP_CIPHEROID, 0, Encoding.ASCII); }}
+        public virtual String DiffieHellmanOID { get { return GetParameter<String>(CRYPT_PARAM.PP_CP_DHOID, 0, Encoding.ASCII); }}
+        public virtual String HashOID { get { return GetParameter<String>(CRYPT_PARAM.PP_CP_HASHOID, 0, Encoding.ASCII); }}
+        public virtual ALG_ID SignatureAlgId { get { return (ALG_ID)GetParameter<Int32>(CRYPT_PARAM.PP_SIGNATURE_ALG, 0, Encoding.ASCII); }}
+        public virtual ALG_ID KeyExchangeAlgId { get { return (ALG_ID)GetParameter<Int32>(CRYPT_PARAM.PP_KEYEXCHANGE_ALG, 0, Encoding.ASCII); }}
+
         #region P:Keys:IEnumerable<CryptKey>
         public virtual IEnumerable<CryptKey> Keys { get {
             using (var contextA = new CryptographicContextI(this,
@@ -78,7 +80,7 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
         #region P:FullQualifiedContainerName:String
         public String FullQualifiedContainerName { get {
-            var r = GetParameter<String>(CRYPT_PARAM.PP_FQCN, 0, Encoding.ASCII);
+            var r = GetParameter<String>(CRYPT_PARAM.PP_CP_FQCN, 0, Encoding.ASCII);
             return (r != null)
                     ? r
                     : null;
@@ -96,8 +98,36 @@ namespace BinaryStudio.Security.Cryptography
         public SecureString SecureCode {
             set
                 {
-                throw new NotImplementedException();
+                if (value != null) {
+                    var i = Marshal.SecureStringToGlobalAllocAnsi(value);
+                    try
+                        {
+                        SetParameter(CRYPT_PARAM.PP_KEYEXCHANGE_PIN, i, 0);
+                        SetParameter(CRYPT_PARAM.PP_SIGNATURE_PIN, i, 0);
+                        }
+                    finally
+                        {
+                        Marshal.ZeroFreeGlobalAllocAnsi(i);
+                        }
+                    }
+                else
+                    {
+                    SetParameter(CRYPT_PARAM.PP_KEYEXCHANGE_PIN, IntPtr.Zero, 0);
+                    SetParameter(CRYPT_PARAM.PP_SIGNATURE_PIN, IntPtr.Zero, 0);
+                    }
                 }
+            }
+        #endregion
+        #region P:Version:Version
+        public virtual Version Version { get {
+            var r = GetParameter<UInt32>(CRYPT_PARAM.PP_VERSION, 0, null);
+            return new Version((Int32)(r & 0xFF00) >> 8, (Int32)(r & 0xFF));
+            }}
+        #endregion
+        #region P:UseHardwareRNG:Boolean
+        public virtual Boolean UseHardwareRNG {
+            get { return GetParameter<Int32>(CRYPT_PARAM.PP_USE_HARDWARE_RNG, 0, null) != 0; }
+            set { SetParameter(CRYPT_PARAM.PP_USE_HARDWARE_RNG,value ? 1 : 0,0); }
             }
         #endregion
 
@@ -334,6 +364,7 @@ namespace BinaryStudio.Security.Cryptography
             return DefaultContext.CertOIDToAlgId(value);
             }
         #endregion
+
         public ALG_ID FindAlgId(Oid AlgId, Int32 KeyType)
             {
             return (ALG_ID)(-1);
@@ -478,6 +509,29 @@ namespace BinaryStudio.Security.Cryptography
             return entries.CryptGetKeyParam(Key,Param,Data,ref DataSize, Flags);
             }
         #endregion
+
+        protected unsafe void SetParameter(CRYPT_PARAM parameter, Int32 value, Int32 flags) {
+            EnsureEntries(out var entries);
+            var r = new Byte[sizeof(Int32)];
+            fixed (Byte* o = r) {
+                *(Int32*)o = value;
+                Validate(entries.CryptSetProvParam(Handle,parameter,r,flags));
+                }
+            }
+
+        protected void SetParameter(CRYPT_PARAM parameter, IntPtr value, Int32 flags) {
+            EnsureEntries(out var entries);
+            Validate(entries.CryptSetProvParam(Handle,parameter,value,flags));
+            }
+
+        internal Byte[] CertStrToName(String name) {
+            EnsureEntries(out var entries);
+            var size = 0;
+            Byte[] r;
+            Validate(entries.CertStrToName(X509_ASN_ENCODING,name,CERT_X500_NAME_STR,IntPtr.Zero, null,ref size,IntPtr.Zero));
+            Validate(entries.CertStrToName(X509_ASN_ENCODING,name,CERT_X500_NAME_STR,IntPtr.Zero, r = new Byte[size],ref size,IntPtr.Zero));
+            return r;
+            }
         #region M:GetService(Type):Object
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="service">An object that specifies the type of service object to get.</param>
@@ -486,9 +540,44 @@ namespace BinaryStudio.Security.Cryptography
         /// <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
         public override Object GetService(Type service) {
             if (service == typeof(KeyGenerationAndExchangeFunctions)) { return DefaultContext.GetService(service); }
+            if (service == typeof(ICryptoAPI)) { return DefaultContext.GetService(service); }
             return base.GetService(service);
             }
         #endregion
+        #region M:GetSecureString(String):SecureString
+        public unsafe static SecureString GetSecureString(String value) {
+            fixed (Char* c = value) {
+                return new SecureString(c, value.Length);
+                }
+            }
+        #endregion
+
+        public unsafe X509Certificate CreateSelfSignCertificate(String name) {
+            EnsureEntries(out var entries);
+            var SubjectIssuerBlobM = CertStrToName(name);
+            fixed (Byte* SubjectIssuerBlobU = SubjectIssuerBlobM) {
+                var SubjectIssuerBlob = new CERT_NAME_BLOB{
+                    Size = SubjectIssuerBlobM.Length,
+                    Data = SubjectIssuerBlobU
+                    };
+                var Container = this.Container;
+                var Keys = this.Keys.Where(i => String.Equals(i.Container,Container)).ToArray();
+                if (Keys.Length > 0) {
+                    var AlgId = Keys[0].AlgId;
+                    var Info = (CRYPT_OID_INFO*)Validate(entries.CryptFindOIDInfo(CRYPT_OID_INFO_KEY_TYPE.CRYPT_OID_INFO_ALGID_KEY,&AlgId,0),NotZero);
+                    if (Info != null) {
+                        var LAlgId = Marshal.PtrToStringAnsi(entries.CertAlgIdToOID(AlgId));
+                        var TAlgId = new CRYPT_ALGORITHM_IDENTIFIER {
+                            ObjectId = Info->OID
+                            };
+                        var Target = Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&TAlgId,null,null,null),NotZero);
+                        return new X509Certificate(Target);
+                        }
+                    }
+                var certificate = Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,null,null,null,null),NotZero);
+                return new X509Certificate(certificate);
+                }
+            }
 
         static CryptographicContext() {
             #if LINUX

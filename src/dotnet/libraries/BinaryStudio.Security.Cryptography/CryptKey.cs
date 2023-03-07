@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 
@@ -12,9 +13,35 @@ namespace BinaryStudio.Security.Cryptography
         public String Container { get; }
         public CryptographicContext Context { get { return context; }}
 
+        public unsafe ALG_ID AlgId {get{
+                var r = GetParameter(KEY_PARAM.KP_ALGID);
+                fixed (Byte* o = r) {
+                    return *(ALG_ID*)o;
+                    }
+                }}
+
+        public String SignatureOID {get{
+                var r = GetParameter(KEY_PARAM.KP_CP_SIGNATUREOID);
+                return Encoding.ASCII.GetString(r).TrimEnd('\0');
+                }}
+
+        public String CipherOID {get{
+                var r = GetParameter(KEY_PARAM.KP_CP_CIPHEROID);
+                return Encoding.ASCII.GetString(r).TrimEnd('\0');
+                }}
+
+        public String HashOID {get{
+                var r = GetParameter(KEY_PARAM.KP_CP_HASHOID);
+                return Encoding.ASCII.GetString(r).TrimEnd('\0');
+                }}
+
+        public String DiffieHellmanOID {get{
+                var r = GetParameter(KEY_PARAM.KP_CP_DHOID);
+                return Encoding.ASCII.GetString(r).TrimEnd('\0');
+                }}
+
         #region ctor{CryptographicContext,IntPtr}
-        internal CryptKey(CryptographicContext context,IntPtr handle)
-            {
+        internal CryptKey(CryptographicContext context,IntPtr handle) {
             if (handle == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(handle)); }
             this.handle = handle;
             this.context = context;
@@ -101,6 +128,14 @@ namespace BinaryStudio.Security.Cryptography
                 handle = IntPtr.Zero;
                 }
             base.Dispose(disposing);
+            }
+        #endregion
+        #region M:ToString:String
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override String ToString()
+            {
+            return $"{AlgId}:{Container}";
             }
         #endregion
 

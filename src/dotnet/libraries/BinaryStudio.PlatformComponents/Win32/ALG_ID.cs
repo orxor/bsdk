@@ -113,6 +113,8 @@
         CALG_ECMQV                          = 0x0000a001,
         CALG_ECDSA                          = 0x00002203,
         CALG_NULLCIPHER                     = 0x00006000,
-        ALG_CLASS_HASH                      = 0x00008000
+        ALG_CLASS_HASH                      = 0x00008000,
+        AT_KEYEXCHANGE = 1,
+        AT_SIGNATURE   = 2
         }
     }

@@ -10,7 +10,6 @@ namespace BinaryStudio.Security.Cryptography
 
     internal interface CertificateFunctions
         {
-        Boolean CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext);
         Boolean CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,IntPtr StoreContext);
         Boolean CertAddCertificateLinkToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext);
         Boolean CertAddEncodedCertificateToStore(HCERTSTORE CertStore,Int32 CertEncodingType,Byte[] CertEncodedData,Int32 CertEncodedLength,Int32 AddDisposition,out IntPtr CertContext);
@@ -18,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography
         void CertAddRefServerOcspResponseContext(HCERT_SERVER_OCSP_RESPONSE ServerOcspResponseContext);
         void CertCloseServerOcspResponse(HCERT_SERVER_OCSP_RESPONSE ServerOcspResponse,Int32 Flags);
         IntPtr CertCreateCertificateContext(Int32 CertEncodingType,Byte[] CertEncodedBytes,Int32 CertEncodedLength);
-        unsafe IntPtr CertCreateSelfSignCertificate(HCRYPTPROV_OR_NCRYPT_KEY_HANDLE CryptProvOrNCryptKey,CERT_NAME_BLOB* SubjectIssuerBlob,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions);
+        unsafe IntPtr CertCreateSelfSignCertificate(HCRYPTPROV_OR_NCRYPT_KEY_HANDLE CryptProvOrNCryptKey,ref CERT_NAME_BLOB SubjectIssuerBlob,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions);
         Boolean CertDeleteCertificateFromStore(IntPtr CertContext);
         IntPtr CertDuplicateCertificateContext(IntPtr CertContext);
         IntPtr CertEnumCertificatesInStore(HCERTSTORE CertStore,IntPtr PrevCertContext);

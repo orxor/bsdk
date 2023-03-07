@@ -197,10 +197,10 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
         #region M:DecodeNameString(ICryptoAPI,{ref}CERT_NAME_BLOB):String
         internal static String DecodeNameString(ICryptoAPI API,ref CERT_NAME_BLOB source) {
-            var r = API.CertNameToStr(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, IntPtr.Zero, 0);
+            var r = API.CertNameToStrW(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, IntPtr.Zero, 0);
             if (r != 0) {
                 using (var buffer = new LocalMemory(r << 1)) {
-                    if (API.CertNameToStr(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, buffer, r) > 0) {
+                    if (API.CertNameToStrW(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, buffer, r) > 0) {
                         return Marshal.PtrToStringUni(buffer);
                         }
                     }
@@ -327,8 +327,8 @@ namespace BinaryStudio.Security.Cryptography
         protected const Int32 CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE    = 0x00090000;
         protected const Int32 X509_ASN_ENCODING   = 0x00000001;
         protected const Int32 PKCS_7_ASN_ENCODING = 0x00010000;
-        private const Int32 CERT_SIMPLE_NAME_STR = 1;
-        private const Int32 CERT_OID_NAME_STR    = CERT_SIMPLE_NAME_STR + 1;
-        private const Int32 CERT_X500_NAME_STR   = CERT_OID_NAME_STR    + 1;
+        protected const Int32 CERT_SIMPLE_NAME_STR = 1;
+        protected const Int32 CERT_OID_NAME_STR    = CERT_SIMPLE_NAME_STR + 1;
+        protected const Int32 CERT_X500_NAME_STR   = CERT_OID_NAME_STR    + 1;
         }
     }
