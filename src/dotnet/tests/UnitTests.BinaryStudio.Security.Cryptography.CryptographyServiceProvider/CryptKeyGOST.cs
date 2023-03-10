@@ -29,21 +29,37 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
             }
 
         [TestMethod]
-        public unsafe void GenKey() {
-            var a = new X509Certificate(File.ReadAllBytes(@"C:\TFS\icao\repo\ru\CN=Document Signer,OU=СЗД,O=НТЦ Атлас,L=Moscow,C=RU,E=camail@stcnet.ru,SKI=[111F],AKI=[FA40],SN=[204ED309000000000049].cer"));
-            var b = (CERT_CONTEXT*)a.Handle;
-            var c = b->CertInfo->rgExtension;
+        [Ignore]
+        public void MakeCert() {
             var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
             using (var contextS = CryptographicContext.AcquireContext(
                     CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH, container,
                     CryptographicContextFlags.CRYPT_NEWKEYSET)) {
-                var contextT = new CryptoProCSPCryptographicContext(contextS);
-                var rngs = contextT.RNGSources.ToArray();
                 contextS.SecureCode = CryptographicContext.GetSecureString("SomePassword");
+                var contextT = new CryptoProCSPCryptographicContext(contextS);
                 using (var key = CryptKey.GenKey(contextS, ALG_ID.AT_SIGNATURE, CryptGenKeyFlags.CRYPT_EXPORTABLE)) {
-                    var AlgId = key.AlgId;
                     var dt = DateTime.Now;
                     var certificate = contextT.CreateSelfSignCertificate("CN=R-CA, C=ru",dt.AddYears(-1),dt.AddYears(1),
+                        new Asn1CertificateExtension[]
+                            {
+                            new CertificateSubjectKeyIdentifier(false,"111e03d866f14235829b5148ba5ff91774fa9e1f")
+                            });
+                    File.WriteAllBytes("cert.cer",certificate.Bytes);
+                    }
+                }
+            }
+
+        [TestMethod]
+        public void MakeCertSN() {
+            var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
+            using (var contextS = CryptographicContext.AcquireContext(
+                    CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH, container,
+                    CryptographicContextFlags.CRYPT_NEWKEYSET)) {
+                contextS.SecureCode = CryptographicContext.GetSecureString("SomePassword");
+                var contextT = new CryptoProCSPCryptographicContext(contextS);
+                using (var key = CryptKey.GenKey(contextS, ALG_ID.AT_SIGNATURE, CryptGenKeyFlags.CRYPT_EXPORTABLE)) {
+                    var dt = DateTime.Now;
+                    var certificate = contextT.CreateSelfSignCertificate("CN=R-CA, C=ru","010203", dt.AddYears(-1),dt.AddYears(1),
                         new Asn1CertificateExtension[]
                             {
                             new CertificateSubjectKeyIdentifier(false,"111e03d866f14235829b5148ba5ff91774fa9e1f")

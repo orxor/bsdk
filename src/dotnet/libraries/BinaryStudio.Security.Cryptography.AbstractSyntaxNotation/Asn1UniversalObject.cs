@@ -163,6 +163,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// </summary>
         public abstract Asn1ObjectType Type { get; }
         protected internal override Object TypeCode { get { return Type; }}
+        protected internal override SByte  ByteCode { get { return (SByte)Type; }}
 
         #region M:WriteHeader(Stream)
         protected internal override void WriteHeader(Stream target) {

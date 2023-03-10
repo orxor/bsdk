@@ -60,7 +60,7 @@ namespace BinaryStudio.Security.Cryptography
         private ICryptoAPI Entries;
         private ICryptoAPI EnsureEntries() {
             if (Entries == null) {
-                Entries = (ICryptoAPI)GetService(typeof(ICryptoAPI));
+                Entries = (ICryptoAPI)Context.GetService(typeof(ICryptoAPI));
                 }
             return Entries;
             }
@@ -76,6 +76,15 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+
+        public void SignHash(KEY_SPEC_TYPE KeySpec,out Byte[] digest, out Byte[] signature)
+            {
+            digest = HashValue;
+            var SignatureLength = 0;
+            Validate(Entries.CryptSignHash(Handle,KeySpec, null, ref SignatureLength));
+            signature = new Byte[SignatureLength];
+            Validate(Entries.CryptSignHash(Handle,KeySpec, signature, ref SignatureLength));
+            }
 
         private const Int32 HP_ALGID                = 0x0001;  // Hash algorithm
         private const Int32 HP_HASHVAL              = 0x0002;  // Hash value

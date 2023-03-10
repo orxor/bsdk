@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -14,6 +15,22 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         /// </summary>
         public override Asn1ObjectType Type { get { return Asn1ObjectType.BitString; }}
         public Int32 UnusedBits { get; private set; }
+
+        #region ctor
+        internal Asn1BitString()
+            {
+            }
+        #endregion
+        #region ctor{Int32,Byte[]}
+        public Asn1BitString(Int32 unused, Byte[] source)
+            {
+            UnusedBits = unused;
+            content = new ReadOnlyMemoryMappingStream(source);
+            length = source.Length;
+            size = GetHeader().Length + 1 + length;
+            State |= ObjectState.Decoded;
+            }
+        #endregion
 
         #region M:Decode:Boolean
         protected override Boolean Decode() {
@@ -37,7 +54,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
             using (writer.Object()) {
                 writer.WriteValue(nameof(Class), Class.ToString());
-                writer.WriteValue(nameof(Type), TypeCode);
+                writer.WriteValue(nameof(Type), Type);
                 if (Offset >= 0) { writer.WriteValue(nameof(Offset), Offset); }
                 writer.WriteValue(nameof(UnusedBits), UnusedBits);
                 var c = Count;
@@ -56,11 +73,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
         #endregion
+
         #region M:WriteContent(Stream)
-        protected override void WriteContent(Stream target)
+        protected override void WriteContent(Stream target, Boolean force)
             {
             target.WriteByte((Byte)UnusedBits);
-            base.WriteContent(target);
+            base.WriteContent(target,force);
             }
         #endregion
         }

@@ -172,7 +172,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 #endregion
                 }
             if (r != null) {
-                ObjectIdentifiers.GetOID(r);
+                return ObjectIdentifiers.GetOID(r);
                 }
             return null;
             }

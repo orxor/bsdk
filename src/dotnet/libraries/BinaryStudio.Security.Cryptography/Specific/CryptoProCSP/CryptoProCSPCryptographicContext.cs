@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
@@ -62,6 +64,32 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
             #endif
             }}
 
+        public X509Certificate CreateSelfSignCertificate(String Name, String SerialNumber,DateTime NotBefore, DateTime NotAfter, IList<Asn1CertificateExtension> Extensions) {
+            var SourceCertificate = CreateSelfSignCertificate(Name,NotBefore,NotAfter,Extensions);
+            var Container = Asn1Object.Load(new ReadOnlyMemoryMappingStream(SourceCertificate.Bytes)).First();
+            for (var i = 0;i < Container[0].Count; i++) {
+                if (Container[0][i] is Asn1Integer) {
+                    Container[0][i] = new Asn1Integer(SerialNumber);
+                    break;
+                    }
+                }
+            using (var o = new MemoryStream()) {
+                Container[0].WriteTo(o,true);
+                using (var engine = new CryptHashAlgorithm(Context, CryptographicContext.GetAlgId(SourceCertificate.HashAlgorithm))) {
+                    o.Seek(0,SeekOrigin.Begin);
+                    engine.Compute(o);
+                    engine.SignHash(SourceCertificate.KeySpec,out var digest,out var signature);
+                    Container[2]=new Asn1BitString(0,signature.Reverse().ToArray());
+                    }
+                }
+            using (var o = new MemoryStream()) {
+                Container.WriteTo(o,true);
+                File.WriteAllBytes("cer2.cer",o.ToArray());
+                File.WriteAllBytes("cer1.cer",SourceCertificate.Bytes);
+                }
+            return SourceCertificate;
+            }
+
         public unsafe X509Certificate CreateSelfSignCertificate(String name, DateTime notbefore, DateTime notafter, IList<Asn1CertificateExtension> extensions) {
             var entries = (ICryptoAPI)Context.GetService(typeof(ICryptoAPI));
             var SubjectIssuerBlobM = Context.CertStrToName(name);
@@ -104,10 +132,15 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
                                     ExtensionsA[i].Value.Data = (Byte*)manager.Alloc(block);
                                     }
                                 }
-                            return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&FAlgId,&NotBefore,&NotAfter,&ExtensionsE),NotZero));
+                            return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&FAlgId,&NotBefore,&NotAfter,&ExtensionsE),NotZero)){
+                                KeySpec = Keys[0].KeySpec
+                                };
                             }
                         }
-                    return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&FAlgId,&NotBefore,&NotAfter,null),NotZero));
+                    return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&FAlgId,&NotBefore,&NotAfter,null),NotZero))
+                        {
+                        KeySpec = Keys[0].KeySpec
+                        };
                     }
                 return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,null,null,null,null),NotZero));
                 }

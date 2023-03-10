@@ -19,6 +19,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public sealed override Int32 Count  { get { return UnderlyingObject.Count;  }}
         [Browsable(false)] public sealed override ReadOnlyMappingStream Content { get { return UnderlyingObject?.Content; }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]protected internal override Object TypeCode { get { return $"Complex{{{U.TypeCode}}}"; }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]protected internal override SByte  ByteCode { get { return U.ByteCode; }}
 
         protected Asn1LinkObject(T o)
             {
@@ -77,8 +78,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:WriteTo(Stream)
-        public override void WriteTo(Stream target) {
-            UnderlyingObject.WriteTo(target);
+        public override void WriteTo(Stream target, Boolean force = false) {
+            UnderlyingObject.WriteTo(target,force);
             }
         #endregion
         #region M:WriteHeader(Stream)

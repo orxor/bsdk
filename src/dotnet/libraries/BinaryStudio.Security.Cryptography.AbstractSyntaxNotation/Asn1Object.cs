@@ -57,6 +57,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #endif
 
         protected internal abstract Object TypeCode { get; }
+        protected internal abstract SByte  ByteCode { get; }
+
         public virtual ReadOnlyMappingStream Content { get { return content; }}
         public virtual Int64 Offset { get{ return offset; }}
         public virtual Int64 Size   { get {
@@ -97,7 +99,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)]
         public virtual Byte[] InnerBody { get {
             using (var target = new MemoryStream()) {
-                WriteContent(target);
+                WriteContent(target,false);
                 return target.ToArray();
                 }
             }}
@@ -658,7 +660,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region M:WriteTo(Stream)
-        public virtual void WriteTo(Stream target) {
+        public virtual void WriteTo(Stream target, Boolean force = false) {
             if (IsIndefiniteLength)
                 {
                 Content.Seek(0, SeekOrigin.Begin);
@@ -670,15 +672,34 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             else
                 {
-                WriteHeader(target);
-                WriteContent(target);
+                if (force) {
+                    using (var o = new MemoryStream()) {
+                        WriteContent(o,true);
+                        WriteHeader(target,IsExplicitConstructed,Class,ByteCode,o.Position);
+                        o.Seek(0,SeekOrigin.Begin);
+                        o.CopyTo(target);
+                        }
+                    }
+                else
+                    {
+                    WriteHeader(target);
+                    WriteContent(target,false);
+                    }
                 }
             }
         #endregion
         #region M:WriteContent(Stream)
-        protected virtual void WriteContent(Stream target) {
-            Content.Seek(0, SeekOrigin.Begin);
-            Content.CopyTo(target);
+        protected virtual void WriteContent(Stream target, Boolean force) {
+            if (force && (Count > 0)){
+                foreach (var i in this) {
+                    i.WriteTo(target,true);
+                    }
+                }
+            else
+                {
+                Content.Seek(0, SeekOrigin.Begin);
+                Content.CopyTo(target);
+                }
             if (IsIndefiniteLength)
                 {
                 target.WriteByte(0);
@@ -779,6 +800,26 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
         #endregion
+
+        private static Byte DecodeChar(Char source) {
+            return ((source >= '0') && (source <= '9')) ? (Byte)(source - '0') :
+                   ((source >= 'a') && (source <= 'f')) ? (Byte)(source - 'a' + 10) :
+                   ((source >= 'A') && (source <= 'F')) ? (Byte)(source - 'A' + 10) : (Byte)0;
+            }
+
+        protected static Byte[] DecodeString(String value) {
+            if (value == null) { throw new ArgumentNullException(nameof(value)); }
+            value = value.Replace(" ",String.Empty).ToLowerInvariant();
+            if (String.IsNullOrEmpty(value)) { throw new ArgumentOutOfRangeException(nameof(value)); }
+            if ((value.Length % 2) != 0) { throw new ArgumentOutOfRangeException(nameof(value)); }
+            var r = new Byte[value.Length/2];
+            for (int i = 0,j = 0; i < value.Length; i+=2, j++) {
+                r[j] = (Byte)(
+                    (DecodeChar(value[i]) << 4) |
+                    (DecodeChar(value[i + 1])));
+                }
+            return r;
+            }
 
         protected static Boolean IsNullOrEmpty<T>(ICollection<T> value) {
             return (value == null) || (value.Count == 0);

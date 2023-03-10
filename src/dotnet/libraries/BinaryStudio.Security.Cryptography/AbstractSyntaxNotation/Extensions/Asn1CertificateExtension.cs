@@ -95,26 +95,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
 
-        private static Byte DecodeChar(Char source) {
-            return ((source >= '0') && (source <= '9')) ? (Byte)(source - '0') :
-                   ((source >= 'a') && (source <= 'f')) ? (Byte)(source - 'a' + 10) :
-                   ((source >= 'A') && (source <= 'F')) ? (Byte)(source - 'A' + 10) : (Byte)0;
-            }
-
-        protected static Byte[] DecodeString(String value) {
-            if (value == null) { throw new ArgumentNullException(nameof(value)); }
-            value = value.Replace(" ",String.Empty).ToLowerInvariant();
-            if (String.IsNullOrEmpty(value)) { throw new ArgumentOutOfRangeException(nameof(value)); }
-            if ((value.Length % 2) != 0) { throw new ArgumentOutOfRangeException(nameof(value)); }
-            var r = new Byte[value.Length/2];
-            for (int i = 0,j = 0; i < value.Length; i+=2, j++) {
-                r[j] = (Byte)(
-                    (DecodeChar(value[i]) << 4) |
-                    (DecodeChar(value[i + 1])));
-                }
-            return r;
-            }
-
         #region M:EnsureFactory
         private static void EnsureFactory() {
             using (UpgradeableReadLock(syncobject)) {

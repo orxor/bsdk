@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Numerics;
+using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -19,6 +20,27 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #else
         public BigInteger Value { get;private set; }
         #endif
+
+        #region ctor
+        internal Asn1Integer()
+            {
+            }
+        #endregion
+        #region ctor{Byte[]}
+        internal Asn1Integer(Byte[] value)
+            {
+            length = value.Length;
+            content = new ReadOnlyMemoryMappingStream(value);
+            size = length + GetHeader().Length;
+            State |= ObjectState.Decoded;
+            }
+        #endregion
+        #region ctor{String}
+        internal Asn1Integer(String value)
+            :this(DecodeString(value))
+            {
+            }
+        #endregion
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

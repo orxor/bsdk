@@ -31,7 +31,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public Oid HashAlgorithm { get; }
         internal Boolean IsMachineKeySet { get;set; }
         internal String Container {get;set; }
-        internal KEY_SPEC_TYPE KeySpec { get; }
+        internal KEY_SPEC_TYPE KeySpec { get;set; }
 
         public unsafe Byte[] Bytes { get{
             var context = (CERT_CONTEXT*)Context;
@@ -47,6 +47,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
             Context = Entries.CertDuplicateCertificateContext(context);
             Source = BuildSource(Context);
+            SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
+            HashAlgorithm = Source.SignatureAlgorithm.HashAlgorithm;
             }
         #endregion
         #region ctor{Asn1Certificate}
@@ -58,6 +60,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 var hr = GetHRForLastWin32Error();
                 Marshal.ThrowExceptionForHR((Int32)hr);
                 }
+            SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
+            HashAlgorithm = Source.SignatureAlgorithm.HashAlgorithm;
             }
         #endregion
         #region ctor{Byte[]}
@@ -69,6 +73,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 var hr = GetHRForLastWin32Error();
                 Marshal.ThrowExceptionForHR((Int32)hr);
                 }
+            SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
+            HashAlgorithm = Source.SignatureAlgorithm.HashAlgorithm;
             }
         #endregion
         #region ctor{Byte[],CryptKey}
@@ -78,9 +84,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             Source = BuildSource(source);
             Context = Validate(Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length),NotZero);
             SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
-            HashAlgorithm = (Source.SignatureAlgorithm.HashAlgorithm != null)
-                ? Source.SignatureAlgorithm.HashAlgorithm
-                : null;
+            HashAlgorithm = Source.SignatureAlgorithm.HashAlgorithm;
             KeySpec = key.KeySpec;
             using (var manager = new LocalMemoryManager()) {
                 var pi = new CRYPT_KEY_PROV_INFO {

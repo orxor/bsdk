@@ -11,6 +11,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public override Asn1ObjectClass Class { get { return Asn1ObjectClass.Private; }}
         public SByte Type { get; }
         protected internal override Object TypeCode { get { return Type; }}
+        protected internal override SByte  ByteCode { get { return Type; }}
 
         public Asn1PrivateObject(SByte type)
             {
