@@ -33,11 +33,11 @@ public class LocalClient : ILocalClient
             if (!HasOption(options, typeof(PinCodeRequestType)))  { options.Add(new PinCodeRequestType(PinCodeRequestTypeKind.Default)); }
             if (!HasOption(options, typeof(OutputTypeOption)))    { options.Add(new OutputTypeOption("none"));                           }
             if (!HasOption(options, typeof(DateTimeOption)))      { options.Add(new DateTimeOption(DateTime.Now));                       }
-                 if (HasOption(options, typeof(TestOption))) { operation.Value = new TestOperation(options); }
-            else if (HasOption(options, typeof(MessageGroupOption))) {
+                if (HasOption(options, typeof(MessageGroupOption))) {
                 if (HasOption(options, typeof(VerifyOption)))  { operation.Value = new VerifyMessageOperation(options);  }
                 }
             else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(options); }
+            else if (HasOption(options, typeof(BatchOption)))             { operation.Value = new BatchOperation(options); }
             else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new FileOperation(options); }
             operation.Value.ValidatePermission();
             var trace = options.OfType<TraceOption>().FirstOrDefault()?.Values;
@@ -48,7 +48,7 @@ public class LocalClient : ILocalClient
             Task.Factory.StartNew(()=>{
                 try
                     {
-                    operation.Value.Execute(Console.Out);
+                    operation.Value.Execute();
                     }
                 finally
                     {

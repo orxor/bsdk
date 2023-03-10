@@ -27,13 +27,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             SealedSize              = 0x080,
             DisposeUnderlyingObject = 0x100,
             DisposeContent          = 0x200,
-            Incompleted             = 0x400
+            Incompleted             = 0x400,
+            Modified                = 0x800
             }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 offset;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private Int64 size;
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Int64 size;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Int64 length;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected ObjectState State;
+        /*[DebuggerBrowsable(DebuggerBrowsableState.Never)]*/ protected ObjectState State;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected ReadOnlyMappingStream content;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] private List<Asn1Object> sequence = new List<Asn1Object>();
 
@@ -52,6 +53,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return State.HasFlag(ObjectState.ImplicitConstructed); }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return State.HasFlag(ObjectState.Indefinite);          }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] protected internal virtual Boolean IsDisposed { get { return State.HasFlag(ObjectState.Disposed);            }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] protected internal virtual Boolean IsModified { get { return State.HasFlag(ObjectState.Modified);            }}
         #endif
 
         protected internal abstract Object TypeCode { get; }
@@ -477,6 +479,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             if (IsReadOnly) { throw new InvalidOperationException(); }
             sequence.Add(item);
+            State |= ObjectState.Modified;
             }
 
         /**
@@ -493,6 +496,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         protected void Clear() {
             if (IsReadOnly) { throw new InvalidOperationException(); }
             sequence.Clear();
+            State |= ObjectState.Modified;
             }
 
         /**
@@ -539,6 +543,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         Boolean ICollection<Asn1Object>.Remove(Asn1Object item)
             {
             if (IsReadOnly) { throw new NotSupportedException(); }
+            State |= ObjectState.Modified;
             return sequence.Remove(item);
             }
         #endregion
@@ -586,6 +591,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             if (IsReadOnly) { throw new NotSupportedException(); }
             sequence.Insert(index, item);
+            State |= ObjectState.Modified;
             }
         #endregion
         #region M:IList<Asn1Object>.RemoveAt(Int32)
@@ -601,6 +607,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             sequence.RemoveAt(index);
             State &= ~ObjectState.SealedSize;
             State &= ~ObjectState.SealedLength;
+            State |= ObjectState.Modified;
             }
         #endregion
         #region P:IList<Asn1Object>.this[Int32]:IAsn1Object
@@ -623,6 +630,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 sequence[index] = value;
                 State &= ~ObjectState.SealedSize;
                 State &= ~ObjectState.SealedLength;
+                State |= ObjectState.Modified;
                 }
             }
         #endregion
@@ -762,6 +770,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         protected internal abstract void WriteHeader(Stream target);
+
+        #region M:GetHeader:Byte[]
+        internal Byte[] GetHeader() {
+            using (var o = new MemoryStream()) {
+                WriteHeader(o);
+                return o.ToArray();
+                }
+            }
+        #endregion
+
         protected static Boolean IsNullOrEmpty<T>(ICollection<T> value) {
             return (value == null) || (value.Count == 0);
             }

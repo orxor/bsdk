@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    using HRESULT=HResult;
     public sealed class X509Certificate : X509Object,IExceptionSerializable
         {
         private IntPtr Context;
@@ -33,6 +32,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         internal Boolean IsMachineKeySet { get;set; }
         internal String Container {get;set; }
         internal KEY_SPEC_TYPE KeySpec { get; }
+
+        public unsafe Byte[] Bytes { get{
+            var context = (CERT_CONTEXT*)Context;
+            var r = new Byte[context->CertEncodedSize];
+            for (var i = 0; i < context->CertEncodedSize; ++i) {
+                r[i] = context->CertEncoded[i];
+                }
+            return r;
+            }}
 
         #region ctor{IntPtr}
         public X509Certificate(IntPtr context) {

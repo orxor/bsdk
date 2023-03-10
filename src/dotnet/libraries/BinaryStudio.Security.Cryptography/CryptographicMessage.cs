@@ -5,7 +5,6 @@ using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     internal class CryptographicMessage : CryptographicObject
         {
         public override IntPtr Handle { get { return handle; }}

@@ -346,7 +346,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         private static Boolean Validate(out Exception e, Boolean status) {
             e = null;
             if (!status) {
-                e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                e = HResultException.GetExceptionForHR((HRESULT)Marshal.GetLastWin32Error());
                 return false;
                 }
             return true;

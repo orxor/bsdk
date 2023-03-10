@@ -2,7 +2,7 @@
 
 namespace BinaryStudio.PlatformComponents.Win32
     {
-    public enum HResult
+    public enum HRESULT
         {
         S_OK                                                                  = unchecked((Int32)0x00000000),
         S_FALSE                                                               = unchecked((Int32)0x00000001),

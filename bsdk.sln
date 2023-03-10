@@ -54,6 +54,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.Secu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.BinaryStudio.Common", "src\dotnet\tests\UnitTests.BinaryStudio.Common\UnitTests.BinaryStudio.Common.csproj", "{A4B7258A-9C19-4089-813A-552680F93D8B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{D4F7BE08-486B-4B51-9204-8035EFACB72E}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\MakeCert.bat = scripts\MakeCert.bat
+		scripts\MakeCert.ps1 = scripts\MakeCert.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

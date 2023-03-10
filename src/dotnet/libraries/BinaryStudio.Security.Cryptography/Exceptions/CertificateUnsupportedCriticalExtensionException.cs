@@ -3,7 +3,6 @@ using BinaryStudio.Security.Cryptography.Properties;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     [CertificateChainErrorStatus(CertificateChainErrorStatus.CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT)]
     public class CertificateUnsupportedCriticalExtensionException : CertificateInvalidExtensionException
         {

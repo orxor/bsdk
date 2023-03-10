@@ -10,7 +10,6 @@ using Microsoft.Win32.SafeHandles;
 
 namespace BinaryStudio.DirectoryServices
     {
-    using HRESULT=HResult;
     public class PathUtils
         {
         private const Int32 MAX_PATH = 260;

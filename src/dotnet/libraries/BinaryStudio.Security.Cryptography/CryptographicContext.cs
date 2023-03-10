@@ -33,12 +33,26 @@ using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 namespace BinaryStudio.Security.Cryptography
     {
     using CERT_NAME_BLOB=CRYPT_BLOB;
-    using HRESULT=HResult;
     #if LINUX
     using Process=System.Diagnostics.Process;
     #endif
     public abstract partial class CryptographicContext : CryptographicObject
         {
+        public const String URI_GOST_CIPHER	                 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gost28147";
+        public const String	URI_GOST_DIGEST	                 = "http://www.w3.org/2001/04/xmldsig-more#gostr3411";
+        public const String	URI_GOST_HMAC_GOSTR3411	         = "http://www.w3.org/2001/04/xmldsig-more#hmac-gostr3411";
+        public const String	URI_GOST_SIGN                    = "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411";
+        public const String	URI_GOST_TRANSPORT               = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:transport-gost2001";
+        public const String	URI_GOST_TRANSPORT_GOST_2012_256 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:transport-gost2012-256";
+        public const String	URI_GOST_TRANSPORT_GOST_2012_512 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:transport-gost2012-512";
+        public const String	URN_GOST_DIGEST                  = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr3411";
+        public const String	URN_GOST_DIGEST_2012_256         = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-256";
+        public const String	URN_GOST_DIGEST_2012_512         = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34112012-512";
+        public const String	URN_GOST_HMAC_GOSTR3411          = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:hmac-gostr3411";
+        public const String	URN_GOST_SIGN                    = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102001-gostr3411";
+        public const String	URN_GOST_SIGN_2012_256           = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256";
+        public const String	URN_GOST_SIGN_2012_512           = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-512";
+
         public static CryptographicContext DefaultContext { get; }
         public static IEnumerable<RegisteredProviderInfo> RegisteredProviders { get { return DefaultContext.GetRegisteredProviders(); }}
         public static IDictionary<CRYPT_PROVIDER_TYPE,String> AvailableTypes { get { return DefaultContext.GetAvailableTypes(); }}
@@ -303,7 +317,7 @@ namespace BinaryStudio.Security.Cryptography
                                             CMSG_CTRL.CMSG_CTRL_VERIFY_SIGNATURE,
                                             (IntPtr)((CERT_CONTEXT*)certificate.Handle)->CertInfo))
                                             {
-                                            throw HResultException.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+                                            throw HResultException.GetExceptionForHR((HRESULT)Marshal.GetHRForLastWin32Error());
                                             }
                                         }
                                     }
@@ -312,7 +326,7 @@ namespace BinaryStudio.Security.Cryptography
                         else
                             {
                             if (hr == HRESULT.CRYPT_E_INVALID_INDEX) { break; }
-                            throw HResultException.GetExceptionForHR((Int32)hr);
+                            throw HResultException.GetExceptionForHR(hr);
                             }
                         }
                     }
@@ -365,10 +379,103 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
+        public void SignMessage(X509Certificate Certificate, Stream InputStream, out Byte[] Digest,out Byte[] Signature, RequestSecureString RequestSecureString) {
+            if (Certificate == null) { throw new ArgumentNullException(nameof(Certificate)); }
+            if (InputStream == null) { throw new ArgumentNullException(nameof(InputStream)); }
+            EnsureEntries(out var entries);
+            Digest = null;
+            Signature = null;
+            VerifyObject(Certificate,CertificateChainPolicy.CERT_CHAIN_POLICY_BASE);
+            using (var context = RequestSigningSecureString(Certificate,RequestSecureString)) {
+                using (var engine = new CryptHashAlgorithm(context, GetAlgId(Certificate.HashAlgorithm))) {
+                    Digest = engine.Compute(InputStream);
+                    Int32 SignatureLength = 0;
+                    Validate(entries.CryptSignHash(engine.Handle,Certificate.KeySpec, Signature, ref SignatureLength));
+                    Signature = new Byte[SignatureLength];
+                    Validate(entries.CryptSignHash(engine.Handle,Certificate.KeySpec, Signature, ref SignatureLength));
+                    }
+                }
+            }
+
+        private CryptographicContext RequestSigningSecureString(X509Certificate certificate,RequestSecureString RequestSecureString) {
+            var flags = CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_CACHE_FLAG;
+            if (certificate.GetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, out var Info) == HRESULT.S_OK) {
+                flags |= CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_USE_PROV_INFO_FLAG;
+                }
+            var r = AcquireContext(this,certificate,flags);
+            if (RequestSecureString != null) {
+                var e = new RequestSecureStringEventArgs{
+                    Info = certificate.Subject,
+                    Container = r.FullQualifiedContainerName
+                    };
+                lock(StoredSecureStrings) {
+                    if (StoredSecureStrings.TryGetValue(r.FullQualifiedContainerName,out var StoredSecureString)) {
+                        r.SecureCode = e.SecureString;
+                        return r;
+                        }
+                    }
+                var scode = RequestSecureString.GetSecureString(r, e);
+                switch (scode) {
+                    case HRESULT.PLA_S_PROPERTY_IGNORED: break;
+                    case HRESULT.S_OK:
+                        {
+                        if (e.Canceled) { throw HResultException.GetExceptionForHR(HRESULT.COR_E_OPERATIONCANCELED); }
+                        lock(StoredSecureStrings) {
+                            StoredSecureStrings[r.FullQualifiedContainerName] = e.SecureString;
+                            }
+                        r.SecureCode = e.SecureString;
+                        }
+                        break;
+                    default: throw HResultException.GetExceptionForHR(scode);
+                    }
+                }
+            return r;
+            }
+
+
         public ALG_ID FindAlgId(Oid AlgId, Int32 KeyType)
             {
             return (ALG_ID)(-1);
             }
+
+        #region M:GetAlgId(String):ALG_ID
+        internal static ALG_ID GetAlgId(String algid) {
+            if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
+            if (String.IsNullOrEmpty(algid)) { throw new ArgumentOutOfRangeException(nameof(algid)); }
+            ALG_ID r = 0;
+            switch (algid) {
+                case "Gost_34_11_2012_256_HashAlgorithm":
+                case "Gost2012-256":
+                case "ГОСТ Р 34.11-2012-256":
+                case URN_GOST_DIGEST_2012_256:
+                case ObjectIdentifiers.szOID_CP_GOST_R3411_12_256:
+                    r = ALG_ID.CALG_GR3411_2012_256;
+                    break;
+                case "Gost_34_11_2012_512_HashAlgorithm":
+                case "Gost2012-512":
+                case "ГОСТ Р 34.11-2012-512":
+                case URN_GOST_DIGEST_2012_512:
+                case ObjectIdentifiers.szOID_CP_GOST_R3411_12_512:
+                    r = ALG_ID.CALG_GR3411_2012_512;
+                    break;
+                case "Gost1994HashAlgorithm":
+                case "Gost1994":
+                case "ГОСТ Р 34.11-94":
+                case URN_GOST_DIGEST:
+                case ObjectIdentifiers.szOID_CP_GOST_R3411:
+                    r = ALG_ID.CALG_GR3411;
+                    break;
+                default: throw new NotSupportedException("Неизвестный алгоритм");
+                }
+            return r;
+            }
+        #endregion
+        #region M:GetAlgId(Oid):ALG_ID
+        internal static ALG_ID GetAlgId(Oid algid) {
+            if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
+            return GetAlgId(algid.Value);
+            }
+        #endregion
 
         #if LINUX
         private class LDConfigItem
@@ -578,6 +685,8 @@ namespace BinaryStudio.Security.Cryptography
                 return new X509Certificate(certificate);
                 }
             }
+
+        private static readonly IDictionary<String,SecureString> StoredSecureStrings = new Dictionary<String,SecureString>();
 
         static CryptographicContext() {
             #if LINUX

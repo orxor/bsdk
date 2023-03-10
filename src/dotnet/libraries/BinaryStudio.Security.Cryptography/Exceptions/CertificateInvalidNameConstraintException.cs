@@ -3,7 +3,6 @@ using BinaryStudio.Security.Cryptography.Properties;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     [CertificateChainErrorStatus(CertificateChainErrorStatus.CERT_TRUST_INVALID_NAME_CONSTRAINTS)]
     public class CertificateInvalidNameConstraintException : CertificateConstraintException
         {

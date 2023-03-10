@@ -8,8 +8,14 @@ namespace BinaryStudio.PlatformComponents.Win32
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
     public struct CERT_EXTENSION
         {
-        public readonly IntPtr pszObjId;
-        [MarshalAs(UnmanagedType.Bool)] public readonly Boolean fCritical;
+        public IntPtr pszObjId;
+        [MarshalAs(UnmanagedType.Bool)] public Boolean fCritical;
         public CRYPT_OBJID_BLOB Value;
+
+        public override String ToString() {
+            return (pszObjId != IntPtr.Zero)
+                ? Marshal.PtrToStringAnsi(pszObjId)
+                : "CERT_EXTENSION";
+            }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Options;
@@ -14,25 +13,26 @@ namespace Operations
             {
             }
 
-        public override void Execute(TextWriter output) {
+        #region M:Execute
+        public override void Execute() {
             var i = 0;
             var version = Assembly.GetEntryAssembly().GetName().Version;
-            output.WriteLine("# Version: {{{0}}}:{{{1}}}", version,
+            Console.WriteLine("# Version: {{{0}}}:{{{1}}}", version,
                 (new DateTime(2000, 1, 1).
                     AddDays(version.Build).
                     AddSeconds(version.Revision * 2)).ToString("s"));
-            output.WriteLine($"# Is64BitProcess:{Environment.Is64BitProcess}");
-            output.WriteLine("# Available options:");
+            Console.WriteLine($"# Is64BitProcess:{Environment.Is64BitProcess}");
+            Console.WriteLine("# Available options:");
             foreach (var descriptor in descriptors.OrderBy(j => j.OptionName)) { 
                 if (i > 0) {
-                    output.WriteLine();
+                    Console.WriteLine();
                     }
-                output.Write("  ");
-                descriptor.Usage(output);
+                Console.Write("  ");
+                descriptor.Usage(Console.Out);
                 i++;
                 }
-            output.Write("\n# Samples:");
-            output.WriteLine(@"
+            Console.Write("\n# Samples:");
+            Console.WriteLine(@"
   infrastructure:csp,types
   input:{file-name}.ldif output:{folder} batch:extract
   input:{file-name}.ldif output:{folder} batch:extract,group
@@ -52,5 +52,6 @@ namespace Operations
   input:{file-name} certificate:{thumbprint} message create storename:device
 ");
             }
+        #endregion
         }
     }

@@ -20,19 +20,19 @@ namespace BinaryStudio.PortableExecutable
         {
         internal interface IExternalMetadataLibrary
             {
-            [Import] HResult DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r);
+            [Import] HRESULT DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r);
             }
 
         internal class ExternalMetadataLibrary : Library,IExternalMetadataLibrary
             {
-            private delegate HResult MyD(ref Guid rclsid, ref Guid riid, out IntPtr r);
+            private delegate HRESULT MyD(ref Guid rclsid, ref Guid riid, out IntPtr r);
             private MyD m_value;
             public ExternalMetadataLibrary(String filepath):
                 base(filepath)
                 {
                 }
 
-            public HResult DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r)
+            public HRESULT DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r)
                 {
                 Debug.Print($"{GetType().Name}.DllGetClassObject");
                 EnsureProcedure("DllGetClassObject", ref this.m_value);
@@ -209,10 +209,10 @@ namespace BinaryStudio.PortableExecutable
         private static readonly dynamic MetadataLibrary;
         public static readonly Guid FileServiceGuid = new Guid("{e34e7255-e143-4573-bb20-22236f17d591}");
 
-        #region M:DllGetClassObject({ref}Guid,{ref}Guid,{out}IntPtr):HResult
-        private static HResult DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r)
+        #region M:DllGetClassObject({ref}Guid,{ref}Guid,{out}IntPtr):HRESULT
+        private static HRESULT DllGetClassObject(ref Guid rclsid, ref Guid riid, out IntPtr r)
             {
-            var SCode = (HResult)MetadataLibrary.DllGetClassObject(ref rclsid,ref riid, out r);
+            var SCode = (HRESULT)MetadataLibrary.DllGetClassObject(ref rclsid,ref riid, out r);
             return SCode;
             }
         #endregion

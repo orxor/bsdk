@@ -3,7 +3,6 @@ using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     public class CtlException : CryptographicException
         {
         /// <summary>Initializes a new instance of the <see cref="CtlException"/> class with a specified message that describes the error.</summary>

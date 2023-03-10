@@ -5,7 +5,6 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     [CertificateChainErrorStatus(CertificateChainErrorStatus.TrustIsNotTimeValid)]
     public class CertificateInvalidTimeException : CertificateException
         {

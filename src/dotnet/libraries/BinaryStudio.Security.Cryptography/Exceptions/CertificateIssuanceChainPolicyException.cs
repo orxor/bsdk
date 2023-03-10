@@ -3,7 +3,6 @@ using BinaryStudio.Security.Cryptography.Properties;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     [CertificateChainErrorStatus(CertificateChainErrorStatus.CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY)]
     public class CertificateIssuanceChainPolicyException : CertificateException
         {

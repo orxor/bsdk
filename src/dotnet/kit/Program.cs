@@ -39,7 +39,7 @@ internal class Program
 
     private static void Validate(Boolean status) {
         if (!status) {
-            throw HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+            throw HResultException.GetExceptionForHR((HRESULT)Marshal.GetLastWin32Error());
             }
         }
 

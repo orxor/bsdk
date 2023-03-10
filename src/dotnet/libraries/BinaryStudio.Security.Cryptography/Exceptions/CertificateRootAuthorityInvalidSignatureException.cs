@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     [UsedImplicitly]
     public class CertificateRootAuthorityInvalidSignatureException : CertificateInvalidSignatureException
         {

@@ -5,7 +5,6 @@ using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     [CertificateChainErrorStatus(CertificateChainErrorStatus.CERT_TRUST_IS_NOT_SIGNATURE_VALID)]
     public class CertificateInvalidSignatureException : CertificateSignatureException
         {

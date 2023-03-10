@@ -1,25 +1,17 @@
-﻿using BinaryStudio.PlatformComponents.Win32;
-using Options;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BinaryStudio.PlatformComponents.Win32;
+using Options;
 
 namespace Operations
     {
-    internal class MessageOperation : Operation
+    internal abstract class MessageOperation : Operation
         {
         public CRYPT_PROVIDER_TYPE ProviderType { get; }
-        public MessageOperation(IList<OperationOption> args)
+        protected MessageOperation(IList<OperationOption> args)
             : base(args)
             {
             ProviderType = (CRYPT_PROVIDER_TYPE)args.OfType<ProviderTypeOption>().First().Type;
-            }
-
-        public override void Execute(TextWriter output)
-            {
             }
         }
     }

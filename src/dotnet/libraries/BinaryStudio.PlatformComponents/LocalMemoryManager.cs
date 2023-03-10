@@ -16,6 +16,16 @@ namespace BinaryStudio.PlatformComponents
             return r;
             }
 
+        public unsafe void* Alloc(Byte[] block) {
+            var r = new LocalMemory(block.Length);
+            var target = (Byte*)r;
+            for (var i = 0; i < block.Length; i++) {
+                target[i] = block[i];
+                }
+            values.Add(r);
+            return r;
+            }
+
         public unsafe void* StringToMem(String value, Encoding encoding) {
             if (value == null) { return null; }
             var bytes = encoding.GetBytes(value);

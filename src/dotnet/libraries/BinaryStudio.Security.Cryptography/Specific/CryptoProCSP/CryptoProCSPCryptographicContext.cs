@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
 using Microsoft.Win32;
 
@@ -61,7 +62,7 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
             #endif
             }}
 
-        public unsafe X509Certificate CreateSelfSignCertificate(String name) {
+        public unsafe X509Certificate CreateSelfSignCertificate(String name, DateTime notbefore, DateTime notafter, IList<Asn1CertificateExtension> extensions) {
             var entries = (ICryptoAPI)Context.GetService(typeof(ICryptoAPI));
             var SubjectIssuerBlobM = Context.CertStrToName(name);
             fixed (Byte* SubjectIssuerBlobU = SubjectIssuerBlobM) {
@@ -77,12 +78,36 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
                     switch (SAlgId) {
                         case ALG_ID.CALG_GR3410_12_256: TAlgId = ObjectIdentifiers.szOID_CP_GOST_R3411_12_256_R3410; break;
                         case ALG_ID.CALG_GR3410_12_512: TAlgId = ObjectIdentifiers.szOID_CP_GOST_R3411_12_512_R3410; break;
+                        case ALG_ID.CALG_GR3410EL: TAlgId = ObjectIdentifiers.szOID_CP_GOST_R3411_R3410EL; break;
                         default: throw new InvalidOperationException();
                         }
                     var FAlgId = new CRYPT_ALGORITHM_IDENTIFIER {
                         ObjectId = (IntPtr)LocalMemoryManager.StringToMem(TAlgId,Encoding.ASCII)
                         };
-                    return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&FAlgId,null,null,null),NotZero));
+                    var NotBefore = notbefore.ToSystemTime();
+                    var NotAfter  = notafter.ToSystemTime();
+                    if (extensions != null) {
+                        using (var manager = new LocalMemoryManager()) {
+                            var ExtensionsA = (CERT_EXTENSION*)manager.Alloc(extensions.Count*sizeof(CERT_EXTENSION));
+                            var ExtensionsE = new CERT_EXTENSIONS {
+                                ExtensionCount = extensions.Count,
+                                Extensions = ExtensionsA
+                                };
+                            for (var i = 0; i < extensions.Count; i++) {
+                                ExtensionsA[i].pszObjId = (IntPtr)manager.StringToMem(extensions[i].Identifier.Value,Encoding.ASCII);
+                                ExtensionsA[i].fCritical = extensions[i].IsCritical;
+                                using (var MemoryStream = new MemoryStream()) {
+                                    extensions[i].Body[0].WriteTo(MemoryStream);
+                                    var block = MemoryStream.ToArray();
+                                    File.WriteAllBytes("x.bin",block);
+                                    ExtensionsA[i].Value.Size = block.Length;
+                                    ExtensionsA[i].Value.Data = (Byte*)manager.Alloc(block);
+                                    }
+                                }
+                            return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&FAlgId,&NotBefore,&NotAfter,&ExtensionsE),NotZero));
+                            }
+                        }
+                    return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&FAlgId,&NotBefore,&NotAfter,null),NotZero));
                     }
                 return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,null,null,null,null),NotZero));
                 }

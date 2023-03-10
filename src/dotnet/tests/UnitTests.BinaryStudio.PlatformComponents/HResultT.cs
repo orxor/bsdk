@@ -18,15 +18,15 @@ namespace UnitTests.BinaryStudio.PlatformComponents
         [TestMethod]
         public void FormatMessageHResult() {
             #if NET40 || NET47 || NET45
-            foreach (var name in Enum.GetNames(typeof(HResult))) {
-                var scode = (HResult)Enum.Parse(typeof(HResult),name);
+            foreach (var name in Enum.GetNames(typeof(HRESULT))) {
+                var scode = (HRESULT)Enum.Parse(typeof(HRESULT),name);
                 var value = HResultException.FormatMessage(scode);
                 Console.WriteLine($@"""{scode}"":""{value}""");
                 Assert.IsNotNull(value);
                 }
             #else
-            foreach (var name in Enum.GetNames<HResult>()) {
-                var scode = Enum.Parse<HResult>(name);
+            foreach (var name in Enum.GetNames<HRESULT>()) {
+                var scode = Enum.Parse<HRESULT>(name);
                 var value = HResultException.FormatMessage(scode,en);
                 Console.WriteLine($@"""0x{(Int32)scode:X8}"";""{name}"";""{value}""");
                 Assert.IsNotNull(value);

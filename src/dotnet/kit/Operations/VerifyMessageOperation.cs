@@ -1,12 +1,8 @@
-﻿using Operations;
-using Options;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.DirectoryServices;
@@ -15,6 +11,7 @@ using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.Certificates;
+using Options;
 
 namespace Operations
     {
@@ -24,6 +21,7 @@ namespace Operations
         public String Policy { get; }
         private FileOperation UnderlyingObject { get; }
 
+        #region ctor{IList<OperationOption>}
         public VerifyMessageOperation(IList<OperationOption> args)
             : base(args)
             {
@@ -48,13 +46,6 @@ namespace Operations
                     }
                 }
             }
-
-        #region M:Execute(TextWriter)
-        public override void Execute(TextWriter output) {
-            UnderlyingObject.ExecuteAction += OnExecuteAction;
-            UnderlyingObject.Execute(output);
-            UnderlyingObject.ExecuteAction -= OnExecuteAction;
-            }
         #endregion
         #region M:OnExecuteAction(Object,ExecuteActionEventArgs)
         private void OnExecuteAction(Object sender,ExecuteActionEventArgs e) {
@@ -76,6 +67,13 @@ namespace Operations
                     }
                     break;
                 }
+            }
+        #endregion
+        #region M:Execute
+        public override void Execute() {
+            UnderlyingObject.ExecuteAction += OnExecuteAction;
+            UnderlyingObject.Execute();
+            UnderlyingObject.ExecuteAction -= OnExecuteAction;
             }
         #endregion
         #region M:Execute(IFileService,Asn1Certificate):FileOperationStatus

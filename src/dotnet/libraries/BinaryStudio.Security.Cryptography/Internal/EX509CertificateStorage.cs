@@ -45,7 +45,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             if (Info == null) { throw new ArgumentNullException(nameof(Info)); }
             var r = Entries.CertGetSubjectCertificateFromStore(Store,PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,Info);
             if (r == IntPtr.Zero) {
-                var e = Marshal.GetHRForLastWin32Error();
+                var e = (HRESULT)Marshal.GetHRForLastWin32Error();
                 var CertificateSerialNumber = DecodeSerialNumberString(ref Info->SerialNumber);
                 var CertificateIssuer = DecodeNameString(Entries,ref Info->Issuer);
                 throw HResultException.GetExceptionForHR(e)

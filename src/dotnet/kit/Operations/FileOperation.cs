@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.PlatformComponents;
-using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
-using BinaryStudio.Security.Cryptography.Interchange;
 using Options;
-using System.Timers;
 
 namespace Operations
     {
@@ -20,38 +15,34 @@ namespace Operations
         {
         public IList<String> InputFileName { get; }
         public String TargetFolder { get;set; }
-        public DirectoryServiceSearchOptions Options { get;set; }
+        //public DirectoryServiceSearchOptions Options { get;set; }
         public String Pattern { get;set; }
-        //public Func<IFileService,DirectoryServiceSearchOptions,FileOperationArgs,FileOperationStatus> ExecuteAction { get;set; }
-        public event EventHandler<DirectoryServiceRequestEventArgs> DirectoryServiceRequest;
-        public event EventHandler DirectoryCompleted;
         public event EventHandler<ExecuteActionEventArgs> ExecuteAction;
-        public event EventHandler<NumberOfFilesNotifyEventArgs> NumberOfFilesNotify;
-        private Int32 NumberOfFiles = 1;
         private readonly MultiThreadOption MultiThreadOption;
-        private readonly TraceOption TraceOption;
-        private readonly Boolean StopOnError = false;
+        private readonly Boolean StopOnError;
         private readonly IList<String> Containers;
 
         public FileOperation(IList<OperationOption> args)
-            :base(new OperationOption[0])
+            :base(args)
             {
-            MultiThreadOption = args?.OfType<MultiThreadOption>().FirstOrDefault() ??
+            if (args == null) { throw new ArgumentNullException(nameof(args)); }
+            MultiThreadOption = args.OfType<MultiThreadOption>().FirstOrDefault() ??
                 new MultiThreadOption{
                     NumberOfThreads = 32
                     };
             Containers = args?.OfType<ContainersOption>().FirstOrDefault()?.Values ?? EmptyArray<String>.Value;
-            TraceOption = args?.OfType<TraceOption>()?.FirstOrDefault();
+            var TraceOption = args?.OfType<TraceOption>()?.FirstOrDefault();
             if (TraceOption != null) {
                 StopOnError = TraceOption.HasValue("StopOnError");
                 }
             InputFileName = args.OfType<InputFileOrFolderOption>().FirstOrDefault()?.Values;
             }
 
-        public override void Execute(TextWriter output) {
+        #region M:Execute
+        public override void Execute() {
             Execute(InputFileName);
             }
-
+        #endregion
         #region M:Execute(IFileService):FileOperationStatus
         private FileOperationStatus Execute(IFileService service) {
             var status = FileOperationStatus.Skip;

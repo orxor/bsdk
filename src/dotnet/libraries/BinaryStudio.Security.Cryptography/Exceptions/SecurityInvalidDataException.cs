@@ -2,7 +2,6 @@
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     public class SecurityInvalidDataException : CryptographicException
         {
         }

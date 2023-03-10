@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Internal;
 
 namespace BinaryStudio.Security.Cryptography
@@ -43,6 +44,11 @@ namespace BinaryStudio.Security.Cryptography
         #region M:AcquireContext(CRYPT_PROVIDER_TYPE,String,CryptographicContextFlags):CryptographicContext
         public static CryptographicContext AcquireContext(CRYPT_PROVIDER_TYPE providertype, String container, CryptographicContextFlags flags) {
             return new CryptographicContextI(container,null,providertype,flags);
+            }
+        #endregion
+        #region M:AcquireContext(CryptographicContext,X509Certificate,CRYPT_ACQUIRE_FLAGS):CryptographicContext
+        public static CryptographicContext AcquireContext(CryptographicContext context, X509Certificate certificate,CRYPT_ACQUIRE_FLAGS flags) {
+            return new CryptographicContextI(context,certificate,flags);
             }
         #endregion
 

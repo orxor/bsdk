@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography;
 using Options;
@@ -14,6 +12,7 @@ namespace Operations
         public InfrastructureFlags Flags { get; }
         public Int32? ProviderType { get; }
 
+        #region ctor{IList<OperationOption>}
         public InfrastructureOperation(IList<OperationOption> args)
             : base(args)
             {
@@ -30,8 +29,9 @@ namespace Operations
                 Flags = InfrastructureFlags.CSP;
                 }
             }
-
-        public override void Execute(TextWriter output) {
+        #endregion
+        #region M:Execute
+        public override void Execute() {
             if (Flags.HasFlag(InfrastructureFlags.CSP)) {
                 WriteLine(Console.Out,ConsoleColor.White, "AvailableProviders:");
                 foreach (var type in CryptographicContext.RegisteredProviders) {
@@ -66,36 +66,7 @@ namespace Operations
                     WriteLine(Console.Out,ConsoleColor.Gray, $":{type.Value}");
                     }
                 }
-            //if (Flags.HasFlag(InfrastructureFlags.CSPkeys)) {
-            //    if (ProviderType == null) { throw new InvalidOperationException("required providertype:{number} option."); }
-            //    var Is64Bit = Environment.Is64BitProcess;
-            //    WriteLine(Out,ConsoleColor.White, "Keys {{{0}}}:", (CRYPT_PROVIDER_TYPE)ProviderType.Value);
-            //    WriteLine(Out,ConsoleColor.White, "  User Keys:");
-            //    var j = 0;
-            //    using (var context = new CryptographicContext(Logger, (CRYPT_PROVIDER_TYPE)ProviderType.Value, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-            //        foreach (var i in context.Keys) {
-            //            var handle = Is64Bit
-            //                ? ((Int64)i.Handle).ToString("X16")
-            //                : ((Int32)i.Handle).ToString("X8");
-            //            WriteLine(Out,ConsoleColor.Gray, "    {{{0}}}:{{{1}}}:{2}:Certificate:{{{3}}}", j, handle, i.Container, i.Certificate?.Thumbprint ?? "{none}");
-            //            j++;
-            //            }
-            //        }
-            //    WriteLine(Out,ConsoleColor.White, "  Machine Keys:");
-            //    j = 0;
-            //    using (var context = new CryptographicContext(Logger, (CRYPT_PROVIDER_TYPE)ProviderType.Value, CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_MACHINE_KEYSET)) {
-            //        foreach (var i in context.Keys) {
-            //            var handle = Is64Bit
-            //                ? ((Int64)i.Handle).ToString("X16")
-            //                : ((Int32)i.Handle).ToString("X8");
-            //            WriteLine(Out,ConsoleColor.Gray, "    {{{0}}}:{{{1}}}:{2}:Certificate:{{{3}}}", j, handle, i.Container, i.Certificate?.Thumbprint ?? "{none}");
-            //            j++;
-            //            }
-            //        }
-            //    if (PlatformContext.IsRemoteSession) {
-            //        Execute(LocalClient.CryptographicOperations, (CRYPT_PROVIDER_TYPE)ProviderType.Value);
-            //        }
-            //    }
             }
+        #endregion
         }
     }

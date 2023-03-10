@@ -88,6 +88,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         IntPtr DataConversionFunctions.CertAlgIdToOID(ALG_ID Id) { return CertAlgIdToOID(Id); }
         Boolean DataConversionFunctions.CertStrToName(Int32 CertEncodingType,String Name,Int32 StrType,IntPtr Reserved,Byte[] EncodedBytes,ref Int32 EncodedLength,IntPtr Error) { return CertStrToNameW(CertEncodingType,Name,StrType,Reserved,EncodedBytes,ref EncodedLength,Error); }
         #endregion
+        Boolean ICryptoAPI.CryptHashData(IntPtr Handle, Byte[] Data, Int32 DataSize) { return CryptHashData(Handle,Data,DataSize,0); }
+        Boolean ICryptoAPI.CryptGetHashParam(IntPtr Handle, Int32 Parameter, Byte[] Block, ref Int32 BlockSize) { return CryptGetHashParam(Handle,Parameter,Block,ref BlockSize,0); }
+        Boolean ICryptoAPI.CryptGetHashParam(IntPtr Handle, Int32 Parameter, out Int32 Block, ref Int32 BlockSize) { return CryptGetHashParam(Handle,Parameter, out Block,ref BlockSize,0); }
+        Boolean ICryptoAPI.CryptDestroyHash(IntPtr Handle) { return CryptDestroyHash(Handle); }
+        Boolean ICryptoAPI.CryptVerifySignature(IntPtr Handle, Byte[] Signature, Int32 SignatureSize, IntPtr Key) { return CryptVerifySignature(Handle,Signature,SignatureSize,Key,IntPtr.Zero,0); }
+        Boolean ICryptoAPI.CryptSignHash(IntPtr Handle, KEY_SPEC_TYPE KeySpec, Byte[] Signature, ref Int32 Length) { return CryptSignHash(Handle,KeySpec,IntPtr.Zero,0,Signature,ref Length); }
+        Boolean ICryptoAPI.CryptCreateHash(IntPtr Provider, ALG_ID Algorithm, IntPtr Key, out IntPtr Handle) { return CryptCreateHash(Provider,Algorithm,Key,0,out Handle); }
 
         [DllImport("libcapi20", CharSet = CharSet.Auto, SetLastError = true)] private static extern bool CertControlStore([In] IntPtr hCertStore, [In] uint dwFlags, [In] uint dwCtrlType, [In] IntPtr pvCtrlPara);
         [DllImport("libcapi20", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStoreLocation(Int32 flags, IntPtr args, PFN_CERT_ENUM_SYSTEM_STORE_LOCATION pfn);
@@ -162,10 +169,17 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Int32 CertNameToStrW(Int32 CertEncodingType,ref CERT_NAME_BLOB Name,Int32 StrType,IntPtr psz,Int32 csz);
         [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertStrToNameW(Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPWStr)] String Name,Int32 StrType,IntPtr Reserved,[MarshalAs(UnmanagedType.LPArray)] Byte[] EncodedBytes,ref Int32 EncodedLength,IntPtr Error);
         #endregion
-        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptAcquireCertificatePrivateKey(IntPtr Certificate, CRYPT_ACQUIRE_FLAGS Flags, IntPtr Parameters,out IntPtr CryptProvOrNCryptKey, out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey);
-        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, ref Int32 Size);
-        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, ref CRYPT_KEY_PROV_INFO Data);
-        [DllImport("libcapi20", BestFitMapping = false, CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, IntPtr Data);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptAcquireCertificatePrivateKey(IntPtr Certificate, CRYPT_ACQUIRE_FLAGS Flags, IntPtr Parameters,out IntPtr CryptProvOrNCryptKey, out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, ref Int32 Size);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, ref CRYPT_KEY_PROV_INFO Data);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertSetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Int32 Flags, IntPtr Data);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetHashParam(IntPtr Handle, Int32 Parameter, [MarshalAs(UnmanagedType.LPArray)] Byte[] Block, ref Int32 BlockSize, Int32 Flags);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptGetHashParam(IntPtr Handle, Int32 Parameter, out Int32 Block, ref Int32 BlockSize, Int32 Flags);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptDestroyHash(IntPtr Handle);
+        [DllImport("libcapi20", CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CryptVerifySignature(IntPtr Handle, [MarshalAs(UnmanagedType.LPArray)] Byte[] Signature, Int32 SignatureSize, IntPtr Key, IntPtr Description, Int32 Flags);
+        [DllImport("libcapi20", CharSet = CharSet.Auto, SetLastError = true)] private static extern Boolean CryptSignHash(IntPtr Handle, KEY_SPEC_TYPE KeySpec, IntPtr Sescription, Int32 Flags, [MarshalAs(UnmanagedType.LPArray)] Byte[] Signature, ref Int32 Length);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptCreateHash(IntPtr Provider, ALG_ID Algorithm, IntPtr Key, Int32 Flags, out IntPtr Handle);
+        [DllImport("libcapi20", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CryptHashData(IntPtr Handle, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, Int32 DataSize, Int32 Flags);
 
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="service">An object that specifies the type of service object to get.</param>

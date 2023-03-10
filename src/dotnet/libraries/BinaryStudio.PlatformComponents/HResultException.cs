@@ -12,7 +12,6 @@ using System.Text;
 
 namespace BinaryStudio.PlatformComponents.Win32
     {
-    using HRESULT=HResult;
     public class HResultException : COMException
         {
         public HResultException(Int32 code, CultureInfo culture)
@@ -20,12 +19,12 @@ namespace BinaryStudio.PlatformComponents.Win32
             {
             }
 
-        public HResultException(HResult code, CultureInfo culture)
+        public HResultException(HRESULT code, CultureInfo culture)
             :this((Int32)code, culture)
             {
             }
 
-        public HResultException(HResult code)
+        public HResultException(HRESULT code)
             :this(code, null)
             {
             }
@@ -129,7 +128,7 @@ namespace BinaryStudio.PlatformComponents.Win32
             for (;;) {
                 var FacilityI = (SCode >> 16) & 0x1fff;
                 var FacilityE = (FACILITY)FacilityI;
-                var SCodeE = (HResult)(unchecked((Int32)SCode));
+                var SCodeE = (HRESULT)(unchecked((Int32)SCode));
                 var Code = SCode & 0xffff;
                 switch (FacilityI) {
                     case FACILITY_MEDIASERVER: { r = FormatMessage(SCode,"wmerror.dll",Culture); } break;
@@ -142,7 +141,7 @@ namespace BinaryStudio.PlatformComponents.Win32
                     case FACILITY_URT:         { r = LoadString("mscorrc.dll",(SCode & 0xffff) + 0x6000,Culture); } break;
                     }
                 if (r != null) {  return r; }
-                r = r ?? Properties.HResult.ResourceManager.GetString(((HResult)SCode).ToString(),Culture);
+                r = r ?? Properties.HResult.ResourceManager.GetString(((HRESULT)SCode).ToString(),Culture);
                 r = r ?? FormatMessage(SCode,assembly, Culture);
                 r = r ?? FormatMessage(SCode,assembly, English);
                 if (r == null) {
@@ -162,7 +161,7 @@ namespace BinaryStudio.PlatformComponents.Win32
             }
         #endregion
         #region M:FormatMessage(HResult,CultureInfo):String
-        public static String FormatMessage(HResult SCode, CultureInfo Culture = null) {
+        public static String FormatMessage(HRESULT SCode, CultureInfo Culture = null) {
             return FormatMessage((Int32)SCode, Culture);
             }
         #endregion
@@ -334,7 +333,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         #endif
         #endregion
 
-        public static Exception GetExceptionForHR(Int32 scode) { return GetExceptionForHR(scode, null); }
+        public static Exception GetExceptionForHR(HRESULT scode) { return GetExceptionForHR((Int32)scode, null); }
         public static Exception GetExceptionForHR(Int32 scode, CultureInfo culture) {
             if ((scode > 0xFFFF) || (scode < 0)) {
                 switch ((HRESULT)scode) {

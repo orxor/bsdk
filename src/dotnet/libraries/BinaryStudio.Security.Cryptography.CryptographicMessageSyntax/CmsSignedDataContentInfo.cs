@@ -8,7 +8,6 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 
 namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
     {
-    using HRESULT=HResult;
     /// <summary>
     /// The <see cref="CmsContentInfo" /> class represents the <a href="https://datatracker.ietf.org/doc/html/rfc5652#section-5.1">signed-data</a> CMS content.
     /// <br/>The signed-data content type shall have ASN.1 type SignedData:

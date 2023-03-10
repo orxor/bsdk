@@ -5,7 +5,6 @@ using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     public class CryptKey : CryptographicObject
         {
         public override IntPtr Handle { get { return handle; }}
@@ -122,11 +121,11 @@ namespace BinaryStudio.Security.Cryptography
         /// </summary>
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
-            context = null;
             if (handle != IntPtr.Zero) {
                 ((KeyGenerationAndExchangeFunctions)Context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptDestroyKey(handle);
                 handle = IntPtr.Zero;
                 }
+            context = null;
             base.Dispose(disposing);
             }
         #endregion

@@ -9,7 +9,6 @@ using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography
     {
-    using HRESULT=HResult;
     using CRYPT_INTEGER_BLOB = CRYPT_BLOB;
     using CERT_NAME_BLOB     = CRYPT_BLOB;
 
@@ -79,7 +78,7 @@ namespace BinaryStudio.Security.Cryptography
         protected static void Validate(ILastErrorProvider provider, Boolean status) {
             if (provider == null) { throw new ArgumentNullException(nameof(provider)); }
             if (!status) {
-                var e = HResultException.GetExceptionForHR(provider.GetLastError());
+                var e = HResultException.GetExceptionForHR((HRESULT)provider.GetLastError());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif
@@ -91,8 +90,8 @@ namespace BinaryStudio.Security.Cryptography
         protected static void Validate(Boolean status,CryptographicObject o = null) {
             if (!status) {
                 Exception e = HResultException.GetExceptionForHR((o != null)
-                    ? o.GetLastWin32Error()
-                    : Marshal.GetLastWin32Error());
+                    ? (HRESULT)o.GetLastWin32Error()
+                    : (HRESULT)Marshal.GetLastWin32Error());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif
@@ -104,7 +103,7 @@ namespace BinaryStudio.Security.Cryptography
         protected virtual Boolean Validate(out Exception e, Boolean status) {
             e = null;
             if (!status) {
-                e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                e = HResultException.GetExceptionForHR((HRESULT)Marshal.GetLastWin32Error());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif
@@ -116,7 +115,7 @@ namespace BinaryStudio.Security.Cryptography
         #region M:Validate(HRESULT)
         protected virtual void Validate(HRESULT hr) {
             if (hr != HRESULT.S_OK) {
-                throw HResultException.GetExceptionForHR((Int32)hr);
+                throw HResultException.GetExceptionForHR(hr);
                 }
             }
         #endregion
@@ -130,8 +129,8 @@ namespace BinaryStudio.Security.Cryptography
             if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
             if (!predicate(value)) {
                 Exception e = HResultException.GetExceptionForHR((o != null)
-                    ? o.GetLastWin32Error()
-                    :   GetLastWin32Error());
+                    ? (HRESULT)o.GetLastWin32Error()
+                    : (HRESULT)GetLastWin32Error());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif
@@ -143,13 +142,13 @@ namespace BinaryStudio.Security.Cryptography
         #region M:GetExceptionForHR(Int32):Exception
         protected virtual Exception GetExceptionForHR(Int32 hr)
             {
-            return HResultException.GetExceptionForHR(hr);
+            return HResultException.GetExceptionForHR((HRESULT)hr);
             }
         #endregion
         #region M:GetExceptionForHR(HRESULT):Exception
         protected virtual Exception GetExceptionForHR(HRESULT hr)
             {
-            return HResultException.GetExceptionForHR((Int32)hr);
+            return HResultException.GetExceptionForHR(hr);
             }
         #endregion
         #region M:GetHRForLastWin32Error:HRESULT

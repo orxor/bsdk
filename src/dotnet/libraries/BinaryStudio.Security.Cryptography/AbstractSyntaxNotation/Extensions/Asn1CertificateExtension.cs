@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Threading;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
@@ -16,14 +17,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     [DebuggerDisplay(@"\{{" + nameof(ToString) + @"(),nq}\}")]
     public class Asn1CertificateExtension : Asn1LinkObject
         {
-        public Asn1ObjectIdentifier Identifier { get;private set; }
+        public Oid Identifier { get;private set; }
         public Boolean IsCritical { get; }
 
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsExplicitConstructed { get { return base.IsExplicitConstructed; }}
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsImplicitConstructed { get { return base.IsImplicitConstructed; }}
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsIndefiniteLength { get { return base.IsIndefiniteLength; }}
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public Asn1OctetString Body { get;private set; }
+        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public Asn1OctetString Body { get;protected set; }
 
         protected internal Asn1CertificateExtension(Asn1Object source)
             : base(source)
@@ -48,6 +49,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             Identifier = source.Identifier;
             IsCritical = source.IsCritical;
             Body = source.Body;
+            }
+
+        protected Asn1CertificateExtension(Oid identifier, Boolean critial)
+            : base(new Asn1PrivateObject(0))
+            {
+            Identifier = identifier;
+            IsCritical = critial;
+            Body = null;
             }
 
         /**
@@ -84,6 +93,26 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 e.Data["IsCritical"] = source.IsCritical;
                 throw;
                 }
+            }
+
+        private static Byte DecodeChar(Char source) {
+            return ((source >= '0') && (source <= '9')) ? (Byte)(source - '0') :
+                   ((source >= 'a') && (source <= 'f')) ? (Byte)(source - 'a' + 10) :
+                   ((source >= 'A') && (source <= 'F')) ? (Byte)(source - 'A' + 10) : (Byte)0;
+            }
+
+        protected static Byte[] DecodeString(String value) {
+            if (value == null) { throw new ArgumentNullException(nameof(value)); }
+            value = value.Replace(" ",String.Empty).ToLowerInvariant();
+            if (String.IsNullOrEmpty(value)) { throw new ArgumentOutOfRangeException(nameof(value)); }
+            if ((value.Length % 2) != 0) { throw new ArgumentOutOfRangeException(nameof(value)); }
+            var r = new Byte[value.Length/2];
+            for (int i = 0,j = 0; i < value.Length; i+=2, j++) {
+                r[j] = (Byte)(
+                    (DecodeChar(value[i]) << 4) |
+                    (DecodeChar(value[i + 1])));
+                }
+            return r;
             }
 
         #region M:EnsureFactory

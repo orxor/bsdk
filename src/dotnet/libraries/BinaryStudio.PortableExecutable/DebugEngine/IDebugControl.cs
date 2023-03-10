@@ -5,7 +5,6 @@ using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.PortableExecutable.DebugEngine
     {
-    using HRESULT=HResult;
     [ComImport, ComConversionLoss, Guid("5182E668-105E-416E-AD92-24EF800424BA"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IDebugControl
         {

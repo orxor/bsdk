@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.ConstrainedExecution;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
 using System.Security.Principal;
-using System.Text.RegularExpressions;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.PlatformComponents.Win32;
 using log4net;
 using Process = BinaryStudio.PlatformComponents.Win32.Process;
+#if NET40_OR_GREATER
+using System.DirectoryServices.AccountManagement;
+#endif
 
 namespace BinaryStudio.PlatformComponents
     {
@@ -76,6 +82,7 @@ namespace BinaryStudio.PlatformComponents
             return r.IsInRole(WindowsBuiltInRole.Administrator);
             }}
         #endregion
+
         #region M:IsParentProcess(String):Boolean
         public static Boolean IsParentProcess(String processname) {
             var processes = new Dictionary<Int64, Process>();
@@ -84,6 +91,85 @@ namespace BinaryStudio.PlatformComponents
             i = processes[GetCurrentProcessId()];
             i = processes[i.UniqueParentProcessId];
             return String.Equals(i.ImageName, processname, StringComparison.OrdinalIgnoreCase);
+            }
+        #endregion
+        #region M:ValidatePermission(WindowsBuiltInRole)
+        #if NET40_OR_GREATER
+        public static void ValidatePermission(WindowsBuiltInRole role)
+            {
+            try
+                {
+                AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
+                using (var context = new PrincipalContext(ContextType.Machine)) {
+                    using (var searcher = new PrincipalSearcher(new GroupPrincipal(context))) {
+                        foreach (var i in searcher.FindAll().OfType<GroupPrincipal>()) {
+                            if (i.Sid.Value == $"S-1-5-32-{(Int32)role}") {
+                                ValidatePermission(i);
+                                return;
+                                }
+                            }
+                        }
+                    }
+                throw new ArgumentOutOfRangeException(nameof(role));
+                }
+            catch (SecurityException e) {
+                if (String.Equals(e.Message, GetResourceString("Security_PrincipalPermission"))) {
+                    throw (new PrincipalPermissionException(e.Message, e)).
+                        Add("WindowsBuiltInRole", role);
+                    }
+                e.Add("WindowsBuiltInRole", role);
+                throw;
+                }
+            }
+        #endif
+        #endregion
+        #region M:ValidatePermission(GroupPrincipal)
+        #if NET40_OR_GREATER
+        public static void ValidatePermission(GroupPrincipal group)
+            {
+            try
+                {
+                AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
+                ValidatePermission(new PrincipalPermission(null, group.Name));
+                }
+            catch (PrincipalPermissionException e) {
+                e.Add("GroupPrincipal", group.Name);
+                e.Add("GroupPrincipalSid", group.Sid.Value);
+                throw;
+                }
+            catch (SecurityException e) {
+                if (String.Equals(e.Message, GetResourceString("Security_PrincipalPermission"))) {
+                    throw (new PrincipalPermissionException(e.Message, e)).
+                        Add("GroupPrincipal", group.Name).
+                        Add("GroupPrincipalSid", group.Sid.Value);
+                    }
+                e.Add("GroupPrincipal", group.Name);
+                e.Add("GroupPrincipalSid", group.Sid.Value);
+                throw;
+                }
+            }
+        #endif
+        #endregion
+        #region M:ValidatePermission(IPermission)
+        public static void ValidatePermission(IPermission permission)
+            {
+            if (permission == null) { throw new ArgumentNullException(nameof(permission)); }
+            try
+                {
+                permission.Demand();
+                }
+            catch (PrincipalPermissionException e) {
+                e.Add("Permission", permission.GetType().FullName);
+                throw;
+                }
+            catch (SecurityException e) {
+                if (String.Equals(e.Message, GetResourceString("Security_PrincipalPermission"))) {
+                    throw (new PrincipalPermissionException(e.Message, e)).
+                        Add("Permission", permission.GetType().FullName);
+                    }
+                e.Add("Permission", permission.GetType().FullName);
+                throw;
+                }
             }
         #endregion
 
@@ -102,6 +188,13 @@ namespace BinaryStudio.PlatformComponents
         private static readonly IntPtr HKEY_LOCAL_MACHINE = (IntPtr)(unchecked((Int32)0x80000002));
         private const String TERMINAL_SERVER_KEY = "SYSTEM\\CurrentControlSet\\Control\\Terminal Server\\";
         private const String GLASS_SESSION_ID    = "GlassSessionId";
+
+        private static String GetResourceString(String key)
+            {
+            return (String)typeof(Environment).GetMethod("GetResourceString",
+                BindingFlags.NonPublic|BindingFlags.Static,
+                null, new []{ typeof(String) }, null).Invoke(null, new Object[]{ key});
+            }
 
         private class PlatformContextLogger : DefaultLogger
             {

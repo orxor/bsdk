@@ -7,7 +7,7 @@ namespace BinaryStudio.PlatformComponents.Win32
     public struct CERT_CHAIN_POLICY_STATUS
         {
         public Int32 Size;
-        public HResult Error;
+        public HRESULT Error;
         public Int32 ChainIndex;
         public Int32 ElementIndex;
         public IntPtr ExtraPolicyStatus;

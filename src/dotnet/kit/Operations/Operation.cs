@@ -10,7 +10,6 @@ using BinaryStudio.Serialization;
 using Newtonsoft.Json;
 using Options;
 using Options.Descriptors;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace Operations
 {
@@ -19,9 +18,11 @@ namespace Operations
         public static readonly Object console = new Object();
         public static ILogger Logger { get;set; }
         public static LocalClient LocalClient { get;set; }
+        public virtual IList<OperationOption> Options { get; }
 
         protected Operation(IList<OperationOption> args)
             {
+            Options = args;
             }
 
         public static IList<OperationOption> Parse(String[] args) {
@@ -54,7 +55,7 @@ namespace Operations
             {
             }
 
-        public abstract void Execute(TextWriter output);
+        public abstract void Execute();
         protected static Boolean IsNullOrEmpty<T>(ICollection<T> value) {
             return (value == null) || (value.Count == 0);
             }

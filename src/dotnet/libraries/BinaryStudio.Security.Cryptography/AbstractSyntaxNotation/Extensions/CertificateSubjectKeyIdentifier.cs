@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
@@ -10,7 +10,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     public sealed class CertificateSubjectKeyIdentifier : Asn1CertificateExtension
         {
         public Byte[] KeyIdentifier { get; }
-        public CertificateSubjectKeyIdentifier(Asn1CertificateExtension source)
+        internal CertificateSubjectKeyIdentifier(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -24,6 +24,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     KeyIdentifier = octet.Content.ToArray();
                     }
                 }
+            }
+
+        public CertificateSubjectKeyIdentifier(Boolean critical, String value)
+            :base(new Oid(ObjectIdentifiers.NSS_OID_X509_SUBJECT_KEY_ID),critical)
+            {
+            KeyIdentifier = DecodeString(value);
+            Body = new Asn1OctetString(new Asn1OctetString(KeyIdentifier));
             }
 
         /**

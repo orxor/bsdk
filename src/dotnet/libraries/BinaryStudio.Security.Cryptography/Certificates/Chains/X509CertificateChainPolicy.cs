@@ -11,7 +11,6 @@ using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    using HRESULT=HResult;
     public partial class X509CertificateChainPolicy
         {
         internal ICryptoAPI Entries;
@@ -73,7 +72,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         protected virtual Boolean Validate(out Exception e, Boolean status) {
             e = null;
             if (!status) {
-                e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                e = HResultException.GetExceptionForHR((HRESULT)Marshal.GetLastWin32Error());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif
@@ -85,14 +84,14 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #region M:Validate(HRESULT)
         protected virtual void Validate(HRESULT hr) {
             if (hr != HRESULT.S_OK) {
-                throw HResultException.GetExceptionForHR((Int32)hr);
+                throw HResultException.GetExceptionForHR(hr);
                 }
             }
         #endregion
         #region M:Validate(Boolean)
         protected virtual void Validate(Boolean status) {
             if (!status) {
-                var e = HResultException.GetExceptionForHR(Marshal.GetLastWin32Error());
+                var e = HResultException.GetExceptionForHR((HRESULT)Marshal.GetLastWin32Error());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif
