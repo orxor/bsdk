@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using BinaryStudio.DiagnosticServices;
 #if LINUX
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -116,8 +117,18 @@ namespace BinaryStudio.Security.Cryptography
                     var i = Marshal.SecureStringToGlobalAllocAnsi(value);
                     try
                         {
-                        SetParameter(CRYPT_PARAM.PP_KEYEXCHANGE_PIN, i, 0);
-                        SetParameter(CRYPT_PARAM.PP_SIGNATURE_PIN, i, 0);
+                        for (;;) {
+                            try
+                                {
+                                SetParameter(CRYPT_PARAM.PP_KEYEXCHANGE_PIN, i, 0);Yield();
+                                SetParameter(CRYPT_PARAM.PP_SIGNATURE_PIN, i, 0);
+                                return;
+                                }
+                            catch (Exception e)
+                                {
+                                throw;
+                                }
+                            }
                         }
                     finally
                         {
@@ -628,7 +639,15 @@ namespace BinaryStudio.Security.Cryptography
 
         protected void SetParameter(CRYPT_PARAM parameter, IntPtr value, Int32 flags) {
             EnsureEntries(out var entries);
-            Validate(entries.CryptSetProvParam(Handle,parameter,value,flags));
+            try
+                {
+                Validate(entries.CryptSetProvParam(Handle,parameter,value,flags));
+                }
+            catch (Exception e)
+                {
+                e.Add("ParameterIndex",parameter);
+                throw;
+                }
             }
 
         internal Byte[] CertStrToName(String name) {

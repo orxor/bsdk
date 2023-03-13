@@ -121,6 +121,25 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return new X509RelativeDistinguishedNameSequence(r);
             }
         #endregion
+        #region M:BuildSequence(X509RelativeDistinguishedNameSequence):Asn1Sequence
+        internal static Asn1Sequence BuildSequence(X509RelativeDistinguishedNameSequence source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            return BuildSequence((IEnumerable<KeyValuePair<Asn1ObjectIdentifier,String>>)source);
+            }
+        #endregion
+        #region M:BuildSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier,String>>):Asn1Sequence
+        internal static Asn1Sequence BuildSequence(IEnumerable<KeyValuePair<Asn1ObjectIdentifier,String>> source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            return new Asn1Sequence(source.
+                Select(i => (Asn1Object)new Asn1Set(new Asn1Sequence(i.Key,new Asn1Utf8String(i.Value)))).
+                ToArray());
+            }
+        #endregion
+        #region M:BuildSequence():Asn1Sequence
+        internal Asn1Sequence BuildSequence() {
+            return BuildSequence(this);
+            }
+        #endregion
 
         Boolean IX509GeneralName.IsEmpty { get {
             return Count == 0;

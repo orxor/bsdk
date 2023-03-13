@@ -29,8 +29,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String Country      { get { return Source.Country; }}
         public Oid SignatureAlgorithm { get; }
         public Oid HashAlgorithm { get; }
+        public String Container {get;internal set; }
         internal Boolean IsMachineKeySet { get;set; }
-        internal String Container {get;set; }
         internal KEY_SPEC_TYPE KeySpec { get;set; }
 
         public unsafe Byte[] Bytes { get{

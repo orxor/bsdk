@@ -112,8 +112,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         }
                     SerialNumber = String.Join(String.Empty,((Asn1Integer)u[0][j]).Value.ToByteArray().Reverse().Select(i => i.ToString("x2")));
                     SignatureAlgorithm = Asn1SignatureAlgorithm.From(new Asn1SignatureAlgorithm(u[0][j + 1]));
-                    Issuer  = X509RelativeDistinguishedNameSequence.Build(u[0][j + 2]);
-                    Subject = X509RelativeDistinguishedNameSequence.Build(u[0][j + 4]);
+                    Issuer  = X509RelativeDistinguishedNameSequence.Build(u[0][IssuerFieldIndex  = j + 2]);
+                    Subject = X509RelativeDistinguishedNameSequence.Build(u[0][SubjectFieldIndex = j + 4]);
                     #region Validity
                     if (u[0][j + 3] is Asn1Sequence)
                         {
@@ -191,5 +191,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         private String thumbprint;
+        internal Int32 SubjectFieldIndex = -1;
+        internal Int32 IssuerFieldIndex = -1;
         }
     }

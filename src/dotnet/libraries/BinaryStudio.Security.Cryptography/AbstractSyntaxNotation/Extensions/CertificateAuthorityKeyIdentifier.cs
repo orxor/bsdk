@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
@@ -21,7 +23,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         public String SerialNumber { get; }
         public IX509GeneralName CertificateIssuer { get; }
 
-        public CertificateAuthorityKeyIdentifier(Asn1CertificateExtension source)
+        #region ctor{Asn1CertificateExtension}
+        internal CertificateAuthorityKeyIdentifier(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -49,6 +52,26 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
+        #region ctor{Asn1Certificate}
+        public CertificateAuthorityKeyIdentifier(Asn1Certificate source)
+            :base(new Oid(ObjectIdentifiers.NSS_OID_X509_AUTH_KEY_ID),false)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            var SKI = source.Extensions.
+                    OfType<CertificateSubjectKeyIdentifier>().
+                    FirstOrDefault();
+            if (SKI == null) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            KeyIdentifier = SKI.KeyIdentifier;
+            SerialNumber = source.SerialNumber;
+            CertificateIssuer = source.Issuer;
+            var args = new List<Asn1Object>();
+            if (SKI.KeyIdentifier != null) { args.Add(new Asn1ContextSpecificObject(0,SKI.KeyIdentifier)); }
+            args.Add(X509GeneralName.BuildContextSpecificObject(1,source.Subject));
+            args.Add(new Asn1ContextSpecificObject(2,DecodeString(source.SerialNumber)));
+            Body = new Asn1OctetString(new Asn1Sequence(args.ToArray()));
+            }
+        #endregion
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

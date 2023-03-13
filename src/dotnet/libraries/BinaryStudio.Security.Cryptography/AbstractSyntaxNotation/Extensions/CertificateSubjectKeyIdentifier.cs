@@ -10,6 +10,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     public sealed class CertificateSubjectKeyIdentifier : Asn1CertificateExtension
         {
         public Byte[] KeyIdentifier { get; }
+
+        #region ctor{Asn1CertificateExtension}
         internal CertificateSubjectKeyIdentifier(Asn1CertificateExtension source)
             : base(source)
             {
@@ -25,13 +27,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
-
+        #endregion
+        #region ctor{Boolean,String}
         public CertificateSubjectKeyIdentifier(Boolean critical, String value)
             :base(new Oid(ObjectIdentifiers.NSS_OID_X509_SUBJECT_KEY_ID),critical)
             {
             KeyIdentifier = DecodeString(value);
             Body = new Asn1OctetString(new Asn1OctetString(KeyIdentifier));
             }
+        #endregion
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

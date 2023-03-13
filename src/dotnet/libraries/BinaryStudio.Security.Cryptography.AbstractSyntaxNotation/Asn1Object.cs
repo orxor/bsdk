@@ -477,7 +477,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
         #endregion
         #region M:ICollection<Asn1Object>.Add(Asn1Object)
-        protected void Add(Asn1Object item)
+        protected internal void Add(Asn1Object item)
             {
             if (IsReadOnly) { throw new InvalidOperationException(); }
             sequence.Add(item);

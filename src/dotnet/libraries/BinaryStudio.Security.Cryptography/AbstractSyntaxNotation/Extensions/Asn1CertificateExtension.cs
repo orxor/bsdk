@@ -66,7 +66,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
          * */
         public override String ToString()
             {
-            return Identifier.ToString();
+            return Identifier.Value;
             }
 
         private static readonly IDictionary<String, Type> types = new ConcurrentDictionary<String, Type>();
@@ -78,9 +78,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 {
                 EnsureFactory();
                 using (ReadLock(syncobject)) {
-                    if (types.TryGetValue(source.Identifier.ToString(), out var type)) {
+                    if (types.TryGetValue(source.Identifier.Value, out var type)) {
                         if (type.IsSubclassOf(typeof(Asn1CertificateExtension))) {
-                            var r = (Asn1CertificateExtension)Activator.CreateInstance(type, source);
+                            var r = (Asn1CertificateExtension)Activator.CreateInstance(type,
+                                BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance,
+                                null,new Object[]{ source },null);
                             return r;
                             }
                         }
@@ -89,7 +91,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             catch (Exception e)
                 {
-                e.Data["Identifier"] = source.Identifier.ToString();
+                e.Data["Identifier"] = source.Identifier.Value;
                 e.Data["IsCritical"] = source.IsCritical;
                 throw;
                 }

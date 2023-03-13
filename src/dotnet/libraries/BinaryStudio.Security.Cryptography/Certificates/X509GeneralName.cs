@@ -1,11 +1,14 @@
 ﻿using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
     public static class X509GeneralName
         {
+        #region M:From(Asn1ContextSpecificObject):IX509GeneralName
         public static IX509GeneralName From(Asn1ContextSpecificObject source)
             {
             try
@@ -30,6 +33,29 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 throw;
                 }
             }
+        #endregion
+        #region M:BuildContextSpecificObject(SByte,IX509GeneralName):Asn1ContextSpecificObject
+        internal static Asn1ContextSpecificObject BuildContextSpecificObject(SByte type, IX509GeneralName source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            switch(source.Type) {
+                case X509GeneralNameType.Directory:
+                    {
+                    return new Asn1ContextSpecificObject(type, new Asn1ContextSpecificObject((SByte)(Int32)source.Type,
+                        X509RelativeDistinguishedNameSequence.BuildSequence(((IEnumerable<KeyValuePair<Asn1ObjectIdentifier,String>>)source))));
+                    }
+                case X509GeneralNameType.Other:
+                case X509GeneralNameType.RFC822:
+                case X509GeneralNameType.DNS:
+                case X509GeneralNameType.X400Address:
+                case X509GeneralNameType.EDIParty:
+                case X509GeneralNameType.IA5String:
+                case X509GeneralNameType.OctetString:
+                case X509GeneralNameType.ObjectIdentifier:
+                default: throw new NotSupportedException();
+                }
+            return null;
+            }
+        #endregion
 
         public static String ToString(X509GeneralNameType type) {
             try

@@ -89,6 +89,28 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 });
             }
         #endregion
+        #region ctor{X509Certificate,CRYPT_ACQUIRE_FLAGS}
+        public CryptographicContextI(X509Certificate certificate,CRYPT_ACQUIRE_FLAGS flags) {
+            if (certificate == null) { throw new ArgumentNullException(nameof(certificate)); }
+            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            IsMachineKeySet = certificate.IsMachineKeySet;
+            try
+                {
+                Validate(entries.CryptAcquireCertificatePrivateKey(certificate.Handle,flags,IntPtr.Zero,out var r, out var keyspec, out var freeprov));
+                Handle = r;
+                this.keyspec = keyspec;
+                }
+            catch(Exception e)
+                {
+                e.Add("ContextFlags",flags);
+                throw;
+                }
+            ProviderType = (CRYPT_PROVIDER_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_PROVTYPE,0,null);
+            Task.Factory.StartNew(() => {
+                providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII);
+                });
+            }
+        #endregion
         #region ctor{CryptographicContext,CryptographicContextFlags}
         public CryptographicContextI(CryptographicContext context, CryptographicContextFlags flags) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }

@@ -51,6 +51,19 @@ namespace BinaryStudio.Security.Cryptography
             return new CryptographicContextI(context,certificate,flags);
             }
         #endregion
+        #region M:AcquireContext(X509Certificate,CRYPT_ACQUIRE_FLAGS):CryptographicContext
+        public static CryptographicContext AcquireContext(X509Certificate certificate,CRYPT_ACQUIRE_FLAGS flags) {
+            return new CryptographicContextI(certificate,flags);
+            }
+        #endregion
+
+        #region M:DeleteContainer(CRYPT_PROVIDER_TYPE,String)
+        public static void DeleteContainer(CRYPT_PROVIDER_TYPE providertype, String container) {
+            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            Validate(entries.CryptAcquireContext(out var r, container, null,
+                (Int32)providertype,(Int32)CryptographicContextFlags.CRYPT_DELETEKEYSET));
+            }
+        #endregion
 
         private static IDictionary<String,ALG_ID> SAlgId;
         private static void EnsureAlgIdCache() {

@@ -345,6 +345,7 @@ namespace BinaryStudio.PlatformComponents.Win32
                 {
                 switch ((Win32ErrorCode)scode) {
                     case Win32ErrorCode.ERROR_ACCESS_DENIED: return new UnauthorizedAccessException(FormatMessage(unchecked((UInt32)scode), culture));
+                    case Win32ErrorCode.ERROR_BUSY:          return new ResourceIsBusyException((HRESULT)scode);
                     }
 
                 }
