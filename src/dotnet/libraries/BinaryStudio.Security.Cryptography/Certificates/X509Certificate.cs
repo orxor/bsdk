@@ -224,5 +224,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
+
+        public override Object GetService(Type service) {
+            if (service == typeof(Asn1Certificate)) { return Source; }
+            return base.GetService(service);
+            }
         }
     }

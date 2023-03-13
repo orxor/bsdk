@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using BinaryStudio.DiagnosticServices;
 #if LINUX
 using System.Collections.Generic;
@@ -120,13 +121,12 @@ namespace BinaryStudio.Security.Cryptography
                         for (;;) {
                             try
                                 {
-                                SetParameter(CRYPT_PARAM.PP_KEYEXCHANGE_PIN, i, 0);Yield();
-                                SetParameter(CRYPT_PARAM.PP_SIGNATURE_PIN, i, 0);
+                                SetParameter(CRYPT_PARAM.PP_KEYEXCHANGE_PIN, i, 0);
                                 return;
                                 }
-                            catch (Exception e)
+                            catch (ResourceIsBusyException)
                                 {
-                                throw;
+                                Thread.Sleep(5000);
                                 }
                             }
                         }

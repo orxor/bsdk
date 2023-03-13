@@ -60,6 +60,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{D4F7
 		scripts\MakeCert.ps1 = scripts\MakeCert.ps1
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.BinaryStudio.Security.Cryptography.Generator", "src\dotnet\tests\UnitTests.BinaryStudio.Security.Cryptography.Generator\UnitTests.BinaryStudio.Security.Cryptography.Generator.csproj", "{765B827B-4567-42D9-9B86-52D4350881C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -738,6 +740,36 @@ Global
 		{A4B7258A-9C19-4089-813A-552680F93D8B}.Release|x64.Build.0 = Release|Any CPU
 		{A4B7258A-9C19-4089-813A-552680F93D8B}.Release|x86.ActiveCfg = Release|Any CPU
 		{A4B7258A-9C19-4089-813A-552680F93D8B}.Release|x86.Build.0 = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|ARM.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|x64.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Debug|x86.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|Any CPU.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|Any CPU.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|ARM.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|ARM.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|ARM64.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|ARM64.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|x64.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|x64.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|x86.ActiveCfg = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Linux{Debug}|x86.Build.0 = Debug|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|ARM.ActiveCfg = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|ARM.Build.0 = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|ARM64.Build.0 = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|x64.ActiveCfg = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|x64.Build.0 = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|x86.ActiveCfg = Release|Any CPU
+		{765B827B-4567-42D9-9B86-52D4350881C9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -750,6 +782,7 @@ Global
 		{7D74EE24-E444-4C3B-A423-00973A8C4E49} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
 		{6AC2311C-C21A-4D31-855D-8BBE922E0E97} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
 		{A4B7258A-9C19-4089-813A-552680F93D8B} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
+		{765B827B-4567-42D9-9B86-52D4350881C9} = {23BC9A12-C1DC-4C1C-A799-0AF200780D9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D635BC8-0B0E-4835-9367-310A2779B655}
