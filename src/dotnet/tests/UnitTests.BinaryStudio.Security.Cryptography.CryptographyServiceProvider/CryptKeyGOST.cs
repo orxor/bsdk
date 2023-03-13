@@ -64,6 +64,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
                             {
                             new CertificateSubjectKeyIdentifier(false,"111e03d866f14235829b5148ba5ff91774fa9e1f")
                             });
+                    using (var store = new X509CertificateStorage(X509StoreName.Memory)) {
+                        //store
+                        }
                     File.WriteAllBytes("cert.cer",certificate.Bytes);
                     }
                 return;

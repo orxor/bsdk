@@ -26,7 +26,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                         case ".cer":
                             {
                             var o = new X509Certificate(File.ReadAllBytes(filename));
-                            Validate(Entries.CertAddCertificateContextToStore(Handle, o.Handle, (Int32)CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
+                            Validate(Entries.CertAddCertificateContextToStore(Handle, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
                             yield return o;
                             }
                             break;

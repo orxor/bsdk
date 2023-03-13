@@ -10,7 +10,8 @@ namespace BinaryStudio.Security.Cryptography
 
     internal interface CertificateFunctions
         {
-        Boolean CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,IntPtr StoreContext);
+        Boolean CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,CERT_STORE_ADD AddDisposition,IntPtr Zero);
+        Boolean CertAddCertificateContextToStore(HCERTSTORE CertStore,IntPtr CertContext,CERT_STORE_ADD AddDisposition,out IntPtr StoreContext);
         Boolean CertAddCertificateLinkToStore(HCERTSTORE CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext);
         Boolean CertAddEncodedCertificateToStore(HCERTSTORE CertStore,Int32 CertEncodingType,Byte[] CertEncodedData,Int32 CertEncodedLength,Int32 AddDisposition,out IntPtr CertContext);
         unsafe HCERT_SERVER_OCSP_RESPONSE CertAddRefServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara);

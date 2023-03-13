@@ -20,6 +20,12 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             throw new NotImplementedException();
             }
 
+        #region ctor{X509StoreName}
+        public X509CertificateStorage(X509StoreName name)
+            :this(name,X509StoreLocation.CurrentUser)
+            {
+            }
+        #endregion
         #region ctor{X509StoreName,X509StoreLocation}
         public X509CertificateStorage(X509StoreName name, X509StoreLocation location) {
             Location = location;
@@ -35,11 +41,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     case X509StoreName.TrustedPeople:        { StoreName = "TrustedPeople";    } break;
                     case X509StoreName.TrustedPublisher:     { StoreName = "TrustedPublisher"; } break;
                     case X509StoreName.TrustedDevices:       { StoreName = "TrustedDevices";   } break;
-                    case X509StoreName.Device:
-                        {
-                        Store = new DeviceCertificateStorage(CRYPT_PROVIDER_TYPE.AUTO,location);
-                        return;
-                        }
+                    case X509StoreName.Device: { Store = new DeviceCertificateStorage(CRYPT_PROVIDER_TYPE.AUTO,location); return; }
+                    case X509StoreName.Memory: { Store = new MemoryCertificateStorage(location); return; }
                     default: throw new ArgumentOutOfRangeException(nameof(name))
                             .Add("StoreName",name);
                     }
@@ -93,6 +96,31 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             return Store.Find(Info);
             }
         #endregion
+        #region M:Add(X509Certificate o)
+        public void Add(X509Certificate o) {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            Store.Add(o);
+            }
+        #endregion
+        #region M:Add(X509CertificateRevocationList)
+        public void Add(X509CertificateRevocationList o) {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            Store.Add(o);
+            }
+        #endregion
+        #region M:Delete(X509Certificate)
+        public void Delete(X509Certificate o) {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            Store.Delete(o);
+            }
+        #endregion
+        #region M:Delete(X509CertificateRevocationList)
+        public void Delete(X509CertificateRevocationList o) {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            Store.Delete(o);
+            }
+        #endregion
+
         #region M:MapX509StoreFlags(X509StoreLocation,X509OpenFlags):UInt32
         protected internal static Int32 MapX509StoreFlags(X509StoreLocation storeLocation, X509OpenFlags flags) {
             var r = 0;

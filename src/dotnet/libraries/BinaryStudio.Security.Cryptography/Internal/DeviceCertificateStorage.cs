@@ -45,7 +45,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                         var r = key.GetParameter(KEY_PARAM.KP_CERTIFICATE);
                         if (r != null) {
                             var o = new X509Certificate(r, key);
-                            Validate(Entries.CertAddCertificateContextToStore(Handle, o.Handle, (Int32)CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
+                            Validate(Entries.CertAddCertificateContextToStore(Handle, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS, IntPtr.Zero));
                             yield return o;
                             }
                         key.Dispose();

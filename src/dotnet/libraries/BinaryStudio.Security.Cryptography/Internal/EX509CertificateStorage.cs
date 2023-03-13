@@ -55,6 +55,32 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             return new X509Certificate(r);
             }
         #endregion
+        #region M:Add(X509Certificate o)
+        public void Add(X509Certificate o) {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            Validate(Entries.CertAddCertificateContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,IntPtr.Zero));
+            }
+        #endregion
+        #region M:Add(X509CertificateRevocationList)
+        public void Add(X509CertificateRevocationList o) {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            Validate(Entries.CertAddCRLContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,IntPtr.Zero));
+            }
+        #endregion
+        #region M:Delete(X509Certificate)
+        public void Delete(X509Certificate o) {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            Validate(Entries.CertAddCertificateContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,out var r));
+            Validate(Entries.CertDeleteCertificateFromStore(r));
+            }
+        #endregion
+        #region M:Delete(X509CertificateRevocationList)
+        public void Delete(X509CertificateRevocationList o) {
+            if (o == null) {throw new ArgumentNullException(nameof(o)); }
+            Validate(Entries.CertAddCRLContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,out var r));
+            Validate(Entries.CertDeleteCRLFromStore(r));
+            }
+        #endregion
 
         private const UInt32 CERT_CLOSE_STORE_FORCE_FLAG = 0x00000001;
         private const UInt32 CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002;
