@@ -5,6 +5,7 @@ namespace BinaryStudio.IO
     {
     public static class Extensions
         {
+        #region M:CopyTo({this}Stream,Stream)
         #if NET35
         public static void CopyTo(this Stream source, Stream target)
             {
@@ -18,9 +19,9 @@ namespace BinaryStudio.IO
                 }
             }
         #endif
-
-        public static void CopyTo(this Stream source, Stream target, Int32 buffersize, Int64 length)
-            {
+        #endregion
+        #region M:CopyTo({this}Stream,Stream.Int32,Int64)
+        public static void CopyTo(this Stream source, Stream target, Int32 buffersize, Int64 length) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (target == null) { throw new ArgumentNullException(nameof(target)); }
             if (buffersize < 1) { throw new ArgumentOutOfRangeException(nameof(buffersize)); }
@@ -33,6 +34,19 @@ namespace BinaryStudio.IO
                 length -= size;
                 }
             }
+        #endregion
+        #region M:Write({this}Stream,Byte*,Int32)
+        public static unsafe void Write(this Stream target, Byte* buffer, Int32 length) {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            if (buffer == null) { throw new ArgumentNullException(nameof(buffer)); }
+            if (length < 0) { throw new ArgumentOutOfRangeException(nameof(length)); }
+            var r = new Byte[length];
+            for (var i = 0; i < length; i++) {
+                r[i] = buffer[i];
+                }
+            target.Write(r,0,length);
+            }
+        #endregion
 
         public static IDisposable StorePosition(this BinaryReader source)
             {

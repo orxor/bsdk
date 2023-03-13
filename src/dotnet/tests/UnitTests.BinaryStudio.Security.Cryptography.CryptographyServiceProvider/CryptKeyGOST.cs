@@ -51,7 +51,16 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
 
         [TestMethod]
         public void MakeCertSN() {
-            var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
+            var dt = DateTime.Now;
+            CryptographicContext.MakeCert(ALG_ID.CALG_GR3410EL,"CN=R-CA, C=ru","010203",
+                dt.AddYears(-1),dt.AddYears(1),
+                new Asn1CertificateExtension[]
+                    {
+                    new CertificateSubjectKeyIdentifier(false,"111e03d866f14235829b5148ba5ff91774fa9e1f")
+                    },
+                Stream.Null, CryptographicContext.GetSecureString("SomePassword"),
+                out var Certificate,true);
+            /*var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
             using (var contextS = CryptographicContext.AcquireContext(
                     CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH, container,
                     CryptographicContextFlags.CRYPT_NEWKEYSET)) {
@@ -64,13 +73,13 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
                             {
                             new CertificateSubjectKeyIdentifier(false,"111e03d866f14235829b5148ba5ff91774fa9e1f")
                             });
-                    using (var store = new X509CertificateStorage(X509StoreName.Memory)) {
-                        //store
-                        }
-                    File.WriteAllBytes("cert.cer",certificate.Bytes);
+                    key.Certificate = certificate;
+                    contextT.ExportCertificate(certificate, "cert.pfx",CryptographicContext.GetSecureString("SomePassword"));
+                    contextT.ExportCertificate(certificate, "cert.cer",null);
                     }
                 return;
                 }
+            */
             }
         }
     }

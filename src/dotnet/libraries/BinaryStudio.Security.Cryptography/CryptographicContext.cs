@@ -659,33 +659,6 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
-        public unsafe X509Certificate CreateSelfSignCertificate(String name) {
-            EnsureEntries(out var entries);
-            var SubjectIssuerBlobM = CertStrToName(name);
-            fixed (Byte* SubjectIssuerBlobU = SubjectIssuerBlobM) {
-                var SubjectIssuerBlob = new CERT_NAME_BLOB{
-                    Size = SubjectIssuerBlobM.Length,
-                    Data = SubjectIssuerBlobU
-                    };
-                var Container = this.Container;
-                var Keys = this.Keys.Where(i => String.Equals(i.Container,Container)).ToArray();
-                if (Keys.Length > 0) {
-                    var AlgId = Keys[0].AlgId;
-                    var Info = (CRYPT_OID_INFO*)Validate(entries.CryptFindOIDInfo(CRYPT_OID_INFO_KEY_TYPE.CRYPT_OID_INFO_ALGID_KEY,&AlgId,0),NotZero);
-                    if (Info != null) {
-                        var LAlgId = Marshal.PtrToStringAnsi(entries.CertAlgIdToOID(AlgId));
-                        var TAlgId = new CRYPT_ALGORITHM_IDENTIFIER {
-                            ObjectId = Info->OID
-                            };
-                        var Target = Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,&TAlgId,null,null,null),NotZero);
-                        return new X509Certificate(Target);
-                        }
-                    }
-                var certificate = Validate(entries.CertCreateSelfSignCertificate(Handle,ref SubjectIssuerBlob,0,null,null,null,null,null),NotZero);
-                return new X509Certificate(certificate);
-                }
-            }
-
         private static readonly IDictionary<String,SecureString> StoredSecureStrings = new Dictionary<String,SecureString>();
 
         static CryptographicContext() {

@@ -15,8 +15,8 @@ namespace BinaryStudio.Security.Cryptography
             if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
             EnsureAlgIdCache();
             if (!SAlgId.TryGetValue(algid.Value,out var nalgid)) { nalgid = CryptographicContext.OidToAlgId(algid); }
-            var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
-            foreach (var type in CryptographicContext.RegisteredProviders) {
+            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            foreach (var type in RegisteredProviders) {
                 if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)flags)) {
                     var context = new CryptographicContextI(r);
                     foreach (var alg in context.SupportedAlgorithms) {

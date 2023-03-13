@@ -61,6 +61,8 @@ namespace BinaryStudio.Security.Cryptography
         public static CryptKey GenKey(CryptographicContext context,ALG_ID algid, CryptGenKeyFlags flags) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             Validate(((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptGenKey(context.Handle,algid,(Int32)flags,out var r));
+            if (algid == ALG_ID.AT_KEYEXCHANGE) { return new CryptKey(context,r,KEY_SPEC_TYPE.AT_KEYEXCHANGE,context.Container); }
+            if (algid == ALG_ID.AT_SIGNATURE)   { return new CryptKey(context,r,KEY_SPEC_TYPE.AT_SIGNATURE  ,context.Container); }
             return new CryptKey(context,r);
             }
         #endregion
@@ -75,14 +77,21 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
 
         #region P:Certificate:X509Certificate
-        public X509Certificate Certificate { get{
-            var r = GetParameter(KEY_PARAM.KP_CERTIFICATE);
-            if (r != null)
-                {
-                return new X509Certificate(r);
+        public X509Certificate Certificate {
+            get {
+                var r = GetParameter(KEY_PARAM.KP_CERTIFICATE);
+                if (r != null)
+                    {
+                    return new X509Certificate(r);
+                    }
+                return null;
                 }
-            return null;
-            }}
+            set
+                {
+                ((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptSetKeyParam(
+                    Handle,KEY_PARAM.KP_CERTIFICATE,value?.Bytes,0);
+                }
+            }
         #endregion
         #region M:GetParameter(KEY_PARAM):Byte[]
         internal Byte[] GetParameter(KEY_PARAM key) {

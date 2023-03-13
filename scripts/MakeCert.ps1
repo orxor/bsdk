@@ -1,14 +1,19 @@
 using namespace System.IO
+using namespace System.Collections.Generic
 using namespace BinaryStudio.PlatformComponents.Win32
 using namespace BinaryStudio.Security.Cryptography
-using namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP;
+using namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
+using namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 
 param
     (
     [String]$ProviderType="PROV_GOST_2001_DH",
     [String]$TargetFile="my.cer",
     [DateTime]$NotBefore="2022-01-01",
-    [DateTime]$NotAfter="2024-01-01"
+    [DateTime]$NotAfter="2024-01-01",
+    [String]$SerialNumber,
+    [String]$SubjectKeyIdentifier,
+    [String]$SubjectName="CN=R-CA, C=ru"
     )
 
 Function Internal-Add-Type([String]$Path)
@@ -63,9 +68,14 @@ If (($CryptProviderType -eq [CRYPT_PROVIDER_TYPE]::PROV_GOST_2001_DH ) -or
     $ContextT  = New-Object CryptoProCSPCryptographicContext -ArgumentList @(,$ContextS)
     Try
         {
+        $Extensions = New-Object List[Asn1CertificateExtension]
         $ContextS.SecureCode = [CryptographicContext]::GetSecureString("SomePassword")
         $Key = [CryptKey]::GenKey($ContextS, [ALG_ID]::AT_SIGNATURE, [CryptGenKeyFlags]::CRYPT_EXPORTABLE)
-        $Certificate = $ContextT.CreateSelfSignCertificate("CN=R-CA, C=ru",$NotBefore,$NotAfter)
+        $Certificate = $ContextT.CreateSelfSignCertificate($SubjectName,$SerialNumber,$NotBefore,$NotAfter,$Extensions)
+        If (-not [String]::IsNullOrEmpty($SubjectKeyIdentifier)) {
+            $E = New-Object CertificateSubjectKeyIdentifier -ArgumentList @(,$false,$SubjectKeyIdentifier)
+            $Extensions.Add($E)
+            }
         [File]::WriteAllBytes($TargetFile,$Certificate.Bytes)
         }
     Finally

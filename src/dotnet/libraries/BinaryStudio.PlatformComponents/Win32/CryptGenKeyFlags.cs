@@ -5,6 +5,7 @@ namespace BinaryStudio.PlatformComponents.Win32
     [Flags]
     public enum CryptGenKeyFlags
         {
+        CRYPT_NONE              = 0x00000000,
         CRYPT_EXPORTABLE        = 0x00000001,
         CRYPT_USER_PROTECTED    = 0x00000002,
         CRYPT_CREATE_SALT       = 0x00000004,
