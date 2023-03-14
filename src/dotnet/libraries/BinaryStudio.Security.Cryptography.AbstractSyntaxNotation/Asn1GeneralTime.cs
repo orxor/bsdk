@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -26,20 +25,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             Value = Parse(Encoding.ASCII.GetString(source), Asn1ObjectType.GeneralTime).GetValueOrDefault();
             State |= ObjectState.Decoded;
-            this.content = new ReadOnlyMemoryMappingStream(source);
-            this.length = source.Length;
-            this.size = length + GetHeader().Length;
             }
         #endregion
         #region ctor{DateTime}
         public Asn1GeneralTime(DateTime source)
+            :base(source)
             {
-            Value = new DateTimeOffset(source);
-            State |= ObjectState.Decoded;
-            var content = Encoding.ASCII.GetBytes($"{source.ToString("yyyyMMddHHmmss")}Z");
-            this.content = new ReadOnlyMemoryMappingStream(content);
-            this.length = content.Length;
-            this.size = length + GetHeader().Length;
             }
         #endregion
 

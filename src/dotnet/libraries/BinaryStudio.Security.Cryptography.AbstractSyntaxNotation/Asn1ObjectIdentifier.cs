@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
+using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
 
@@ -31,6 +33,32 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     : (new Oid(value)).FriendlyName;
             #endif
             }}
+
+        #region ctor
+        internal Asn1ObjectIdentifier()
+            {
+            }
+        #endregion
+        #region ctor{String}
+        public Asn1ObjectIdentifier(String source)
+            {
+            #if NET35
+            if (String.IsNullOrEmpty(source)) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            #else
+            if (String.IsNullOrWhiteSpace(source)) { throw new ArgumentOutOfRangeException(nameof(source)); }
+            #endif
+            Sequence = source.Split('.').Select(Int64.Parse).ToArray();
+            State |= ObjectState.Decoded;
+            }
+        #endregion
+        #region ctor{Oid}
+        public Asn1ObjectIdentifier(Oid source)
+            {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            Sequence = source.Value.Split('.').Select(Int64.Parse).ToArray();
+            State |= ObjectState.Decoded;
+            }
+        #endregion
 
         #region M:CreateSequence(Byte[]):Int64[]
         private static Int64[] CreateSequence(Byte[] source) {
@@ -93,6 +121,66 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 ? String.Join(".", Sequence)
                 : base.ToString();
             #endif
+            }
+        #endregion
+        #region M:BuildContent
+        protected override void BuildContent() {
+            var InputContent = BuildContent(Sequence);
+            length = InputContent.Length;
+            content = new ReadOnlyMemoryMappingStream(InputContent);
+            size = length + GetHeader().Length;
+            }
+        #endregion
+        #region M:BuildContent(Int64[]):Byte[]
+        private static Byte[] BuildContent(Int64[] sequence)
+            {
+            var i = 0;
+            var r = new List<Byte>();
+            var buffer = new Byte[256];
+            while (i < sequence.Length) {
+                var c = sequence[i];
+                if (i == 0) {
+                    if (c == 0) {
+                        r.Add((Byte)sequence[1]);
+                        i++;
+                        }
+                    else if (c == 1)
+                        {
+                        r.Add((Byte)(sequence[1] + 40));
+                        i++;
+                        }
+                    else
+                        {
+                        r.Add((Byte)(sequence[1] + 80));
+                        i++;
+                        }
+                    }
+                else
+                    {
+                    if (c < 128)
+                        {
+                        r.Add((Byte)c);
+                        }
+                    else
+                        {
+                        var j = 0;
+                        while (c >= 128) {
+                            buffer[j] = (Byte)(c & 0x7F);
+                            j++;
+                            c >>= 7;
+                            }
+                        buffer[j] = (Byte)c;
+                        var n = j;
+                        for (j = n; j >= 1; j--)
+                            {
+                            r.Add((Byte)(buffer[j] | 0x80));
+                            }
+                        r.Add(buffer[0]);
+                        }
+                    }
+                i++;
+                }
+            return r.ToArray();
             }
         #endregion
 

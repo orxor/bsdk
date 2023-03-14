@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -21,14 +20,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region ctor{String}
-        internal Asn1Utf8String(String value)
+        public Asn1Utf8String(String value)
+            :base(value)
             {
-            if (value == null) { throw new ArgumentNullException(nameof(value)); }
-            var r = Encoding.GetBytes(value);
-            length = r.Length;
-            content = new ReadOnlyMemoryMappingStream(r);
-            size = length + GetHeader().Length;
-            State |= ObjectState.Decoded;
             }
         #endregion
         }

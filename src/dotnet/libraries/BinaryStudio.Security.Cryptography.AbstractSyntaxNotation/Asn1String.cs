@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -102,6 +103,20 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public abstract Encoding Encoding { get; }
         public String Value { get;protected set; }
 
+        #region ctor
+        protected Asn1String()
+            {
+            }
+        #endregion
+        #region ctor{String}
+        protected Asn1String(String value)
+            {
+            if (value == null) { throw new ArgumentNullException(nameof(value)); }
+            Value = value;
+            State |= ObjectState.Decoded;
+            }
+        #endregion
+
         #region M:ToString:String
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
@@ -109,6 +124,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public override String ToString()
             {
             return Value;
+            }
+        #endregion
+        #region M:BuildContent
+        protected override void BuildContent() {
+            var InputContent = Encoding.GetBytes(Value);;
+            length = InputContent.Length;
+            content = new ReadOnlyMemoryMappingStream(InputContent);
+            size = length + GetHeader().Length;
             }
         #endregion
         #region M:Decode:Boolean

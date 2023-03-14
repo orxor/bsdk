@@ -59,7 +59,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         protected internal abstract Object TypeCode { get; }
         protected internal abstract SByte  ByteCode { get; }
 
-        public virtual ReadOnlyMappingStream Content { get { return content; }}
+        public virtual ReadOnlyMappingStream Content { get {
+            if (content == null) {
+                BuildContent();
+                }
+            return content;
+            }}
+
         public virtual Int64 Offset { get{ return offset; }}
         public virtual Int64 Size   { get {
             if (State.HasFlag(ObjectState.SealedSize)) { return size; }
@@ -420,10 +426,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 lock(this) {
                     State |= ObjectState.Disposed;
                     if (sequence != null) {
-                        for (var i = 0; i < sequence.Count; i++) {
-                            sequence[i].Dispose();
-                            sequence[i] = null;
-                            }
                         sequence.Clear();
                         sequence = null;
                         }
@@ -792,6 +794,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
 
         protected internal abstract void WriteHeader(Stream target);
 
+        #region M:BuildContent
+        protected virtual void BuildContent()
+            {
+            #if DEBUG
+            throw new NotImplementedException();
+            #endif
+            }
+        #endregion
         #region M:GetHeader:Byte[]
         internal Byte[] GetHeader() {
             using (var o = new MemoryStream()) {

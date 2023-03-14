@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
+using BinaryStudio.IO;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -30,6 +32,19 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         {
         public abstract DateTimeKind Kind { get; }
         public DateTimeOffset Value { get;protected set; }
+
+        #region ctor
+        protected Asn1Time()
+            {
+            }
+        #endregion
+        #region ctor{DateTime}
+        protected Asn1Time(DateTime source)
+            {
+            Value = new DateTimeOffset(source);
+            State |= ObjectState.Decoded;
+            }
+        #endregion
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>
@@ -81,6 +96,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 : null;
             }
 
+        #region M:Parse(String,Asn1ObjectType):DateTimeOffset?
         protected static DateTimeOffset? Parse(String value, Asn1ObjectType type) {
             #if NET35
             if (String.IsNullOrEmpty(value)) { return null; }
@@ -150,7 +166,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             return null;
             }
-
+        #endregion
+        #region M:BuildContent
+        protected override void BuildContent() {
+            var InputContent = Encoding.ASCII.GetBytes($"{Value.ToString("yyyyMMddHHmmss")}Z");
+            length = InputContent.Length;
+            content = new ReadOnlyMemoryMappingStream(InputContent);
+            size = length + GetHeader().Length;
+            }
+        #endregion
         #region M:WriteTo(IJsonWriter)
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }

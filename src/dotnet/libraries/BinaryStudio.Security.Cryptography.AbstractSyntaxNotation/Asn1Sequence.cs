@@ -26,7 +26,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 foreach (var i in args) {
                     Add(i);
                     size += i.Size;
-                    i.WriteTo(o);
+                    i.WriteTo(o,true);
                     }
                 this.length = size;
                 this.content = new ReadOnlyMemoryMappingStream(o.ToArray());

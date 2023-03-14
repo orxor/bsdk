@@ -112,6 +112,10 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
         #endregion
 
+        private static void MakeCRL(ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, X509Certificate IssuerCertificate, out X509CertificateRevocationList CRL) {
+            CRL = null;
+            }
+
         private static void MakeSelfSignedCertificate(out X509Certificate Certificate,SecureString SecureCode, Boolean DeletePrivateKey) {
             var dt = DateTime.Now;
             CryptographicContext.MakeCertificate(ALG_ID.CALG_GR3410EL,"CN=R-CA, C=ru","010203",

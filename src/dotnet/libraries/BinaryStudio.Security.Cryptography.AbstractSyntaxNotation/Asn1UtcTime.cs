@@ -14,6 +14,25 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public override Asn1ObjectType Type { get { return Asn1ObjectType.UtcTime; }}
         public override DateTimeKind Kind { get { return DateTimeKind.Utc; }}
 
+        #region ctor
+        internal Asn1UtcTime()
+            {
+            }
+        #endregion
+        #region ctor{Byte[]}
+        public Asn1UtcTime(Byte[] source)
+            {
+            Value = Parse(Encoding.ASCII.GetString(source), Asn1ObjectType.UtcTime).GetValueOrDefault();
+            State |= ObjectState.Decoded;
+            }
+        #endregion
+        #region ctor{DateTime}
+        public Asn1UtcTime(DateTime source)
+            :base(source)
+            {
+            }
+        #endregion
+
         protected override Boolean Decode()
             {
             if (IsDecoded) { return true; }

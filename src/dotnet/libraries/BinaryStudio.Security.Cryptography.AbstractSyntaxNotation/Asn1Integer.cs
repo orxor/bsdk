@@ -27,18 +27,23 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
         #region ctor{Byte[]}
-        internal Asn1Integer(Byte[] value)
+        public Asn1Integer(Byte[] value)
             {
-            length = value.Length;
-            content = new ReadOnlyMemoryMappingStream(value);
-            size = length + GetHeader().Length;
+            Value = new BigInteger(value.Reverse().ToArray());
             State |= ObjectState.Decoded;
             }
         #endregion
         #region ctor{String}
-        internal Asn1Integer(String value)
+        public Asn1Integer(String value)
             :this(DecodeString(value))
             {
+            }
+        #endregion
+        #region ctor{Integer}
+        public Asn1Integer(Int32 value)
+            {
+            Value = new BigInteger(value);
+            State |= ObjectState.Decoded;
             }
         #endregion
 
@@ -52,6 +57,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return Value.ToString();
             }
 
+        #region M:BuildContent
+        protected override void BuildContent() {
+            var InputContent = Value.ToByteArray().Reverse().ToArray();
+            length = InputContent.Length;
+            content = new ReadOnlyMemoryMappingStream(InputContent);
+            size = length + GetHeader().Length;
+            }
+        #endregion
+        #region M:Decode:Boolean
         protected override Boolean Decode()
             {
             if (IsDecoded) { return true; }
@@ -66,6 +80,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             State |= ObjectState.Decoded;
             return true;
             }
+        #endregion
 
         #if NET35
         public static unsafe implicit operator Int32(Asn1Integer source) {
