@@ -1,4 +1,4 @@
-﻿using BinaryStudio.Security.Cryptography.Certificates;
+﻿using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
@@ -9,12 +9,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * "id-ce-freshestCRL"
      * IETF RFC 5280
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_FRESHEST_CRL)]
     internal class FreshestCRL : CRLDistributionPoints
         {
-        public FreshestCRL(CertificateExtension u)
+        #region ctor{CertificateExtension}
+        internal FreshestCRL(CertificateExtension u)
             :base(u)
             {
             }
+        #endregion
         }
     }

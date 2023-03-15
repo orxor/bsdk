@@ -2,11 +2,11 @@
 using System.Globalization;
 using System.Text;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /**
      * {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9) localKeyID(21)}
      * {1.2.840.113549.1.9.21}
@@ -21,11 +21,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      *   ID pkcs-9-at-localKeyId
      * }
      */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_PKCS9_LOCAL_KEY_ID)]
-    internal class Asn1LocalKeyIdExtension : CertificateExtension
+    internal class LocalKeyIdExtension : CertificateExtension
         {
         public String LocalKeyId { get; }
-        public Asn1LocalKeyIdExtension(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal LocalKeyIdExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -34,6 +37,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 ? Encoding.ASCII.GetString(octet.Content.ToArray())
                 : Encoding.ASCII.GetString(octet[0].Content.ToArray());
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

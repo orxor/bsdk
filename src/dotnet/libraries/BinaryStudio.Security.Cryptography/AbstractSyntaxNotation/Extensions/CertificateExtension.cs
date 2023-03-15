@@ -27,6 +27,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
         public new Asn1OctetString Body { get;protected set; }
 
+        #region ctor{Asn1Object}
         protected internal CertificateExtension(Asn1Object source)
             : base(source)
             {
@@ -43,7 +44,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 Body = (Asn1OctetString)source[i];
                 }
             }
-
+        #endregion
         #region ctor{CertificateExtension}
         protected internal CertificateExtension(CertificateExtension source)
             : base(source)

@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 4}
      * 1.3.6.1.4.1.311.21.4
      * /ISO/Identified-Organization/6/1/4/1/311/21/4
      * szOID_CRL_NEXT_PUBLISH
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CRL_NEXT_PUBLISH)]
-    internal class Asn1NextCRLPublish : CertificateExtension
+    internal class NextCRLPublish : CertificateExtension
         {
         public DateTime Value { get; }
-        public Asn1NextCRLPublish(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal NextCRLPublish(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -27,6 +30,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

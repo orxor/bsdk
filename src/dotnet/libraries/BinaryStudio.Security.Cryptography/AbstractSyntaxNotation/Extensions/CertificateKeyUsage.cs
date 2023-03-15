@@ -5,9 +5,10 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using BinaryStudio.Serialization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {joint-iso-itu-t(2) ds(5) certificateExtension(29) keyUsage(15)}
      * 2.5.29.15
@@ -15,6 +16,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Key usage
      * IETF RFC 5280
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_KEY_USAGE)]
     public sealed class CertificateKeyUsage : CertificateExtension
         {

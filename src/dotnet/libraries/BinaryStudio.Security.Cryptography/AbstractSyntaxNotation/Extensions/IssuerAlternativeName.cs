@@ -20,7 +20,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     public class IssuerAlternativeName : CertificateExtension
         {
         public IList<IX509GeneralName> AlternativeName { get; }
-        public IssuerAlternativeName(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal IssuerAlternativeName(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -35,6 +37,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>

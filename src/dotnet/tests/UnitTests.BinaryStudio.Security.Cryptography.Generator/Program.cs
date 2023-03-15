@@ -194,7 +194,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 if (SourceCertificate.Source.ExtensionsFieldIndex != -1) {
                     Builder[0][SourceCertificate.Source.ExtensionsFieldIndex] = new Asn1ContextSpecificObject(3,
                         new Asn1Sequence(new List<Asn1Object>(SourceCertificate.Source.Extensions){
-                            new Asn1CertificatePrivateKeyUsagePeriodExtension(
+                            new CertificatePrivateKeyUsagePeriodExtension(
                                 SourceCertificate.NotBefore.AddYears(Year),
                                 SourceCertificate.NotBefore.AddYears(Year).AddYears(1).AddMonths(3))
                             }));
@@ -203,7 +203,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     {
                     Builder[0].Add(new Asn1ContextSpecificObject(3,
                         new Asn1Sequence(new List<Asn1Object>{
-                            new Asn1CertificatePrivateKeyUsagePeriodExtension(
+                            new CertificatePrivateKeyUsagePeriodExtension(
                                 SourceCertificate.NotBefore.AddYears(Year),
                                 SourceCertificate.NotBefore.AddYears(Year).AddYears(1).AddMonths(3))
                             })));

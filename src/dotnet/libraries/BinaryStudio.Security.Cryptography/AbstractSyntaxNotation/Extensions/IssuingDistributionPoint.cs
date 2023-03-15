@@ -2,11 +2,11 @@
 using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {joint-iso-itu-t(2) ds(5) certificateExtension(29) issuingDistributionPoint(28)}
      * 2.5.29.28
@@ -14,8 +14,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Issuing distribution point 
      * IETF RFC 5280
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_ISSUING_DIST_POINT)]
-    internal class Asn1IssuingDistributionPointExtension : CertificateExtension
+    internal class IssuingDistributionPoint : CertificateExtension
         {
         public DistributionPointName DistributionPoint { get; }
         public Boolean OnlyContainsUserCerts { get; }
@@ -23,7 +24,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         public Boolean IndirectCrl { get; }
         public ReasonFlags ReasonFlags { get; }
 
-        public Asn1IssuingDistributionPointExtension(CertificateExtension u)
+        #region ctor{CertificateExtension}
+        internal IssuingDistributionPoint(CertificateExtension u)
             :base(u)
             {
             var octet = Body;
@@ -44,6 +46,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         public override String ToString()
             {

@@ -3,14 +3,18 @@ using System.Globalization;
 using System.Numerics;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
+    [UsedImplicitly]
     [Asn1CertificateExtension("1.2.840.113556.1.5.284.7")]
     internal class DRSJoinType : CertificateExtension
         {
         public Int32 Value { get; }
-        public DRSJoinType(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal DRSJoinType(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -20,6 +24,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

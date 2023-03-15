@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
@@ -17,7 +16,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     internal class CertificatePoliciesExtension : CertificateExtension
         {
         public Asn1ObjectIdentifierCollection CertificatePolicies { get; }
-        public CertificatePoliciesExtension(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal CertificatePoliciesExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -29,6 +30,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

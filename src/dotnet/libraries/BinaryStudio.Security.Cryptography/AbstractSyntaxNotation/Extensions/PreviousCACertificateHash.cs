@@ -2,8 +2,8 @@
 using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
@@ -13,11 +13,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * {/ISO/Identified-Organization/6/1/4/1/311/21/2}
      * szOID_CERTSRV_PREVIOUS_CERT_HASH
      */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTSRV_PREVIOUS_CERT_HASH)]
-    internal class Asn1PreviousCACertificateHash : CertificateExtension
+    internal class PreviousCACertificateHash : CertificateExtension
         {
         public String HashValue { get; }
-        public Asn1PreviousCACertificateHash(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal PreviousCACertificateHash(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -33,6 +36,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 throw new ArgumentOutOfRangeException(nameof(source), "Extension should contains [OctetString]");
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

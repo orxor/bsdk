@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
@@ -18,7 +17,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     public class CRLDistributionPoints : CertificateExtension
         {
         public IList<DistributionPoint> DistributionPoints { get; }
-        public CRLDistributionPoints(CertificateExtension u)
+
+        #region ctor{CertificateExtension}
+        internal CRLDistributionPoints(CertificateExtension u)
             :base(u)
             {
             DistributionPoints = new DistributionPoint[0];
@@ -34,6 +35,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

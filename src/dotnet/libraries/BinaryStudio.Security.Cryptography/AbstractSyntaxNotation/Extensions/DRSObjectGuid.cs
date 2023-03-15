@@ -9,7 +9,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     internal class DRSObjectGuid : CertificateExtension
         {
         public Guid Value { get; }
-        public DRSObjectGuid(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal DRSObjectGuid(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -19,6 +21,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

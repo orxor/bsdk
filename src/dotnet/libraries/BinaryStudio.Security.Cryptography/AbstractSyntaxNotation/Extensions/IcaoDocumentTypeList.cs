@@ -6,9 +6,10 @@ using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /**
      * {joint-iso-itu-t(2) international-organizations(23) 136 mrtd(1) security(1) extensions(6) documentTypeList(2)}
      * {2.23.136.1.1.6.2}
@@ -34,13 +35,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * -- single letter denotes all document types starting with that letter
      * DocumentType ::= PrintableString(1..2)
      */
+    [UsedImplicitly]
     [Asn1CertificateExtension(IcaoObjectIdentifiers.IcaoMrtdSecurityExtensionsDocumentTypeList)]
     [Asn1CertificateExtension("2.23.136.1.1.4")]
     internal class IcaoDocumentTypeList : CertificateExtension
         {
         public Int32 Version { get; }
         public IList<String> TypeList { get; }
-        public IcaoDocumentTypeList(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal IcaoDocumentTypeList(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -71,6 +75,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             TypeList = new ReadOnlyCollection<String>(TypeList);
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

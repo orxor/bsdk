@@ -2,6 +2,7 @@
 using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
@@ -20,10 +21,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      *   SYNTAX NULL IDENTIFIED BY id-icao-mrtd-security-extensions-nameChange
      * }
      */
+    [UsedImplicitly]
     [Asn1CertificateExtension("2.23.136.1.1.6.1")]
     public class IcaoMrtdSecurityNameChange : CertificateExtension
         {
-        public IcaoMrtdSecurityNameChange(CertificateExtension source)
+        #region ctor{CertificateExtension}
+        internal IcaoMrtdSecurityNameChange(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -31,6 +34,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             if (octet.Count != 1)        { throw new ArgumentOutOfRangeException(nameof(source)); }
             if (!(octet[0] is Asn1Null)) { throw new ArgumentOutOfRangeException(nameof(source)); }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

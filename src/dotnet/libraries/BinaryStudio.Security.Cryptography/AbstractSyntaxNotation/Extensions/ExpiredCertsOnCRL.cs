@@ -2,14 +2,18 @@
 using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
+    [UsedImplicitly]
     [Asn1CertificateExtension("2.5.29.60")]
     public sealed class ExpiredCertsOnCRL : CertificateExtension
         {
         public DateTime Value { get; }
-        public ExpiredCertsOnCRL(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal ExpiredCertsOnCRL(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -19,6 +23,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

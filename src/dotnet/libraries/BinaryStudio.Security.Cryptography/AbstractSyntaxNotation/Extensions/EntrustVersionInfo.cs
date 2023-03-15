@@ -3,15 +3,19 @@ using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
+    [UsedImplicitly]
     [Asn1CertificateExtension("1.2.840.113533.7.65.0")]
-    internal class Asn1EntrustVersionInfo : CertificateExtension
+    internal class EntrustVersionInfo : CertificateExtension
         {
         public String Version { get; }
         public Asn1BitString Flags { get; }
-        public Asn1EntrustVersionInfo(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal EntrustVersionInfo(CertificateExtension source)
             :base(source)
             {
             var octet = Body;
@@ -22,6 +26,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

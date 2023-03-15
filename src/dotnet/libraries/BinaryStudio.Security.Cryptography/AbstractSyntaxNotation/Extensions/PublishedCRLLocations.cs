@@ -5,20 +5,24 @@ using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 14}
      * 1.3.6.1.4.1.311.21.14
      * /ISO/Identified-Organization/6/1/4/1/311/21/14
      * szOID_CRL_SELF_CDP
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CRL_SELF_CDP)]
     internal class Asn1PublishedCRLLocations : CertificateExtension
         {
         public IList<IX509GeneralName> PublishedCRLLocations { get; }
-        public Asn1PublishedCRLLocations(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal Asn1PublishedCRLLocations(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -32,6 +36,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

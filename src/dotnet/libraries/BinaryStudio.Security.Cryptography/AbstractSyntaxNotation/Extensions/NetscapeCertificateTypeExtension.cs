@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
@@ -17,7 +16,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     public sealed class NetscapeCertificateTypeExtension : CertificateExtension
         {
         public NetscapeCertificateType Type { get; }
-        public NetscapeCertificateTypeExtension(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal NetscapeCertificateTypeExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -27,6 +28,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>

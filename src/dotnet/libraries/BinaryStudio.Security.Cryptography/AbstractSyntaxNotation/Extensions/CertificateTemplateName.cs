@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_ENROLL_CERTTYPE_EXTENSION)]
-    internal sealed class Asn1CertificateTemplateNameExtension : CertificateExtension
+    internal sealed class CertificateTemplateNameExtension : CertificateExtension
         {
         public String TemplateName { get; }
-        public Asn1CertificateTemplateNameExtension(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal CertificateTemplateNameExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -20,6 +23,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

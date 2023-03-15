@@ -5,7 +5,7 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_SUBJECT_KEY_ID)]
     public sealed class CertificateSubjectKeyIdentifier : CertificateExtension
         {

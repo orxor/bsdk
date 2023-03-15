@@ -4,19 +4,23 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation.Extensions
-{
+    {
     /**
      * netscape OBJECT IDENTIFIER ::= { 2 16 840 1 113730 }
      * netscape-cert-extension OBJECT IDENTIFIER :: = { netscape 1 }
      * netscape-comment OBJECT IDENTIFIER ::= { netscape-cert-extension 13 }
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_NETSCAPE_COMMENT)]
     internal class NetscapeComment : CertificateExtension
         {
         public String Comment { get; }
-        public NetscapeComment(Asn1Object source)
+
+        #region ctor{CertificateExtension}
+        internal NetscapeComment(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -26,6 +30,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

@@ -4,9 +4,10 @@ using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {joint-iso-itu-t(2) ds(5) certificateExtension(29) privateKeyUsagePeriod(16)}
      * 2.5.29.16
@@ -15,13 +16,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_PRIVATEKEY_USAGE_PERIOD)]
-    public class Asn1CertificatePrivateKeyUsagePeriodExtension : CertificateExtension
+    [UsedImplicitly]
+    public class CertificatePrivateKeyUsagePeriodExtension : CertificateExtension
         {
         public DateTime? NotBefore { get; }
         public DateTime? NotAfter  { get; }
 
         #region ctor{CertificateExtension}
-        internal Asn1CertificatePrivateKeyUsagePeriodExtension(CertificateExtension source)
+        internal CertificatePrivateKeyUsagePeriodExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -35,7 +37,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             }
         #endregion
         #region ctor{DateTime,DateTime}
-        public Asn1CertificatePrivateKeyUsagePeriodExtension(DateTime NotBefore, DateTime NotAfter)
+        public CertificatePrivateKeyUsagePeriodExtension(DateTime NotBefore, DateTime NotAfter)
             :base(ObjectIdentifiers.szOID_PRIVATEKEY_USAGE_PERIOD,false)
             {
             this.NotBefore = NotBefore;

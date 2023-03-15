@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /**
      * {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 7}
      * {1.3.6.1.4.1.311.21.7}
@@ -21,12 +21,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      *   templateMinorVersion    INTEGER (0..4294967295) OPTIONAL
      * }
      */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTIFICATE_TEMPLATE)]
     internal class Asn1CertificateTemplateInformation : CertificateExtension
         {
         public Asn1ObjectIdentifier TemplateId { get; }
         public Version Version { get; }
-        public Asn1CertificateTemplateInformation(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal Asn1CertificateTemplateInformation(CertificateExtension source)
             : base(source)
             {
             Version = new Version(0,0);
@@ -46,6 +49,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
