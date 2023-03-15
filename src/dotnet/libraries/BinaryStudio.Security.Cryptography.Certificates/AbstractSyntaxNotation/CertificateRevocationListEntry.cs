@@ -27,8 +27,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
         #endregion
-        #region ctor{X509Certificate,DateTime,X509CrlReason}
-        public CertificateRevocationListEntry(X509Certificate Certificate,DateTime InvalidityDate, X509CrlReason ReasonCode)
+        #region ctor{Asn1Certificate,DateTime,X509CrlReason}
+        public CertificateRevocationListEntry(Asn1Certificate Certificate,DateTime InvalidityDate, X509CrlReason ReasonCode)
             : base(new Asn1PrivateObject(0))
             {
             SerialNumber = Certificate.SerialNumber;

@@ -270,7 +270,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
         #region M:MakeCRL(ALG_ID,DateTime,BigInteger,RequestSecureString,X509Certificate,{out}X509CertificateRevocationList,X509Certificate[])
         private static void MakeCRL(ALG_ID AlgId, DateTime DateTime, BigInteger Number, RequestSecureString SecureCode, X509Certificate IssuerCertificate, out X509CertificateRevocationList CRL,X509Certificate[] certificates) {
             var Builder = new X509CertificateRevocationListBuilder(DateTime.AddMonths(-1),DateTime.AddMonths(10),Number);
-            Builder.Entries.AddRange(certificates.Select(i => new CertificateRevocationListEntry(i, DateTime.AddMonths(-1),X509CrlReason.Superseded)));
+            Builder.Entries.AddRange(certificates.Select(i => new CertificateRevocationListEntry(i.Source, DateTime.AddMonths(-1),X509CrlReason.Superseded)));
             Builder.Build(IssuerCertificate, SecureCode, out CRL);
             }
         #endregion
