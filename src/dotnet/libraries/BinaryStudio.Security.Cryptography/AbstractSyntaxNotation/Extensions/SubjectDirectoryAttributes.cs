@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {joint-iso-itu-t(2) ds(5) certificateExtension(29) subjectDirectoryAttributes(9)}
      * 2.5.29.9
@@ -15,11 +15,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Subject directory attributes certificate extension
      * IETF RFC 5280
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_SUBJECT_DIRECTORY_ATTRIBUTES)]
-    internal class Asn1SubjectDirectoryAttributes : CertificateExtension
+    internal class SubjectDirectoryAttributes : CertificateExtension
         {
         public IList<Asn1CertificateAttribute> Attributes { get; }
-        public Asn1SubjectDirectoryAttributes(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal SubjectDirectoryAttributes(CertificateExtension source)
             : base(source)
             {
             Attributes = new List<Asn1CertificateAttribute>();
@@ -35,6 +38,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             Attributes = new ReadOnlyCollection<Asn1CertificateAttribute>(Attributes);
             }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

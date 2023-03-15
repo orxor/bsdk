@@ -241,14 +241,14 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 if (SourceCertificate.Source.ExtensionsFieldIndex != -1) {
                     Builder[0][SourceCertificate.Source.ExtensionsFieldIndex] = new Asn1ContextSpecificObject(3,
                         new Asn1Sequence(new List<Asn1Object>(SourceCertificate.Source.Extensions){
-                            new Asn1CertificateExtendedKeyUsageExtension(EKU)
+                            new CertificateExtendedKeyUsage(EKU)
                             }));
                     }
                 else
                     {
                     Builder[0].Add(new Asn1ContextSpecificObject(3,
                         new Asn1Sequence(new List<Asn1Object>{
-                            new Asn1CertificateExtendedKeyUsageExtension(EKU)
+                            new CertificateExtendedKeyUsage(EKU)
                             })));
                     }
                 using (var o = new MemoryStream()) {

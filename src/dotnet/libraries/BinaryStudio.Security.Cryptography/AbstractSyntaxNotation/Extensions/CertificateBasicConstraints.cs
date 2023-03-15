@@ -4,9 +4,10 @@ using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /**
      * {joint-iso-itu-t(2) ds(5) certificateExtension(29) basicConstraints(19)}
      * {2.5.29.19}
@@ -20,6 +21,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      *   pathLenConstraint       INTEGER (0..MAX) OPTIONAL
      * }
      */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_BASIC_CONSTRAINTS2)]
     public sealed class Asn1CertificateBasicConstraintsExtension : CertificateExtension
         {

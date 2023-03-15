@@ -2,11 +2,11 @@
 using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {iso(1) identified-organization(3) dod(6) internet(1) security(5) mechanisms(5) pkix(7) pe(1) authorityInfoAccess(1)}
      * 1.3.6.1.5.5.7.1.1
@@ -14,11 +14,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Certificate authority information access
      * IETF RFC 5280
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_AUTHORITY_INFO_ACCESS)]
     internal sealed class Asn1CertificateAuthorityInformationAccessExtension : CertificateExtension
         {
         public Asn1CertificateAuthorityInformationAccessCollection AccessDescriptions { get; }
-        public Asn1CertificateAuthorityInformationAccessExtension(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal Asn1CertificateAuthorityInformationAccessExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -30,6 +33,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

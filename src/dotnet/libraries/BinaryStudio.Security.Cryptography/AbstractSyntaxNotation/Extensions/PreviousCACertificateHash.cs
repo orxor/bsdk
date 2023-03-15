@@ -6,7 +6,7 @@ using BinaryStudio.Serialization;
 using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /**
      * {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 2}
      * {1.3.6.1.4.1.311.21.2}

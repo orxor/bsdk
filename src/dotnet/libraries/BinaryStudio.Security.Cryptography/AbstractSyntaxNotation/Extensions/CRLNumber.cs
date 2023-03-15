@@ -7,7 +7,7 @@ using BinaryStudio.Serialization;
 using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {joint-iso-itu-t(2) ds(5) certificateExtension(29) cRLNumber(20)}
      * 2.5.29.20

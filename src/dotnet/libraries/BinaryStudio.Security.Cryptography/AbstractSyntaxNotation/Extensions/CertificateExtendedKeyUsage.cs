@@ -4,9 +4,10 @@ using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     /*
      * {joint-iso-itu-t(2) ds(5) certificateExtension(29) extKeyUsage(37)}
      * 2.5.29.37
@@ -14,13 +15,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Extended key usage 
      * IETF RFC 5280
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_ENHANCED_KEY_USAGE)]
-    public sealed class Asn1CertificateExtendedKeyUsageExtension : CertificateExtension
+    public sealed class CertificateExtendedKeyUsage : CertificateExtension
         {
         public Asn1ObjectIdentifierCollection Value { get; }
 
         #region ctor{CertificateExtension}
-        internal Asn1CertificateExtendedKeyUsageExtension(CertificateExtension source)
+        internal CertificateExtendedKeyUsage(CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -32,7 +34,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             }
         #endregion
         #region ctor{{param}String[]}
-        public Asn1CertificateExtendedKeyUsageExtension(params String[] identifiers)
+        public CertificateExtendedKeyUsage(params String[] identifiers)
             : base(ObjectIdentifiers.szOID_ENHANCED_KEY_USAGE,false)
             {
             Value = new Asn1ObjectIdentifierCollection(identifiers.Select(i => new Asn1ObjectIdentifier(i)));

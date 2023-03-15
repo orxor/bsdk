@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 using JetBrains.Annotations;
 

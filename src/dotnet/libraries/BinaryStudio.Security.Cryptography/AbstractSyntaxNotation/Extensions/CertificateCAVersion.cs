@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
@@ -12,11 +12,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * /ISO/Identified-Organization/6/1/4/1/311/21/1
      * Certificate services Certification Authority (CA) version
      * */
+    [UsedImplicitly]
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTSRV_CA_VERSION)]
-    internal sealed class Asn1CertificateCAVersionExtension : CertificateExtension
+    internal sealed class CertificateCAVersion : CertificateExtension
         {
         public Version Version { get; }
-        public Asn1CertificateCAVersionExtension(CertificateExtension source)
+
+        #region ctor{CertificateExtension}
+        internal CertificateCAVersion(CertificateExtension source)
             : base(source)
             {
             Version = new Version(0, 0);
@@ -48,6 +51,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

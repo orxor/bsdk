@@ -5,7 +5,7 @@ using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
-{
+    {
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_REASON_CODE)]
     public sealed class CRLReason : CertificateExtension
         {
