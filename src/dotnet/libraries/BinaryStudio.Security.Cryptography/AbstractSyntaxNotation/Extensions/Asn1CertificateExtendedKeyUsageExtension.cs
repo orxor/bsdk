@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
@@ -16,10 +15,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_ENHANCED_KEY_USAGE)]
-    internal sealed class Asn1CertificateExtendedKeyUsageExtension : Asn1CertificateExtension
+    public sealed class Asn1CertificateExtendedKeyUsageExtension : Asn1CertificateExtension
         {
         public Asn1ObjectIdentifierCollection Value { get; }
-        public Asn1CertificateExtendedKeyUsageExtension(Asn1CertificateExtension source)
+
+        #region ctor{Asn1CertificateExtension}
+        internal Asn1CertificateExtendedKeyUsageExtension(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -29,6 +30,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
+        #region ctor{{param}String[]}
+        public Asn1CertificateExtendedKeyUsageExtension(params String[] identifiers)
+            : base(ObjectIdentifiers.szOID_ENHANCED_KEY_USAGE,false)
+            {
+            Value = new Asn1ObjectIdentifierCollection(identifiers.Select(i => new Asn1ObjectIdentifier(i)));
+            Body = new Asn1OctetString{
+                new Asn1Sequence(Value)
+                };
+            }
+        #endregion
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

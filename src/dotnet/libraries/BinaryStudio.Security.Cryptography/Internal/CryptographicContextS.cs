@@ -104,6 +104,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean ICryptoAPI.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero) { return CertAddCRLContextToStore(Store,Context,Disposition,Zero); }
         Boolean ICryptoAPI.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext) { return CertAddCRLContextToStore(Store,Context,Disposition,out StoreContext); }
         Boolean ICryptoAPI.CertDeleteCRLFromStore(IntPtr Context) { return CertDeleteCRLFromStore(Context); }
+        IntPtr ICryptoAPI.CertDuplicateCRLContext(IntPtr Context) { return CertDuplicateCRLContext(Context); }
+        IntPtr ICryptoAPI.CertCreateCRLContext(Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPArray)] Byte[] CrlEncodedBytes,Int32 CrlEncodedLength) { return CertCreateCRLContext(CertEncodingType,CrlEncodedBytes,CrlEncodedLength); }
 
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern bool CertControlStore([In] IntPtr CertStore, [In] uint Flags, [In] uint CtrlType, [In] IntPtr CtrlPara);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStoreLocation(Int32 flags, IntPtr args, PFN_CERT_ENUM_SYSTEM_STORE_LOCATION pfn);
@@ -112,7 +114,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStore(CERT_SYSTEM_STORE_FLAGS flags, IntPtr pvSystemStoreLocationPara, IntPtr pvArg, CertEnumSystemStoreCallbackIntPtr Callback);
         [DllImport("crypt32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumPhysicalStore(IntPtr pvSystemStore, CERT_SYSTEM_STORE_FLAGS flags, IntPtr pvArg, PFN_CERT_ENUM_PHYSICAL_STORE Callback);
         [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertVerifyCertificateChainPolicy(IntPtr Policy, IntPtr ChainContext, ref CERT_CHAIN_POLICY_PARA PolicyPara, ref CERT_CHAIN_POLICY_STATUS PolicyStatus);
-        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertCreateCRLContext(UInt32 CertEncodingType, [MarshalAs(UnmanagedType.LPArray)] Byte[] blob, Int32 size);
         [DllImport("crypt32.dll", CharSet = CharSet.Auto, SetLastError = true)] private static extern IntPtr CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext);
         [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertCloseStore(IntPtr handle, UInt32 flags);
         [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern unsafe Boolean CertGetCertificateChain(IntPtr ChainEngine, IntPtr Context, ref FILETIME time, IntPtr AdditionalStore, ref CERT_CHAIN_PARA ChainPara, CERT_CHAIN_FLAGS Flags, IntPtr Reserved, CERT_CHAIN_CONTEXT** ChainContext);
@@ -191,6 +192,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero);
         [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext);
         [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertDeleteCRLFromStore(IntPtr Context);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCRLContext(IntPtr Context);
+        [DllImport("crypt32.dll", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertCreateCRLContext(Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPArray)] Byte[] CrlEncodedBytes,Int32 CrlEncodedLength);
         [DllImport("crypt32.dll", SetLastError = true, EntryPoint = "PFXExportCertStoreEx")] private static extern Boolean CertExportCertStore(IntPtr Store,ref CRYPT_DATA_BLOB PFX,IntPtr Password,IntPtr Para,Int32 Flags);
 
         /// <summary>Gets the service object of the specified type.</summary>

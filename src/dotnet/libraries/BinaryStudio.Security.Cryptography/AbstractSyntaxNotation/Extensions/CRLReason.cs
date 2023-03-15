@@ -10,7 +10,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     public sealed class CRLReason : Asn1CertificateExtension
         {
         public X509CrlReason ReasonCode { get; }
-        public CRLReason(Asn1CertificateExtension source)
+
+        #region ctor{Asn1CertificateExtension}
+        internal CRLReason(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -19,6 +21,22 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     var content = octet[0].Content.ToArray();
                     ReasonCode = (X509CrlReason)(Int32)content[0];
                     }
+                }
+            }
+        #endregion
+        #region ctor{X509CrlReason}
+        public CRLReason(X509CrlReason ReasonCode)
+            : base(ObjectIdentifiers.NSS_OID_X509_REASON_CODE,false)
+            {
+            this.ReasonCode = ReasonCode;
+            }
+        #endregion
+
+        protected override void BuildBody(ref Asn1OctetString o) {
+            if (o == null) {
+                o = new Asn1OctetString{
+                    new Asn1Enum<X509CrlReason>(ReasonCode)
+                    };
                 }
             }
 

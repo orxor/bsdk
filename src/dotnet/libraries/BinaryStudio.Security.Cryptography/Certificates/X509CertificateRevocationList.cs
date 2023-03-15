@@ -22,16 +22,25 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String Issuer           { get { return Source.Issuer.ToString(); }}
         public Asn1CertificateExtensionCollection Extensions { get { return Source.Extensions; }}
 
+        public unsafe Byte[] Bytes {get{
+            var context = (CRL_CONTEXT*)Context;
+            var r = new Byte[context->CrlEncodedSize];
+            for (var i = 0; i < context->CrlEncodedSize; ++i) {
+                r[i] = context->CrlEncodedData[i];
+                }
+            return r;
+            }}
+
         public X509CertificateRevocationList(IntPtr context) {
             if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
-            Context = Entries.CertDuplicateCertificateContext(context);
+            Context = Entries.CertDuplicateCRLContext(context);
             Source = BuildSource(Context);
             }
 
         public X509CertificateRevocationList(Byte[] source) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             Source = BuildSource(source);
-            Context = Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
+            Context = Entries.CertCreateCRLContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
             if (Context == IntPtr.Zero) {
                 var hr = GetHRForLastWin32Error();
                 Marshal.ThrowExceptionForHR((Int32)hr);

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DirectoryServices;
+using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Serialization;
 using Newtonsoft.Json;
@@ -95,6 +97,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1Certificate(Asn1Object o)
             : base(o)
             {
+            Extensions = new Asn1CertificateExtensionCollection(EmptyArray<Asn1CertificateExtension>.Value);
             State |= ObjectState.Failed;
             if (o is Asn1Sequence u) {
                 if ((u[0] is Asn1Sequence) &&
@@ -127,10 +130,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         }
                     #endregion
                     #region Extensions
-                    var contextspecifics = u[0].Where(i => (i.Class == Asn1ObjectClass.ContextSpecific)).ToArray();
-                    var specific = contextspecifics.FirstOrDefault(i => ((Asn1ContextSpecificObject)i).Type == 3);
+                    var contextspecifics = new List<Tuple<SByte,Int32,Asn1ContextSpecificObject>>();
+                    var index = 0;
+                    foreach (var item in u[0]) {
+                        if (item is Asn1ContextSpecificObject i) {
+                            contextspecifics.Add(Tuple.Create(i.Type,index,i));
+                            }
+                        index++;
+                        }
+                    var specific = contextspecifics.FirstOrDefault(i => i.Item1 == 3);
                     if (!ReferenceEquals(specific, null)) {
-                        Extensions = new Asn1CertificateExtensionCollection(specific[0].Select(i => Asn1CertificateExtension.From(new Asn1CertificateExtension(i))));
+                        ExtensionsFieldIndex = specific.Item2;
+                        Extensions = new Asn1CertificateExtensionCollection(specific.Item3[0].Select(i => Asn1CertificateExtension.From(new Asn1CertificateExtension(i))));
                         }
                     #endregion
                     Country = GetCountry(Subject) ?? GetCountry(Issuer);
@@ -195,5 +206,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         internal Int32 IssuerFieldIndex = -1;
         internal Int32 SerialNumberFieldIndex = -1;
         internal Int32 ValidityFieldIndex = -1;
+        internal Int32 ExtensionsFieldIndex = -1;
         }
     }

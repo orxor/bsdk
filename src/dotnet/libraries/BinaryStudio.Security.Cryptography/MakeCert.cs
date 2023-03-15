@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
@@ -43,7 +44,7 @@ namespace BinaryStudio.Security.Cryptography
                             ExtensionsA[i].pszObjId = (IntPtr)manager.StringToMem(Extensions[i].Identifier.Value,Encoding.ASCII);
                             ExtensionsA[i].fCritical = Extensions[i].IsCritical;
                             using (var MemoryStream = new MemoryStream()) {
-                                Extensions[i].Body[0].WriteTo(MemoryStream);
+                                Extensions[i].Body[0].WriteTo(MemoryStream,true);
                                 var block = MemoryStream.ToArray();
                                 File.WriteAllBytes("x.bin",block);
                                 ExtensionsA[i].Value.Size = block.Length;
@@ -192,7 +193,7 @@ namespace BinaryStudio.Security.Cryptography
                 context.SecureCode = SecureCode;
                 using (var o = new MemoryStream()) {
                     Builder[0].WriteTo(o,true);
-                    using (var engine = new CryptHashAlgorithm(context, GetAlgId(IssuerCertificate.HashAlgorithm))) {
+                    using (var engine = new CryptHashAlgorithm(context, IssuerCertificate.HashAlgorithm)) {
                         o.Seek(0,SeekOrigin.Begin);
                         engine.Compute(o);
                         engine.SignHash(IssuerCertificate.KeySpec,out var digest,out var signature);
@@ -248,6 +249,25 @@ namespace BinaryStudio.Security.Cryptography
                     using (var context = new CryptographicContextI(r)) {
                         foreach (var alg in context.SupportedAlgorithms) {
                             if (alg.Key == AlgId) {
+                                return type.ProviderType;
+                                }
+                            }
+                        }
+                    }
+                }
+            return CRYPT_PROVIDER_TYPE.AUTO;
+            }
+        #endregion
+        #region M:ProviderTypeFromAlgId(Oid):CRYPT_PROVIDER_TYPE
+        public static CRYPT_PROVIDER_TYPE ProviderTypeFromAlgId(Oid AlgId) {
+            EnsureAlgIdCache();
+            if (!SAlgId.TryGetValue(AlgId.Value,out var AlgIdI)) { AlgIdI = OidToAlgId(AlgId); }
+            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            foreach (var type in RegisteredProviders) {
+                if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                    using (var context = new CryptographicContextI(r)) {
+                        foreach (var alg in context.SupportedAlgorithms) {
+                            if (alg.Key == AlgIdI) {
                                 return type.ProviderType;
                                 }
                             }

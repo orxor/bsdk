@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography
@@ -22,6 +23,14 @@ namespace BinaryStudio.Security.Cryptography
             Context = context;
             }
         #endregion
+        #region ctor{CryptographicContext,Oid}
+        public CryptHashAlgorithm(CryptographicContext context, Oid algorithm) {
+            if (context == null) { throw new ArgumentNullException(nameof(context)); }
+            Algorithm = CryptographicContext.GetAlgId(algorithm);
+            Context = context;
+            }
+        #endregion
+
         #region M:Compute(Stream):Byte[]
         public Byte[] Compute(Stream stream) {
             if (stream == null) { throw new ArgumentNullException(nameof(stream)); }
@@ -76,15 +85,15 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
-
-        public void SignHash(KEY_SPEC_TYPE KeySpec,out Byte[] digest, out Byte[] signature)
-            {
-            digest = HashValue;
+        #region M:SignHash(KEY_SPEC_TYPE,{out}Digest,{out}Signature)
+        public void SignHash(KEY_SPEC_TYPE KeySpec,out Byte[] Digest, out Byte[] Signature) {
+            if (HashValue == null) { throw new InvalidOperationException(); }
+            Digest = HashValue;
             var SignatureLength = 0;
             Validate(Entries.CryptSignHash(Handle,KeySpec, null, ref SignatureLength));
-            signature = new Byte[SignatureLength];
-            Validate(Entries.CryptSignHash(Handle,KeySpec, signature, ref SignatureLength));
+            Validate(Entries.CryptSignHash(Handle,KeySpec, Signature = new Byte[SignatureLength], ref SignatureLength));
             }
+        #endregion
 
         private const Int32 HP_ALGID                = 0x0001;  // Hash algorithm
         private const Int32 HP_HASHVAL              = 0x0002;  // Hash value

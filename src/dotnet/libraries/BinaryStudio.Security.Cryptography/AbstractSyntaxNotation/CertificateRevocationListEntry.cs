@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
+using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public class Asn1CertificateRevocationListEntry : Asn1LinkObject
+    public class CertificateRevocationListEntry : Asn1LinkObject
         {
         public String SerialNumber { get; }
         public DateTime RevocationDate { get; }
         public IList<Asn1CertificateExtension> Extensions { get; }
-        internal Asn1CertificateRevocationListEntry(Asn1Object source)
+
+        #region ctor{Asn1Object}
+        internal CertificateRevocationListEntry(Asn1Object source)
             : base(source)
             {
             SerialNumber = String.Join(String.Empty, ((Asn1Integer)source[0]).Value.ToByteArray().Select(i => i.ToString("X2")));
@@ -21,6 +25,27 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     i => Asn1CertificateExtension.From(
                         new Asn1CertificateExtension(i))).ToArray();
                 }
+            }
+        #endregion
+        #region ctor{X509Certificate,DateTime,X509CrlReason}
+        public CertificateRevocationListEntry(X509Certificate Certificate,DateTime InvalidityDate, X509CrlReason ReasonCode)
+            : base(new Asn1PrivateObject(0))
+            {
+            SerialNumber = Certificate.SerialNumber;
+            RevocationDate = InvalidityDate;
+            Extensions = new Asn1CertificateExtension[]{
+                new CRLReason(ReasonCode) 
+                };
+            }
+        #endregion
+
+        public override void WriteTo(Stream target, Boolean force = false) {
+            var r = new Asn1Sequence {
+                new Asn1Integer(SerialNumber),
+                new Asn1UtcTime(RevocationDate),
+                new Asn1Sequence(Extensions)
+                };
+            r.WriteTo(target, true);
             }
 
         /// <summary>Returns a string that represents the current object.</summary>

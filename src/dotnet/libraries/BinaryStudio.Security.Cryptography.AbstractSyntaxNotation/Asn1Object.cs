@@ -36,7 +36,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected Int64 length;
         /*[DebuggerBrowsable(DebuggerBrowsableState.Never)]*/ protected ObjectState State;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected ReadOnlyMappingStream content;
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)] private List<Asn1Object> sequence = new List<Asn1Object>();
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected List<Asn1Object> sequence = new List<Asn1Object>();
 
         public abstract Asn1ObjectClass Class { get; }
         #if NET35
@@ -49,7 +49,20 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #else
         [DebuggerBrowsable(DebuggerBrowsableState.Never)] protected internal virtual Boolean IsDecoded { get { return State.HasFlag(ObjectState.Decoded); }}
         [Browsable(false)] public virtual Boolean IsFailed  { get { return State.HasFlag(ObjectState.Failed);  }}
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsExplicitConstructed  { get { return State.HasFlag(ObjectState.ExplicitConstructed); }}
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsExplicitConstructed  {
+            get { return State.HasFlag(ObjectState.ExplicitConstructed); }
+            internal set
+                {
+                if (value)
+                    {
+                    State |= ObjectState.ExplicitConstructed;
+                    }
+                else
+                    {
+                    State &= ~ObjectState.ExplicitConstructed;
+                    }
+                }
+            }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsImplicitConstructed  { get { return State.HasFlag(ObjectState.ImplicitConstructed); }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] public virtual Boolean IsIndefiniteLength     { get { return State.HasFlag(ObjectState.Indefinite);          }}
         [DebuggerBrowsable(DebuggerBrowsableState.Never)][Browsable(false)] protected internal virtual Boolean IsDisposed { get { return State.HasFlag(ObjectState.Disposed);            }}
@@ -638,6 +651,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             }
         #endregion
+
+        internal void AddRange(IEnumerable<Asn1Object> values) {
+            if (values != null) {
+                foreach (var value in values) {
+                    Add(value);
+                    }
+                }
+            }
+
         #region M:WriteTo(IJsonWriter)
         public virtual void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }

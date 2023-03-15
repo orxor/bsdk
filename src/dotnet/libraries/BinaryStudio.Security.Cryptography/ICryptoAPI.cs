@@ -58,5 +58,7 @@ namespace BinaryStudio.Security.Cryptography
         Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero);
         Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext);
         Boolean CertDeleteCRLFromStore(IntPtr Context);
+        IntPtr CertDuplicateCRLContext(IntPtr Context);
+        IntPtr CertCreateCRLContext(Int32 CertEncodingType,Byte[] CrlEncodedBytes,Int32 CrlEncodedLength);
         }
     }

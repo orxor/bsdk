@@ -400,10 +400,9 @@ namespace BinaryStudio.Security.Cryptography
             using (var context = RequestSigningSecureString(Certificate,RequestSecureString)) {
                 using (var engine = new CryptHashAlgorithm(context, GetAlgId(Certificate.HashAlgorithm))) {
                     Digest = engine.Compute(InputStream);
-                    Int32 SignatureLength = 0;
-                    Validate(entries.CryptSignHash(engine.Handle,Certificate.KeySpec, Signature, ref SignatureLength));
-                    Signature = new Byte[SignatureLength];
-                    Validate(entries.CryptSignHash(engine.Handle,Certificate.KeySpec, Signature, ref SignatureLength));
+                    var SignatureLength = 0;
+                    Validate(entries.CryptSignHash(engine.Handle,Certificate.KeySpec, null, ref SignatureLength));
+                    Validate(entries.CryptSignHash(engine.Handle,Certificate.KeySpec, Signature = new Byte[SignatureLength], ref SignatureLength));
                     }
                 }
             }
@@ -482,7 +481,7 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:GetAlgId(Oid):ALG_ID
-        internal static ALG_ID GetAlgId(Oid algid) {
+        public static ALG_ID GetAlgId(Oid algid) {
             if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
             return GetAlgId(algid.Value);
             }

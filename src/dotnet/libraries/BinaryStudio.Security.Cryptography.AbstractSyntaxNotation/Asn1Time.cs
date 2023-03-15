@@ -167,14 +167,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return null;
             }
         #endregion
-        #region M:BuildContent
-        protected override void BuildContent() {
-            var InputContent = Encoding.ASCII.GetBytes($"{Value.ToString("yyyyMMddHHmmss")}Z");
-            length = InputContent.Length;
-            content = new ReadOnlyMemoryMappingStream(InputContent);
-            size = length + GetHeader().Length;
-            }
-        #endregion
         #region M:WriteTo(IJsonWriter)
         public override void WriteTo(IJsonWriter writer) {
             if (writer == null) { throw new ArgumentNullException(nameof(writer)); }

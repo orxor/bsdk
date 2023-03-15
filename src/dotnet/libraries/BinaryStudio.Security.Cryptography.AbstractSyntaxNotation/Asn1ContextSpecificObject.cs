@@ -38,7 +38,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 foreach (var i in args) {
                     Add(i);
                     size += i.Size;
-                    i.WriteTo(o);
+                    i.WriteTo(o,true);
                     }
                 this.length = size;
                 this.content = new ReadOnlyMemoryMappingStream(o.ToArray());
@@ -46,6 +46,21 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             IsReadOnly = true;
             State |= ObjectState.Decoded|ObjectState.ExplicitConstructed;
+            }
+        #endregion
+
+        #region M:BuildContent
+        protected override void BuildContent() {
+            var size = 0L;
+            using (var o = new MemoryStream()) {
+                foreach (var i in sequence) {
+                    size += i.Size;
+                    i.WriteTo(o,true);
+                    }
+                this.length = size;
+                this.content = new ReadOnlyMemoryMappingStream(o.ToArray());
+                this.size = size + GetHeader().Length;
+                }
             }
         #endregion
         }

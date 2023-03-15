@@ -9,12 +9,33 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    /// <summary>
+    /// CertificateList  ::=  SEQUENCE {
+    ///   tbsCertList          TBSCertList,
+    ///   signatureAlgorithm   AlgorithmIdentifier,
+    ///   signatureValue       BIT STRING
+    ///   }
+    ///
+    /// TBSCertList  ::=  SEQUENCE  {
+    ///   version                 Version OPTIONAL, # if present, MUST be v2
+    ///   signature               AlgorithmIdentifier,
+    ///   issuer                  Name,
+    ///   thisUpdate              Time,
+    ///   nextUpdate              Time OPTIONAL,
+    ///   revokedCertificates     SEQUENCE OF SEQUENCE  {
+    ///     userCertificate         CertificateSerialNumber,
+    ///     revocationDate          Time,
+    ///     crlEntryExtensions      Extensions OPTIONAL # if present, version MUST be v2
+    ///     }  OPTIONAL,
+    ///   crlExtensions           [0]  EXPLICIT Extensions OPTIONAL # if present, version MUST be v2
+    ///   }
+    /// </summary>
     public class Asn1CertificateRevocationList : Asn1LinkObject
         {
         public Int32 Version { get; }
         public DateTime  EffectiveDate { get; }
         public DateTime? NextUpdate { get; }
-        public IList<Asn1CertificateRevocationListEntry> Entries { get; }
+        public IList<CertificateRevocationListEntry> Entries { get; }
         public X509RelativeDistinguishedNameSequence Issuer { get;private set; }
         public Asn1CertificateExtensionCollection Extensions { get; }
         public String Country { get; }
@@ -34,7 +55,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1CertificateRevocationList(Asn1Object o) :
             base(o)
             {
-            Entries = EmptyArray<Asn1CertificateRevocationListEntry>.Value;
+            Entries = EmptyArray<CertificateRevocationListEntry>.Value;
             State |= ObjectState.Failed;
             if (o is Asn1Sequence u) {
                 if (u.Count == 3) {
@@ -42,6 +63,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         (u[1] is Asn1Sequence) &&
                         (u[2] is Asn1BitString))
                         {
+                        var count = o[0].Count;
                         Version = (Int32)(Asn1Integer)u[0][0];
                         Issuer = new X509RelativeDistinguishedNameSequence(o[0][2].
                             Select(j => new KeyValuePair<Asn1ObjectIdentifier,String>(
@@ -52,15 +74,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                             NextUpdate = (Asn1Time)o[0][4];
                             i++;
                             }
-                        if (o[0][i] is Asn1Sequence) {
-                            var r = new List<Asn1CertificateRevocationListEntry>();
+                        if ((i < count) && (o[0][i] is Asn1Sequence)) {
+                            var r = new List<CertificateRevocationListEntry>();
                             foreach (var e in o[0][i]) {
-                                r.Add(new Asn1CertificateRevocationListEntry(e));
+                                r.Add(new CertificateRevocationListEntry(e));
                                 }
                             Entries = r.ToArray();
                             i++;
                             }
-                        if (o[0][i] is Asn1ContextSpecificObject) {
+                        if ((i < count) && (o[0][i] is Asn1ContextSpecificObject)) {
                             var specific = (Asn1ContextSpecificObject)o[0][i];
                             if (specific.Type == 0) {
                                 Extensions = new Asn1CertificateExtensionCollection(o[0][i][0].Select(x => Asn1CertificateExtension.From(new Asn1CertificateExtension(x))).ToArray());

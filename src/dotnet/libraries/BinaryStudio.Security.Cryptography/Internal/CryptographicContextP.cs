@@ -104,6 +104,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean ICryptoAPI.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero) { return CertAddCRLContextToStore(Store,Context,Disposition,Zero); }
         Boolean ICryptoAPI.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext) { return CertAddCRLContextToStore(Store,Context,Disposition,out StoreContext); }
         Boolean ICryptoAPI.CertDeleteCRLFromStore(IntPtr Context) { return CertDeleteCRLFromStore(Context); }
+        IntPtr ICryptoAPI.CertDuplicateCRLContext(IntPtr Context) { return CertDuplicateCRLContext(Context); }
+        IntPtr ICryptoAPI.CertCreateCRLContext(Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPArray)] Byte[] CrlEncodedBytes,Int32 CrlEncodedLength) { return CertCreateCRLContext(CertEncodingType,CrlEncodedBytes,CrlEncodedLength); }
 
         [DllImport("libcrypt32", CharSet = CharSet.Auto, SetLastError = true)] private static extern bool CertControlStore([In] IntPtr CertStore, [In] uint Flags, [In] uint CtrlType, [In] IntPtr CtrlPara);
         [DllImport("libcrypt32", CharSet = CharSet.Unicode, SetLastError = true)] private static extern Boolean CertEnumSystemStoreLocation(Int32 flags, IntPtr args, PFN_CERT_ENUM_SYSTEM_STORE_LOCATION pfn);
@@ -193,6 +195,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libadvapi32", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero);
         [DllImport("libadvapi32", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext);
         [DllImport("libadvapi32", CharSet = CharSet.None, SetLastError = true)] private static extern Boolean CertDeleteCRLFromStore(IntPtr Context);
+        [DllImport("libadvapi32", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertDuplicateCRLContext(IntPtr Context);
+        [DllImport("libadvapi32", CharSet = CharSet.None, SetLastError = true)] private static extern IntPtr CertCreateCRLContext(Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPArray)] Byte[] CrlEncodedBytes,Int32 CrlEncodedLength);
 
         /// <summary>Gets the service object of the specified type.</summary>
         /// <param name="service">An object that specifies the type of service object to get.</param>

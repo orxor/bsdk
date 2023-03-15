@@ -21,15 +21,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * }
      */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_BASIC_CONSTRAINTS2)]
-    internal sealed class Asn1CertificateBasicConstraintsExtension : Asn1CertificateExtension
+    public sealed class Asn1CertificateBasicConstraintsExtension : Asn1CertificateExtension
         {
         [Browsable(false)] public Boolean CertificateAuthority { get; }
         public Int32 PathLengthConstraint { get; }
         public X509SubjectType SubjectType { get; }
-        public Asn1CertificateBasicConstraintsExtension(Asn1CertificateExtension source)
+
+        #region ctor{Asn1CertificateExtension}
+        internal Asn1CertificateBasicConstraintsExtension(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
+            PathLengthConstraint = -1;
             if (ReferenceEquals(octet, null)) { throw new ArgumentOutOfRangeException(nameof(source), "Extension should contains [OctetString]"); }
             if (octet.Count == 0)             { throw new ArgumentOutOfRangeException(nameof(source)); }
             if (octet[0] is Asn1Sequence sequence) {
@@ -54,6 +57,34 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 ? X509SubjectType.CA
                 : X509SubjectType.EndEntity;
             }
+        #endregion
+        #region ctor{X509SubjectType,Int32}
+        public Asn1CertificateBasicConstraintsExtension(X509SubjectType SubjectType,Int32 PathLengthConstraint)
+            :base(ObjectIdentifiers.szOID_BASIC_CONSTRAINTS2,true)
+            {
+            this.SubjectType = SubjectType;
+            this.PathLengthConstraint = PathLengthConstraint;
+            CertificateAuthority = (SubjectType == X509SubjectType.CA);
+            Body = new Asn1OctetString{
+                new Asn1Sequence{
+                    new Asn1Boolean(CertificateAuthority),
+                    new Asn1Integer(PathLengthConstraint)
+                    }};
+            }
+        #endregion
+        #region ctor{X509SubjectType}
+        public Asn1CertificateBasicConstraintsExtension(X509SubjectType SubjectType)
+            :base(ObjectIdentifiers.szOID_BASIC_CONSTRAINTS2,true)
+            {
+            this.SubjectType = SubjectType;
+            this.PathLengthConstraint = -1;
+            CertificateAuthority = (SubjectType == X509SubjectType.CA);
+            Body = new Asn1OctetString{
+                new Asn1Sequence{
+                    new Asn1Boolean(CertificateAuthority)
+                    }};
+            }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

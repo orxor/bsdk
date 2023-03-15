@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Converters;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
@@ -16,12 +15,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_PRIVATEKEY_USAGE_PERIOD)]
-    internal class Asn1CertificatePrivateKeyUsagePeriodExtension : Asn1CertificateExtension
+    public class Asn1CertificatePrivateKeyUsagePeriodExtension : Asn1CertificateExtension
         {
         public DateTime? NotBefore { get; }
         public DateTime? NotAfter  { get; }
 
-        public Asn1CertificatePrivateKeyUsagePeriodExtension(Asn1CertificateExtension source)
+        #region ctor{Asn1CertificateExtension}
+        internal Asn1CertificatePrivateKeyUsagePeriodExtension(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -33,6 +33,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
+        #region ctor{DateTime,DateTime}
+        public Asn1CertificatePrivateKeyUsagePeriodExtension(DateTime NotBefore, DateTime NotAfter)
+            :base(ObjectIdentifiers.szOID_PRIVATEKEY_USAGE_PERIOD,false)
+            {
+            this.NotBefore = NotBefore;
+            this.NotAfter = NotAfter;
+            }
+        #endregion
 
         private static DateTime? ToDateTime(Asn1Object source) {
             if (source != null) {
@@ -59,6 +68,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         public override String ToString()
             {
             return $"[{ToString(NotBefore)}]-[{ToString(NotAfter)}]";
+            }
+
+        protected override void BuildBody(ref Asn1OctetString o) {
+            if (o == null) {
+                var r = new Asn1Sequence();
+                if (NotBefore != null) { r.Add(new Asn1ContextSpecificObject(0,(new Asn1GeneralTime(NotBefore.Value)).Content.ToArray())); }
+                if (NotAfter  != null) { r.Add(new Asn1ContextSpecificObject(1,(new Asn1GeneralTime(NotAfter.Value )).Content.ToArray())); }
+                o = new Asn1OctetString(r);
+                }
             }
 
         /// <summary>Writes the JSON representation of the object.</summary>

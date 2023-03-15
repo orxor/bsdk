@@ -5,7 +5,6 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using BinaryStudio.Serialization;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
@@ -16,11 +15,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Key usage
      * IETF RFC 5280
      * */
-    [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_KEY_USAGE)]
-    internal sealed class CertificateKeyUsage : Asn1CertificateExtension
+    [Asn1CertificateExtension(ObjectIdentifiers.szOID_KEY_USAGE)]
+    public sealed class CertificateKeyUsage : Asn1CertificateExtension
         {
         public X509KeyUsageFlags KeyUsage { get; }
-        public CertificateKeyUsage(Asn1CertificateExtension source)
+
+        #region ctor{Asn1CertificateExtension}
+        internal CertificateKeyUsage(Asn1CertificateExtension source)
             : base(source)
             {
             var octet = Body;
@@ -37,6 +38,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
+        #region ctor{X509KeyUsageFlags}
+        public CertificateKeyUsage(X509KeyUsageFlags KeyUsage)
+            :base(ObjectIdentifiers.szOID_KEY_USAGE,true)
+            {
+            this.KeyUsage = KeyUsage;
+            Body = new Asn1OctetString{
+                new Asn1BitString(1, new Byte[]{ (Byte)(Int32)KeyUsage })
+                };
+            }
+        #endregion
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

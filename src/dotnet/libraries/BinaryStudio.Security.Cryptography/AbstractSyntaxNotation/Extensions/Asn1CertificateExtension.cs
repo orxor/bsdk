@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -24,7 +25,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsImplicitConstructed { get { return base.IsImplicitConstructed; }}
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Boolean IsIndefiniteLength { get { return base.IsIndefiniteLength; }}
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
-        [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public Asn1OctetString Body { get;protected set; }
+        public new Asn1OctetString Body { get;protected set; }
 
         protected internal Asn1CertificateExtension(Asn1Object source)
             : base(source)
@@ -43,6 +44,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
 
+        #region ctor{Asn1CertificateExtension}
         protected internal Asn1CertificateExtension(Asn1CertificateExtension source)
             : base(source)
             {
@@ -50,7 +52,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             IsCritical = source.IsCritical;
             Body = source.Body;
             }
-
+        #endregion
+        #region ctor{Oid,Boolean}
         protected Asn1CertificateExtension(Oid identifier, Boolean critial)
             : base(new Asn1PrivateObject(0))
             {
@@ -58,6 +61,16 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             IsCritical = critial;
             Body = null;
             }
+        #endregion
+        #region ctor{String,Boolean}
+        protected Asn1CertificateExtension(String identifier, Boolean critial)
+            : base(new Asn1PrivateObject(0))
+            {
+            Identifier = new Oid(identifier);
+            IsCritical = critial;
+            Body = null;
+            }
+        #endregion
 
         /**
          * <summary>Returns a string that represents the current object.</summary>
@@ -125,6 +138,34 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 base.Dispose(disposing);
                 State |= ObjectState.Disposed;
                 }
+            }
+
+        public override void WriteTo(Stream target, Boolean force = false) {
+            var o = Body;
+            BuildBody(ref o);
+            if (o == null) { throw new InvalidOperationException(); }
+            Body = o;
+            var r = new Asn1Sequence {
+                IsExplicitConstructed = true
+                };
+            r.Add(new Asn1ObjectIdentifier(Identifier));
+            if (IsCritical)
+                {
+                r.Add(new Asn1Boolean(true));
+                }
+            r.Add(Body);
+            r.WriteTo(target, true);
+            }
+
+        protected virtual void BuildBody(ref Asn1OctetString o)
+            {
+            }
+
+        protected void BuildBody()
+            {
+            var r = Body;
+            BuildBody(ref r);
+            Body = r;
             }
 
         /// <summary>Writes the JSON representation of the object.</summary>

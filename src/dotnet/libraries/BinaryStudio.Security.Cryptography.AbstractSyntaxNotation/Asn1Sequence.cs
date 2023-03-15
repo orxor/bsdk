@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
@@ -16,10 +17,17 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         #region ctor
         internal Asn1Sequence()
             {
+            State |= ObjectState.ExplicitConstructed;
             }
         #endregion
         #region ctor{{params}Asn1Object[]}
         internal Asn1Sequence(params Asn1Object[] args)
+            :this((IEnumerable<Asn1Object>)args)
+            {
+            }
+        #endregion
+        #region ctor{IEnumerable<Asn1Object>}
+        internal Asn1Sequence(IEnumerable<Asn1Object> args)
             {
             var size = 0L;
             using (var o = new MemoryStream()) {
@@ -34,6 +42,22 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             IsReadOnly = true;
             State |= ObjectState.Decoded|ObjectState.ExplicitConstructed;
+            }
+        #endregion
+
+        #region M:BuildContent
+        protected override void BuildContent() {
+            var size = 0L;
+            using (var o = new MemoryStream()) {
+                foreach (var i in sequence) {
+                    size += i.Size;
+                    i.WriteTo(o,true);
+                    }
+                this.length = size;
+                this.content = new ReadOnlyMemoryMappingStream(o.ToArray());
+                this.size = size + GetHeader().Length;
+                }
+            State |= ObjectState.ExplicitConstructed;
             }
         #endregion
         }

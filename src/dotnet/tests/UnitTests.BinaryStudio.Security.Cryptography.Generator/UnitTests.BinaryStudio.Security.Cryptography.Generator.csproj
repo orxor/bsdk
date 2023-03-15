@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libraries\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
     <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
   </ItemGroup>
 </Project>

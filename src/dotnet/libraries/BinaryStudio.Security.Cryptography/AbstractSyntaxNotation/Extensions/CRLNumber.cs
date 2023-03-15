@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
-using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
+using JetBrains.Annotations;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
@@ -15,10 +16,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CRL_NUMBER)]
-    internal class Asn1CRLNumberExtension : Asn1CertificateExtension
+    public class CRLNumber : Asn1CertificateExtension
         {
         public String Value { get; }
-        public Asn1CRLNumberExtension(Asn1CertificateExtension source)
+
+        #region ctor{Asn1CertificateExtension}
+        [UsedImplicitly]
+        internal CRLNumber(Asn1CertificateExtension source)
             :base(source)
             {
             var octet = Body;
@@ -28,7 +32,24 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                     }
                 }
             }
+        #endregion
+        #region ctor{BigInteger}
+        public CRLNumber(BigInteger source)
+            :base(ObjectIdentifiers.szOID_CRL_NUMBER,false)
+            {
+            Value = String.Join(String.Empty,source.ToByteArray().Reverse().ToArray().Select(i => i.ToString("X2")));
+            }
+        #endregion
 
+        #region M:BuildBody({ref}Asn1OctetString)
+        protected override void BuildBody(ref Asn1OctetString o) {
+            if (o == null) {
+                o = new Asn1OctetString(
+                    new Asn1Integer(DecodeString(Value)));
+                }
+            }
+        #endregion
+        #region M:WriteTo(IJsonWriter)
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>
         public override void WriteTo(IJsonWriter writer) {
@@ -40,5 +61,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 writer.WriteValue(nameof(Value), Value);
                 }
             }
+        #endregion
         }
     }

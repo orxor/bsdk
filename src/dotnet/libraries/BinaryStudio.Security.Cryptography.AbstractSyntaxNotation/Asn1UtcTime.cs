@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using BinaryStudio.IO;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
@@ -33,6 +34,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
         #endregion
 
+        #region M:BuildContent
+        protected override void BuildContent() {
+            var InputContent = Encoding.ASCII.GetBytes($"{Value.ToString("yyMMddHHmmss")}Z");
+            length = InputContent.Length;
+            content = new ReadOnlyMemoryMappingStream(InputContent);
+            size = length + GetHeader().Length;
+            }
+        #endregion
+        #region M:Decode:Boolean
         protected override Boolean Decode()
             {
             if (IsDecoded) { return true; }
@@ -43,5 +53,6 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             State |= ObjectState.Decoded;
             return true;
             }
+        #endregion
         }
     }
