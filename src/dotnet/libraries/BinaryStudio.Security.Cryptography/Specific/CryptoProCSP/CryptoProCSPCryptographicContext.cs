@@ -112,8 +112,8 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
             }
         #endregion
 
-        #region M:CreateSelfSignCertificate(String,String,DateTime,DateTime,IList<Asn1CertificateExtension>):X509Certificate
-        public X509Certificate CreateSelfSignCertificate(String Name, String SerialNumber,DateTime NotBefore, DateTime NotAfter, IList<Asn1CertificateExtension> Extensions) {
+        #region M:CreateSelfSignCertificate(String,String,DateTime,DateTime,IList<CertificateExtension>):X509Certificate
+        public X509Certificate CreateSelfSignCertificate(String Name, String SerialNumber,DateTime NotBefore, DateTime NotAfter, IList<CertificateExtension> Extensions) {
             var SourceCertificate = CreateSelfSignCertificate(Name,NotBefore,NotAfter,Extensions);
             var Container = Asn1Object.Load(new ReadOnlyMemoryMappingStream(SourceCertificate.Bytes)).First();
             if (!String.IsNullOrWhiteSpace(SerialNumber)) {
@@ -140,8 +140,8 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
             return SourceCertificate;
             }
         #endregion
-        #region M:CreateSelfSignCertificate(String,DateTime,DateTime,IList<Asn1CertificateExtension>):X509Certificate
-        public unsafe X509Certificate CreateSelfSignCertificate(String name, DateTime notbefore, DateTime notafter, IList<Asn1CertificateExtension> extensions) {
+        #region M:CreateSelfSignCertificate(String,DateTime,DateTime,IList<CertificateExtension>):X509Certificate
+        public unsafe X509Certificate CreateSelfSignCertificate(String name, DateTime notbefore, DateTime notafter, IList<CertificateExtension> extensions) {
             var entries = (ICryptoAPI)Context.GetService(typeof(ICryptoAPI));
             var SubjectIssuerBlobM = Context.CertStrToName(name);
             fixed (Byte* SubjectIssuerBlobU = SubjectIssuerBlobM) {

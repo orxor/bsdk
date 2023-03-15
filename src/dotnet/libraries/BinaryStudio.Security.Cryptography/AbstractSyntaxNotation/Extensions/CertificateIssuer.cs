@@ -6,10 +6,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_CERTIFICATE_ISSUER)]
-    public sealed class CertificateIssuer : Asn1CertificateExtension
+    public sealed class CertificateIssuer : CertificateExtension
         {
         public IX509GeneralName Value { get; }
-        public CertificateIssuer(Asn1CertificateExtension source)
+        public CertificateIssuer(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

@@ -7,10 +7,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
     [Asn1CertificateExtension("1.2.840.113556.1.5.284.7")]
-    internal class DRSJoinType : Asn1CertificateExtension
+    internal class DRSJoinType : CertificateExtension
         {
         public Int32 Value { get; }
-        public DRSJoinType(Asn1CertificateExtension source)
+        public DRSJoinType(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

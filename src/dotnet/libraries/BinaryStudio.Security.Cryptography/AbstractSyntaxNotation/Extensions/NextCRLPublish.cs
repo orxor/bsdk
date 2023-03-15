@@ -13,10 +13,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * szOID_CRL_NEXT_PUBLISH
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CRL_NEXT_PUBLISH)]
-    internal class Asn1NextCRLPublish : Asn1CertificateExtension
+    internal class Asn1NextCRLPublish : CertificateExtension
         {
         public DateTime Value { get; }
-        public Asn1NextCRLPublish(Asn1CertificateExtension source)
+        public Asn1NextCRLPublish(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

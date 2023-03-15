@@ -6,10 +6,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
     [Asn1CertificateExtension("2.5.29.60")]
-    public sealed class ExpiredCertsOnCRL : Asn1CertificateExtension
+    public sealed class ExpiredCertsOnCRL : CertificateExtension
         {
         public DateTime Value { get; }
-        public ExpiredCertsOnCRL(Asn1CertificateExtension source)
+        public ExpiredCertsOnCRL(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

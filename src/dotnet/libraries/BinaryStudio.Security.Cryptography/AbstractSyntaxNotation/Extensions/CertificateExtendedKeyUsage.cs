@@ -15,12 +15,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_ENHANCED_KEY_USAGE)]
-    public sealed class Asn1CertificateExtendedKeyUsageExtension : Asn1CertificateExtension
+    public sealed class Asn1CertificateExtendedKeyUsageExtension : CertificateExtension
         {
         public Asn1ObjectIdentifierCollection Value { get; }
 
-        #region ctor{Asn1CertificateExtension}
-        internal Asn1CertificateExtendedKeyUsageExtension(Asn1CertificateExtension source)
+        #region ctor{CertificateExtension}
+        internal Asn1CertificateExtendedKeyUsageExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

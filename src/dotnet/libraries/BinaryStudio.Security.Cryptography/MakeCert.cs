@@ -19,8 +19,8 @@ namespace BinaryStudio.Security.Cryptography
     using CRYPT_DATA_BLOB = CRYPT_BLOB;
     public partial class CryptographicContext
         {
-        #region M:MakeCertificate(CryptKey,String,String,DateTime,DateTime,IList<Asn1CertificateExtension>):X509Certificate
-        private unsafe X509Certificate MakeCertificate(CryptKey Key, String SubjectName, String AlgId,DateTime NotBefore,DateTime NotAfter,IList<Asn1CertificateExtension> Extensions) {
+        #region M:MakeCertificate(CryptKey,String,String,DateTime,DateTime,IList<CertificateExtension>):X509Certificate
+        private unsafe X509Certificate MakeCertificate(CryptKey Key, String SubjectName, String AlgId,DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions) {
             EnsureEntries(out var entries);
             var SubjectIssuerBlobM = CertStrToName(SubjectName);
             fixed (Byte* SubjectIssuerBlobU = SubjectIssuerBlobM) {
@@ -71,8 +71,8 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
-        #region M:MakeCertificate(CryptKey,String,String,String,DateTime,DateTime,IList<Asn1CertificateExtension>):X509Certificate
-        private X509Certificate MakeCertificate(CryptKey Key, String SubjectName, String SerialNumber, String AlgId,DateTime NotBefore,DateTime NotAfter,IList<Asn1CertificateExtension> Extensions) {
+        #region M:MakeCertificate(CryptKey,String,String,String,DateTime,DateTime,IList<CertificateExtension>):X509Certificate
+        private X509Certificate MakeCertificate(CryptKey Key, String SubjectName, String SerialNumber, String AlgId,DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions) {
             var SourceCertificate = MakeCertificate(Key,SubjectName,AlgId,NotBefore,NotAfter,Extensions);
             var Builder = Asn1Object.Load(new ReadOnlyMemoryMappingStream(SourceCertificate.Bytes)).First();
             if (!String.IsNullOrWhiteSpace(SerialNumber)) {
@@ -102,10 +102,10 @@ namespace BinaryStudio.Security.Cryptography
             return SourceCertificate;
             }
         #endregion
-        #region M:MakeCertificate(ALG_ID,String,String,DateTime,DateTime,IList<Asn1CertificateExtension>,Stream,SecureString,{out}X509Certificate,Boolean)
+        #region M:MakeCertificate(ALG_ID,String,String,DateTime,DateTime,IList<CertificateExtension>,Stream,SecureString,{out}X509Certificate,Boolean)
         private const Int32 EXPORT_PRIVATE_KEYS = 0x0004;
         public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
-            DateTime NotBefore,DateTime NotAfter,IList<Asn1CertificateExtension> Extensions,
+            DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
             Stream PrivateKeyStream, SecureString SecureCode,out X509Certificate Certificate,
             Boolean DeletePrivateKey)
             {
@@ -164,9 +164,9 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
-        #region M:MakeCertificate(ALG_ID,String,String,DateTime,DateTime,IList<Asn1CertificateExtension>,Stream,SecureString,{out}X509Certificate,X509Certificate,Boolean)
+        #region M:MakeCertificate(ALG_ID,String,String,DateTime,DateTime,IList<CertificateExtension>,Stream,SecureString,{out}X509Certificate,X509Certificate,Boolean)
         public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
-            DateTime NotBefore,DateTime NotAfter,IList<Asn1CertificateExtension> Extensions,
+            DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
             Stream PrivateKeyStream, SecureString SecureCode,
             out X509Certificate Certificate,X509Certificate IssuerCertificate,
             Boolean DeletePrivateKey)
@@ -177,7 +177,7 @@ namespace BinaryStudio.Security.Cryptography
             var ProviderType = ProviderTypeFromAlgId(AlgId);
             if (ProviderType == CRYPT_PROVIDER_TYPE.AUTO) { throw new NotSupportedException(); }
             Certificate = null;
-            var extensions = new List<Asn1CertificateExtension>(Extensions ?? EmptyArray<Asn1CertificateExtension>.Value);
+            var extensions = new List<CertificateExtension>(Extensions ?? EmptyArray<CertificateExtension>.Value);
             if (!extensions.Any(i => i is CertificateAuthorityKeyIdentifier)) {
                 var SKI = IssuerCertificate.Source.Extensions.
                     OfType<CertificateSubjectKeyIdentifier>().

@@ -7,10 +7,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_INVALID_DATE)]
-    public sealed class InvalidityDate : Asn1CertificateExtension
+    public sealed class InvalidityDate : CertificateExtension
         {
         public DateTime Value { get; }
-        public InvalidityDate(Asn1CertificateExtension source)
+        public InvalidityDate(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

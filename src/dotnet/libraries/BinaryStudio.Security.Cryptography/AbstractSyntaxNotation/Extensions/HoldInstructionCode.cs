@@ -6,10 +6,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_HOLD_INSTRUCTION_CODE)]
-    public sealed class HoldInstructionCode : Asn1CertificateExtension
+    public sealed class HoldInstructionCode : CertificateExtension
         {
         public Asn1ObjectIdentifier Value { get; }
-        public HoldInstructionCode(Asn1CertificateExtension source)
+        public HoldInstructionCode(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

@@ -12,7 +12,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_FRESHEST_CRL)]
     internal class FreshestCRL : CRLDistributionPoints
         {
-        public FreshestCRL(Asn1CertificateExtension u)
+        public FreshestCRL(CertificateExtension u)
             :base(u)
             {
             }

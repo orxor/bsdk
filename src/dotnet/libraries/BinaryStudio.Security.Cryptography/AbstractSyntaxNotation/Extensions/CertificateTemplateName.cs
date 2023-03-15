@@ -7,10 +7,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_ENROLL_CERTTYPE_EXTENSION)]
-    internal sealed class Asn1CertificateTemplateNameExtension : Asn1CertificateExtension
+    internal sealed class Asn1CertificateTemplateNameExtension : CertificateExtension
         {
         public String TemplateName { get; }
-        public Asn1CertificateTemplateNameExtension(Asn1CertificateExtension source)
+        public Asn1CertificateTemplateNameExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

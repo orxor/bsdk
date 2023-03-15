@@ -97,7 +97,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1Certificate(Asn1Object o)
             : base(o)
             {
-            Extensions = new Asn1CertificateExtensionCollection(EmptyArray<Asn1CertificateExtension>.Value);
+            Extensions = new Asn1CertificateExtensionCollection(EmptyArray<CertificateExtension>.Value);
             State |= ObjectState.Failed;
             if (o is Asn1Sequence u) {
                 if ((u[0] is Asn1Sequence) &&
@@ -141,7 +141,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                     var specific = contextspecifics.FirstOrDefault(i => i.Item1 == 3);
                     if (!ReferenceEquals(specific, null)) {
                         ExtensionsFieldIndex = specific.Item2;
-                        Extensions = new Asn1CertificateExtensionCollection(specific.Item3[0].Select(i => Asn1CertificateExtension.From(new Asn1CertificateExtension(i))));
+                        Extensions = new Asn1CertificateExtensionCollection(specific.Item3[0].Select(i => CertificateExtension.From(new CertificateExtension(i))));
                         }
                     #endregion
                     Country = GetCountry(Subject) ?? GetCountry(Issuer);

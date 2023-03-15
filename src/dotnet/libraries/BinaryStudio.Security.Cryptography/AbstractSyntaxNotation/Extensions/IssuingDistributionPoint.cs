@@ -15,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_ISSUING_DIST_POINT)]
-    internal class Asn1IssuingDistributionPointExtension : Asn1CertificateExtension
+    internal class Asn1IssuingDistributionPointExtension : CertificateExtension
         {
         public DistributionPointName DistributionPoint { get; }
         public Boolean OnlyContainsUserCerts { get; }
@@ -23,7 +23,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         public Boolean IndirectCrl { get; }
         public ReasonFlags ReasonFlags { get; }
 
-        public Asn1IssuingDistributionPointExtension(Asn1CertificateExtension u)
+        public Asn1IssuingDistributionPointExtension(CertificateExtension u)
             :base(u)
             {
             var octet = Body;

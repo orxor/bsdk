@@ -9,10 +9,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_DELTA_CRL_INDICATOR)]
-    internal class Asn1DeltaCRLIndicator : Asn1CertificateExtension
+    internal class Asn1DeltaCRLIndicator : CertificateExtension
         {
         public BigInteger MinimumBaseCRLNumber { get; }
-        public Asn1DeltaCRLIndicator(Asn1CertificateExtension source)
+        public Asn1DeltaCRLIndicator(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

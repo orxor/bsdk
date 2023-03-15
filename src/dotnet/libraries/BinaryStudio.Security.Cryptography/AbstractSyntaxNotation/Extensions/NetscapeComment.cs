@@ -13,7 +13,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
      * netscape-comment OBJECT IDENTIFIER ::= { netscape-cert-extension 13 }
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_NETSCAPE_COMMENT)]
-    internal class NetscapeComment : Asn1CertificateExtension
+    internal class NetscapeComment : CertificateExtension
         {
         public String Comment { get; }
         public NetscapeComment(Asn1Object source)

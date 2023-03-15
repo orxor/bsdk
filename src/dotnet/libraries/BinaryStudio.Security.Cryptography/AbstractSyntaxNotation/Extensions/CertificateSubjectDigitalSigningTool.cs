@@ -7,10 +7,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
     [Asn1CertificateExtension(ObjectIdentifiers.szCPOID_SubjectSignTool)]
-    internal sealed class Asn1CertificateSubjectDigitalSigningToolExtension : Asn1CertificateExtension
+    internal sealed class Asn1CertificateSubjectDigitalSigningToolExtension : CertificateExtension
         {
         public String DigitalSigningTool { get; }
-        public Asn1CertificateSubjectDigitalSigningToolExtension(Asn1CertificateExtension source)
+        public Asn1CertificateSubjectDigitalSigningToolExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

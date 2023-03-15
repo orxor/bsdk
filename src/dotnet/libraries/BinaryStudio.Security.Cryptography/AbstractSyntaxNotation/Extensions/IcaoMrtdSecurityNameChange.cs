@@ -21,9 +21,9 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * }
      */
     [Asn1CertificateExtension("2.23.136.1.1.6.1")]
-    public class IcaoMrtdSecurityNameChange : Asn1CertificateExtension
+    public class IcaoMrtdSecurityNameChange : CertificateExtension
         {
-        public IcaoMrtdSecurityNameChange(Asn1CertificateExtension source)
+        public IcaoMrtdSecurityNameChange(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

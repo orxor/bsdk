@@ -14,10 +14,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * szOID_CERTSRV_PREVIOUS_CERT_HASH
      */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTSRV_PREVIOUS_CERT_HASH)]
-    internal class Asn1PreviousCACertificateHash : Asn1CertificateExtension
+    internal class Asn1PreviousCACertificateHash : CertificateExtension
         {
         public String HashValue { get; }
-        public Asn1PreviousCACertificateHash(Asn1CertificateExtension source)
+        public Asn1PreviousCACertificateHash(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

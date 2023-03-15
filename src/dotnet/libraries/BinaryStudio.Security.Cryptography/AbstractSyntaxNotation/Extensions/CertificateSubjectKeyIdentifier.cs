@@ -7,12 +7,12 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_SUBJECT_KEY_ID)]
-    public sealed class CertificateSubjectKeyIdentifier : Asn1CertificateExtension
+    public sealed class CertificateSubjectKeyIdentifier : CertificateExtension
         {
         public Byte[] KeyIdentifier { get; }
 
-        #region ctor{Asn1CertificateExtension}
-        internal CertificateSubjectKeyIdentifier(Asn1CertificateExtension source)
+        #region ctor{CertificateExtension}
+        internal CertificateSubjectKeyIdentifier(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

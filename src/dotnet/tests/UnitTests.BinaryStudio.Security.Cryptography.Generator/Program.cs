@@ -52,7 +52,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
 
         private static void DoSet(ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509KeyUsageFlags KeyUsage, out X509Certificate Certificate) {
-            var Extensions = new List<Asn1CertificateExtension> {
+            var Extensions = new List<CertificateExtension> {
                 new Asn1CertificateBasicConstraintsExtension(X509SubjectType.CA),
                 new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef"),
                 };
@@ -76,7 +76,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
 
         private static void DoSet(ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509Certificate IssuerCertificate,  X509KeyUsageFlags KeyUsage, Boolean IsLeaf, out X509Certificate Certificate) {
-            var Extensions = new List<Asn1CertificateExtension>();
+            var Extensions = new List<CertificateExtension>();
             if (!IsLeaf) {
                 Extensions.Add(new CertificateSubjectKeyIdentifier(false,"90abcdeffedcba98765432100123456789abcdef"));
                 Extensions.Add(new Asn1CertificateBasicConstraintsExtension(X509SubjectType.CA,0));
@@ -294,7 +294,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             var dt = DateTime.Now;
             CryptographicContext.MakeCertificate(ALG_ID.CALG_GR3410EL,"CN=R-CA, C=ru","010203",
                 dt.AddYears(-1),dt.AddYears(10),
-                new Asn1CertificateExtension[] {
+                new CertificateExtension[] {
                     new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef")
                     },
                 Stream.Null, SecureCode,

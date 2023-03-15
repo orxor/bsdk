@@ -16,7 +16,7 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {   
     [DebuggerDisplay(@"\{{" + nameof(ToString) + @"(),nq}\}")]
-    public class Asn1CertificateExtension : Asn1LinkObject
+    public class CertificateExtension : Asn1LinkObject
         {
         public Oid Identifier { get;private set; }
         public Boolean IsCritical { get; }
@@ -27,7 +27,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         [Browsable(false)][DebuggerBrowsable(DebuggerBrowsableState.Never)] public override Asn1Object UnderlyingObject { get { return base.UnderlyingObject; }}
         public new Asn1OctetString Body { get;protected set; }
 
-        protected internal Asn1CertificateExtension(Asn1Object source)
+        protected internal CertificateExtension(Asn1Object source)
             : base(source)
             {
             var c = source.Count;
@@ -44,8 +44,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
 
-        #region ctor{Asn1CertificateExtension}
-        protected internal Asn1CertificateExtension(Asn1CertificateExtension source)
+        #region ctor{CertificateExtension}
+        protected internal CertificateExtension(CertificateExtension source)
             : base(source)
             {
             Identifier = source.Identifier;
@@ -54,7 +54,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             }
         #endregion
         #region ctor{Oid,Boolean}
-        protected Asn1CertificateExtension(Oid identifier, Boolean critial)
+        protected CertificateExtension(Oid identifier, Boolean critial)
             : base(new Asn1PrivateObject(0))
             {
             Identifier = identifier;
@@ -63,7 +63,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             }
         #endregion
         #region ctor{String,Boolean}
-        protected Asn1CertificateExtension(String identifier, Boolean critial)
+        protected CertificateExtension(String identifier, Boolean critial)
             : base(new Asn1PrivateObject(0))
             {
             Identifier = new Oid(identifier);
@@ -85,15 +85,15 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         private static readonly IDictionary<String, Type> types = new ConcurrentDictionary<String, Type>();
         private static readonly ReaderWriterLockSlim syncobject = new ReaderWriterLockSlim();
 
-        public static Asn1CertificateExtension From(Asn1CertificateExtension source) {
+        public static CertificateExtension From(CertificateExtension source) {
             if (ReferenceEquals(source, null)) { throw new ArgumentNullException(nameof(source)); }
             try
                 {
                 EnsureFactory();
                 using (ReadLock(syncobject)) {
                     if (types.TryGetValue(source.Identifier.Value, out var type)) {
-                        if (type.IsSubclassOf(typeof(Asn1CertificateExtension))) {
-                            var r = (Asn1CertificateExtension)Activator.CreateInstance(type,
+                        if (type.IsSubclassOf(typeof(CertificateExtension))) {
+                            var r = (CertificateExtension)Activator.CreateInstance(type,
                                 BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance,
                                 null,new Object[]{ source },null);
                             return r;
@@ -115,7 +115,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             using (UpgradeableReadLock(syncobject)) {
                 if (types.Count == 0) {
                     using (WriteLock(syncobject)) {
-                        foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(i => i.IsSubclassOf(typeof(Asn1CertificateExtension)))) {
+                        foreach (var type in Assembly.GetExecutingAssembly().GetTypes().Where(i => i.IsSubclassOf(typeof(CertificateExtension)))) {
                             foreach (var attribute in type.GetCustomAttributes(typeof(Asn1CertificateExtensionAttribute), false).OfType<Asn1CertificateExtensionAttribute>())
                                 {
                                 types.Add(attribute.Key, type);

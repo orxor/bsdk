@@ -16,10 +16,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_SUBJECT_DIRECTORY_ATTRIBUTES)]
-    internal class Asn1SubjectDirectoryAttributes : Asn1CertificateExtension
+    internal class Asn1SubjectDirectoryAttributes : CertificateExtension
         {
         public IList<Asn1CertificateAttribute> Attributes { get; }
-        public Asn1SubjectDirectoryAttributes(Asn1CertificateExtension source)
+        public Asn1SubjectDirectoryAttributes(CertificateExtension source)
             : base(source)
             {
             Attributes = new List<Asn1CertificateAttribute>();

@@ -6,10 +6,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
     [Asn1CertificateExtension("1.2.840.113556.1.5.284.2")]
-    internal class DRSObjectGuid : Asn1CertificateExtension
+    internal class DRSObjectGuid : CertificateExtension
         {
         public Guid Value { get; }
-        public DRSObjectGuid(Asn1CertificateExtension source)
+        public DRSObjectGuid(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

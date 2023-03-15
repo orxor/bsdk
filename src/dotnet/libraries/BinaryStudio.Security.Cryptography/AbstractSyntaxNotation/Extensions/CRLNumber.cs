@@ -16,13 +16,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CRL_NUMBER)]
-    public class CRLNumber : Asn1CertificateExtension
+    public class CRLNumber : CertificateExtension
         {
         public String Value { get; }
 
-        #region ctor{Asn1CertificateExtension}
+        #region ctor{CertificateExtension}
         [UsedImplicitly]
-        internal CRLNumber(Asn1CertificateExtension source)
+        internal CRLNumber(CertificateExtension source)
             :base(source)
             {
             var octet = Body;

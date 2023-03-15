@@ -17,14 +17,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_AUTH_KEY_ID)]
-    public sealed class CertificateAuthorityKeyIdentifier : Asn1CertificateExtension
+    public sealed class CertificateAuthorityKeyIdentifier : CertificateExtension
         {
         public Byte[] KeyIdentifier { get; }
         public String SerialNumber { get; }
         public IX509GeneralName CertificateIssuer { get; }
 
-        #region ctor{Asn1CertificateExtension}
-        internal CertificateAuthorityKeyIdentifier(Asn1CertificateExtension source)
+        #region ctor{CertificateExtension}
+        internal CertificateAuthorityKeyIdentifier(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

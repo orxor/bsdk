@@ -15,10 +15,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_AUTHORITY_INFO_ACCESS)]
-    internal sealed class Asn1CertificateAuthorityInformationAccessExtension : Asn1CertificateExtension
+    internal sealed class Asn1CertificateAuthorityInformationAccessExtension : CertificateExtension
         {
         public Asn1CertificateAuthorityInformationAccessCollection AccessDescriptions { get; }
-        public Asn1CertificateAuthorityInformationAccessExtension(Asn1CertificateExtension source)
+        public Asn1CertificateAuthorityInformationAccessExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

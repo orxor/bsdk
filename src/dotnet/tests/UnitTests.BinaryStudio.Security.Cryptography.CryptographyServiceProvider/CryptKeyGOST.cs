@@ -33,7 +33,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
             var dt = DateTime.Now;
             CryptographicContext.MakeCertificate(ALG_ID.CALG_GR3410EL,"CN=R-CA, C=ru","010203",
                 dt.AddYears(-1),dt.AddYears(1),
-                new Asn1CertificateExtension[] {
+                new CertificateExtension[] {
                     new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef")
                     },
                 Stream.Null, SecureCode,

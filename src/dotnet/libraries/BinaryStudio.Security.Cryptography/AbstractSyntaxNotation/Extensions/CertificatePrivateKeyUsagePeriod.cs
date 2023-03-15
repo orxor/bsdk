@@ -15,13 +15,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_PRIVATEKEY_USAGE_PERIOD)]
-    public class Asn1CertificatePrivateKeyUsagePeriodExtension : Asn1CertificateExtension
+    public class Asn1CertificatePrivateKeyUsagePeriodExtension : CertificateExtension
         {
         public DateTime? NotBefore { get; }
         public DateTime? NotAfter  { get; }
 
-        #region ctor{Asn1CertificateExtension}
-        internal Asn1CertificatePrivateKeyUsagePeriodExtension(Asn1CertificateExtension source)
+        #region ctor{CertificateExtension}
+        internal Asn1CertificatePrivateKeyUsagePeriodExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

@@ -15,10 +15,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * szOID_CRL_SELF_CDP
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CRL_SELF_CDP)]
-    internal class Asn1PublishedCRLLocations : Asn1CertificateExtension
+    internal class Asn1PublishedCRLLocations : CertificateExtension
         {
         public IList<IX509GeneralName> PublishedCRLLocations { get; }
-        public Asn1PublishedCRLLocations(Asn1CertificateExtension source)
+        public Asn1PublishedCRLLocations(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

@@ -7,12 +7,12 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
 {
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_REASON_CODE)]
-    public sealed class CRLReason : Asn1CertificateExtension
+    public sealed class CRLReason : CertificateExtension
         {
         public X509CrlReason ReasonCode { get; }
 
-        #region ctor{Asn1CertificateExtension}
-        internal CRLReason(Asn1CertificateExtension source)
+        #region ctor{CertificateExtension}
+        internal CRLReason(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

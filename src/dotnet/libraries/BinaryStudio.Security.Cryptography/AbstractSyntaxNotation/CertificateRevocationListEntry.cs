@@ -12,7 +12,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         {
         public String SerialNumber { get; }
         public DateTime RevocationDate { get; }
-        public IList<Asn1CertificateExtension> Extensions { get; }
+        public IList<CertificateExtension> Extensions { get; }
 
         #region ctor{Asn1Object}
         internal CertificateRevocationListEntry(Asn1Object source)
@@ -22,8 +22,8 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             RevocationDate = (Asn1Time)source[1];
             if (source.Count > 2) {
                 Extensions = source[2].Select(
-                    i => Asn1CertificateExtension.From(
-                        new Asn1CertificateExtension(i))).ToArray();
+                    i => CertificateExtension.From(
+                        new CertificateExtension(i))).ToArray();
                 }
             }
         #endregion
@@ -33,7 +33,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             {
             SerialNumber = Certificate.SerialNumber;
             RevocationDate = InvalidityDate;
-            Extensions = new Asn1CertificateExtension[]{
+            Extensions = new CertificateExtension[]{
                 new CRLReason(ReasonCode) 
                 };
             }

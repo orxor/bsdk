@@ -15,10 +15,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_CRL_DIST_POINTS)]
-    public class CRLDistributionPoints : Asn1CertificateExtension
+    public class CRLDistributionPoints : CertificateExtension
         {
         public IList<DistributionPoint> DistributionPoints { get; }
-        public CRLDistributionPoints(Asn1CertificateExtension u)
+        public CRLDistributionPoints(CertificateExtension u)
             :base(u)
             {
             DistributionPoints = new DistributionPoint[0];

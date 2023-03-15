@@ -17,10 +17,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * IETF RFC 5280
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_ISSUER_ALT_NAME2)]
-    public class IssuerAlternativeName : Asn1CertificateExtension
+    public class IssuerAlternativeName : CertificateExtension
         {
         public IList<IX509GeneralName> AlternativeName { get; }
-        public IssuerAlternativeName(Asn1CertificateExtension source)
+        public IssuerAlternativeName(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

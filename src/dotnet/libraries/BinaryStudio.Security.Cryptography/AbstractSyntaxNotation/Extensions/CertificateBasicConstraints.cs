@@ -21,14 +21,14 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * }
      */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_BASIC_CONSTRAINTS2)]
-    public sealed class Asn1CertificateBasicConstraintsExtension : Asn1CertificateExtension
+    public sealed class Asn1CertificateBasicConstraintsExtension : CertificateExtension
         {
         [Browsable(false)] public Boolean CertificateAuthority { get; }
         public Int32 PathLengthConstraint { get; }
         public X509SubjectType SubjectType { get; }
 
-        #region ctor{Asn1CertificateExtension}
-        internal Asn1CertificateBasicConstraintsExtension(Asn1CertificateExtension source)
+        #region ctor{CertificateExtension}
+        internal Asn1CertificateBasicConstraintsExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

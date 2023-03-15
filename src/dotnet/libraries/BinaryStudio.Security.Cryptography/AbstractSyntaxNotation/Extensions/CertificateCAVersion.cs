@@ -13,10 +13,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Certificate services Certification Authority (CA) version
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTSRV_CA_VERSION)]
-    internal sealed class Asn1CertificateCAVersionExtension : Asn1CertificateExtension
+    internal sealed class Asn1CertificateCAVersionExtension : CertificateExtension
         {
         public Version Version { get; }
-        public Asn1CertificateCAVersionExtension(Asn1CertificateExtension source)
+        public Asn1CertificateCAVersionExtension(CertificateExtension source)
             : base(source)
             {
             Version = new Version(0, 0);

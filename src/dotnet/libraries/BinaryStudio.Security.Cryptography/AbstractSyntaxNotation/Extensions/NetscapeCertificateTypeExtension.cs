@@ -14,10 +14,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * Netscape certificate type (a Rec. ITU-T X.509 v3 certificate extension used to identify whether the certificate subject is a Secure Sockets Layer (SSL) client, an SSL server or a Certificate Authority (CA))
      * */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_NETSCAPE_CERT_TYPE)]
-    public sealed class NetscapeCertificateTypeExtension : Asn1CertificateExtension
+    public sealed class NetscapeCertificateTypeExtension : CertificateExtension
         {
         public NetscapeCertificateType Type { get; }
-        public NetscapeCertificateTypeExtension(Asn1CertificateExtension source)
+        public NetscapeCertificateTypeExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

@@ -36,11 +36,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      */
     [Asn1CertificateExtension(IcaoObjectIdentifiers.IcaoMrtdSecurityExtensionsDocumentTypeList)]
     [Asn1CertificateExtension("2.23.136.1.1.4")]
-    internal class IcaoDocumentTypeList : Asn1CertificateExtension
+    internal class IcaoDocumentTypeList : CertificateExtension
         {
         public Int32 Version { get; }
         public IList<String> TypeList { get; }
-        public IcaoDocumentTypeList(Asn1CertificateExtension source)
+        public IcaoDocumentTypeList(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

@@ -12,7 +12,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_X509_SUBJECT_ALT_NAME)]
     public class SubjectAlternativeName : IssuerAlternativeName
         {
-        public SubjectAlternativeName(Asn1CertificateExtension source)
+        public SubjectAlternativeName(CertificateExtension source)
             : base(source)
             {
             }

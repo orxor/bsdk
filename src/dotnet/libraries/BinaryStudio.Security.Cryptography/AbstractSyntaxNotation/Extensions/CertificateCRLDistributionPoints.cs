@@ -6,10 +6,10 @@ using BinaryStudio.Serialization;
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
     //[Asn1SpecificObject("2.5.29.31")]
-    internal sealed class Asn1CertificateCRLDistributionPointsExtension : Asn1CertificateExtension
+    internal sealed class Asn1CertificateCRLDistributionPointsExtension : CertificateExtension
         {
         public X509StringCollection Value { get; }
-        public Asn1CertificateCRLDistributionPointsExtension(Asn1CertificateExtension source)
+        public Asn1CertificateCRLDistributionPointsExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

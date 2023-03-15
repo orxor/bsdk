@@ -85,7 +85,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         if ((i < count) && (o[0][i] is Asn1ContextSpecificObject)) {
                             var specific = (Asn1ContextSpecificObject)o[0][i];
                             if (specific.Type == 0) {
-                                Extensions = new Asn1CertificateExtensionCollection(o[0][i][0].Select(x => Asn1CertificateExtension.From(new Asn1CertificateExtension(x))).ToArray());
+                                Extensions = new Asn1CertificateExtensionCollection(o[0][i][0].Select(x => CertificateExtension.From(new CertificateExtension(x))).ToArray());
                                 }
                             }
                         Country = GetCountry(Issuer);

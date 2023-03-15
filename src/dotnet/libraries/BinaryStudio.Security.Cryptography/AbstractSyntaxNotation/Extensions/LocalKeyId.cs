@@ -22,10 +22,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * }
      */
     [Asn1CertificateExtension(ObjectIdentifiers.NSS_OID_PKCS9_LOCAL_KEY_ID)]
-    internal class Asn1LocalKeyIdExtension : Asn1CertificateExtension
+    internal class Asn1LocalKeyIdExtension : CertificateExtension
         {
         public String LocalKeyId { get; }
-        public Asn1LocalKeyIdExtension(Asn1CertificateExtension source)
+        public Asn1LocalKeyIdExtension(CertificateExtension source)
             : base(source)
             {
             var octet = Body;

@@ -5,7 +5,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_APPLICATION_CERT_POLICIES)]
     internal class CertificateApplicationPolicy : CertificatePoliciesExtension
         {
-        public CertificateApplicationPolicy(Asn1CertificateExtension source)
+        public CertificateApplicationPolicy(CertificateExtension source)
             : base(source)
             {
             }

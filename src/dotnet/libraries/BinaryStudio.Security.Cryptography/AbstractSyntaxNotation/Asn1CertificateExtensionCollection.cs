@@ -6,14 +6,14 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
-    public class Asn1CertificateExtensionCollection : ReadOnlyCollection<Asn1CertificateExtension>,IJsonSerializable
+    public class Asn1CertificateExtensionCollection : ReadOnlyCollection<CertificateExtension>,IJsonSerializable
         {
-        public Asn1CertificateExtensionCollection(IList<Asn1CertificateExtension> source)
+        public Asn1CertificateExtensionCollection(IList<CertificateExtension> source)
             : base(source)
             {
             }
 
-        public Asn1CertificateExtensionCollection(IEnumerable<Asn1CertificateExtension> source)
+        public Asn1CertificateExtensionCollection(IEnumerable<CertificateExtension> source)
             : base(source.ToArray())
             {
             }

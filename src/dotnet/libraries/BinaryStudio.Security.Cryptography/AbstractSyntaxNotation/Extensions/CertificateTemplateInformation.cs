@@ -22,11 +22,11 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
      * }
      */
     [Asn1CertificateExtension(ObjectIdentifiers.szOID_CERTIFICATE_TEMPLATE)]
-    internal class Asn1CertificateTemplateInformation : Asn1CertificateExtension
+    internal class Asn1CertificateTemplateInformation : CertificateExtension
         {
         public Asn1ObjectIdentifier TemplateId { get; }
         public Version Version { get; }
-        public Asn1CertificateTemplateInformation(Asn1CertificateExtension source)
+        public Asn1CertificateTemplateInformation(CertificateExtension source)
             : base(source)
             {
             Version = new Version(0,0);
