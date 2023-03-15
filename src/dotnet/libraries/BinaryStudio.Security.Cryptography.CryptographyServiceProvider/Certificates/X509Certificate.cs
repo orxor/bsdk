@@ -31,7 +31,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public Oid HashAlgorithm { get; }
         public String Container {get;internal set; }
         internal Boolean IsMachineKeySet { get;set; }
-        internal KEY_SPEC_TYPE KeySpec { get;set; }
+        public KEY_SPEC_TYPE KeySpec { get;internal set; }
 
         public unsafe Byte[] Bytes { get{
             var context = (CERT_CONTEXT*)Context;
