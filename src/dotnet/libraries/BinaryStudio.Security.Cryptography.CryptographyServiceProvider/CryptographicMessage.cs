@@ -86,6 +86,37 @@ namespace BinaryStudio.Security.Cryptography
             return r;
             }
         #endregion
+        #region M:GetParameter(CMSG_PARAM,Int32,{out}HRESULT,{out}Byte[]):Byte[]
+        internal Boolean GetParameter(CMSG_PARAM parameter, Int32 signerindex, out HRESULT e, out Byte[] r) {
+            var c = 0;
+            r = EmptyArray<Byte>.Value;
+            if (!Entries.CryptMsgGetParam(Handle, parameter, signerindex, null, ref c)) {
+                e = (HRESULT)Entries.GetLastError();
+                r = EmptyArray<Byte>.Value;
+                return false;
+                }
+            r = new Byte[c];
+            if (!Entries.CryptMsgGetParam(Handle, parameter, signerindex, r, ref c)) {
+                e = (HRESULT)Entries.GetLastError();
+                r = EmptyArray<Byte>.Value;
+                return false;
+                }
+            e = 0;
+            return true;
+            }
+        #endregion
+        #region M:OpenToDecode(CRYPT_OPEN_MESSAGE_FLAGS):CryptographicMessage
+        public static unsafe CryptographicMessage OpenToDecode(CRYPT_OPEN_MESSAGE_FLAGS flags) {
+            var so = new CMSG_STREAM_INFO(CMSG_INDEFINITE_LENGTH,delegate(IntPtr arg, Byte* Data, UInt32 Size, Boolean Final) {
+                var Bytes = new Byte[Size];
+                for (var i = 0; i < Size; i++) {
+                    Bytes[i] = Data[i];
+                    }
+                return true;
+                }, IntPtr.Zero);
+            return new CryptographicMessage(Entries.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, flags, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero, ref so),ref so);
+            }
+        #endregion
         #region M:OpenToDecode(Action<Byte[],Boolean>):CryptographicMessage
         public static unsafe CryptographicMessage OpenToDecode(Action<Byte[], Boolean> OutputHandler) {
             var so = new CMSG_STREAM_INFO(CMSG_INDEFINITE_LENGTH,delegate(IntPtr arg, Byte* Data, UInt32 Size, Boolean Final) {

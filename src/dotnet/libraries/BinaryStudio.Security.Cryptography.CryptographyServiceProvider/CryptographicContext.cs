@@ -279,62 +279,6 @@ namespace BinaryStudio.Security.Cryptography
             (new X509CertificateChainPolicy(policy,entries)).Validate(GetCertificateChain(certificate,null),0);
             }
         #endregion
-        #region M:VerifyAttachedMessageSignature(Stream)
-        public virtual void VerifyAttachedMessageSignature(Stream InputStream) {
-            if (InputStream == null) { throw new ArgumentNullException(nameof(InputStream)); }
-            VerifyAttachedMessageSignature(InputStream,null,out var signers);
-            }
-        #endregion
-        #region M:VerifyAttachedMessageSignature(Stream,Stream,{out}IList<X509Certificate>)
-        public virtual void VerifyAttachedMessageSignature(Stream InputStream,Stream OutputStream,out IList<X509Certificate> Signers)
-            {
-            if (InputStream == null) { throw new ArgumentNullException(nameof(InputStream)); }
-            Signers = EmptyList<X509Certificate>.Value;
-            using (var message = CryptographicMessage.OpenToDecode((Bytes,Final)=> {
-                OutputStream?.Write(Bytes,0,Bytes.Length);
-                }))
-                {
-                var Block = new Byte[SIGNATURE_BUFFER_SIZE];
-                for (;;) {
-                    Yield();
-                    var sz = InputStream.Read(Block, 0, Block.Length);
-                    if (sz == 0) { break; }
-                    message.Update(Block, sz, false);
-                    }
-                message.Update(EmptyArray<Byte>.Value, 0, true);
-                using (var store = new MessageCertificateStorage(message.Handle)) {
-                    for (var signerindex = 0;; signerindex++) {
-                        var r = message.GetParameter(CMSG_PARAM.CMSG_SIGNER_CERT_INFO_PARAM, signerindex, out var hr);
-                        if (r.Length != 0) {
-                            unsafe {
-                                fixed (Byte* blob = r) {
-                                    var digest    = message.GetParameter(CMSG_PARAM.CMSG_COMPUTED_HASH_PARAM, signerindex);
-                                    var encdigest = message.GetParameter(CMSG_PARAM.CMSG_ENCRYPTED_DIGEST,    signerindex);
-                                    var certinfo = (CERT_INFO*)blob;
-                                    var certificate = store.Find(certinfo);
-                                    if (certificate == null) { throw new Exception(); }
-                                    if (certificate != null) {
-                                        if (!message.Control(
-                                            CRYPT_MESSAGE_FLAGS.CRYPT_MESSAGE_NONE,
-                                            CMSG_CTRL.CMSG_CTRL_VERIFY_SIGNATURE,
-                                            (IntPtr)((CERT_CONTEXT*)certificate.Handle)->CertInfo))
-                                            {
-                                            throw HResultException.GetExceptionForHR((HRESULT)Marshal.GetHRForLastWin32Error());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        else
-                            {
-                            if (hr == HRESULT.CRYPT_E_INVALID_INDEX) { break; }
-                            throw HResultException.GetExceptionForHR(hr);
-                            }
-                        }
-                    }
-                }
-            }
-        #endregion
 
         #region M:Dispose(Boolean)
         /// <summary>
