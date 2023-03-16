@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
 
@@ -96,6 +97,39 @@ namespace BinaryStudio.Security.Cryptography
                 return true;
                 }, IntPtr.Zero);
             return new CryptographicMessage(Entries.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, 0, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero, ref so),ref so);
+            }
+        #endregion
+        #region M:OpenToEncode(Action<Byte[],Boolean>,UInt32,CRYPT_OPEN_MESSAGE_FLAGS,CMSG_TYPE,CMSG_SIGNED_ENCODE_INFO):CryptographicMessage
+        public static unsafe CryptographicMessage OpenToEncode(Action<Byte[],Boolean> OutputHandler,UInt32 Length,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,CMSG_SIGNED_ENCODE_INFO EncodeInfo) {
+            if (OutputHandler == null) { throw new ArgumentNullException(nameof(OutputHandler)); }
+            var so = new CMSG_STREAM_INFO(Length,delegate(IntPtr arg, Byte* Data, UInt32 Size, Boolean Final) {
+                var Bytes = new Byte[Size];
+                for (var i = 0; i < Size; i++) {
+                    Bytes[i] = Data[i];
+                    }
+                try
+                    {
+                    OutputHandler(Bytes, Final);
+                    }
+                catch(Exception e)
+                    {
+                    //LastException = e;
+                    return false;
+                    }
+                return true;
+                }, IntPtr.Zero);
+            try
+                {
+                return new CryptographicMessage(
+                    Validate(Entries,Entries.CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING|CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, Flags, Type,EncodeInfo,ref so),NotZero),
+                    ref so);
+                }
+            catch (Exception e)
+                {
+                e.Add("MessageFlags",Flags);
+                e.Add("MessageType",Type);
+                throw;
+                }
             }
         #endregion
         #region M:Control(CRYPT_MESSAGE_FLAGS,CMSG_CTRL,IntPtr):Boolean

@@ -310,15 +310,6 @@ namespace BinaryStudio.Security.Cryptography
                                 fixed (Byte* blob = r) {
                                     var digest    = message.GetParameter(CMSG_PARAM.CMSG_COMPUTED_HASH_PARAM, signerindex);
                                     var encdigest = message.GetParameter(CMSG_PARAM.CMSG_ENCRYPTED_DIGEST,    signerindex);
-                                    #if DEBUG
-                                    #if NET35
-                                    Debug.Print("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.Select(i => i.ToString("X2")).ToArray()));
-                                    Debug.Print("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.Select(i => i.ToString("X2")).ToArray()), encdigest.Length);
-                                    #else
-                                    Debug.Print("SIGNER_{0}:CMSG_COMPUTED_HASH_PARAM:{1}", signerindex, String.Join(String.Empty, digest.ToString("X")));
-                                    Debug.Print("SIGNER_{0}:CMSG_ENCRYPTED_DIGEST:[{2}]{1}", signerindex, String.Join(String.Empty, encdigest.ToString("X")), encdigest.Length);
-                                    #endif
-                                    #endif
                                     var certinfo = (CERT_INFO*)blob;
                                     var certificate = store.Find(certinfo);
                                     if (certificate == null) { throw new Exception(); }
@@ -747,6 +738,7 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
+        private const UInt32 CMSG_INDEFINITE_LENGTH = 0xFFFFFFFF;
         private const Int32 SIGNATURE_BUFFER_SIZE = 64*1024;
         private const Int32 CRYPT_FIRST = 1;
         private const Int32 CRYPT_NEXT  = 2;

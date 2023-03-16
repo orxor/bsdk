@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -56,6 +57,12 @@ namespace BinaryStudio.Security.Cryptography
 
         #region M:IsNullOrEmpty(ICollection):Boolean
         protected static Boolean IsNullOrEmpty(ICollection source)
+            {
+            return (source == null) || (source.Count == 0);
+            }
+        #endregion
+        #region M:IsNullOrEmpty<T>(ICollection):Boolean
+        protected static Boolean IsNullOrEmpty<T>(ICollection<T> source)
             {
             return (source == null) || (source.Count == 0);
             }
@@ -120,17 +127,15 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:Validate<T>(T,Func<T,Boolean>)
-        protected virtual T Validate<T>(T value, Func<T,Boolean> predicate) {
-            return Validate(value,null,predicate);
+        protected static T Validate<T>(T value, Func<T,Boolean> predicate) {
+            return Validate(null,value,predicate);
             }
         #endregion
         #region M:Validate<T>(T,CryptographicObject,Func<T,Boolean>)
-        protected virtual T Validate<T>(T value, CryptographicObject o, Func<T,Boolean> predicate) {
+        protected static T Validate<T>(ILastErrorProvider provider, T value, Func<T,Boolean> predicate) {
             if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
             if (!predicate(value)) {
-                Exception e = HResultException.GetExceptionForHR((o != null)
-                    ? (HRESULT)o.GetLastWin32Error()
-                    : (HRESULT)GetLastWin32Error());
+                Exception e = HResultException.GetExceptionForHR((HRESULT)provider.GetLastError());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif

@@ -17,6 +17,12 @@
   <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' != 'linux-x64'">
+    <DefineConstants>$(DefineConstants);CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;CMSG_SIGNER_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="CreateMessage.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
@@ -34,5 +40,23 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Internal\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CreateMessage.cs">
+      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

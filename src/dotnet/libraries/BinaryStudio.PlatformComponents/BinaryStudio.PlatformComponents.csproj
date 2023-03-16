@@ -23,6 +23,9 @@
   <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' != 'linux-x64'">
+    <DefineConstants>$(DefineConstants);CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;CMSG_SIGNER_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.13" />
   </ItemGroup>
