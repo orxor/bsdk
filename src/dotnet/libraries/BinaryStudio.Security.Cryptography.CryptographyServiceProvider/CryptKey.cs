@@ -60,7 +60,7 @@ namespace BinaryStudio.Security.Cryptography
         #region M:GenKey(CryptographicContext,ALG_ID,CryptGenKeyFlags):CryptKey
         public static CryptKey GenKey(CryptographicContext context,ALG_ID algid, CryptGenKeyFlags flags) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
-            Validate(((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptGenKey(context.Handle,algid,(Int32)flags,out var r));
+            Validate(((CryptographicFunctions)context.GetService(typeof(CryptographicFunctions))).CryptGenKey(context.Handle,algid,(Int32)flags,out var r));
             if (algid == ALG_ID.AT_KEYEXCHANGE) { return new CryptKey(context,r,KEY_SPEC_TYPE.AT_KEYEXCHANGE,context.Container); }
             if (algid == ALG_ID.AT_SIGNATURE)   { return new CryptKey(context,r,KEY_SPEC_TYPE.AT_SIGNATURE  ,context.Container); }
             return new CryptKey(context,r);
@@ -69,7 +69,7 @@ namespace BinaryStudio.Security.Cryptography
         #region M:GetUserKey(CryptographicContext,KEY_SPEC_TYPE):CryptKey
         public static CryptKey GetUserKey(CryptographicContext context, KEY_SPEC_TYPE keyspec) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
-            ((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptGetUserKey(context.Handle,keyspec,out var r);
+            ((CryptographicFunctions)context.GetService(typeof(CryptographicFunctions))).CryptGetUserKey(context.Handle,keyspec,out var r);
             return (r != IntPtr.Zero)
                 ? new CryptKey(context,r)
                 : null;
@@ -88,7 +88,7 @@ namespace BinaryStudio.Security.Cryptography
                 }
             set
                 {
-                ((KeyGenerationAndExchangeFunctions)context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptSetKeyParam(
+                ((CryptographicFunctions)context.GetService(typeof(CryptographicFunctions))).CryptSetKeyParam(
                     Handle,KEY_PARAM.KP_CERTIFICATE,value?.Bytes,0);
                 }
             }
@@ -131,7 +131,7 @@ namespace BinaryStudio.Security.Cryptography
         /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
         protected override void Dispose(Boolean disposing) {
             if (handle != IntPtr.Zero) {
-                ((KeyGenerationAndExchangeFunctions)Context.GetService(typeof(KeyGenerationAndExchangeFunctions))).CryptDestroyKey(handle);
+                ((CryptographicFunctions)Context.GetService(typeof(CryptographicFunctions))).CryptDestroyKey(handle);
                 handle = IntPtr.Zero;
                 }
             context = null;

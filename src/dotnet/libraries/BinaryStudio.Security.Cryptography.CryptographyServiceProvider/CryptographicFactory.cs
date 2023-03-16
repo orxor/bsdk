@@ -15,7 +15,7 @@ namespace BinaryStudio.Security.Cryptography
             if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
             EnsureAlgIdCache();
             if (!SAlgId.TryGetValue(algid.Value,out var nalgid)) { nalgid = CryptographicContext.OidToAlgId(algid); }
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             foreach (var type in RegisteredProviders) {
                 if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)flags)) {
                     var context = new CryptographicContextI(r);
@@ -31,7 +31,7 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
         #region M:AcquireContext(String,String,CRYPT_PROVIDER_TYPE,CryptographicContextFlags):CryptographicContext
         public static CryptographicContext AcquireContext(String container, String provider, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
-            var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)CryptographicContext.DefaultContext.GetService(typeof(CryptographicFunctions));
             Validate(entries.CryptAcquireContext(out var r,container,provider,(Int32)providertype,(Int32)flags));
             return new CryptographicContextI(r);
             }
@@ -59,7 +59,7 @@ namespace BinaryStudio.Security.Cryptography
 
         #region M:DeleteContainer(CRYPT_PROVIDER_TYPE,String)
         public static void DeleteContainer(CRYPT_PROVIDER_TYPE providertype, String container) {
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             Validate(entries.CryptAcquireContext(out var r, container, null,
                 (Int32)providertype,(Int32)CryptographicContextFlags.CRYPT_DELETEKEYSET));
             }
@@ -69,7 +69,7 @@ namespace BinaryStudio.Security.Cryptography
         private static void EnsureAlgIdCache() {
             if (SAlgId == null) {
                 SAlgId = new Dictionary<String,ALG_ID>();
-                var entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
+                var entries = (CryptographicFunctions)CryptographicContext.DefaultContext.GetService(typeof(CryptographicFunctions));
                 entries.CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID.CRYPT_SIGN_ALG_OID_GROUP_ID, IntPtr.Zero, delegate(IntPtr info,IntPtr arg) {
                     unsafe
                         {

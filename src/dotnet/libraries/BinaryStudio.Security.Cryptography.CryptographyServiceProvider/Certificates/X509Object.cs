@@ -5,14 +5,14 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     {
     public abstract class X509Object : CryptographicObject,IJsonSerializable
         {
-        internal static ICryptoAPI Entries;
+        internal static CryptographicFunctions Entries;
         protected Boolean Disposed;
 
         public abstract void WriteTo(IJsonWriter writer);
 
         static X509Object()
             {
-            Entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
+            Entries = (CryptographicFunctions)CryptographicContext.DefaultContext.GetService(typeof(CryptographicFunctions));
             }
         }
     }

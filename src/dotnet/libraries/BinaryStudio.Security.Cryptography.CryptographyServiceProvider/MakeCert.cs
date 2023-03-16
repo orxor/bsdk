@@ -118,7 +118,7 @@ namespace BinaryStudio.Security.Cryptography
                 case CRYPT_PROVIDER_TYPE.PROV_GOST_2012_256:
                 case CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512:
                     {
-                    var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+                    var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
                     var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
                     using (var contextS = AcquireContext(ProviderType, container,CryptographicContextFlags.CRYPT_NEWKEYSET)) {
                         contextS.SecureCode = SecureCode;
@@ -173,7 +173,7 @@ namespace BinaryStudio.Security.Cryptography
             {
             if (SubjectName == null) { throw new ArgumentNullException(nameof(SubjectName)); }
             if (IssuerCertificate == null) { throw new ArgumentNullException(nameof(IssuerCertificate)); }
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             var ProviderType = ProviderTypeFromAlgId(AlgId);
             if (ProviderType == CRYPT_PROVIDER_TYPE.AUTO) { throw new NotSupportedException(); }
             Certificate = null;
@@ -243,7 +243,7 @@ namespace BinaryStudio.Security.Cryptography
 
         #region M:ProviderTypeFromAlgId(ALG_ID):CRYPT_PROVIDER_TYPE
         public static CRYPT_PROVIDER_TYPE ProviderTypeFromAlgId(ALG_ID AlgId) {
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             foreach (var type in RegisteredProviders) {
                 if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                     using (var context = new CryptographicContextI(r)) {
@@ -262,7 +262,7 @@ namespace BinaryStudio.Security.Cryptography
         public static CRYPT_PROVIDER_TYPE ProviderTypeFromAlgId(Oid AlgId) {
             EnsureAlgIdCache();
             if (!SAlgId.TryGetValue(AlgId.Value,out var AlgIdI)) { AlgIdI = OidToAlgId(AlgId); }
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             foreach (var type in RegisteredProviders) {
                 if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                     using (var context = new CryptographicContextI(r)) {

@@ -8,7 +8,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         {
         private class EX509CertificateChainPolicy : X509CertificateChainPolicy
             {
-            public EX509CertificateChainPolicy(CertificateChainPolicy policy, ICryptoAPI entries)
+            public EX509CertificateChainPolicy(CertificateChainPolicy policy, CryptographicFunctions entries)
                 : base(policy,entries)
                 {
                 }

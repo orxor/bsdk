@@ -106,10 +106,10 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
 
         protected const UInt32 CMSG_INDEFINITE_LENGTH = 0xFFFFFFFF;
-        internal static ICryptoAPI Entries;
+        internal static CryptographicFunctions Entries;
         static CryptographicMessage()
             {
-            Entries = (ICryptoAPI)CryptographicContext.DefaultContext.GetService(typeof(ICryptoAPI));
+            Entries = (CryptographicFunctions)CryptographicContext.DefaultContext.GetService(typeof(CryptographicFunctions));
             }
 
         private CMSG_STREAM_INFO so;

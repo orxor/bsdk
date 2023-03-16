@@ -194,8 +194,8 @@ namespace BinaryStudio.Security.Cryptography
             return r.ToString();
             }
         #endregion
-        #region M:DecodeNameString(ICryptoAPI,{ref}CERT_NAME_BLOB):String
-        internal static String DecodeNameString(ICryptoAPI API,ref CERT_NAME_BLOB source) {
+        #region M:DecodeNameString(CryptographicFunctions,{ref}CERT_NAME_BLOB):String
+        internal static String DecodeNameString(CryptographicFunctions API,ref CERT_NAME_BLOB source) {
             var r = API.CertNameToStrW(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, IntPtr.Zero, 0);
             if (r != 0) {
                 using (var buffer = new LocalMemory(r << 1)) {

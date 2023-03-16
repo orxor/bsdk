@@ -65,11 +65,11 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
-        #region M:EnsureEntries:ICryptoAPI
-        private ICryptoAPI Entries;
-        private ICryptoAPI EnsureEntries() {
+        #region M:EnsureEntries:CryptographicFunctions
+        private CryptographicFunctions Entries;
+        private CryptographicFunctions EnsureEntries() {
             if (Entries == null) {
-                Entries = (ICryptoAPI)Context.GetService(typeof(ICryptoAPI));
+                Entries = (CryptographicFunctions)Context.GetService(typeof(CryptographicFunctions));
                 }
             return Entries;
             }

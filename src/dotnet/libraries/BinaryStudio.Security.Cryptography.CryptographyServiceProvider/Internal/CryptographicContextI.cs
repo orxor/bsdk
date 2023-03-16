@@ -42,7 +42,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
         #endregion
         #region ctor{String,String,CRYPT_PROVIDER_TYPE,CryptographicContextFlags}
         public CryptographicContextI(String container, String provider, CRYPT_PROVIDER_TYPE providertype, CryptographicContextFlags flags) {
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             ProviderFlags = flags;
             IsMachineKeySet = flags.HasFlag(CryptographicContextFlags.CRYPT_MACHINE_KEYSET);
             try
@@ -68,7 +68,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
         public CryptographicContextI(CryptographicContext context, X509Certificate certificate,CRYPT_ACQUIRE_FLAGS flags) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
             if (certificate == null) { throw new ArgumentNullException(nameof(certificate)); }
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             ProviderFlags = context.ProviderFlags;
             IsMachineKeySet = certificate.IsMachineKeySet;
             try
@@ -92,7 +92,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
         #region ctor{X509Certificate,CRYPT_ACQUIRE_FLAGS}
         public CryptographicContextI(X509Certificate certificate,CRYPT_ACQUIRE_FLAGS flags) {
             if (certificate == null) { throw new ArgumentNullException(nameof(certificate)); }
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             IsMachineKeySet = certificate.IsMachineKeySet;
             try
                 {
@@ -114,7 +114,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
         #region ctor{CryptographicContext,CryptographicContextFlags}
         public CryptographicContextI(CryptographicContext context, CryptographicContextFlags flags) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             Container = context.Container;
             ProviderType = context.ProviderType;
             providername = context.ProviderName;
@@ -130,7 +130,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
         #region ctor{CryptographicContext,String,CryptographicContextFlags}
         public CryptographicContextI(CryptographicContext context, String container,CryptographicContextFlags flags) {
             if (context == null) { throw new ArgumentNullException(nameof(context)); }
-            var entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             Container = container;
             ProviderType = context.ProviderType;
             providername = context.ProviderName;
@@ -172,10 +172,10 @@ namespace BinaryStudio.Security.Cryptography.Internal
             }
         #endregion
         #region M:EnsureEntries
-        private ICryptoAPI Entries;
-        internal override void EnsureEntries(out ICryptoAPI entries) {
+        private CryptographicFunctions Entries;
+        internal override void EnsureEntries(out CryptographicFunctions entries) {
             if (Entries == null) {
-                Entries = (ICryptoAPI)DefaultContext.GetService(typeof(ICryptoAPI));
+                Entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
                 }
             entries = Entries;
             }

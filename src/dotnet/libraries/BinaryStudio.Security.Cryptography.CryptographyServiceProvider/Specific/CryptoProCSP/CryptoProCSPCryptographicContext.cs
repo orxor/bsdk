@@ -78,7 +78,7 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
                 }
             else
                 {
-                var entries = (ICryptoAPI)Context.GetService(typeof(ICryptoAPI));
+                var entries = (CryptographicFunctions)Context.GetService(typeof(CryptographicFunctions));
                 using (var manager = new LocalMemoryManager())
                 using (var store = new X509CertificateStorage(X509StoreName.Memory)) {
                     store.Add(Certificate);
@@ -142,7 +142,7 @@ namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP
         #endregion
         #region M:CreateSelfSignCertificate(String,DateTime,DateTime,IList<CertificateExtension>):X509Certificate
         public unsafe X509Certificate CreateSelfSignCertificate(String name, DateTime notbefore, DateTime notafter, IList<CertificateExtension> extensions) {
-            var entries = (ICryptoAPI)Context.GetService(typeof(ICryptoAPI));
+            var entries = (CryptographicFunctions)Context.GetService(typeof(CryptographicFunctions));
             var SubjectIssuerBlobM = Context.CertStrToName(name);
             fixed (Byte* SubjectIssuerBlobU = SubjectIssuerBlobM) {
                 var SubjectIssuerBlob = new CRYPT_BLOB{

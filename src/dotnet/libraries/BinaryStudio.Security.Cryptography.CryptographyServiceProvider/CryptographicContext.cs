@@ -664,8 +664,7 @@ namespace BinaryStudio.Security.Cryptography
         /// -or-
         /// <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
         public override Object GetService(Type service) {
-            if (service == typeof(KeyGenerationAndExchangeFunctions)) { return DefaultContext.GetService(service); }
-            if (service == typeof(ICryptoAPI)) { return DefaultContext.GetService(service); }
+            if (service == typeof(CryptographicFunctions)) { return DefaultContext.GetService(service); }
             return base.GetService(service);
             }
         #endregion
@@ -739,10 +738,10 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:EnsureEntries
-        private ICryptoAPI Entries;
-        internal virtual void EnsureEntries(out ICryptoAPI entries) {
+        private CryptographicFunctions Entries;
+        internal virtual void EnsureEntries(out CryptographicFunctions entries) {
             if (Entries == null) {
-                Entries = (ICryptoAPI)GetService(typeof(ICryptoAPI));
+                Entries = (CryptographicFunctions)GetService(typeof(CryptographicFunctions));
                 }
             entries = Entries;
             }

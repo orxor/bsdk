@@ -13,10 +13,10 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     {
     public partial class X509CertificateChainPolicy
         {
-        internal ICryptoAPI Entries;
+        internal CryptographicFunctions Entries;
         private X509CertificateChainPolicy Source;
         public CertificateChainPolicy Policy { get; }
-        internal X509CertificateChainPolicy(CertificateChainPolicy policy, ICryptoAPI entries)
+        internal X509CertificateChainPolicy(CertificateChainPolicy policy, CryptographicFunctions entries)
             {
             if (entries == null) { throw new ArgumentNullException(nameof(entries)); }
             Entries = entries;
