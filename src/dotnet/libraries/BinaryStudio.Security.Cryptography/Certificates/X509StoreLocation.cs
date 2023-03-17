@@ -1,5 +1,8 @@
 ﻿namespace BinaryStudio.Security.Cryptography.Certificates
     {
+    /// <summary>
+    /// Specifies the location of the X.509 certificate store.
+    /// </summary>
     public enum X509StoreLocation
         {
         CurrentUser               = 0x00010000,

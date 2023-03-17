@@ -17,11 +17,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         public Encoding UnicodeEncoding { get { return Encoding.Unicode; }}
         public override CRYPT_PROVIDER_TYPE ProviderType { get { return CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512; }}
 
-        Int32 ILastErrorProvider.GetLastError() { return GetLastWin32Error(); }
+        Int32 LastErrorService.GetLastError() { return GetLastWin32Error(); }
         ALG_ID CryptographicFunctions.CertOIDToAlgId(String Id) { return CertOIDToAlgId(Id); }
-        Boolean CryptographicFunctions.CertAddCertificateContextToStore(IntPtr CertStore,IntPtr CertContext,CERT_STORE_ADD AddDisposition,IntPtr Zero) { return CertAddCertificateContextToStore(CertStore,CertContext,AddDisposition,Zero); }
-        Boolean CryptographicFunctions.CertAddCertificateContextToStore(IntPtr CertStore,IntPtr CertContext,CERT_STORE_ADD AddDisposition,out IntPtr StoreContext) { return CertAddCertificateContextToStore(CertStore,CertContext,AddDisposition,out StoreContext); }
-        Boolean CryptographicFunctions.CertAddCertificateLinkToStore(IntPtr CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext) { return CertAddCertificateLinkToStore(CertStore,CertContext,AddDisposition,out StoreContext); }
+        Boolean CryptographicFunctions.CertAddCertificateContextToStore(IntPtr Store,IntPtr InputContext,CERT_STORE_ADD Disposition) { return CertAddCertificateContextToStore(Store,InputContext,Disposition,IntPtr.Zero); }
+        Boolean CryptographicFunctions.CertAddCertificateContextToStore(IntPtr Store,IntPtr InputContext,CERT_STORE_ADD Disposition,out IntPtr OutputContext) { return CertAddCertificateContextToStore(Store,InputContext,Disposition,out OutputContext); }
+        Boolean CryptographicFunctions.CertAddCertificateLinkToStore(IntPtr Store,IntPtr CertContext,Int32 AddDisposition,out IntPtr OutputContext) { return CertAddCertificateLinkToStore(Store,CertContext,AddDisposition,out OutputContext); }
         Boolean CryptographicFunctions.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero) { return CertAddCRLContextToStore(Store,Context,Disposition,Zero); }
         Boolean CryptographicFunctions.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext) { return CertAddCRLContextToStore(Store,Context,Disposition,out StoreContext); }
         Boolean CryptographicFunctions.CertAddEncodedCertificateToStore(IntPtr CertStore,Int32 CertEncodingType,Byte[] CertEncodedData,Int32 CertEncodedLength,Int32 AddDisposition,out IntPtr CertContext) { return CertAddEncodedCertificateToStore(CertStore,CertEncodingType,CertEncodedData,CertEncodedLength,AddDisposition,out CertContext); }
@@ -92,7 +92,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         unsafe CERT_SERVER_OCSP_RESPONSE_CONTEXT* CryptographicFunctions.CertGetServerOcspResponseContext(IntPtr ServerOcspResponse,Int32 Flags,IntPtr Reserved) { return CertGetServerOcspResponseContext(ServerOcspResponse,Flags,Reserved); }
         unsafe IntPtr CryptographicFunctions.CertAddRefServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara) { return CertAddRefServerOcspResponse(ChainContext,Flags,OpenPara); }
         unsafe IntPtr CryptographicFunctions.CertCreateSelfSignCertificate(IntPtr CryptProvOrNCryptKey,ref CERT_NAME_BLOB SubjectIssuerBlob,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions) { return CertCreateSelfSignCertificate(CryptProvOrNCryptKey,ref SubjectIssuerBlob,Flags,KeyProvInfo,SignatureAlgorithm,StartTime,EndTime,Extensions); }
-        unsafe IntPtr CryptographicFunctions.CertGetSubjectCertificateFromStore(IntPtr CertStore,Int32 CertEncodingType,CERT_INFO* CertId) { return CertGetSubjectCertificateFromStore(CertStore,CertEncodingType,CertId); }
+        unsafe IntPtr CryptographicFunctions.CertGetSubjectCertificateFromStore(IntPtr Store,Int32 EncodingType,CERT_INFO* CertId) { return CertGetSubjectCertificateFromStore(Store,EncodingType,CertId); }
         unsafe IntPtr CryptographicFunctions.CertOpenServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara) { return CertOpenServerOcspResponse(ChainContext,Flags,OpenPara); }
         unsafe IntPtr CryptographicFunctions.CryptFindOIDInfo(CRYPT_OID_INFO_KEY_TYPE KeyType,void* Key,Int32 GroupId) { return CryptFindOIDInfo((Int32)KeyType,Key,GroupId); }
         void CryptographicFunctions.CertAddRefServerOcspResponseContext(IntPtr ServerOcspResponseContext) { CertAddRefServerOcspResponseContext(ServerOcspResponseContext); }
@@ -100,9 +100,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
 
         [DllImport("libcapi20", SetLastError = true)] private new static extern Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,ref Int32 DataLen,Int32 Flags);
         [DllImport("libcapi20", SetLastError = true)] private static extern ALG_ID CertOIDToAlgId([MarshalAs(UnmanagedType.LPStr)] String Id);
-        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(IntPtr CertStore,IntPtr CertContext,CERT_STORE_ADD AddDisposition,IntPtr Zero);
-        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(IntPtr CertStore,IntPtr CertContext,CERT_STORE_ADD AddDisposition,out IntPtr StoreContext);
-        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddCertificateLinkToStore(IntPtr CertStore,IntPtr CertContext,Int32 AddDisposition,out IntPtr StoreContext);
+        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(IntPtr Store,IntPtr InputContext,CERT_STORE_ADD Disposition,IntPtr Zero);
+        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(IntPtr Store,IntPtr InputContext,CERT_STORE_ADD Disposition,out IntPtr OutputContext);
+        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddCertificateLinkToStore(IntPtr Store,IntPtr CertContext,Int32 AddDisposition,out IntPtr OutputContext);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CertAddEncodedCertificateToStore(IntPtr CertStore,Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPArray)] Byte[] CertEncodedData,Int32 CertEncodedLength,Int32 AddDisposition,out IntPtr CertContext);
@@ -164,7 +164,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcapi20", SetLastError = true)] private static extern unsafe CERT_SERVER_OCSP_RESPONSE_CONTEXT* CertGetServerOcspResponseContext(IntPtr ServerOcspResponse,Int32 Flags,IntPtr Reserved);
         [DllImport("libcapi20", SetLastError = true)] private static extern unsafe IntPtr CertAddRefServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara);
         [DllImport("libcapi20", SetLastError = true)] private static extern unsafe IntPtr CertCreateSelfSignCertificate(IntPtr CryptProvOrNCryptKey,ref CERT_NAME_BLOB SubjectIssuerBlob,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions);
-        [DllImport("libcapi20", SetLastError = true)] private static extern unsafe IntPtr CertGetSubjectCertificateFromStore(IntPtr CertStore,Int32 CertEncodingType,CERT_INFO* CertId);
+        [DllImport("libcapi20", SetLastError = true)] private static extern unsafe IntPtr CertGetSubjectCertificateFromStore(IntPtr Store,Int32 EncodingType,CERT_INFO* CertId);
         [DllImport("libcapi20", SetLastError = true)] private static extern unsafe IntPtr CertOpenServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara);
         [DllImport("libcapi20", SetLastError = true)] private static extern unsafe IntPtr CryptFindOIDInfo(Int32 KeyType,void* Key,Int32 GroupId);
         [DllImport("libcapi20", SetLastError = true)] private static extern void CertAddRefServerOcspResponseContext(IntPtr ServerOcspResponseContext);

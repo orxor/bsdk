@@ -15,6 +15,22 @@ using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {   
+    /// <summary>
+    /// Represents an X509 extension.
+    /// <p>The extensions defined for X.509 v3 certificates provide methods for associating additional attributes with
+    /// users or public keys and for managing relationships between CAs. The X.509 v3 certificate format also allows
+    /// communities to define private extensions to carry information unique to those communities. Each extension in
+    /// a certificate is designated as either critical or non-critical. A certificate-using system MUST reject the
+    /// certificate if it encounters a critical extension it does not recognize or a critical extension that contains
+    /// information that it cannot process. A non-critical extension MAY be ignored if it is not recognized, but MUST
+    /// be processed if it is recognized. Communities may elect to use additional extensions; however, caution ought
+    /// to be exercised in adopting any critical extensions in certificates that might prevent use in a general context.</p>
+    /// <p>Each extension includes an OID and an ASN.1 structure. When an extension appears in a certificate, the OID
+    /// appears as the field <see cref="Identifier"/> and the corresponding ASN.1 DER encoded structure is the value
+    /// of the octet string <see cref="Body"/>. A certificate MUST NOT include more than one instance of a particular
+    /// extension. An extension includes the boolean <see cref="IsCritical"/>, with a default value of
+    /// <see langword="false"/>.</p>
+    /// </summary>
     [DebuggerDisplay(@"\{{" + nameof(ToString) + @"(),nq}\}")]
     public class CertificateExtension : Asn1LinkObject
         {
@@ -86,7 +102,13 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         private static readonly IDictionary<String, Type> types = new ConcurrentDictionary<String, Type>();
         private static readonly ReaderWriterLockSlim syncobject = new ReaderWriterLockSlim();
 
-        public static CertificateExtension From(CertificateExtension source) {
+        /// <summary>
+        /// Attempts to construct strong-typed extension instance from base extensions source.
+        /// If library cannot recognize it then original source returns.
+        /// </summary>
+        /// <param name="source">Source containing unstructured extension data.</param>
+        /// <returns>Returns suggested extension instance from source.</returns>
+        internal static CertificateExtension From(CertificateExtension source) {
             if (ReferenceEquals(source, null)) { throw new ArgumentNullException(nameof(source)); }
             try
                 {

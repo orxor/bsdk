@@ -81,11 +81,11 @@ namespace BinaryStudio.Security.Cryptography
             }
 
 
-        #region M:Validate(ILastErrorProvider,Boolean)
-        protected static void Validate(ILastErrorProvider provider, Boolean status) {
-            if (provider == null) { throw new ArgumentNullException(nameof(provider)); }
+        #region M:Validate(LastErrorService,Boolean)
+        protected static void Validate(LastErrorService service, Boolean status) {
+            if (service == null) { throw new ArgumentNullException(nameof(service)); }
             if (!status) {
-                var e = HResultException.GetExceptionForHR((HRESULT)provider.GetLastError());
+                var e = HResultException.GetExceptionForHR((HRESULT)service.GetLastError());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif
@@ -132,10 +132,10 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:Validate<T>(T,CryptographicObject,Func<T,Boolean>)
-        protected static T Validate<T>(ILastErrorProvider provider, T value, Func<T,Boolean> predicate) {
+        protected static T Validate<T>(LastErrorService service, T value, Func<T,Boolean> predicate) {
             if (predicate == null) { throw new ArgumentNullException(nameof(predicate)); }
             if (!predicate(value)) {
-                Exception e = HResultException.GetExceptionForHR((HRESULT)provider.GetLastError());
+                Exception e = HResultException.GetExceptionForHR((HRESULT)service.GetLastError());
                 #if DEBUG
                 Debug.Print($"Validate:{e.Message}");
                 #endif

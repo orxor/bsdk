@@ -16,7 +16,7 @@ namespace Options
          */
         public override String ToString()
             {
-            return $"provider:{Type}";
+            return $"service:{Type}";
             }
         }
     }

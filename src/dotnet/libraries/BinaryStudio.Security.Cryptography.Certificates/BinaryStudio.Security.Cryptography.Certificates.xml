@@ -1,0 +1,503 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BinaryStudio.Security.Cryptography.Certificates</name>
+    </assembly>
+    <members>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1Certificate">
+             <summary>
+             Represents ASN.1 certificate structure.
+             </summary>
+             <remarks>
+             <pre style="font-family: Consolas">
+             Certificate  ::=  SEQUENCE  {
+               tbsCertificate       TBSCertificate,
+               signatureAlgorithm   AlgorithmIdentifier,
+               signatureValue       BIT STRING
+               }
+            
+             TBSCertificate  ::=  SEQUENCE  {
+               version         [0]  EXPLICIT Version DEFAULT v1,
+               serialNumber         CertificateSerialNumber,
+               signature            AlgorithmIdentifier,
+               issuer               Name,
+               validity             Validity,
+               subject              Name,
+               subjectPublicKeyInfo SubjectPublicKeyInfo,
+               issuerUniqueID  [1]  IMPLICIT UniqueIdentifier OPTIONAL, # If present, version MUST be v2 or v3
+               subjectUniqueID [2]  IMPLICIT UniqueIdentifier OPTIONAL, # If present, version MUST be v2 or v3
+               extensions      [3]  EXPLICIT Extensions OPTIONAL        # If present, version MUST be v3
+               }
+             Version  ::=  INTEGER  {  v1(0), v2(1), v3(2)  }
+             CertificateSerialNumber  ::=  INTEGER
+             Validity ::= SEQUENCE {
+               notBefore      Time,
+               notAfter       Time
+               }
+             
+             Time ::= CHOICE {
+               utcTime        UTCTime,
+               generalTime    GeneralizedTime
+               }
+             
+             UniqueIdentifier  ::=  BIT STRING
+             
+             SubjectPublicKeyInfo  ::=  SEQUENCE  {
+               algorithm            AlgorithmIdentifier,
+               subjectPublicKey     BIT STRING
+               }
+             
+             Extensions  ::=  SEQUENCE SIZE (1..MAX) OF Extension
+             
+             Extension  ::=  SEQUENCE  {
+               extnID      OBJECT IDENTIFIER,
+               critical    BOOLEAN DEFAULT FALSE,
+               extnValue   OCTET STRING
+                              -- contains the DER encoding of an ASN.1 value
+                              -- corresponding to the extension type identified
+                              -- by extnID
+               }
+             
+             AlgorithmIdentifier  ::=  SEQUENCE  {
+               algorithm               OBJECT IDENTIFIER,
+               parameters              ANY DEFINED BY algorithm OPTIONAL
+               }
+             </pre>
+             </remarks>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateExtensionCollection.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateRevocationList">
+             <summary>
+             CertificateList  ::=  SEQUENCE {
+               tbsCertList          TBSCertList,
+               signatureAlgorithm   AlgorithmIdentifier,
+               signatureValue       BIT STRING
+               }
+            
+             TBSCertList  ::=  SEQUENCE  {
+               version                 Version OPTIONAL, # if present, MUST be v2
+               signature               AlgorithmIdentifier,
+               issuer                  Name,
+               thisUpdate              Time,
+               nextUpdate              Time OPTIONAL,
+               revokedCertificates     SEQUENCE OF SEQUENCE  {
+                 userCertificate         CertificateSerialNumber,
+                 revocationDate          Time,
+                 crlEntryExtensions      Extensions OPTIONAL # if present, version MUST be v2
+                 }  OPTIONAL,
+               crlExtensions           [0]  EXPLICIT Extensions OPTIONAL # if present, version MUST be v2
+               }
+             </summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Asn1CertificateRevocationList.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.CertificateRevocationListEntry.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.CertificateRevocationListEntry.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1GeneralNameObject.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateAuthorityInformationAccessExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateAuthorityInformationAccessExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateAuthorityKeyIdentifier.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateAuthorityKeyIdentifier.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateBasicConstraintsExtension">
+             {joint-iso-itu-t(2) ds(5) certificateExtension(29) basicConstraints(19)}
+             {2.5.29.19}
+             {/Joint-ISO-ITU-T/5/29/19}
+             IETF RFC 5280,3280
+            
+             id-ce-basicConstraints OBJECT IDENTIFIER ::=  { id-ce 19 }
+             BasicConstraints ::= SEQUENCE
+             {
+               cA                      BOOLEAN DEFAULT FALSE,
+               pathLenConstraint       INTEGER (0..MAX) OPTIONAL
+             }
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateBasicConstraintsExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateCAVersion.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateCAVersion.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateCRLDistributionPoints.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateCRLDistributionPoints.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtendedKeyUsage.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtendedKeyUsage.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension">
+            <summary>
+            Represents an X509 extension.
+            <p>The extensions defined for X.509 v3 certificates provide methods for associating additional attributes with
+            users or public keys and for managing relationships between CAs. The X.509 v3 certificate format also allows
+            communities to define private extensions to carry information unique to those communities. Each extension in
+            a certificate is designated as either critical or non-critical. A certificate-using system MUST reject the
+            certificate if it encounters a critical extension it does not recognize or a critical extension that contains
+            information that it cannot process. A non-critical extension MAY be ignored if it is not recognized, but MUST
+            be processed if it is recognized. Communities may elect to use additional extensions; however, caution ought
+            to be exercised in adopting any critical extensions in certificates that might prevent use in a general context.</p>
+            <p>Each extension includes an OID and an ASN.1 structure. When an extension appears in a certificate, the OID
+            appears as the field <see cref="P:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension.Identifier"/> and the corresponding ASN.1 DER encoded structure is the value
+            of the octet string <see cref="P:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension.Body"/>. A certificate MUST NOT include more than one instance of a particular
+            extension. An extension includes the boolean <see cref="P:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension.IsCritical"/>, with a default value of
+            <see langword="false"/>.</p>
+            </summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+            </summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateIssuer.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateIssuerDigitalSigningTool.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateKeyUsage.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificatePoliciesExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificatePrivateKeyUsagePeriodExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificatePrivateKeyUsagePeriodExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateSubjectDigitalSigningToolExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateSubjectDigitalSigningToolExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateSubjectKeyIdentifier.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateSubjectKeyIdentifier.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateTemplateInformation">
+             {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 7}
+             {1.3.6.1.4.1.311.21.7}
+             {/ISO/Identified-Organization/6/1/4/1/311/21/7}
+             [MS-WCCE]
+             Internal Name: szOID_CERTIFICATE_TEMPLATE
+             Contains the information about the template. This extension value MUST be DER-encoded. The critical field for this extension SHOULD be set to FALSE.
+            
+             CertificateTemplateOID ::= SEQUENCE
+             {
+               templateID              OBJECT IDENTIFIER,
+               templateMajorVersion    INTEGER (0..4294967295) OPTIONAL,
+               templateMinorVersion    INTEGER (0..4294967295) OPTIONAL
+             }
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateTemplateInformation.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateTemplateNameExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateTemplateNameExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CRLDistributionPoints">
+            {joint-iso-itu-t(2) ds(5) certificateExtension(29) cRLDistributionPoints(31)}
+            2.5.29.31
+            /Joint-ISO-ITU-T/5/29/31
+            Certificate Revocation List (CRL) distribution points
+            IETF RFC 5280
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CRLDistributionPoints.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CRLNumber.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CRLReason.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.DeltaCRLIndicator.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.DistributionPoint.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.DistributionPointName.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.DRSJoinType.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.DRSObjectGuid.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1CertificateAuthorityInformationAccessCollection.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.EntrustVersionInfo.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.ExpiredCertsOnCRL.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.HoldInstructionCode.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.IcaoDocumentTypeList">
+             {joint-iso-itu-t(2) international-organizations(23) 136 mrtd(1) security(1) extensions(6) documentTypeList(2)}
+             {2.23.136.1.1.6.2}
+             {/Joint-ISO-ITU-T/International-Organizations/136/1/1/6/2}
+            
+             id-icao                                     OBJECT IDENTIFIER ::= {2.23.136}
+             id-icao-mrtd                                OBJECT IDENTIFIER ::= {id-icao 1}
+             id-icao-mrtd-security                       OBJECT IDENTIFIER ::= {id-icao-mrtd 1}
+             id-icao-mrtd-security-extensions            OBJECT IDENTIFIER ::= {id-icao-mrtdsecurity 6}
+             id-icao-mrtd-security-extensions-documentTypeList OBJECT IDENTIFIER ::= {id-icao-mrtd-security-extensions 2}
+             documentTypeList EXTENSION ::=
+             {
+               SYNTAX DocumentTypeListSyntax
+               IDENTIFIED BY id-icao-mrtd-security-extensions-documentTypeList
+             }
+             DocumentTypeListSyntax ::= SEQUENCE
+             {
+               version DocumentTypeListVersion,
+               docTypeList SET OF DocumentType
+             }
+             DocumentTypeListVersion ::= INTEGER {v0(0)}
+             -- Document Type as contained in MRZ, e.g. "P" or "ID" where a
+             -- single letter denotes all document types starting with that letter
+             DocumentType ::= PrintableString(1..2)
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.IcaoDocumentTypeList.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.IcaoMrtdSecurityNameChange">
+             {joint-iso-itu-t(2) international-organizations(23) 136 mrtd(1) security(1) extensions(6) nameChange(1)}
+             {2.23.136.1.1.6.1}
+             {/Joint-ISO-ITU-T/International-Organizations/136/1/1/6/1}
+            
+             id-icao                                     OBJECT IDENTIFIER ::= {2.23.136}
+             id-icao-mrtd                                OBJECT IDENTIFIER ::= {id-icao 1}
+             id-icao-mrtd-security                       OBJECT IDENTIFIER ::= {id-icao-mrtd 1}
+             id-icao-mrtd-security-extensions            OBJECT IDENTIFIER ::= {id-icao-mrtdsecurity 6}
+             id-icao-mrtd-security-extensions-nameChange OBJECT IDENTIFIER ::= {idicaomrtd-security-extensions 1}
+             nameChange EXTENSION ::=
+             {
+               SYNTAX NULL IDENTIFIED BY id-icao-mrtd-security-extensions-nameChange
+             }
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.IcaoMrtdSecurityNameChange.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.InvalidityDate.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.IssuerAlternativeName.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.IssuerAlternativeName.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.IssuingDistributionPoint.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.LocalKeyIdExtension">
+             {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-9(9) localKeyID(21)}
+             {1.2.840.113549.1.9.21}
+             {/ISO/Member-Body/US/113549/1/9/21}
+             Public-Key Cryptography Standards (PKCS) #9 localKeyID (for PKCS #12)
+            
+             localKeyId ATTRIBUTE ::=
+             {
+               WITH SYNTAX OCTET STRING
+               EQUALITY MATCHING RULE octetStringMatch
+               SINGLE VALUE TRUE
+               ID pkcs-9-at-localKeyId
+             }
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.LocalKeyIdExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.NetscapeCertificateTypeExtension.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.NetscapeCertificateTypeExtension.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.NextCRLPublish.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.PreviousCACertificateHash">
+            {iso(1) identified-organization(3) dod(6) internet(1) private(4) enterprise(1) 311 21 2}
+            {1.3.6.1.4.1.311.21.2}
+            {/ISO/Identified-Organization/6/1/4/1/311/21/2}
+            szOID_CERTSRV_PREVIOUS_CERT_HASH
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.PreviousCACertificateHash.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.Asn1PublishedCRLLocations.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.SubjectDirectoryAttributes.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.X509AlgorithmIdentifier">
+            <summary>
+            
+            </summary>
+            <remarks>
+            <pre style="font-family: Consolas">
+            AlgorithmIdentifier  ::=  SEQUENCE  {
+              algorithm               OBJECT IDENTIFIER,
+              parameters              ANY DEFINED BY algorithm OPTIONAL
+              }
+            </pre>
+            </remarks>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.X509AlgorithmIdentifier.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.X509RelativeDistinguishedNameSequence.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <filterpriority>2</filterpriority>
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.X509RelativeDistinguishedNameSequence.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.X509RelativeDistinguishedNameSequence.BinaryStudio#Security#Cryptography#Certificates#IX509GeneralName#WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation.Extensions.NetscapeComment">
+            netscape OBJECT IDENTIFIER ::= { 2 16 840 1 113730 }
+            netscape-cert-extension OBJECT IDENTIFIER :: = { netscape 1 }
+            netscape-comment OBJECT IDENTIFIER ::= { netscape-cert-extension 13 }
+            
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.AbstractSyntaxNotation.Extensions.NetscapeComment.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.IX509GeneralName.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+    </members>
+</doc>

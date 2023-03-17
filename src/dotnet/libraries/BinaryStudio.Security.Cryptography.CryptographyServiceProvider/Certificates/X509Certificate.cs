@@ -13,6 +13,9 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
+    /// <summary>
+    /// Represents an X.509 certificate.
+    /// </summary>
     public sealed class X509Certificate : X509Object,IExceptionSerializable
         {
         private IntPtr Context;

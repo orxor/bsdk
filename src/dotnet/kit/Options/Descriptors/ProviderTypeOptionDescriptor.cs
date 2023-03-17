@@ -5,13 +5,13 @@ namespace Options.Descriptors
     {
     internal class ProviderTypeOptionDescriptor : OptionDescriptor
         {
-        public override String OptionName { get { return "provider"; }}
+        public override String OptionName { get { return "service"; }}
         public override Boolean TryParse(String source, out OperationOption option)
             {
             option = null;
             if (!String.IsNullOrWhiteSpace(source)) {
                 source = source.Trim();
-                if (source.StartsWith("provider:")) {
+                if (source.StartsWith("service:")) {
                     option = new ProviderTypeOption(
                         Int32.Parse(source.Substring(9))
                         );
@@ -23,7 +23,7 @@ namespace Options.Descriptors
 
         public override void Usage(TextWriter output)
             {
-            output.Write("provider:{number}");
+            output.Write("service:{number}");
             }
         }
     }

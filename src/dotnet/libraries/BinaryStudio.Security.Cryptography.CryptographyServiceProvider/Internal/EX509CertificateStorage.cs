@@ -41,6 +41,14 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             }}
 
         #region M:Find(CERT_INFO*):X509Certificate
+        /**
+         * <summary>
+         * Finds a subject certificate context uniquely identified by its issuer and serial number in certificate store.
+         * </summary>
+         * <param name="Info">A pointer to a <see cref="CERT_INFO"/> structure. Only the <see cref="CERT_INFO.Issuer"/> and <see cref="CERT_INFO.SerialNumber"/> members are used.</param>
+         * <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
+         * <seealso cref="CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
+         */
         public virtual unsafe X509Certificate Find(CERT_INFO* Info) {
             if (Info == null) { throw new ArgumentNullException(nameof(Info)); }
             var r = Entries.CertGetSubjectCertificateFromStore(Store,PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,Info);
@@ -58,7 +66,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         #region M:Add(X509Certificate o)
         public void Add(X509Certificate o) {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
-            Validate(Entries.CertAddCertificateContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,IntPtr.Zero));
+            Validate(Entries.CertAddCertificateContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS));
             }
         #endregion
         #region M:Add(X509CertificateRevocationList)
@@ -67,15 +75,15 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             Validate(Entries.CertAddCRLContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,IntPtr.Zero));
             }
         #endregion
-        #region M:Delete(X509Certificate)
-        public void Delete(X509Certificate o) {
+        #region M:Remove(X509Certificate)
+        public void Remove(X509Certificate o) {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             Validate(Entries.CertAddCertificateContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,out var r));
             Validate(Entries.CertDeleteCertificateFromStore(r));
             }
         #endregion
-        #region M:Delete(X509CertificateRevocationList)
-        public void Delete(X509CertificateRevocationList o) {
+        #region M:Remove(X509CertificateRevocationList)
+        public void Remove(X509CertificateRevocationList o) {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
             Validate(Entries.CertAddCRLContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,out var r));
             Validate(Entries.CertDeleteCRLFromStore(r));

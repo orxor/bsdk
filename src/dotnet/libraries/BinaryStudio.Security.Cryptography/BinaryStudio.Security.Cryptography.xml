@@ -1,0 +1,460 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BinaryStudio.Security.Cryptography</name>
+    </assembly>
+    <members>
+        <member name="T:BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation">
+            <summary>
+            Specifies the location of the X.509 certificate store.
+            </summary>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.Certificates.X509StoreName">
+            <summary>
+            Specifies the name of the X.509 certificate store to open.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.Security.Cryptography.Certificates.X509StoreName.TrustedPublisher">
+            <summary>1111</summary> 
+        </member>
+        <member name="F:BinaryStudio.Security.Cryptography.Certificates.X509StoreName.NTAuth">
+            <summary>
+            YYYY
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.Security.Cryptography.Certificates.X509StoreName.Memory">
+            XXX 
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateExpiredException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateExpiredException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidBasicConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidBasicConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidExtensionException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidExtensionException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidExtensionException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidExtensionException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidHashException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidHashException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidPolicyConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidPolicyConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidTimeException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidTimeException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidTimeException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidTimeException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateInvalidUsageException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidUsageException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsCyclicException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsCyclicException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsExplicitlyDistrustedException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsExplicitlyDistrustedException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIsRevokedException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIsRevokedException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateIssuanceChainPolicyException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateIssuanceChainPolicyException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateMissingException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateMissingException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePartialChainException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePartialChainException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePermittedNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePermittedNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePrivateKeyExpiredException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePrivateKeyExpiredException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePrivateKeyMissingException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePrivateKeyMissingException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRevocationOfflineException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateRevocationOfflineException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRevocationStatusUnknownException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateRevocationStatusUnknownException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRootAuthorityExpiredException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateRootAuthorityExpiredException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateRootAuthorityInvalidSignatureException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateInvalidSignatureException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateSignatureException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateSignatureException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateStoreNotFoundException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateStoreNotFoundException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUndefinedNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUndefinedNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUnsupportedCriticalExtensionException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUnsupportedCriticalExtensionException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUnsupportedNameConstraintException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUnsupportedNameConstraintException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateUntrustedRootException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateUntrustedRootException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateWeakHygieneException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateWeakHygieneException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificateWeakSignatureException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificateWeakSignatureException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidSignatureException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidSignatureException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidTimeException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidTimeException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CtlInvalidUsageException.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CtlInvalidUsageException"/> class with a system-supplied message that describes the error.</summary>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID">
+            <summary>
+              Looks up a localized string similar to A CTL used to create this chain did not have a valid signature..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_CTL_IS_NOT_TIME_VALID">
+            <summary>
+              Looks up a localized string similar to A certificate trust list (CTL) used to create this chain was not time valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_CTL_IS_NOT_VALID_FOR_USAGE">
+            <summary>
+              Looks up a localized string similar to A CTL used to create this chain is not valid for this usage..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_HAS_EXCLUDED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension, and one of the name choices in the end certificate is explicitly excluded..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension and a name constraint is missing for one of the name choices in the end certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_HAS_NOT_PERMITTED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension, and there is not a permitted name constraint for one of the name choices in the end certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT">
+            <summary>
+              Looks up a localized string similar to The certificate does not support a critical extension..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_HAS_NOT_SUPPORTED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension that contains unsupported fields. The minimum and maximum fields are not supported. Thus minimum must always be zero and maximum must always be absent. Only UPN is supported for an Other Name..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_HAS_WEAK_HYGIENE">
+            <summary>
+              Looks up a localized string similar to CERT_TRUST_HAS_WEAK_HYGIENE.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_HAS_WEAK_SIGNATURE">
+            <summary>
+              Looks up a localized string similar to The certificate has not been strong signed. Typically this indicates that the MD2 or MD5 hashing algorithms were used to create a hash of the certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_INVALID_BASIC_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a basic constraints extension, and either the certificate cannot be used to issue other certificates, or the chain path length has been exceeded..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_INVALID_EXTENSION">
+            <summary>
+              Looks up a localized string similar to One of the certificates has an extension that is not valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_INVALID_NAME_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension that is not valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_INVALID_POLICY_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a policy constraints extension, and one of the issued certificates has a disallowed policy mapping extension or does not have a required issuance policies extension..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_CYCLIC">
+            <summary>
+              Looks up a localized string similar to One of the certificates in the chain was issued by a certification authority that the original certificate had certified..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_EXPLICIT_DISTRUST">
+            <summary>
+              Looks up a localized string similar to The certificate is explicitly distrusted..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_NOT_SIGNATURE_VALID">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain does not have a valid signature..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_NOT_TIME_NESTED">
+            <summary>
+              Looks up a localized string similar to CERT_TRUST_IS_NOT_TIME_NESTED.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_NOT_VALID_FOR_USAGE">
+            <summary>
+              Looks up a localized string similar to The certificate or certificate chain is not valid for its proposed usage..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_OFFLINE_REVOCATION">
+            <summary>
+              Looks up a localized string similar to The revocation status of the certificate or one of the certificates in the certificate chain is either offline or stale..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_PARTIAL_CHAIN">
+            <summary>
+              Looks up a localized string similar to The certificate chain is not complete..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_REVOKED">
+            <summary>
+              Looks up a localized string similar to Trust for this certificate or one of the certificates in the certificate chain has been revoked..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_IS_UNTRUSTED_ROOT">
+            <summary>
+              Looks up a localized string similar to The certificate or certificate chain is based on an untrusted root..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_NO_ERROR">
+            <summary>
+              Looks up a localized string similar to No error found for this certificate or chain..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY">
+            <summary>
+              Looks up a localized string similar to The end certificate does not have any resultant issuance policies, and one of the issuing certification authority certificates has a policy constraints extension requiring it..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.CERT_TRUST_REVOCATION_STATUS_UNKNOWN">
+            <summary>
+              Looks up a localized string similar to The revocation status of the certificate or one of the certificates in the certificate chain is unknown..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Properties.Resources.TrustIsNotTimeValid">
+            <summary>
+              Looks up a localized string similar to This certificate or one of the certificates in the certificate chain is not time valid..
+            </summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD)">
+            <summary>
+            B
+            </summary>
+            <param name="Store"></param>
+            <param name="InputContext"></param>
+            <param name="Disposition"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD,System.IntPtr@)">
+            <summary>
+            The function adds a certificate context to the certificate store.
+            </summary>
+            <param name="Store">Handle of a certificate store (HCERTSTORE).</param>
+            <param name="InputContext">A pointer to the <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> structure to be added to the store.</param>
+            <param name="Disposition">
+            Specifies the action to take if a matching certificate or a link to a matching certificate already exists
+            in the store. Currently defined disposition values and their uses are as follows:
+            <p>
+              <table style="font-family: Consolas;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
+                    CERT_STORE_ADD_ALWAYS
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    The function makes no check for an existing matching certificate or link to a matching certificate. A new certificate is always added to the store. This can lead to duplicates in a store.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CERT_STORE_ADD_NEW
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    If a matching certificate or a link to a matching certificate exists, the operation fails. <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CERT_STORE_ADD_NEWER
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    If a matching certificate or a link to a matching certificate exists and the <b>NotBefore</b> time of the existing context is equal to or greater than the <b>NotBefore</b> time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.<br/>
+                    If the <b>NotBefore</b> time of the existing context is less than the <b>NotBefore</b> time of the new context being added, the existing certificate or link is deleted and a new certificate is created and added to the store. If a matching certificate or a link to a matching certificate does not exist, a new link is added.<br/>
+                    If <a href="https://learn.microsoft.com/en-us/windows/win32/secgloss/c-gly#:~:text=a%20CERT_REQUEST_INFO%20structure.-,certificate%20revocation%20list,-(CRL)%20A%20document">certificate revocation lists</a> (CRLs) or <a href="https://learn.microsoft.com/en-us/windows/win32/secgloss/c-gly#:~:text=and%20Code%20Signing.-,certificate%20trust%20list,-(CTL)%20A%20predefined">certificate trust list</a> (CTLs) are being compared, the <b>ThisUpdate</b> time is used.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CERT_STORE_ADD_NEWER_INHERIT_PROPERTIES
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    If a matching certificate or a link to a matching certificate exists and the NotBefore time of the existing context is equal to or greater than the NotBefore time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the CRYPT_E_EXISTS code.<br/>
+                    If the NotBefore time of the existing context is less than the NotBefore time of the new context being added, the existing context is deleted before creating and adding the new context. The new added context inherits properties from the existing certificate.<br/>
+                    If CRLs or CTLs are being compared, the ThisUpdate time is used.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CERT_STORE_ADD_REPLACE_EXISTING
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    If a link to a matching certificate exists, that existing certificate or link is deleted and a new certificate is created and added to the store. If a matching certificate or a link to a matching certificate does not exist, a new link is added.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CERT_STORE_ADD_REPLACE_EXISTING_INHERIT_PROPERTIES
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    If a matching certificate exists in the store, the existing context is not replaced. The existing context inherits properties from the new certificate.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CERT_STORE_ADD_USE_EXISTING
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    If a matching certificate or a link to a matching certificate exists, that existing certificate or link is used and properties from the new certificate are added. The function does not fail, but it does not add a new context. If <paramref name="InputContext"/> is not <see cref="F:System.IntPtr.Zero"/>, the existing context is duplicated.<br/>
+                    If a matching certificate or a link to a matching certificate does not exist, a new certificate is added.
+                  </td>
+                </tr>
+              </table>
+            </p>
+            </param>
+            <param name="OutputContext">A pointer to a pointer to the copy to be made of the certificate that was added to the store. Value must be freed by using <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/>.</param>
+            <returns>
+            If the function succeeds, the return value is <see langword="true"/>. If the function fails, the return value is <see langword="false"/>.
+            For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. Some possible error codes follow:
+             <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+               <tr>
+                 <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
+                   <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/>
+                 </td>
+                 <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                   This value is returned if <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD.CERT_STORE_ADD_NEW"/> is set and the certificate already exists in the store, or if <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD.CERT_STORE_ADD_NEWER"/> is set and a certificate exists in the store with a <b>NotBefore</b> date greater than or equal to the <b>NotBefore</b> date on the certificate to be added.
+                 </td>
+               </tr>
+               <tr>
+                 <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+                   <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.E_INVALIDARG"/>
+                 </td>
+                 <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                   A disposition value that is not valid was specified in the <paramref name="Disposition"/> parameter.
+                 </td>
+               </tr>
+             </table>
+            </returns>
+            <remarks>
+              <a href="https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore">CertAddCertificateContextToStore</a>
+            </remarks>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)">
+            <summary>
+            The function returns from a certificate store a subject certificate context uniquely identified by its issuer and serial number.
+            </summary>
+            <param name="Store">A handle of a certificate store (HCERTSTORE).</param>
+            <param name="EncodingType">
+              The type of encoding used. It is always acceptable to specify both the certificate and message encoding
+              types by combining them with a bitwise-<b>OR</b> operation as shown in the following example:
+              <p>
+                X509_ASN_ENCODING | PKCS_7_ASN_ENCODING currently defined encoding types are:
+                <list type="bullet">
+                  <item>X509_ASN_ENCODING</item>
+                  <item>PKCS_7_ASN_ENCODING</item>
+                </list>
+              </p>
+            </param>
+            <param name="CertId">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
+            <returns>
+              If the function succeeds, the function returns a pointer to a read-only <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/>. The <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> must be freed by calling <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/>.<br/>
+              The returned certificate might not be valid. Usually, it is verified when getting its issuer certificate (<see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetIssuerCertificateFromStore(System.IntPtr,System.IntPtr,System.IntPtr,System.Int32@)"/>).<br/>
+              For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. One possible error code is the following:<br/>
+              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_NOT_FOUND"/>
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    The subject certificate was not found in the store.
+                  </td>
+                </tr>
+              </table>
+            </returns>
+            <remarks>
+              <a href="https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetsubjectcertificatefromstore">CertGetIssuerCertificateFromStore</a>
+            </remarks>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError">
+            <summary>
+            Retrieves the calling thread's last-error code value. The last-error code is maintained on a per-thread
+            basis. Multiple threads do not overwrite each other's last-error code.
+            </summary>
+            <returns>The return value is the calling thread's last-error code.</returns>
+            <remarks>
+              <a href="https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror">GetLastError</a>
+            </remarks>
+        </member>
+    </members>
+</doc>
