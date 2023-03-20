@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
+using BinaryStudio.IO;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Serialization;
 
@@ -24,6 +26,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         public CmsContentInfo ContentInfo { get; }
         public Oid ContentType { get { return ContentInfo.ContentType; }}
 
+        #region ctor{Asn1Object}
         public CmsMessage(Asn1Object o)
             : base(o)
             {
@@ -40,6 +43,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
                 State |= ObjectState.DisposeUnderlyingObject;
                 }
             }
+        #endregion
+        #region ctor{Byte[]}
+        public CmsMessage(Byte[] content)
+            :this(Load(new ReadOnlyMemoryMappingStream(content)).FirstOrDefault())
+            {
+            }
+        #endregion
 
         /**
          * <summary>Gets the service object of the specified type.</summary>

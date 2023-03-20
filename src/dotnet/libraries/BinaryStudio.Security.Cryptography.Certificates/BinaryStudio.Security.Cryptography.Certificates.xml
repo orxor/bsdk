@@ -199,6 +199,14 @@
             <filterpriority>2</filterpriority>
             
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension.From(BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension)">
+            <summary>
+            Attempts to construct strong-typed extension instance from base extensions source.
+            If library cannot recognize it then original source returns.
+            </summary>
+            <param name="source">Source containing unstructured extension data.</param>
+            <returns>Returns suggested extension instance from source.</returns>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions.CertificateExtension.Dispose(System.Boolean)">
             <summary>
             Releases the unmanaged resources used by the instance and optionally releases the managed resources.

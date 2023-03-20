@@ -41,7 +41,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographicMessageSyntax
         internal CmsSignedDataContentInfo(Asn1Object source)
             : base(source)
             {
-            var sequence = Context[1];
+            var sequence = Context[0];
             var c = sequence.Count;
             Certificates = new HashSet<Asn1Certificate>();
             CertificateRevocationList = new HashSet<Asn1CertificateRevocationList>();

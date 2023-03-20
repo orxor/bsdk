@@ -282,42 +282,42 @@ namespace BinaryStudio.Serialization
         #endregion
         #endif
 
-        #region M:ToString(Byte[],String):String
+        #region M:ToString({this}Byte[],String):String
         public static String ToString(this Byte[] source, String format) {
             if (source == null) { return null; }
             var c = source.Length;
-            #if NET35
-            switch (format)
-                {
-                case "X" : { return String.Join(String.Empty, source.Select(i => i.ToString("X2")).ToArray()); }
-                case "x" : { return String.Join(String.Empty, source.Select(i => i.ToString("x2")).ToArray()); }
+            switch (format) {
                 case "FL":
                     {
                     return (c > 1)
                         ? $"{source[0]:X2}{source[c - 1]:X2}"
-                        : String.Join(String.Empty, source.Select(i => i.ToString("X2")).ToArray());
-                    }
-                }
-            #else
-            switch (format)
-                {
-                case "X" : { return String.Join(String.Empty, source.Select(i => i.ToString("X2"))); }
-                case "x" : { return String.Join(String.Empty, source.Select(i => i.ToString("x2"))); }
-                case "FL":
-                    {
-                    return (c > 1)
-                        ? $"{source[0]:X2}{source[c - 1]:X2}"
-                        : String.Join(String.Empty, source.Select(i => i.ToString("X2")));
+                        : ToString((IEnumerable<Byte>)source,"X");
                     }
                 case "fl":
                     {
                     return (c > 1)
                         ? $"{source[0]:x2}{source[c - 1]:x2}"
-                        : String.Join(String.Empty, source.Select(i => i.ToString("x2")));
+                        : ToString((IEnumerable<Byte>)source,"x");
                     }
+                default: return ToString((IEnumerable<Byte>)source,format);
                 }
-            #endif
-            return source.ToString();
+            }
+        #endregion
+        #region M:ToString({this}IEnumerable<Byte>,String):String
+        public static String ToString(this IEnumerable<Byte> source, String format) {
+            if (source == null) { return null; }
+            switch (format) {
+                #if NET35
+                case "X" : { return String.Join(String.Empty, source.Select(i => i.ToString("X2")).ToArray()); }
+                case "x" : { return String.Join(String.Empty, source.Select(i => i.ToString("x2")).ToArray()); }
+                #else
+                case "X" : { return String.Join(String.Empty, source.Select(i => i.ToString("X2"))); }
+                case "x" : { return String.Join(String.Empty, source.Select(i => i.ToString("x2"))); }
+                #endif
+                case "FL":
+                case "fl": { return ToString(source.ToArray(),format); }
+                default: throw new ArgumentOutOfRangeException(nameof(format));
+                }
             }
         #endregion
         }

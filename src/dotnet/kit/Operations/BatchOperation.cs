@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Principal;
-using BinaryStudio.PlatformComponents;
+using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Security.Cryptography.CryptographicMessageSyntax;
 using Options;
 
 namespace Operations
@@ -15,6 +14,7 @@ namespace Operations
         private X509StoreLocation StoreLocation { get; }
         private String StoreName { get; }
         private BatchOperationFlags Flags { get; }
+        public String TargetFolder { get; }
 
         #region ctor{IList<OperationOption>}
         public BatchOperation(IList<OperationOption> args)
@@ -32,16 +32,72 @@ namespace Operations
             if (options.Any(i => String.Equals(i, "report",    StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Report;    }
             if (options.Any(i => String.Equals(i, "force",     StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.Force;     }
             if (options.Any(i => String.Equals(i, "asn",       StringComparison.OrdinalIgnoreCase))) { Flags |= BatchOperationFlags.AbstractSyntaxNotation; }
+            TargetFolder  = args.OfType<OutputFileOrFolderOption>().FirstOrDefault()?.Values?.FirstOrDefault();
             }
         #endregion
 
         #region M:Execute
         public override void Execute() {
-            if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
-                if (StoreLocation == X509StoreLocation.LocalMachine) {
-                    PlatformContext.ValidatePermission(WindowsBuiltInRole.Administrator);
+            //if (Flags.HasFlag(BatchOperationFlags.Install) || Flags.HasFlag(BatchOperationFlags.Uninstall)) {
+            //    if (StoreLocation == X509StoreLocation.LocalMachine) {
+            //        PlatformContext.ValidatePermission(WindowsBuiltInRole.Administrator);
+            //        }
+            //    }
+            try
+                {
+                using (var core = new FileOperation(Options)) {
+                    core.ExecuteAction += Execute;
+                    core.Execute();
+                    core.ExecuteAction -= Execute;
                     }
                 }
+            finally
+                {
+                
+                }
+            }
+        #endregion
+        #region M:Execute(Object,ExecuteActionEventArgs)
+        private void Execute(Object sender, ExecuteActionEventArgs e) {
+            switch (Path.GetExtension(e.FileService.FileName)?.ToLowerInvariant()) {
+                case ".crl":
+                case ".cer":
+                    {
+                    using (var o = Asn1Object.Load(e.FileService.ReadAllBytes()).FirstOrDefault()) {
+                        if ((o != null) && (!o.IsFailed)) {
+                            Execute(o,e);
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        #endregion
+        #region M:Execute(Asn1Object,ExecuteActionEventArgs)
+        private void Execute(Asn1Object InputObject, ExecuteActionEventArgs e) {
+            using (var cer = new Asn1Certificate(InputObject))               if (!cer.IsFailed) { Execute(cer,e); return; }
+            using (var crl = new Asn1CertificateRevocationList(InputObject)) if (!crl.IsFailed) { Execute(crl,e); return; }
+            using (var cms = new CmsMessage(InputObject))                    if (!cms.IsFailed) { Execute(cms,e);         }
+            }
+        #endregion
+        #region M:Execute(CmsMessage,ExecuteActionEventArgs)
+        private void Execute(CmsMessage InputObject,ExecuteActionEventArgs e)
+            {
+            }
+        #endregion
+        #region M:Execute(Asn1Certificate,ExecuteActionEventArgs)
+        private void Execute(Asn1Certificate InputObject,ExecuteActionEventArgs e) {
+            if (Flags.HasFlag(BatchOperationFlags.Rename)) {
+                var TargetFileName = $"{InputObject.FriendlyName}.cer";
+                TargetFileName = Path.Combine(TargetFolder,TargetFileName);
+                e.FileService.MoveTo(TargetFileName,true);
+                e.OperationStatus = FileOperationStatus.Success;
+                }
+            }
+        #endregion
+        #region M:Execute(Asn1CertificateRevocationList,ExecuteActionEventArgs)
+        private void Execute(Asn1CertificateRevocationList InputObject,ExecuteActionEventArgs e)
+            {
             }
         #endregion
         }

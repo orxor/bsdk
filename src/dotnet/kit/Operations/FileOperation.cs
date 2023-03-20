@@ -14,7 +14,7 @@ namespace Operations
     internal class FileOperation : Operation
         {
         public IList<String> InputFileName { get; }
-        public String TargetFolder { get;set; }
+        public String TargetFolder { get; }
         //public DirectoryServiceSearchOptions Options { get;set; }
         public String Pattern { get;set; }
         public event EventHandler<ExecuteActionEventArgs> ExecuteAction;
@@ -36,6 +36,7 @@ namespace Operations
                 StopOnError = TraceOption.HasValue("StopOnError");
                 }
             InputFileName = args.OfType<InputFileOrFolderOption>().FirstOrDefault()?.Values;
+            TargetFolder  = args.OfType<OutputFileOrFolderOption>().FirstOrDefault()?.Values?.FirstOrDefault();
             }
 
         #region M:Execute
@@ -113,7 +114,7 @@ namespace Operations
             }
         #endregion
         #region M:Execute(IEnumerable<String>):FileOperationStatus
-        public FileOperationStatus Execute(IEnumerable<String> InputSource) {
+        private FileOperationStatus Execute(IEnumerable<String> InputSource) {
             var Status = new InterlockedInternal<FileOperationStatus>(FileOperationStatus.Skip);
             foreach (var Source in InputSource) {
                 if (Source.Contains("*")) {
@@ -136,7 +137,7 @@ namespace Operations
             }
         #endregion
         #region M:Execute(IDirectoryService):FileOperationStatus
-        public FileOperationStatus Execute(IEnumerable<IFileService> InputSource) {
+        private FileOperationStatus Execute(IEnumerable<IFileService> InputSource) {
             var status = FileOperationStatus.Skip;
             if (MultiThreadOption.NoMultiThread) {
                 foreach (var service in InputSource) {

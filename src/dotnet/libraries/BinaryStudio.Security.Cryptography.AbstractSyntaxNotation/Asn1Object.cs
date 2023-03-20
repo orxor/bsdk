@@ -160,6 +160,12 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             return Load(ReadOnlyStream.Clone(source));
             }
         #endregion
+        #region M:Load(Byte[]):IEnumerable<Asn1Object>
+        public static IEnumerable<Asn1Object> Load(Byte[] source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            return Load(new ReadOnlyMemoryMappingStream(source));
+            }
+        #endregion
         #region M:ReadNext(ReadOnlyMappingStream,Int64):Asn1Object
         protected static Asn1Object ReadNext(ReadOnlyMappingStream source, Int64 forceoffset) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }

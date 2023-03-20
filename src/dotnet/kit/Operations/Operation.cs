@@ -12,8 +12,8 @@ using Options;
 using Options.Descriptors;
 
 namespace Operations
-{
-    internal abstract class Operation
+    {
+    internal abstract class Operation : IDisposable
         {
         public static readonly Object console = new Object();
         public static ILogger Logger { get;set; }
@@ -146,6 +146,28 @@ namespace Operations
                     o.WriteTo(writer);
                     }
                 }
+            }
+        #endregion
+
+        #region M:Dispose(Boolean)
+        /// <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
+        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        protected virtual void Dispose(Boolean disposing) {
+            }
+        #endregion
+        #region M:Dispose
+        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        public void Dispose()
+            {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            }
+        #endregion
+        #region M:Finalize
+        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
+        ~Operation()
+            {
+            Dispose(false);
             }
         #endregion
         }

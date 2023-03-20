@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.PlatformComponents;
@@ -12,6 +13,9 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    using CertificateSKI=CertificateSubjectKeyIdentifier;
+    using CertificateAKI=CertificateAuthorityKeyIdentifier;
+
     /// <summary>
     /// Represents ASN.1 certificate structure.
     /// </summary>
@@ -93,6 +97,56 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public X509RelativeDistinguishedNameSequence Subject { get; }
         public Asn1CertificateExtensionCollection Extensions { get; }
         public Asn1SignatureAlgorithm SignatureAlgorithm { get; }
+
+        private static Boolean FilterFriendlyName(KeyValuePair<Asn1ObjectIdentifier, String> source) {
+            switch (source.Key.ToString()) {
+                case "2.5.4.20":
+                case "2.5.4.9":
+                case "1.2.840.113549.1.9.1":
+                    return false;
+                }
+            return true;
+            }
+
+        #region M:ToString(Object):String
+        public static String ToString(String source) {
+            if (source == null) { return String.Empty; }
+            var value = (String)source;
+            value = value.Replace("\\=", "=");
+            value = value.Replace("\\,", ",");
+            value = value.Replace("\"" , "");
+            value = value.Replace("/", "%2f");
+            value = value.Replace(":",  "%3a");
+            return value.Trim();
+            }
+        #endregion
+
+        public String FriendlyName { get {
+            var SK = ((CertificateSKI)Extensions?.FirstOrDefault(i => i is CertificateSKI))?.KeyIdentifier?.ToString("fl");
+            var AK = ((CertificateAKI)Extensions?.FirstOrDefault(i => i is CertificateAKI));
+            var r = new StringBuilder(String.Join(",", Subject.Where(FilterFriendlyName).Select(i => $"{new Oid(i.Key.ToString()).FriendlyName}={ToString(i.Value.ToString())}")));
+            r.Append(",{");
+            var flag = false;
+            if (AK != null) {
+                r.Append($"AKI={AK.KeyIdentifier.ToString("fl")}");
+                if (AK.SerialNumber != null) {
+                    r.Append($"+{AK.SerialNumber}");
+                    }
+                flag = true;
+                }
+            if (!String.IsNullOrWhiteSpace(SK)) {
+                if (flag) {
+                    r.Append(",");
+                    }
+                r.Append($"SKI={SK}");
+                flag = true;
+                }
+            if (flag) {
+                r.Append(",");
+                }
+            r.Append($"SN={SerialNumber}}}");
+            return r.ToString();
+            }}
 
         public Asn1Certificate(Asn1Object o)
             : base(o)
