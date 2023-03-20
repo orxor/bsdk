@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     {
+    using CertificateSKI=CertificateSubjectKeyIdentifier;
+    using CertificateAKI=CertificateAuthorityKeyIdentifier;
+
     /// <summary>
     /// CertificateList  ::=  SEQUENCE {
     ///   tbsCertList          TBSCertList,
@@ -100,6 +104,37 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 ? r.ToString().ToLower()
                 : null;
             }
+
+        public String FriendlyName { get {
+            var SK = ((CertificateSKI)Extensions?.FirstOrDefault(i => i is CertificateSKI))?.KeyIdentifier?.ToString("fl");
+            var AK = ((CertificateAKI)Extensions?.FirstOrDefault(i => i is CertificateAKI));
+            var r = new StringBuilder(String.Join(",", Issuer.Where(Asn1Certificate.FilterFriendlyName).Select(i => $"{new Oid(i.Key.ToString()).FriendlyName}={Asn1Certificate.ToString(i.Value.ToString())}")));
+            r.Append(",{");
+            var flag = false;
+            if (AK != null) {
+                r.Append($"AKI={AK.KeyIdentifier.ToString("fl")}");
+                if (AK.SerialNumber != null) {
+                    r.Append($"+{{{AK.SerialNumber}}}");
+                    }
+                flag = true;
+                }
+            if (!String.IsNullOrWhiteSpace(SK)) {
+                if (flag) {
+                    r.Append(",");
+                    }
+                r.Append($"SKI={SK}");
+                flag = true;
+                }
+            if (flag) {
+                r.Append(",");
+                }
+            r.Append($"ED={EffectiveDate:yyMMdd}");
+            if (NextUpdate != null) {
+                r.Append($",NU={NextUpdate.Value:yyMMdd}");
+                }
+            r.Append("}");
+            return r.ToString();
+            }}
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

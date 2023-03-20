@@ -98,7 +98,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public Asn1CertificateExtensionCollection Extensions { get; }
         public Asn1SignatureAlgorithm SignatureAlgorithm { get; }
 
-        private static Boolean FilterFriendlyName(KeyValuePair<Asn1ObjectIdentifier, String> source) {
+        internal static Boolean FilterFriendlyName(KeyValuePair<Asn1ObjectIdentifier, String> source) {
             switch (source.Key.ToString()) {
                 case "2.5.4.20":
                 case "2.5.4.9":
@@ -109,7 +109,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             }
 
         #region M:ToString(Object):String
-        public static String ToString(String source) {
+        internal static String ToString(String source) {
             if (source == null) { return String.Empty; }
             var value = (String)source;
             value = value.Replace("\\=", "=");
@@ -130,7 +130,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
             if (AK != null) {
                 r.Append($"AKI={AK.KeyIdentifier.ToString("fl")}");
                 if (AK.SerialNumber != null) {
-                    r.Append($"+{AK.SerialNumber}");
+                    r.Append($"+{{{AK.SerialNumber}}}");
                     }
                 flag = true;
                 }
