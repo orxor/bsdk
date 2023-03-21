@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -16,7 +17,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
     /// <summary>
     /// Represents an X.509 certificate.
     /// </summary>
-    public sealed class X509Certificate : X509Object,IExceptionSerializable
+    public sealed class X509Certificate : X509Object,IExceptionSerializable,DigestSource
         {
         private IntPtr Context;
         internal Asn1Certificate Source;
@@ -44,6 +45,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             return r;
             }}
+
+        IEnumerable<Byte[]> DigestSource.DigestSource { get { return Source.DigestSource; }}
 
         #region ctor{IntPtr}
         public X509Certificate(IntPtr context) {
@@ -228,6 +231,19 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
 
+
+        public override String ToString()
+            {
+            return Source.FriendlyName;
+            }
+
+        /**
+         * <summary>Gets the service object of the specified type.</summary>
+         * <param name="service">An object that specifies the type of service object to get.</param>
+         * <returns>A service object of type <paramref name="service"/>.
+         * -or-
+         * <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+         */
         public override Object GetService(Type service) {
             if (service == typeof(Asn1Certificate)) { return Source; }
             return base.GetService(service);

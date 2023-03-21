@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "mrtd": {
+      "commandName": "Project",
+      "workingDirectory": "t:\\"
+    }
+  }
+}

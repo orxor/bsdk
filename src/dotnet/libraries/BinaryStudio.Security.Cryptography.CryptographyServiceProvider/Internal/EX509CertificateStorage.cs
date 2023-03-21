@@ -32,7 +32,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 }
             }}
 
-        public IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get {
+        public virtual IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get {
             var o = Entries.CertEnumCRLsInStore(Store, IntPtr.Zero);
             while (o != IntPtr.Zero) {
                 yield return new X509CertificateRevocationList(o);

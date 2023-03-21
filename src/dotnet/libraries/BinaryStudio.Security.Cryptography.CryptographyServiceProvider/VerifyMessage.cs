@@ -164,5 +164,45 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+        #region M:VerifySignature(X509Certificate,X509Certificate)
+        public void VerifySignature(X509Certificate subject, X509Certificate issuer) {
+            if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+            if (issuer == null) { throw new ArgumentNullException(nameof(issuer)); }
+            EnsureEntries(out var entries);
+            Validate(entries.CryptVerifyCertificateSignature(Handle,
+                CRYPT_VERIFY_CERT_SIGN_SUBJECT_CERT,subject.Handle,
+                CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT,issuer.Handle,0));
+            }
+        #endregion
+        #region M:VerifySignature({out}Exception,X509Certificate,X509Certificate):Boolean
+        public Boolean VerifySignature(out Exception e, X509Certificate subject, X509Certificate issuer) {
+            if (subject == null) { throw new ArgumentNullException(nameof(subject)); }
+            if (issuer == null) { throw new ArgumentNullException(nameof(issuer)); }
+            e = null;
+            try
+                {
+                VerifySignature(subject, issuer);
+                return true;
+                }
+            catch (Exception exception)
+                {
+                e = exception;
+                return false;
+                }
+            }
+        #endregion
+
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_SUBJECT_BLOB                       = 1;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_SUBJECT_CERT                       = 2;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_SUBJECT_CRL                        = 3;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_SUBJECT_OCSP_BASIC_SIGNED_RESPONSE = 4;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_ISSUER_PUBKEY                      = 1;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_ISSUER_CERT                        = 2;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_ISSUER_CHAIN                       = 3;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_ISSUER_NULL                        = 4;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_DISABLE_MD2_MD4_FLAG          = 0x00000001;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_SET_STRONG_PROPERTIES_FLAG    = 0x00000002;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_RETURN_STRONG_PROPERTIES_FLAG = 0x00000004;
+        private const Int32 CRYPT_VERIFY_CERT_SIGN_CHECK_WEAK_HASH_FLAG          = 0x00000008;
         }
     }

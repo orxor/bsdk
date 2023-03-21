@@ -83,6 +83,13 @@
             <summary>Writes the JSON representation of the object.</summary>
             <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.GetService(System.Type)">
+            <summary>Gets the service object of the specified type.</summary>
+            <param name="service">An object that specifies the type of service object to get.</param>
+            <returns>A service object of type <paramref name="service"/>.
+            -or-
+            <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateRevocationList.Dispose(System.Boolean)">
             <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
             <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
@@ -114,6 +121,15 @@
             <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509StoreName"/> and <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation"/> values.
             </summary>
             <param name="storename">One of the enumeration values that specifies the name of the X.509 certificate store.</param>
+            <param name="location">One of the enumeration values that specifies the location of the X.509 certificate store.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="location"/> is not a valid location or <paramref name="storename"/> is not a valid name.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.#ctor(System.String,BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage"/> class using the specified
+            <paramref name="storename"/> and <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation"/> values.
+            </summary>
+            <param name="storename">Specifies the name of the X.509 certificate store.</param>
             <param name="location">One of the enumeration values that specifies the location of the X.509 certificate store.</param>
             <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="location"/> is not a valid location or <paramref name="storename"/> is not a valid name.</exception>
         </member>
@@ -189,7 +205,7 @@
             <summary>Returns a string that represents the current object.</summary>
             <returns>A string that represents the current object.</returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.GetCertificateChain(BinaryStudio.Security.Cryptography.Certificates.X509Certificate,BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage,System.Security.Cryptography.OidCollection,System.Security.Cryptography.OidCollection,System.TimeSpan,System.DateTime,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_FLAGS,System.IntPtr)">
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.GetCertificateChain(BinaryStudio.Security.Cryptography.Certificates.X509Certificate,BinaryStudio.Security.Cryptography.Certificates.IX509CertificateStorage,System.Security.Cryptography.OidCollection,System.Security.Cryptography.OidCollection,System.TimeSpan,System.DateTime,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_FLAGS,System.IntPtr)">
             <summary>Builds a certificate chain context starting from an end certificate and going back, if possible, to a trusted root certificate.</summary>
             <param name="certificate">The end certificate, the certificate for which a chain is being built. This certificate context will be the zero-index element in the first simple chain.</param>
             <param name="store">The additional store to search for supporting certificates and certificate trust lists (CTLs). This parameter can be null if no additional store is to be searched.</param>

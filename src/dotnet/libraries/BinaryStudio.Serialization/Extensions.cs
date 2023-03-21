@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml;
 using Newtonsoft.Json;
 
 namespace BinaryStudio.Serialization
@@ -320,5 +321,26 @@ namespace BinaryStudio.Serialization
                 }
             }
         #endregion
+
+        public static IDisposable ElementScope(this XmlWriter writer, String localname)
+            {
+            return new ElementScopeT(writer,localname);
+            }
+
+        private class ElementScopeT : IDisposable
+            {
+            private XmlWriter writer;
+            public ElementScopeT(XmlWriter writer, String localname)
+                {
+                this.writer = writer;
+                writer.WriteStartElement(localname);
+                }
+
+            public void Dispose()
+                {
+                writer.WriteEndElement();
+                writer = null;
+                }
+            }
         }
     }

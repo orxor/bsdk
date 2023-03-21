@@ -10,7 +10,8 @@ internal class Program
     {
     private static void Main(String[] args)
         {
-        ProcessB("20220316.hexcsv");
+        //ProcessA("результат25.11.21.bin");
+        //ProcessB("20220316.hexcsv");
         ProcessB("20220426.hexcsv");
         ProcessB("20220511.hexcsv");
         }
@@ -34,6 +35,7 @@ internal class Program
     #endregion
 
     private static void Process(IEnumerable<IFileService> Files) {
+        var folder = Directory.GetCurrentDirectory();
         var FileIndex = 0;
         foreach (var file in Files) {
             var InputBytes = file.ReadAllBytes();
@@ -44,8 +46,17 @@ internal class Program
                         var ContentInfo = (CmsSignedDataContentInfo)Message.GetService(typeof(CmsSignedDataContentInfo));
                         if (ContentInfo != null) {
                             foreach (var Certificate in ContentInfo.Certificates) {
-                                if (Certificate.Country == "ru") {
-                                    File.WriteAllBytes($"{Certificate.FriendlyName}.cer",Certificate.Body);
+                                //if (Certificate.Country == "ru")
+                                    {
+                                    try
+                                        {
+                                        var TargetFileName = Path.Combine(folder,$"{Certificate.FriendlyName}.cer");
+                                        File.WriteAllBytes($@"\\?\{TargetFileName}",Certificate.Body);
+                                        }
+                                    catch (Exception e)
+                                        {
+                                        File.WriteAllBytes($@"{Certificate.Thumbprint}.cer",Certificate.Body);
+                                        }
                                     Console.WriteLine(Certificate.FriendlyName);
                                     FileIndex++;
                                     }

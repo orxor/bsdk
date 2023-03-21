@@ -86,7 +86,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if ((location == X509StoreLocation.CurrentUser) || (location == X509StoreLocation.LocalMachine)) {
                 if (String.Equals(uri.Scheme,"folder",StringComparison.OrdinalIgnoreCase)) {
                     var source = uri.ToString();
-                    Store = new FX509CertificateStorage(source.Substring(9), location);
+                    Store = new FolderCertificateStorage(source.Substring(9), location);
                     return;
                     }
                 throw new NotSupportedException(nameof(uri));
@@ -98,6 +98,33 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public X509CertificateStorage(Uri uri)
             :this(uri,X509StoreLocation.CurrentUser)
             {
+            }
+        #endregion
+        #region ctor{String,X509StoreLocation}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="X509CertificateStorage"/> class using the specified
+        /// <paramref name="storename"/> and <see cref="X509StoreLocation"/> values.
+        /// </summary>
+        /// <param name="storename">Specifies the name of the X.509 certificate store.</param>
+        /// <param name="location">One of the enumeration values that specifies the location of the X.509 certificate store.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="location"/> is not a valid location or <paramref name="storename"/> is not a valid name.</exception>
+        public X509CertificateStorage(String storename, X509StoreLocation location) {
+            if (storename == null) { throw new ArgumentNullException(nameof(storename)); }
+            if (String.IsNullOrWhiteSpace(storename)) { throw new ArgumentOutOfRangeException(nameof(storename)); }
+            Location = location;
+            if (storename.StartsWith("folder://", StringComparison.OrdinalIgnoreCase)) { Store = new FolderCertificateStorage(storename.Substring(9), location); return; }
+            if ((location == X509StoreLocation.CurrentUser) || (location == X509StoreLocation.LocalMachine)) {
+                if (String.Equals(storename,"Device",StringComparison.OrdinalIgnoreCase)) { Store = new DeviceCertificateStorage(CRYPT_PROVIDER_TYPE.AUTO,location); return; }
+                if (String.Equals(storename,"Memory",StringComparison.OrdinalIgnoreCase)) { Store = new MemoryCertificateStorage(location); return; }
+                Store = new EX509CertificateStorage(Validate(Entries.CertOpenStoreA(
+                    CERT_STORE_PROV_SYSTEM_A,
+                    PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
+                    IntPtr.Zero,
+                    MapX509StoreFlags(location,X509OpenFlags.MaxAllowed|X509OpenFlags.OpenExistingOnly),
+                    storename),NotZero),storename);
+                return;
+                }
+            throw new ArgumentOutOfRangeException(nameof(location));
             }
         #endregion
 

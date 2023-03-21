@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -14,13 +15,16 @@ namespace BinaryStudio.Security.Cryptography
         public static CryptographicContext AcquireContext(Oid algid, CryptographicContextFlags flags) {
             if (algid == null) { throw new ArgumentNullException(nameof(algid)); }
             EnsureAlgIdCache();
-            if (!SAlgId.TryGetValue(algid.Value,out var nalgid)) { nalgid = CryptographicContext.OidToAlgId(algid); }
+            if (PAlgId.TryGetValue(algid.Value,out var ptype))   { return new CryptographicContextI(ptype,flags); }
+            if (!SAlgId.TryGetValue(algid.Value,out var nalgid)) { nalgid = OidToAlgId(algid); }
             var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
             foreach (var type in RegisteredProviders) {
                 if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)flags)) {
                     var context = new CryptographicContextI(r);
                     foreach (var alg in context.SupportedAlgorithms) {
                         if (alg.Key == nalgid) {
+                            SAlgId[algid.Value] = nalgid;
+                            PAlgId[algid.Value] = type.ProviderType;
                             return context;
                             }
                         }
@@ -65,6 +69,7 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
+        private static IDictionary<String,CRYPT_PROVIDER_TYPE> PAlgId = new ConcurrentDictionary<String, CRYPT_PROVIDER_TYPE>();
         private static IDictionary<String,ALG_ID> SAlgId;
         private static void EnsureAlgIdCache() {
             if (SAlgId == null) {

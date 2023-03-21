@@ -36,9 +36,10 @@ public class LocalClient : ILocalClient
                 if (HasOption(options, typeof(MessageGroupOption))) {
                 if (HasOption(options, typeof(VerifyOption)))  { operation.Value = new VerifyMessageOperation(options);  }
                 }
-            else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(options); }
-            else if (HasOption(options, typeof(BatchOption)))             { operation.Value = new BatchOperation(options); }
-            else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new FileOperation(options); }
+            else if (HasOption(options, typeof(InfrastructureOption)))    { operation.Value = new InfrastructureOperation(options);   }
+            else if (HasOption(options, typeof(BatchOption)))             { operation.Value = new BatchOperation(options);            }
+            else if (HasOption(options, typeof(InputFileOrFolderOption))) { operation.Value = new FileOperation(options);             }
+            else if (HasOption(options, typeof(StoreLocationOption)))     { operation.Value = new CertificateStoreOperation(options); }
             operation.Value.ValidatePermission();
             var trace = options.OfType<TraceOption>().FirstOrDefault()?.Values;
             if ((trace != null) && trace.Any(i => String.Equals(i, "suspend",StringComparison.OrdinalIgnoreCase))) {

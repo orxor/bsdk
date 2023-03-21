@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.DirectoryServices;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.Certificates;
@@ -113,22 +115,33 @@ namespace Operations
                 if (Flags.HasFlag(BatchOperationFlags.Group)) { TargetFolder = Path.Combine(TargetFolder,InputObject.Country); }
                 if (!String.IsNullOrEmpty(TargetFolder) && !Directory.Exists(TargetFolder)) { Directory.CreateDirectory(TargetFolder); }
                 TargetFileName = Path.Combine(TargetFolder,TargetFileName);
-                if (!String.Equals(e.FileService.FullName,TargetFileName)) {
-                    if (rebuild)
-                        {
-                        File.WriteAllBytes(TargetFileName,InputObject.Body);
-                        File.SetAttributes(e.FileService.FullName,File.GetAttributes(e.FileService.FullName) & (~FileAttributes.ReadOnly));
-                        File.Delete(e.FileService.FullName);
+                try
+                    {
+                    if (!String.Equals(e.FileService.FullName,TargetFileName)) {
+                        if (Regex.IsMatch(TargetFileName,"^[A-Za-z][:]")) {
+                            TargetFileName = $@"\\?\{TargetFileName}";
+                            }
+                        if (rebuild)
+                            {
+                            File.WriteAllBytes(TargetFileName,InputObject.Body);
+                            File.SetAttributes(e.FileService.FullName,File.GetAttributes(e.FileService.FullName) & (~FileAttributes.ReadOnly));
+                            File.Delete(e.FileService.FullName);
+                            }
+                        else
+                            {
+                            e.FileService.MoveTo(TargetFileName,true);
+                            }
+                        e.OperationStatus = FileOperationStatus.Success;
                         }
-                    else
-                        {
-                        e.FileService.MoveTo(TargetFileName,true);
-                        }
-                    e.OperationStatus = FileOperationStatus.Success;
+                    PathUtils.SetCreationTime(TargetFileName, InputObject.NotBefore);
+                    PathUtils.SetLastWriteTime(TargetFileName, InputObject.NotBefore);
+                    PathUtils.SetLastAccessTime(TargetFileName, InputObject.NotBefore);
                     }
-                PathUtils.SetCreationTime(TargetFileName, InputObject.NotBefore);
-                PathUtils.SetLastWriteTime(TargetFileName, InputObject.NotBefore);
-                PathUtils.SetLastAccessTime(TargetFileName, InputObject.NotBefore);
+                catch (Exception exception)
+                    {
+                    exception.Add("TargetFileName", TargetFileName);
+                    throw;
+                    }
                 e.OperationStatus = FileOperationStatus.Success;
                 }
             }

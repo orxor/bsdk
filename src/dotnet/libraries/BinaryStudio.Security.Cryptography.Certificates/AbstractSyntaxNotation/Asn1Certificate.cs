@@ -75,7 +75,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
     ///   }
     /// </pre>
     /// </remarks>
-    public class Asn1Certificate : Asn1LinkObject, IExceptionSerializable
+    public class Asn1Certificate : Asn1LinkObject, IExceptionSerializable, DigestSource
         {
         public Int32 Version { get; }
         public String SerialNumber { get; }
@@ -254,6 +254,10 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                 }
             return o;
             }
+
+        public IEnumerable<Byte[]> DigestSource { get{
+            yield break;
+            }}
 
         private String thumbprint;
         internal Int32 SubjectFieldIndex = -1;

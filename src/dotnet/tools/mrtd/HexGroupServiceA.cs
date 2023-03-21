@@ -49,7 +49,14 @@ internal class HexGroupServiceA : IDirectoryService
         using (var SourceStream = Source.OpenRead()) {
             for (;;) {
                 var fileid = new StringBuilder();
-                SourceStream.Seek(64, SeekOrigin.Current);
+                try
+                    {
+                    SourceStream.Seek(64, SeekOrigin.Current);
+                    }
+                catch
+                    {
+                    yield break;
+                    }
                 SourceStream.Seek( 2, SeekOrigin.Current);
                 while (true) {
                     var c = PeekByte(SourceStream);

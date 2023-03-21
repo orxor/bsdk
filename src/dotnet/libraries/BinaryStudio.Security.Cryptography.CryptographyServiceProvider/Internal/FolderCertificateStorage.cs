@@ -5,13 +5,15 @@ using BinaryStudio.PlatformComponents.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.Internal
     {
-    internal class FX509CertificateStorage : MemoryCertificateStorage
+    internal class FolderCertificateStorage : MemoryCertificateStorage
         {
-        private String Folder;
-        private Boolean FetchedFromFolder;
+        private readonly String Folder;
+        private Boolean FetchedFromFolderCER;
+        private Boolean FetchedFromFolderCRL;
 
+        #region P:Certificates:IEnumerable<X509Certificate>
         public override IEnumerable<X509Certificate> Certificates { get {
-            if (FetchedFromFolder) {
+            if (FetchedFromFolderCER) {
                 var o = Entries.CertEnumCertificatesInStore(Handle, IntPtr.Zero);
                 while (o != IntPtr.Zero) {
                     yield return new X509Certificate(o);
@@ -35,16 +37,47 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                 }
             finally
                 {
-                FetchedFromFolder = true;
+                FetchedFromFolderCER = true;
                 }
             }}
+        #endregion
+        #region P:CertificateRevocationLists:IEnumerable<X509CertificateRevocationList>
+        public override IEnumerable<X509CertificateRevocationList> CertificateRevocationLists { get {
+            if (FetchedFromFolderCRL) {
+                var o = Entries.CertEnumCRLsInStore(Handle, IntPtr.Zero);
+                while (o != IntPtr.Zero) {
+                    yield return new X509CertificateRevocationList(o);
+                    o = Entries.CertEnumCRLsInStore(Handle, o);
+                    }
+                }
+            else try
+                {
+                foreach (var filename in Directory.GetFiles(Folder)) {
+                    var e = Path.GetExtension(filename)?.ToLowerInvariant()??String.Empty;
+                    switch (e) {
+                        case ".crl":
+                            {
+                            var o = new X509CertificateRevocationList(File.ReadAllBytes(filename));
+                            Validate(Entries.CertAddCRLContextToStore(Handle, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,IntPtr.Zero));
+                            yield return o;
+                            }
+                            break;
+                        }
+                    }
+                }
+            finally
+                {
+                FetchedFromFolderCRL = true;
+                }
+            }}
+        #endregion
 
-        public FX509CertificateStorage(String folder)
+        public FolderCertificateStorage(String folder)
             :this(folder,X509StoreLocation.CurrentUser)
             {
             }
 
-        public FX509CertificateStorage(String folder, X509StoreLocation location)
+        public FolderCertificateStorage(String folder, X509StoreLocation location)
             :base(location)
             {
             if (folder == null) { throw new ArgumentNullException(nameof(folder)); }

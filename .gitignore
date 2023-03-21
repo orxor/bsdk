@@ -95,3 +95,7 @@
 /src/dotnet/tests/UnitTests.BinaryStudio.Security.Cryptography.Generator/obj
 /src/dotnet/tools/mrtd/bin
 /src/dotnet/tools/mrtd/obj
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.Reporting/bin
+/src/dotnet/libraries/BinaryStudio.Security.Cryptography.Reporting/obj
+/src/dotnet/libraries/BinaryStudio.Reporting/bin
+/src/dotnet/libraries/BinaryStudio.Reporting/obj

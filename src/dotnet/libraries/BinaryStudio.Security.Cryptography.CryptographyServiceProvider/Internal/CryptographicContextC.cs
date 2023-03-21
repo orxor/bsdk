@@ -69,6 +69,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptSetProvParam(IntPtr Context,CRYPT_PARAM Parameter,Byte[] Data,Int32 Flags) { return CryptSetProvParam(Context,Parameter,Data,Flags); }
         Boolean CryptographicFunctions.CryptSetProvParam(IntPtr Context,CRYPT_PARAM Parameter,IntPtr Data,Int32 Flags) { return CryptSetProvParam(Context,Parameter,Data,Flags); }
         Boolean CryptographicFunctions.CryptSignHash(IntPtr Handle, KEY_SPEC_TYPE KeySpec, Byte[] Signature, ref Int32 Length) { return CryptSignHash(Handle,KeySpec,IntPtr.Zero,0,Signature,ref Length); }
+        Boolean CryptographicFunctions.CryptVerifyCertificateSignature(IntPtr Context,Int32 SubjectType,IntPtr Subject,Int32 IssuerType,IntPtr Issuer,Int32 Flags) { return CryptVerifyCertificateSignatureEx(Context,X509_ASN_ENCODING,SubjectType,Subject,IssuerType,Issuer,Flags,IntPtr.Zero); }
         Boolean CryptographicFunctions.CryptVerifySignature(IntPtr Handle, Byte[] Signature, Int32 SignatureSize, IntPtr Key) { return CryptVerifySignature(Handle,Signature,SignatureSize,Key,IntPtr.Zero,0); }
         Int32 CryptographicFunctions.CertNameToStrA(Int32 CertEncodingType, ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrA(CertEncodingType,ref Name,StrType,psz,csz); }
         Int32 CryptographicFunctions.CertNameToStrW(Int32 CertEncodingType, ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrW(CertEncodingType,ref Name,StrType,psz,csz); }
@@ -143,6 +144,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 Flags);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptSetProvParam(IntPtr Context,CRYPT_PARAM Parameter,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 Flags);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptSetProvParam(IntPtr Context,CRYPT_PARAM Parameter,IntPtr Data,Int32 Flags);
+        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptVerifyCertificateSignatureEx(IntPtr Context,Int32 CertEncodingType,Int32 SubjectType,IntPtr Subject,Int32 IssuerType,IntPtr Issuer,Int32 Flags,IntPtr Extra);
         [DllImport("libcapi20", SetLastError = true)] private static extern Int32 CertNameToStrA(Int32 CertEncodingType,ref CERT_NAME_BLOB Name,Int32 StrType,IntPtr psz,Int32 csz);
         [DllImport("libcapi20", SetLastError = true)] private static extern Int32 CertNameToStrW(Int32 CertEncodingType,ref CERT_NAME_BLOB Name,Int32 StrType,IntPtr psz,Int32 csz);
         [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CertAlgIdToOID(ALG_ID Id);

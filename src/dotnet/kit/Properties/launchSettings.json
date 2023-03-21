@@ -2,7 +2,7 @@
   "profiles": {
     "kit": {
       "commandName": "Project",
-      "commandLineArgs": "input:C:\\temp5\\*.cer batch:rename mt:NoMultiThread",
+      "commandLineArgs": "report:Name=GOSTCertificateSignature storename:folder://C:\\TFS\\icao\\repo\\ru",
       "remoteDebugEnabled": false
     }
   }

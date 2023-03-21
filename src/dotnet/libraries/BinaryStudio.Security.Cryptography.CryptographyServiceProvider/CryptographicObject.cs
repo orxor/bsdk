@@ -68,11 +68,13 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
-        /// <summary>Gets the service object of the specified type.</summary>
-        /// <param name="service">An object that specifies the type of service object to get.</param>
-        /// <returns>A service object of type <paramref name="service"/>.
-        /// -or-
-        /// <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+        /**
+         * <summary>Gets the service object of the specified type.</summary>
+         * <param name="service">An object that specifies the type of service object to get.</param>
+         * <returns>A service object of type <paramref name="service"/>.
+         * -or-
+         * <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+         */
         public virtual Object GetService(Type service) {
             if (service == null) { return null; }
             if (service == GetType()) { return this; }

@@ -8,7 +8,7 @@ namespace BinaryStudio.Security.Cryptography
     #if CODE_ANALYSIS
     [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
     #endif
-    internal static class ObjectIdentifiers
+    public static class ObjectIdentifiers
         {
         public static Oid GetOID(String value)
             {

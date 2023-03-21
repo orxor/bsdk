@@ -43,6 +43,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
         public X509RelativeDistinguishedNameSequence Issuer { get;private set; }
         public Asn1CertificateExtensionCollection Extensions { get; }
         public String Country { get; }
+        public Asn1SignatureAlgorithm SignatureAlgorithm { get; }
 
         public String Thumbprint { get {
             if (thumbprint == null) {
@@ -69,6 +70,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation
                         {
                         var count = o[0].Count;
                         Version = (Int32)(Asn1Integer)u[0][0];
+                        SignatureAlgorithm = Asn1SignatureAlgorithm.From(new Asn1SignatureAlgorithm(u[0][1]));
                         Issuer = new X509RelativeDistinguishedNameSequence(o[0][2].
                             Select(j => new KeyValuePair<Asn1ObjectIdentifier,String>(
                                 (Asn1ObjectIdentifier)j[0][0], j[0][1].ToString())));

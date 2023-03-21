@@ -203,7 +203,7 @@ namespace BinaryStudio.Security.Cryptography
             return new ReadOnlyDictionary<CRYPT_PROVIDER_TYPE,String>(r);
             }
         #endregion
-        #region M:GetCertificateChain(X509Certificate,X509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IntPtr)
+        #region M:GetCertificateChain(X509Certificate,IX509CertificateStorage,OidCollection,OidCollection,TimeSpan,DateTime,CERT_CHAIN_FLAGS,IntPtr)
         /// <summary>Builds a certificate chain context starting from an end certificate and going back, if possible, to a trusted root certificate.</summary>
         /// <param name="certificate">The end certificate, the certificate for which a chain is being built. This certificate context will be the zero-index element in the first simple chain.</param>
         /// <param name="store">The additional store to search for supporting certificates and certificate trust lists (CTLs). This parameter can be null if no additional store is to be searched.</param>
@@ -214,7 +214,7 @@ namespace BinaryStudio.Security.Cryptography
         /// <param name="flags">Flag values that indicate special processing.</param>
         /// <param name="chainEngine">A handle of the chain engine.</param>
         /// <returns>Returns chain context created.</returns>
-        private unsafe X509CertificateChainContext GetCertificateChain(X509Certificate certificate, X509CertificateStorage store,
+        private unsafe X509CertificateChainContext GetCertificateChain(X509Certificate certificate, IX509CertificateStorage store,
             OidCollection applicationPolicy, OidCollection issuancePolicy, TimeSpan timeout, DateTime datetime,
             CERT_CHAIN_FLAGS flags, IntPtr chainEngine)
             {
@@ -252,21 +252,21 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
-        #region M:GetCertificateChain(X509Certificate,X509CertificateStorage,CERT_CHAIN_FLAGS,DateTime):X509CertificateChainContext
-        public X509CertificateChainContext GetCertificateChain(X509Certificate certificate, X509CertificateStorage store,
+        #region M:GetCertificateChain(X509Certificate,IX509CertificateStorage,CERT_CHAIN_FLAGS,DateTime):X509CertificateChainContext
+        public X509CertificateChainContext GetCertificateChain(X509Certificate certificate, IX509CertificateStorage store,
             CERT_CHAIN_FLAGS flags,DateTime datetime)
             {
             return GetCertificateChain(certificate,store,null,null,TimeSpan.Zero,datetime,flags,IntPtr.Zero);
             }
         #endregion
-        #region M:GetCertificateChain(X509Certificate,X509CertificateStorage,CERT_CHAIN_FLAGS):X509CertificateChainContext
-        public X509CertificateChainContext GetCertificateChain(X509Certificate certificate, X509CertificateStorage store,CERT_CHAIN_FLAGS flags)
+        #region M:GetCertificateChain(X509Certificate,IX509CertificateStorage,CERT_CHAIN_FLAGS):X509CertificateChainContext
+        public X509CertificateChainContext GetCertificateChain(X509Certificate certificate, IX509CertificateStorage store,CERT_CHAIN_FLAGS flags)
             {
             return GetCertificateChain(certificate,store,flags,DateTime.Now);
             }
         #endregion
-        #region M:GetCertificateChain(X509Certificate,X509CertificateStorage):X509CertificateChainContext
-        public X509CertificateChainContext GetCertificateChain(X509Certificate certificate, X509CertificateStorage store)
+        #region M:GetCertificateChain(X509Certificate,IX509CertificateStorage):X509CertificateChainContext
+        public X509CertificateChainContext GetCertificateChain(X509Certificate certificate, IX509CertificateStorage store)
             {
             return GetCertificateChain(certificate,store,CERT_CHAIN_FLAGS.CERT_CHAIN_REVOCATION_CHECK_CHAIN);
             }

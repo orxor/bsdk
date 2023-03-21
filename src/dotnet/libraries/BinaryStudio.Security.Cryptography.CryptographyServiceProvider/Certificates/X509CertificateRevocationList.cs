@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
@@ -21,6 +22,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public String Country          { get { return Source.Country;           }}
         public String Issuer           { get { return Source.Issuer.ToString(); }}
         public Asn1CertificateExtensionCollection Extensions { get { return Source.Extensions; }}
+        public Oid SignatureAlgorithm { get; }
+        public Oid HashAlgorithm { get; }
 
         public unsafe Byte[] Bytes {get{
             var context = (CRL_CONTEXT*)Context;
@@ -35,6 +38,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (context == IntPtr.Zero) { throw new ArgumentOutOfRangeException(nameof(context)); }
             Context = Entries.CertDuplicateCRLContext(context);
             Source = BuildSource(Context);
+            SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
+            HashAlgorithm = Source.SignatureAlgorithm.HashAlgorithm;
             }
 
         public X509CertificateRevocationList(Byte[] source) {
@@ -45,6 +50,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 var hr = GetHRForLastWin32Error();
                 Marshal.ThrowExceptionForHR((Int32)hr);
                 }
+            SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
+            HashAlgorithm = Source.SignatureAlgorithm.HashAlgorithm;
             }
 
         #region M:BuildSource(CRL_CONTEXT*):Asn1CertificateRevocationList
