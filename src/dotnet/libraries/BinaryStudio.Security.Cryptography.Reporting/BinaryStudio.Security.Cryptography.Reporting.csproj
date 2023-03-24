@@ -30,11 +30,16 @@
     <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BinaryStudio.Reporting\BinaryStudio.Reporting.csproj" />
+    <ProjectReference Include="..\BinaryStudio.ReportingServices\BinaryStudio.ReportingServices.csproj" />
     <ProjectReference Include="..\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
     <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="GOSTCertificateSignature.xslt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -69,28 +69,31 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
-        private static IDictionary<String,CRYPT_PROVIDER_TYPE> PAlgId = new ConcurrentDictionary<String, CRYPT_PROVIDER_TYPE>();
+        private static readonly IDictionary<String,CRYPT_PROVIDER_TYPE> PAlgId = new ConcurrentDictionary<String, CRYPT_PROVIDER_TYPE>();
         private static IDictionary<String,ALG_ID> SAlgId;
+        private static readonly Object SAlgIdO = new Object();
         private static void EnsureAlgIdCache() {
-            if (SAlgId == null) {
-                SAlgId = new Dictionary<String,ALG_ID>();
-                var entries = (CryptographicFunctions)CryptographicContext.DefaultContext.GetService(typeof(CryptographicFunctions));
-                entries.CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID.CRYPT_SIGN_ALG_OID_GROUP_ID, IntPtr.Zero, delegate(IntPtr info,IntPtr arg) {
-                    unsafe
-                        {
-                        var i = (CRYPT_OID_INFO*)info;
-                        if (i->OID != IntPtr.Zero) {
-                            var o = Marshal.PtrToStringAnsi(i->OID);
-                            SAlgId[o] = *(ALG_ID*)i->ExtraInfo.Data;
+            lock (SAlgIdO) {
+                if (SAlgId == null) {
+                    SAlgId = new Dictionary<String,ALG_ID>();
+                    var entries = (CryptographicFunctions)CryptographicContext.DefaultContext.GetService(typeof(CryptographicFunctions));
+                    entries.CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID.CRYPT_SIGN_ALG_OID_GROUP_ID, IntPtr.Zero, delegate(IntPtr info,IntPtr arg) {
+                        unsafe
+                            {
+                            var i = (CRYPT_OID_INFO*)info;
+                            if (i->OID != IntPtr.Zero) {
+                                var o = Marshal.PtrToStringAnsi(i->OID);
+                                SAlgId[o] = *(ALG_ID*)i->ExtraInfo.Data;
+                                }
                             }
-                        }
-                    return true;
-                    });
-                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA1]   = ALG_ID.CALG_ECDSA;
-                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA256] = ALG_ID.CALG_ECDSA;
-                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA384] = ALG_ID.CALG_ECDSA;
-                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA512] = ALG_ID.CALG_ECDSA;
-                SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA224] = ALG_ID.CALG_ECDSA;
+                        return true;
+                        });
+                    SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA1]   = ALG_ID.CALG_ECDSA;
+                    SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA256] = ALG_ID.CALG_ECDSA;
+                    SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA384] = ALG_ID.CALG_ECDSA;
+                    SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA512] = ALG_ID.CALG_ECDSA;
+                    SAlgId[ObjectIdentifiers.szOID_ECDSA_SHA224] = ALG_ID.CALG_ECDSA;
+                    }
                 }
             }
         }

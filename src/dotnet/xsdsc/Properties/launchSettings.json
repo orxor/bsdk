@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "xsdsc": {
+      "commandName": "Project",
+      "commandLineArgs": "\"input:C:\\TFS\\bsdk\\src\\dotnet\\libraries\\BinaryStudio.ReportingServices\\VisioSchema15.xsd\""
+    }
+  }
+}

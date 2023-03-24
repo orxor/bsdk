@@ -40,7 +40,7 @@ namespace BinaryStudio.PlatformComponents
 
         #region M:Dispose(Boolean)
         private void Dispose(Boolean disposing) {
-            Debug.Print($"LocalMemoryManager.Dispose({disposing})");
+            //Debug.Print($"LocalMemoryManager.Dispose({disposing})");
             }
         #endregion
         #region M:Dispose

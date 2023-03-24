@@ -99,3 +99,7 @@
 /src/dotnet/libraries/BinaryStudio.Security.Cryptography.Reporting/obj
 /src/dotnet/libraries/BinaryStudio.Reporting/bin
 /src/dotnet/libraries/BinaryStudio.Reporting/obj
+/src/dotnet/libraries/BinaryStudio.ReportingServices/bin
+/src/dotnet/libraries/BinaryStudio.ReportingServices/obj
+/src/dotnet/xsdsc/bin
+/src/dotnet/xsdsc/obj

@@ -102,7 +102,7 @@ namespace BinaryStudio.Security.Cryptography
                     ? (HRESULT)o.GetLastWin32Error()
                     : (HRESULT)Marshal.GetLastWin32Error());
                 #if DEBUG
-                Debug.Print($"Validate:{e.Message}");
+                //Debug.Print($"Validate:{e.Message}");
                 #endif
                 throw e;
                 }
@@ -114,7 +114,7 @@ namespace BinaryStudio.Security.Cryptography
             if (!status) {
                 e = HResultException.GetExceptionForHR((HRESULT)Marshal.GetLastWin32Error());
                 #if DEBUG
-                Debug.Print($"Validate:{e.Message}");
+                //Debug.Print($"Validate:{e.Message}");
                 #endif
                 return false;
                 }
@@ -139,7 +139,7 @@ namespace BinaryStudio.Security.Cryptography
             if (!predicate(value)) {
                 Exception e = HResultException.GetExceptionForHR((HRESULT)service.GetLastError());
                 #if DEBUG
-                Debug.Print($"Validate:{e.Message}");
+                //Debug.Print($"Validate:{e.Message}");
                 #endif
                 throw e;
                 }

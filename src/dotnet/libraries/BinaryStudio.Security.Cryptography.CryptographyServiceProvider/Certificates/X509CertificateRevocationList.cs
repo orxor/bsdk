@@ -111,5 +111,24 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 }
             }
         #endregion
+
+        /**
+         * <summary>Serves as the default hash function.</summary>
+         * <returns>A hash code for the current object.</returns>
+         */
+        public override Int32 GetHashCode() {
+            return (Handle != IntPtr.Zero)
+                ? Thumbprint.GetHashCode()
+                : 0;
+            }
+
+        /**
+         * <summary>Returns a string that represents the current object.</summary>
+         * <returns>A string that represents the current object.</returns>
+         */
+        public override String ToString()
+            {
+            return Source.FriendlyName;
+            }
         }
     }

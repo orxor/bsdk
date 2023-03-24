@@ -321,10 +321,23 @@ namespace BinaryStudio.Serialization
                 }
             }
         #endregion
+        #region M:WriteAttributeValueIfNotNull({this}XmlWriter,String,Object)
+        public static void WriteAttributeValueIfNotNull(this XmlWriter writer, String attribute, Object value) {
+            if (writer == null) { throw new ArgumentNullException(nameof(writer)); }
+            if (value != null) {
+                writer.WriteAttributeString(attribute,value.ToString());
+                }
+            }
+        #endregion
 
         public static IDisposable ElementScope(this XmlWriter writer, String localname)
             {
             return new ElementScopeT(writer,localname);
+            }
+
+        public static IDisposable ElementScope(this XmlWriter writer, String localname, String ns)
+            {
+            return new ElementScopeT(writer,localname,ns);
             }
 
         private class ElementScopeT : IDisposable
@@ -334,6 +347,12 @@ namespace BinaryStudio.Serialization
                 {
                 this.writer = writer;
                 writer.WriteStartElement(localname);
+                }
+
+            public ElementScopeT(XmlWriter writer, String localname, String ns)
+                {
+                this.writer = writer;
+                writer.WriteStartElement(localname,ns);
                 }
 
             public void Dispose()

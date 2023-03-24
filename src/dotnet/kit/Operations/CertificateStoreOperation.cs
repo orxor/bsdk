@@ -36,7 +36,7 @@ namespace Operations
                         }
                     var ReportSource = (ReportSource)Activator.CreateInstance(ReportType);
                     using (var output = File.Create("report.xml")) {
-                        ReportSource.Build(store,output);
+                        ReportSource.Build(output,store);
                         }
                     }
                 }
