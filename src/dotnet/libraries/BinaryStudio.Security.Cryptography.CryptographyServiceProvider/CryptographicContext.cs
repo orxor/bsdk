@@ -89,7 +89,7 @@ namespace BinaryStudio.Security.Cryptography
                             : CryptographicContextFlags.CRYPT_NONE));
                     yield return contextB.GetUserKey(
                         KEY_SPEC_TYPE.AT_KEYEXCHANGE|KEY_SPEC_TYPE.AT_SIGNATURE,
-                        contextB.FullQualifiedContainerName);
+                        contextB.FullQualifiedContainerName ?? contextB.Container);
                     c = contextA.GetParameter<String>(CRYPT_PARAM.PP_ENUMCONTAINERS, CRYPT_NEXT, Encoding.ASCII);
                     }
                 }

@@ -67,7 +67,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             var FullContainerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),$@"Infotecs\Containers\{Container}");
             using (var context = CryptographicContext.AcquireContext(ProviderType,Container,CryptographicContextFlags.CRYPT_NONE)) {
                 context.SecureCode = SecureCode;
-                using (var Key = context.Keys.First()) {
+                using (var Key = context.Keys.First(i => i.Container == Container)) {
                     Key.Context.SecureCode = SecureCode;
                     Key.Certificate = new X509Certificate(Certificate);
                     }

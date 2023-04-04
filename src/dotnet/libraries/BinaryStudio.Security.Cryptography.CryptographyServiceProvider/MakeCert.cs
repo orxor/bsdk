@@ -124,7 +124,7 @@ namespace BinaryStudio.Security.Cryptography
                         ProviderName = contextS.ProviderName;
                         }
                     Container = ((ProviderName != null) && (ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase)))
-                            ? $@"{Guid.NewGuid().ToString("D").ToLowerInvariant()}"
+                            ? $@"{SubjectName}"
                             : $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
                     using (var contextS = AcquireContext(ProviderType, Container,CryptographicContextFlags.CRYPT_NEWKEYSET)) {
                         contextS.SecureCode = SecureCode;
