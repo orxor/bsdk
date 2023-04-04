@@ -14,29 +14,180 @@ using Newtonsoft.Json;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {
-    /// <summary>
-    /// Represents an X.509 certificate.
-    /// </summary>
+    /**
+     * <summary>
+     * Represents an X.509 certificate.
+     * </summary>
+     * <translate lang="ru-RU">
+     *   <summary>
+     *   Представляет сертификат X.509.
+     *   </summary>
+     * </translate>
+     * */
     public sealed class X509Certificate : X509Object,IExceptionSerializable,DigestSource
         {
         private IntPtr Context;
         internal Asn1Certificate Source;
 
+        /**
+         * <summary>
+         * Gets a handle to a certificate context described by
+         * an unmanaged <see cref="CERT_CONTEXT"/> structure.
+         * </summary>
+         */
         public override IntPtr Handle { get { return Context; }}
-        public Int32 Version       { get { return Source.Version;      }}
+
+        /**
+         * <summary>
+         * The X.509 version number.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Получает версию формата сертификата X.509.
+         *   </summary>
+         * </translate>
+         */
+        public Int32 Version { get { return Source.Version; }}
+
+        /**
+         * <summary>
+         * The unique serial number that the issuing certification authority (CA) assigns to the certificate.
+         * The serial number is unique for all certificates issued by a given CA.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Уникальный серийный номер, присвоенный сертификату центром сертификации.
+         *   Серийный номер уникален для всех сертификатов, выданных определенным центром сертификации.
+         *   </summary>
+         * </translate>
+         */
         public String SerialNumber { get { return Source.SerialNumber; }}
-        public String Thumbprint   { get { return Source.Thumbprint;   }}
-        public DateTime NotBefore  { get { return Source.NotBefore;    }}
-        public DateTime NotAfter   { get { return Source.NotAfter;     }}
-        public String Issuer       { get { return Source.Issuer.ToString();  }}
-        public String Subject      { get { return Source.Subject.ToString(); }}
-        public String Country      { get { return Source.Country; }}
+
+        /**
+         * <summary>
+         * The digest (or thumbprint) of the certificate data.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Сводка данных (или отпечаток) сертификата.
+         *   </summary>
+         * </translate>
+         */
+        public String Thumbprint { get { return Source.Thumbprint; }}
+
+        /**
+         * <summary>
+         * The beginning date for the period in which the certificate is valid.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Начальная дата периода действия сертификата.
+         *   </summary>
+         * </translate>
+         */
+        public DateTime NotBefore { get { return Source.NotBefore; }}
+
+        /**
+         * <summary>
+         * The final date for the period in which the certificate is valid.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Конечная дата периода действия сертификата.
+         *   </summary>
+         * </translate>
+         */
+        public DateTime NotAfter   { get { return Source.NotAfter; }}
+
+        /**
+         * <summary>
+         * Information regarding the CA that issued the certificate.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Информация о центре сертификации, выдавшем сертификат.
+         *   </summary>
+         * </translate>
+         */
+        public String Issuer { get { return Source.Issuer.ToString(); }}
+
+        /**
+         * <summary>
+         * The name of the individual, computer, device, or CA to whom the certificate is issued.
+         * If the issuing CA exists on a domain member server in your enterprise, this will be a distinguished name
+         * within the enterprise. Otherwise, this may be a full name and e-mail name or other personal identifier.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Имя лица, компьютера, устройства или центра сертификации, которому выдан сертификат.
+         *   Если выдающий сертификаты центр сертификации находится на рядовом сервере домена предприятия,
+         *   это будет различающееся имя внутри предприятия. Иначе это может быть полное имя и адрес
+         *   электронной почты или другой персональный идентификатор.
+         *   </summary>
+         * </translate>
+         */
+        public String Subject { get { return Source.Subject.ToString(); }}
+
+        /**
+         * <summary>
+         * The country code associated with the certificate.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Код страны, ассоциированной с сертификатом.
+         *   </summary>
+         * </translate>
+         */
+        public String Country { get { return Source.Country; }}
+
+        /**
+         * <summary>
+         * Gets the algorithm used to create the signature of a certificate.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Получает алгоритм, используемый для создания подписи сертификата.
+         *   </summary>
+         * </translate>
+         */
         public Oid SignatureAlgorithm { get; }
+
+        /**
+         * <summary>
+         * Gets the hash algorithm used to create the signature of a certificate.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Получает алгоритм хэширования, используемый для создания подписи сертификата.
+         *   </summary>
+         * </translate>
+         */
         public Oid HashAlgorithm { get; }
+
+        /**
+         * <summary>
+         * The name of the container associated with the certificate.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Имя контейнера, ассоциированного с сертификатом.
+         *   </summary>
+         * </translate>
+         */
         public String Container {get;internal set; }
         public KEY_SPEC_TYPE KeySpec { get;internal set; }
         internal Boolean IsMachineKeySet { get;set; }
 
+        /**
+         * <summary>
+         * Gets the raw data of a certificate.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Бинарный образ сертификата.
+         *   </summary>
+         * </translate>
+         */
         public unsafe Byte[] Bytes { get{
             var context = (CERT_CONTEXT*)Context;
             var r = new Byte[context->CertEncodedSize];
@@ -162,8 +313,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             }
         #endregion
         #region M:Dispose(Boolean)
-        /// <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
-        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        /** <inheritdoc/> */
         protected override void Dispose(Boolean disposing) {
             lock(this) {
                 if (!Disposed) {
@@ -191,6 +341,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #endregion
 
         #region M:IExceptionSerializable.WriteTo(TextWriter)
+        /// <inheritdoc />
         void IExceptionSerializable.WriteTo(TextWriter target) {
             using (var writer = new DefaultJsonWriter(new JsonTextWriter(target){
                     Formatting = Formatting.Indented,
@@ -244,19 +395,17 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         /**
          * <summary>Returns a string that represents the current object.</summary>
          * <returns>A string that represents the current object.</returns>
+         * <translate lang="ru-RU">
+         *   <summary>Возвращает строку, представляющую текущий объект.</summary>
+         *   <returns>Строка, представляющая текущий объект.</returns>
+         * </translate>
          */
         public override String ToString()
             {
             return Source.FriendlyName;
             }
 
-        /**
-         * <summary>Gets the service object of the specified type.</summary>
-         * <param name="service">An object that specifies the type of service object to get.</param>
-         * <returns>A service object of type <paramref name="service"/>.
-         * -or-
-         * <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
-         */
+        /** <inheritdoc/> */
         public override Object GetService(Type service) {
             if (service == typeof(Asn1Certificate)) { return Source; }
             return base.GetService(service);

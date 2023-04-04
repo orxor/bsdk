@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
 using JetBrains.Annotations;
@@ -52,6 +54,18 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
         #endregion
+        public CertificateCAVersion(Version version)
+            :base(ObjectIdentifiers.szOID_CERTSRV_CA_VERSION,false)
+            {
+            if (version == null) { throw new ArgumentException(nameof(version)); }
+            Version = version;
+            IList<Byte> r = new List<Byte>();
+            r.Add((Byte)((version.Minor >> 8) & 0xff));
+            r.Add((Byte)((version.Minor >> 0) & 0xff));
+            r.Add((Byte)((version.Major >> 8) & 0xff));
+            r.Add((Byte)((version.Major >> 0) & 0xff));
+            Body = new Asn1OctetString(new Asn1Integer(r.ToArray()));
+            }
 
         /**
          * <summary>Returns a string that represents the current object.</summary>

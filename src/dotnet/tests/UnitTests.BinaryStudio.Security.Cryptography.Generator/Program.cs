@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
+using BinaryStudio.DiagnosticServices;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
@@ -36,25 +37,60 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
 
         private static void Main(String[] args)
             {
-            var SecureCode = CryptographicContext.GetSecureString("12345678");
-            var RequestSecureCode = new RequestSecureCode(SecureCode);
-            var dt = DateTime.Now;
-            var AlgId = ALG_ID.CALG_GR3410EL;
-            DoSet(AlgId,dt,SecureCode,"R-CA",new Byte[]{ 1,2,3}, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature, out var RootCertificate);
-            DoSet(AlgId,dt,SecureCode,"I-CA",new Byte[]{ 4,5,6}, RootCertificate, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature, false, out var IntermediateCertificate);
-            DoSet(AlgId,dt,SecureCode,"User1",new Byte[]{  7, 8, 9}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, out var User1);
-            DoSet(AlgId,dt,SecureCode,"User2",new Byte[]{ 10,11,12}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, out var User2);
-            DoSet(AlgId,dt,SecureCode,"User3",new Byte[]{ 13,14,15}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, out var User3);
-            DoCRLSet(AlgId,dt,RequestSecureCode,RootCertificate);
-            DoCRLSet(AlgId,dt,RequestSecureCode,IntermediateCertificate);
-            MakeCRL(AlgId,dt,04,RequestSecureCode,RootCertificate,"R-CA{Revoked}.crl",IntermediateCertificate);
-            MakeCRL(AlgId,dt,05,RequestSecureCode,IntermediateCertificate,"I-CA{Revoked}.crl",User1,User3);
+            Console.WriteLine("Press [ENTER] to continue...");
+            Console.ReadLine();
+            try
+                {
+                var SecureCode = CryptographicContext.GetSecureString("12345678");
+                var RequestSecureCode = new RequestSecureCode(SecureCode);
+                var dt = DateTime.Now;
+                var AlgId = ALG_ID.CALG_GR3410EL;
+                DoSet(AlgId,dt,SecureCode,"R-CA",new Byte[]{ 1,2,3}, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.NonRepudiation, out var RootCertificate);
+                DoSet(AlgId,dt,SecureCode,"I-CA",new Byte[]{ 4,5,6}, RootCertificate, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature, false,
+                    new Uri[]{ new Uri("http://localhost/R-CA.crl"),  },
+                    out var IntermediateCertificate);
+                DoSet(AlgId,dt,SecureCode,"User1",new Byte[]{  7, 8, 9}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User1);
+                DoSet(AlgId,dt,SecureCode,"User2",new Byte[]{ 10,11,12}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User2);
+                DoSet(AlgId,dt,SecureCode,"User3",new Byte[]{ 13,14,15}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User3);
+                DoCRLSet(AlgId,dt,RequestSecureCode,RootCertificate);
+                DoCRLSet(AlgId,dt,RequestSecureCode,IntermediateCertificate);
+                MakeCRL(AlgId,dt,04,RequestSecureCode,RootCertificate,"R-CA{Revoked}.crl",IntermediateCertificate);
+                MakeCRL(AlgId,dt,05,RequestSecureCode,IntermediateCertificate,"I-CA{Revoked}.crl",User1,User3);
+                }
+            catch (Exception e)
+                {
+                Console.WriteLine(Exceptions.ToString(e));
+                }
+            }
+
+        private static void UpdateViPNetContainer(SecureString SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, Byte[] Certificate,String Marker) {
+            var FullContainerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),$@"Infotecs\Containers\{Container}");
+            using (var context = CryptographicContext.AcquireContext(ProviderType,Container,CryptographicContextFlags.CRYPT_NONE)) {
+                context.SecureCode = SecureCode;
+                using (var Key = context.Keys.First()) {
+                    Key.Context.SecureCode = SecureCode;
+                    Key.Certificate = new X509Certificate(Certificate);
+                    }
+                }
+            File.Copy(FullContainerPath,$"{Marker}.cnt",true);
+            GC.Collect();
+            }
+
+        private static void UpdateViPNetContainer(SecureString SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, String Certificate) {
+            UpdateViPNetContainer(SecureCode,Container,ProviderType,
+                File.ReadAllBytes(Certificate),
+                Path.GetFileNameWithoutExtension(Certificate));
             }
 
         private static void DoSet(ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509KeyUsageFlags KeyUsage, out X509Certificate Certificate) {
             var Extensions = new List<CertificateExtension> {
                 new Asn1CertificateBasicConstraintsExtension(X509SubjectType.CA),
                 new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef"),
+                new CertificatePoliciesExtension(
+                    ObjectIdentifiers.szOID_SIGN_TOOL_KC1,
+                    ObjectIdentifiers.szOID_SIGN_TOOL_KC2,
+                    ObjectIdentifiers.szOID_SIGN_TOOL_KC3),
+                new CertificateCAVersion(new Version(2,0))
                 };
             if (KeyUsage != 0) {
                 Extensions.Add(new CertificateKeyUsage(KeyUsage));
@@ -63,43 +99,96 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 CryptographicContext.MakeCertificate(AlgId,$"CN={SubjectName}",String.Join(String.Empty,SerialNumber.Select(i=> i.ToString("x2"))),
                     DateTime.AddYears(-1),DateTime.AddYears(5),
                     Extensions,Output, SecureCode,
-                    out Certificate,false);
+                    out Certificate,false, out var Container, out var ProviderName, out var ProviderType);
+                var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
                 using (var PrivateKeyOutput = File.Create($"{SubjectName}.pfx")) {
                     Output.Seek(0,SeekOrigin.Begin);
                     Output.CopyTo(PrivateKeyOutput);
                     }
-                File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
-                DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
-                DoExpired(AlgId,SecureCode,Certificate,Certificate,-10,$"{SubjectName}{{Expired}}.cer");
-                DoExpired(AlgId,SecureCode,Certificate,Certificate,+10,$"{SubjectName}{{Future}}.cer");
+                if (IsViPNet) {
+                    File.Delete($"{SubjectName}.pfx");
+                    File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
+                    DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
+                    DoExpired(AlgId,SecureCode,Certificate,Certificate,-10,$"{SubjectName}{{Expired}}.cer");
+                    DoExpired(AlgId,SecureCode,Certificate,Certificate,+10,$"{SubjectName}{{Future}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{InvalidSignature}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{Expired}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{Future}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}.cer");
+                    }
+                else
+                    {
+                    File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
+                    DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
+                    DoExpired(AlgId,SecureCode,Certificate,Certificate,-10,$"{SubjectName}{{Expired}}.cer");
+                    DoExpired(AlgId,SecureCode,Certificate,Certificate,+10,$"{SubjectName}{{Future}}.cer");
+                    }
                 }
             }
 
-        private static void DoSet(ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509Certificate IssuerCertificate,  X509KeyUsageFlags KeyUsage, Boolean IsLeaf, out X509Certificate Certificate) {
-            var Extensions = new List<CertificateExtension>();
+        private static void DoSet(ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509Certificate IssuerCertificate,  X509KeyUsageFlags KeyUsage, Boolean IsLeaf, Uri[] DistributionPoints, out X509Certificate Certificate) {
+            var Extensions = new List<CertificateExtension>{
+                //new CertificateExtendedKeyUsage(
+                //    "1.3.6.1.5.5.7.3.2",
+                //    "1.3.6.1.5.5.7.3.4",
+                //    "1.3.6.1.4.1.311.10.3.12",
+                //    "1.3.6.1.4.1.311.80.1",
+                //    "1.3.6.1.4.1.311.10.3.4")
+                };
             if (!IsLeaf) {
                 Extensions.Add(new CertificateSubjectKeyIdentifier(false,"90abcdeffedcba98765432100123456789abcdef"));
                 Extensions.Add(new Asn1CertificateBasicConstraintsExtension(X509SubjectType.CA,0));
+                Extensions.Add(new CertificateCAVersion(new Version(2,0)));
                 }
             if (KeyUsage != 0) {
                 Extensions.Add(new CertificateKeyUsage(KeyUsage));
+                Extensions.Add(new CertificatePoliciesExtension(
+                    ObjectIdentifiers.szOID_SIGN_TOOL_KC1,
+                    ObjectIdentifiers.szOID_SIGN_TOOL_KC2,
+                    ObjectIdentifiers.szOID_SIGN_TOOL_KC3));
+                }
+            if ((DistributionPoints != null) && (DistributionPoints.Length != 0)) {
+                Extensions.Add(new CRLDistributionPoints(DistributionPoints.Select(i => new DistributionPoint(i)).ToArray()));
                 }
             using (var Output = new MemoryStream()) {
                 CryptographicContext.MakeCertificate(AlgId,$"CN={SubjectName}",String.Join(String.Empty,SerialNumber.Select(i=> i.ToString("x2"))),
                     DateTime.AddYears(-1),DateTime.AddYears(5),
                     Extensions,Output, SecureCode,
-                    out Certificate,IssuerCertificate,false);
+                    out Certificate,IssuerCertificate,false, out var Container, out var ProviderName, out var ProviderType);
+                var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
                 using (var PrivateKeyOutput = File.Create($"{SubjectName}.pfx")) {
                     Output.Seek(0,SeekOrigin.Begin);
                     Output.CopyTo(PrivateKeyOutput);
                     }
-                File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
-                DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
-                DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{Expired}}.cer");
-                DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{Future}}.cer");
-                DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{ExpiredKey}}.cer");
-                DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{FutureKey}}.cer");
-                DoEKU(AlgId,SecureCode,Certificate,IssuerCertificate,"1.3.6.1.5.5.7.3.1",$"{SubjectName}{{EKU}}.cer");
+                if (IsViPNet) {
+                    File.Delete($"{SubjectName}.pfx");
+                    File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
+                    DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
+                    DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{Expired}}.cer");
+                    DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{Future}}.cer");
+                    DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{ExpiredKey}}.cer");
+                    DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{FutureKey}}.cer");
+                    DoEKU(AlgId,SecureCode,Certificate,IssuerCertificate,"1.3.6.1.5.5.7.3.1",$"{SubjectName}{{EKU}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{InvalidSignature}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{Expired}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{Future}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{ExpiredKey}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{FutureKey}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{EKU}}.cer");
+                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}.cer");
+                    var FullContainerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),$@"Infotecs\Containers\{Container}");
+                    //File.Delete(FullContainerPath);
+                    }
+                else
+                    {
+                    File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
+                    DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
+                    DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{Expired}}.cer");
+                    DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{Future}}.cer");
+                    DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{ExpiredKey}}.cer");
+                    DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{FutureKey}}.cer");
+                    DoEKU(AlgId,SecureCode,Certificate,IssuerCertificate,"1.3.6.1.5.5.7.3.1",$"{SubjectName}{{EKU}}.cer");
+                    }
                 }
             }
 
@@ -289,17 +378,5 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             MakeCRL(AlgId,DateTime.AddYears(-10),2,SecureCode,IssuerCertificate,$"{IssuerName}{{Expired}}.crl");
             MakeCRL(AlgId,DateTime.AddYears(+10),3,SecureCode,IssuerCertificate,$"{IssuerName}{{Future}}.crl");
             }
-
-        private static void MakeSelfSignedCertificate(out X509Certificate Certificate,SecureString SecureCode, Boolean DeletePrivateKey) {
-            var dt = DateTime.Now;
-            CryptographicContext.MakeCertificate(ALG_ID.CALG_GR3410EL,"CN=R-CA, C=ru","010203",
-                dt.AddYears(-1),dt.AddYears(10),
-                new CertificateExtension[] {
-                    new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef")
-                    },
-                Stream.Null, SecureCode,
-                out Certificate,DeletePrivateKey);
-            }
-
         }
     }

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
+using System.Threading;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 
@@ -76,6 +79,38 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
+        #region P:SecureCode:SecureString
+        public SecureString SecureCode {
+            set
+                {
+                if (value != null) {
+                    var i = Marshal.SecureStringToGlobalAllocAnsi(value);
+                    try
+                        {
+                        for (;;) {
+                            try
+                                {
+                                SetParameter(KEY_PARAM.KP_SIGNATURE_PIN,i);
+                                return;
+                                }
+                            catch (ResourceIsBusyException)
+                                {
+                                Thread.Sleep(5000);
+                                }
+                            }
+                        }
+                    finally
+                        {
+                        Marshal.ZeroFreeGlobalAllocAnsi(i);
+                        }
+                    }
+                else
+                    {
+                    SetParameter(KEY_PARAM.KP_SIGNATURE_PIN,IntPtr.Zero);
+                    }
+                }
+            }
+        #endregion
         #region P:Certificate:X509Certificate
         public X509Certificate Certificate {
             get {
@@ -88,8 +123,8 @@ namespace BinaryStudio.Security.Cryptography
                 }
             set
                 {
-                ((CryptographicFunctions)context.GetService(typeof(CryptographicFunctions))).CryptSetKeyParam(
-                    Handle,KEY_PARAM.KP_CERTIFICATE,value?.Bytes,0);
+                Validate(((CryptographicFunctions)context.GetService(typeof(CryptographicFunctions))).
+                    CryptSetKeyParam(Handle,KEY_PARAM.KP_CERTIFICATE,value?.Bytes,0));
                 }
             }
         #endregion
@@ -122,6 +157,12 @@ namespace BinaryStudio.Security.Cryptography
                 break;
                 }
             return null;
+            }
+        #endregion
+        #region M:SetParameter(KEY_PARAM,IntPtr):Byte[]
+        internal void SetParameter(KEY_PARAM index, IntPtr value) {
+            Validate(((CryptographicFunctions)context.GetService(typeof(CryptographicFunctions))).
+                CryptSetKeyParam(Handle,index,value, 0));
             }
         #endregion
         #region M:Dispose(Boolean)

@@ -67,7 +67,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             CertificateIssuer = source.Issuer;
             var args = new List<Asn1Object>();
             if (SKI.KeyIdentifier != null) { args.Add(new Asn1ContextSpecificObject(0,SKI.KeyIdentifier)); }
-            args.Add(X509GeneralName.BuildContextSpecificObject(1,source.Subject));
+            args.Add(X509GeneralName.BuildContextSpecificObject(1,source.Issuer));
             args.Add(new Asn1ContextSpecificObject(2,DecodeString(source.SerialNumber)));
             Body = new Asn1OctetString(new Asn1Sequence(args.ToArray()));
             }

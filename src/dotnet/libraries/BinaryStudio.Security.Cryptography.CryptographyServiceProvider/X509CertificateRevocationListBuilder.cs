@@ -6,6 +6,7 @@ using System.Numerics;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
+using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 
 namespace BinaryStudio.Security.Cryptography.Certificates.Builders
     {
@@ -36,6 +37,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Builders
             if (SKI != null) {
                 extensions.Add(new CertificateAuthorityKeyIdentifier(IssuerCertificate.Source));
                 }
+            extensions.AddIfNotNull(IssuerCertificate.Source.Extensions.OfType<CertificateCAVersion>().FirstOrDefault());
             var r = new Asn1Sequence{
                 new Asn1Sequence {
                     new Asn1Integer(1),

@@ -36,6 +36,23 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
         #endregion
+        #region ctor{{params}DistributionPoint[]}
+        public CRLDistributionPoints(params DistributionPoint[] points)
+            :base(ObjectIdentifiers.NSS_OID_X509_CRL_DIST_POINTS,false)
+            {
+            DistributionPoints = points;
+            }
+        #endregion
+
+        protected override void BuildBody(ref Asn1OctetString o) {
+            if (o == null) {
+                var r = new Asn1Sequence();
+                foreach (var point in DistributionPoints) {
+                    r.Add(point);
+                    }
+                o = new Asn1OctetString(r);
+                }
+            }
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

@@ -44,6 +44,7 @@ namespace BinaryStudio.Security.Cryptography
                             ExtensionsA[i].pszObjId = (IntPtr)manager.StringToMem(Extensions[i].Identifier.Value,Encoding.ASCII);
                             ExtensionsA[i].fCritical = Extensions[i].IsCritical;
                             using (var MemoryStream = new MemoryStream()) {
+                                Extensions[i].BuildBody();
                                 Extensions[i].Body[0].WriteTo(MemoryStream,true);
                                 var block = MemoryStream.ToArray();
                                 File.WriteAllBytes("x.bin",block);
@@ -107,11 +108,11 @@ namespace BinaryStudio.Security.Cryptography
         public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
             DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
             Stream PrivateKeyStream, SecureString SecureCode,out X509Certificate Certificate,
-            Boolean DeletePrivateKey)
+            Boolean DeletePrivateKey, out String Container, out String ProviderName, out CRYPT_PROVIDER_TYPE ProviderType)
             {
             if (SubjectName == null) { throw new ArgumentNullException(nameof(SubjectName)); }
             Certificate = null;
-            var ProviderType = ProviderTypeFromAlgId(AlgId);
+            ProviderType = ProviderTypeFromAlgId(AlgId);
             if (ProviderType == CRYPT_PROVIDER_TYPE.AUTO) { throw new NotSupportedException(); }
             switch (ProviderType) {
                 case CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH:
@@ -119,8 +120,13 @@ namespace BinaryStudio.Security.Cryptography
                 case CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512:
                     {
                     var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
-                    var container = $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
-                    using (var contextS = AcquireContext(ProviderType, container,CryptographicContextFlags.CRYPT_NEWKEYSET)) {
+                    using (var contextS = AcquireContext(ProviderType, CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                        ProviderName = contextS.ProviderName;
+                        }
+                    Container = ((ProviderName != null) && (ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase)))
+                            ? $@"{Guid.NewGuid().ToString("D").ToLowerInvariant()}"
+                            : $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
+                    using (var contextS = AcquireContext(ProviderType, Container,CryptographicContextFlags.CRYPT_NEWKEYSET)) {
                         contextS.SecureCode = SecureCode;
                         var flags = (PrivateKeyStream != null) ? CryptGenKeyFlags.CRYPT_EXPORTABLE : CryptGenKeyFlags.CRYPT_NONE;
                         String algid;
@@ -155,7 +161,7 @@ namespace BinaryStudio.Security.Cryptography
                             }
                         }
                     if (DeletePrivateKey && (PrivateKeyStream != null)) {
-                        Validate(entries.CryptAcquireContext(out var r, container, null,
+                        Validate(entries.CryptAcquireContext(out var r, Container, null,
                             (Int32)ProviderType,(Int32)CryptographicContextFlags.CRYPT_DELETEKEYSET));
                         }
                     }
@@ -169,12 +175,12 @@ namespace BinaryStudio.Security.Cryptography
             DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
             Stream PrivateKeyStream, SecureString SecureCode,
             out X509Certificate Certificate,X509Certificate IssuerCertificate,
-            Boolean DeletePrivateKey)
+            Boolean DeletePrivateKey, out String Container, out String ProviderName, out CRYPT_PROVIDER_TYPE ProviderType)
             {
             if (SubjectName == null) { throw new ArgumentNullException(nameof(SubjectName)); }
             if (IssuerCertificate == null) { throw new ArgumentNullException(nameof(IssuerCertificate)); }
             var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
-            var ProviderType = ProviderTypeFromAlgId(AlgId);
+            ProviderType = ProviderTypeFromAlgId(AlgId);
             if (ProviderType == CRYPT_PROVIDER_TYPE.AUTO) { throw new NotSupportedException(); }
             Certificate = null;
             var extensions = new List<CertificateExtension>(Extensions ?? EmptyArray<CertificateExtension>.Value);
@@ -186,7 +192,7 @@ namespace BinaryStudio.Security.Cryptography
                     extensions.Add(new CertificateAuthorityKeyIdentifier(IssuerCertificate.Source));
                     }
                 }
-            MakeCertificate(AlgId,SubjectName,SerialNumber,NotBefore,NotAfter,extensions,null,SecureCode,out var SubjectCertificate,false);
+            MakeCertificate(AlgId,SubjectName,SerialNumber,NotBefore,NotAfter,extensions,null,SecureCode,out var SubjectCertificate,false,out Container, out ProviderName, out ProviderType);
             var Builder = Asn1Object.Load(new ReadOnlyMemoryMappingStream(SubjectCertificate.Bytes)).First();
             Builder[0][SubjectCertificate.Source.IssuerFieldIndex] = IssuerCertificate.Source.Subject.BuildSequence();
             using (var context = AcquireContext(ProviderType,IssuerCertificate.Container,CryptographicContextFlags.CRYPT_SILENT)) {
@@ -208,10 +214,11 @@ namespace BinaryStudio.Security.Cryptography
                         };
                     }
                 }
-            var container = Certificate.Container;
+            var containerT = Certificate.Container;
             using (var context = AcquireContext(ProviderType,Certificate.Container,CryptographicContextFlags.CRYPT_SILENT|CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
-                var key = context.Keys.FirstOrDefault(i => i.Container == container);
+                var key = context.Keys.FirstOrDefault(i => i.Container == containerT);
                 if (key != null) {
+                    key.Context.SecureCode = SecureCode;
                     key.Certificate = Certificate;
                     }
                 }
@@ -234,7 +241,7 @@ namespace BinaryStudio.Security.Cryptography
                         }
                     }
                 if (DeletePrivateKey) {
-                    Validate(entries.CryptAcquireContext(out var r, container, null,
+                    Validate(entries.CryptAcquireContext(out var r, Container, null,
                         (Int32)ProviderType,(Int32)CryptographicContextFlags.CRYPT_DELETEKEYSET));
                     }
                 }
@@ -244,6 +251,7 @@ namespace BinaryStudio.Security.Cryptography
         #region M:ProviderTypeFromAlgId(ALG_ID):CRYPT_PROVIDER_TYPE
         public static CRYPT_PROVIDER_TYPE ProviderTypeFromAlgId(ALG_ID AlgId) {
             var entries = (CryptographicFunctions)DefaultContext.GetService(typeof(CryptographicFunctions));
+            var RegisteredProviders = CryptographicContext.RegisteredProviders.ToArray();
             foreach (var type in RegisteredProviders) {
                 if (entries.CryptAcquireContext(out var r, null, type.ProviderName, (Int32)type.ProviderType, (Int32)CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
                     using (var context = new CryptographicContextI(r)) {

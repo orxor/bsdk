@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Properties;
 using BinaryStudio.Serialization;
@@ -31,6 +32,23 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 }
             }
         #endregion
+        #region ctor{{params}String[]}
+        public CertificatePoliciesExtension(params String[] policies)
+            : base(ObjectIdentifiers.szOID_CERT_POLICIES,false)
+            {
+            CertificatePolicies = new Asn1ObjectIdentifierCollection(policies.Select(i => new Asn1ObjectIdentifier(i)));
+            }
+        #endregion
+
+        protected override void BuildBody(ref Asn1OctetString o) {
+            if (o == null) {
+                var r = new Asn1Sequence();
+                foreach (var policy in CertificatePolicies) {
+                    r.Add(new Asn1Sequence(policy));
+                    }
+                o = new Asn1OctetString(r);
+                }
+            }
 
         /// <summary>Writes the JSON representation of the object.</summary>
         /// <param name="writer">The <see cref="IJsonWriter"/> to write to.</param>

@@ -1,18 +1,24 @@
-﻿using System.Linq;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Serialization;
 
 namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
     {
-    public class DistributionPoint : Asn1LinkObject<Asn1Sequence>
+    public class DistributionPoint : Asn1LinkObject
         {
+        private Boolean IsLinked;
         public DistributionPointName Point { get; }
         public ReasonFlags ReasonFlags { get; }
         public IX509GeneralName CRLIssuer { get; }
 
-        public DistributionPoint(Asn1Sequence source)
+        #region ctor{Asn1Sequence}
+        internal DistributionPoint(Asn1Object source)
             : base(source)
             {
+            IsLinked = true;
             var values = source.OfType<Asn1ContextSpecificObject>().ToArray();
             var c = values.FirstOrDefault(i => i.Type == 0);
             if (c != null)
@@ -25,6 +31,31 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 {
                 CRLIssuer = X509GeneralName.From((Asn1ContextSpecificObject)c[0]);
                 }
+            }
+        #endregion
+        #region ctor{Uri}
+        public DistributionPoint(Uri url)
+            :base(new Asn1PrivateObject(0))
+            {
+            IsLinked = false;
+            ReasonFlags = ReasonFlags.Unused;
+            Point = new DistributionPointName(
+                new Asn1ContextSpecificObject(0,
+                new Asn1ContextSpecificObject(0,
+                new Asn1ContextSpecificObject(6,Encoding.UTF8.GetBytes(url.AbsoluteUri)))));
+            }
+        #endregion
+
+        public override void WriteTo(Stream target, Boolean force = false) {
+            if (IsLinked) {
+                base.WriteTo(target,force);
+                return;
+                }
+            var r = new Asn1Sequence {
+                IsExplicitConstructed = true
+                };
+            r.Add(Point);
+            r.WriteTo(target, true);
             }
 
         private static ReasonFlags ToReasonFlags(Asn1ContextSpecificObject source) {

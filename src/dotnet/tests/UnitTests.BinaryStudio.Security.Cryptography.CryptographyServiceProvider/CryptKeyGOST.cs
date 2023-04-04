@@ -37,7 +37,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
                     new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef")
                     },
                 Stream.Null, SecureCode,
-                out Certificate,DeletePrivateKey);
+                out Certificate,DeletePrivateKey, out var Container, out var providerName,out var providerType);
             }
         #endregion
 
@@ -63,7 +63,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
                     dt.AddYears(-1), dt.AddYears(1), null,
                     Stream.Null, SecureCode,
                     out var SubjectCertificate,
-                    IssuerCertificate, true);
+                    IssuerCertificate, true, out var container, out var providerName,out var providerType);
                 }
             finally
                 {

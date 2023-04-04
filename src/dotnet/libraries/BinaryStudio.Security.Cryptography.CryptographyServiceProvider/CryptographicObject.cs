@@ -29,10 +29,19 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:Dispose(Boolean)
-        /// <summary>
-        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
-        /// </summary>
-        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        /**
+         * <summary>
+         * Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+         * </summary>
+         * <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Освобождает неуправляемые ресурсы, используемые объектом,
+         *   а при необходимости освобождает также управляемые ресурсы.
+         *   </summary>
+         *   <param name="disposing">Значение <see langword="true"/> позволяет освободить как управляемые, так и неуправляемые ресурсы; значение <see langword="false"/> освобождает только неуправляемые ресурсы.</param>
+         * </translate>
+         */
         protected virtual void Dispose(Boolean disposing) {
             if (disposing) {
                 Dispose(ref LocalMemoryManager);
@@ -40,7 +49,15 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:Dispose
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        /**
+         * <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Выполняет определяемые приложением задачи, связанные с удалением,
+         *   высвобождением или сбросом неуправляемых ресурсов.
+         *   </summary>
+         * </translate>
+         */
         public void Dispose()
             {
             Dispose(true);
@@ -48,7 +65,18 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:Finalize
-        /// <summary>Allows an object to try to free resources and perform other cleanup operations before it is reclaimed by garbage collection.</summary>
+        /**
+         * <summary>
+         * Allows an object to try to free resources and perform other cleanup operations before
+         * it is reclaimed by garbage collection.
+         * </summary>
+         * <translate lang="ru-RU">
+         *   <summary>
+         *   Освобождает неуправляемые ресурсы и выполняет другие операции очистки, перед тем как
+         *   объект будет удален при сборке мусора.
+         *   </summary>
+         * </translate>
+         */
         ~CryptographicObject()
             {
             Dispose(false);
@@ -74,6 +102,13 @@ namespace BinaryStudio.Security.Cryptography
          * <returns>A service object of type <paramref name="service"/>.
          * -or-
          * <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+         * <translate lang="ru-RU">
+         *   <summary>Возвращает объект обслуживания указанного типа.</summary>
+         *   <param name="service">Объект, определяющий тип объекта обслуживания, который необходимо получить.</param>
+         *   <returns>Объект обслуживания типа <paramref name="service"/>.  
+         *   -или- 
+         *    <see langword="null"/>, если объекта обслуживания типа <paramref name="service"/> не существует.</returns>
+         * </translate>
          */
         public virtual Object GetService(Type service) {
             if (service == null) { return null; }

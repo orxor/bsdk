@@ -65,6 +65,7 @@ namespace BinaryStudio.Security.Cryptography
         public virtual CRYPT_PROVIDER_TYPE ProviderType { get { return CRYPT_PROVIDER_TYPE.AUTO; }}
         public virtual Boolean IsMachineKeySet { get; }
         public virtual CryptographicContextFlags ProviderFlags { get; }
+        public RequestSecureString RequestSecureString { get;set; }
 
         public virtual String SignatureOID { get { return GetParameter<String>(CRYPT_PARAM.PP_CP_SIGNATUREOID, 0, Encoding.ASCII); }}
         public virtual String CipherOID { get { return GetParameter<String>(CRYPT_PARAM.PP_CP_CIPHEROID, 0, Encoding.ASCII); }}
@@ -281,10 +282,7 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
 
         #region M:Dispose(Boolean)
-        /// <summary>
-        /// Releases the unmanaged resources used by the instance and optionally releases the managed resources.
-        /// </summary>
-        /// <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        /** <inheritdoc/> */
         protected override void Dispose(Boolean disposing) {
             if (disposing) {
                 }
@@ -593,11 +591,7 @@ namespace BinaryStudio.Security.Cryptography
             return r;
             }
         #region M:GetService(Type):Object
-        /// <summary>Gets the service object of the specified type.</summary>
-        /// <param name="service">An object that specifies the type of service object to get.</param>
-        /// <returns>A service object of type <paramref name="service"/>.
-        /// -or-
-        /// <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+        /** <inheritdoc/> */
         public override Object GetService(Type service) {
             if (service == typeof(CryptographicFunctions)) { return DefaultContext.GetService(service); }
             return base.GetService(service);

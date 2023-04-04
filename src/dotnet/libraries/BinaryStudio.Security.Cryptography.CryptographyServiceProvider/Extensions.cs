@@ -53,5 +53,13 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 }
             }
         #endregion
+        #region M:AddIfNotNull<T>({this}IList<T>,T)
+        public static void AddIfNotNull<T>(this IList<T> values, T value) {
+            if (values == null) { throw new ArgumentNullException(nameof(values)); }
+            if (value != null) {
+                values.Add(value);
+                }
+            }
+        #endregion
         }
     }

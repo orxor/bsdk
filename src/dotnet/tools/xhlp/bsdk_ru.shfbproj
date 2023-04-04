@@ -18,8 +18,8 @@
     <HtmlHelpName>bsdk_ru</HtmlHelpName>
     <Language>ru-RU</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.ru-RU.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.dll" />
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.ru-RU.xml" /></DocumentationSources>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
     <SyntaxFilters>CSharp</SyntaxFilters>
   </PropertyGroup>

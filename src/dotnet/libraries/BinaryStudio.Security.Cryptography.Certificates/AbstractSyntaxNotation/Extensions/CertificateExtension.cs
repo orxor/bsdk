@@ -184,7 +184,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
             {
             }
 
-        protected void BuildBody()
+        protected internal void BuildBody()
             {
             var r = Body;
             BuildBody(ref r);

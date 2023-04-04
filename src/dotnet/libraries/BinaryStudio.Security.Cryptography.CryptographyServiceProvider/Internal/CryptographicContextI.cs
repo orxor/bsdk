@@ -53,9 +53,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 providername = provider;
                 Handle = r;
                 keyspec = (KEY_SPEC_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_KEYSPEC,0,null);
-                Task.Factory.StartNew(() => {
-                    if (String.IsNullOrEmpty(providername)) { providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII); }
-                    });
+                if (String.IsNullOrEmpty(providername)) { providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII); }
                 }
             catch (Exception e)
                 {
@@ -84,9 +82,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 throw;
                 }
             ProviderType = (CRYPT_PROVIDER_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_PROVTYPE,0,null);
-            Task.Factory.StartNew(() => {
-                providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII);
-                });
+            providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII);
             }
         #endregion
         #region ctor{X509Certificate,CRYPT_ACQUIRE_FLAGS}
@@ -106,9 +102,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 throw;
                 }
             ProviderType = (CRYPT_PROVIDER_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_PROVTYPE,0,null);
-            Task.Factory.StartNew(() => {
-                providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII);
-                });
+            providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII);
             }
         #endregion
         #region ctor{CryptographicContext,CryptographicContextFlags}

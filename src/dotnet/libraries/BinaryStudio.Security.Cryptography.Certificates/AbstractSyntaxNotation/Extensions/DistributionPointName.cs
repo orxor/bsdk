@@ -11,6 +11,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
         {
         public IList<IX509GeneralName> FullName { get; }
 
+        #region ctor{Asn1ContextSpecificObject}
         internal DistributionPointName(Asn1ContextSpecificObject source)
             : base(source)
             {
@@ -30,6 +31,7 @@ namespace BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions
                 //NameRelativeToCRLIssuer = new RelativeDistinguishedName((Asn1Sequence)c[0]);
                 }
             }
+        #endregion
 
         public override String ToString()
             {
