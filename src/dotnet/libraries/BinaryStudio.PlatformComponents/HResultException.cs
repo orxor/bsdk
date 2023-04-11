@@ -339,6 +339,7 @@ namespace BinaryStudio.PlatformComponents.Win32
                 switch ((HRESULT)scode) {
                     case HRESULT.CERT_E_CHAINING :            return new CertificateRevocationException((HRESULT)scode);
                     case HRESULT.CRYPT_E_NO_REVOCATION_CHECK: return new CertificateRevocationException((HRESULT)scode);
+                    case HRESULT.CRYPT_E_NO_KEY_PROPERTY:     return new CertificatePrivateKeyMissingException((HRESULT)scode);
                     }
                 }
             else

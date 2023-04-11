@@ -60,6 +60,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         #endregion
 
         unsafe void CMSG_SIGNED_ENCODE_INFO.Setup(Int32 SignerCount,void* Signers) {
+            Size = sizeof(CMSG_SIGNED_ENCODE_INFO64);
             this.SignerCount = SignerCount;
             this.Signers = (CMSG_SIGNER_ENCODE_INFO64*)Signers;
             for (var i = 0; i < SignerCount; ++i) {
@@ -126,6 +127,7 @@ namespace BinaryStudio.PlatformComponents.Win32
         #endregion
 
         unsafe void CMSG_SIGNED_ENCODE_INFO.Setup(Int32 SignerCount,void* Signers) {
+            Size = sizeof(CMSG_SIGNED_ENCODE_INFO64);
             this.SignerCount = SignerCount;
             this.Signers = (CMSG_SIGNER_ENCODE_INFO32*)Signers;
             for (var i = 0; i < SignerCount; ++i) {

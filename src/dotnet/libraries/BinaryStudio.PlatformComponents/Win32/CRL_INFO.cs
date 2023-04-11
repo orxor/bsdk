@@ -10,11 +10,11 @@ namespace BinaryStudio.PlatformComponents.Win32
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
     public struct CRL_INFO
         {
-        DWORD dwVersion;
-        CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
-        CERT_NAME_BLOB Issuer;
-        FILETIME ThisUpdate;
-        FILETIME NextUpdate;
+        public readonly DWORD Version;
+        public readonly CRYPT_ALGORITHM_IDENTIFIER SignatureAlgorithm;
+        public readonly CERT_NAME_BLOB Issuer;
+        public readonly FILETIME ThisUpdate;
+        public readonly FILETIME NextUpdate;
         DWORD cCRLEntry;
         unsafe CRL_ENTRY* rgCRLEntry;
         DWORD cExtension;

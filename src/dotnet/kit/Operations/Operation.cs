@@ -65,10 +65,14 @@ namespace Operations
             Console.WriteLine($@"Type pin-code for container ""{e.Container}""");
             Console.Write("Pin-code:");
             var o = Console.ReadLine();
+            #if FEATURE_SECURE_STRING_PASSWORD
             fixed (Char* c = o)
                 {
                 e.SecureString = new SecureString(c, o.Length);
                 }
+            #else
+            e.SecureString = o;
+            #endif
             }
 
         #region M:WriteLine(ConsoleColor,String,Object[])
@@ -110,6 +114,7 @@ namespace Operations
 
         protected static void RequestWindowSecureStringEventHandler(Object sender, RequestSecureStringEventArgs e)
             {
+            #if FEATURE_SECURE_STRING_PASSWORD
             e.SecureString = new SecureString();
             e.SecureString.AppendChar('1');
             e.SecureString.AppendChar('2');
@@ -119,6 +124,9 @@ namespace Operations
             e.SecureString.AppendChar('6');
             e.SecureString.AppendChar('7');
             e.SecureString.AppendChar('8');
+            #else
+            e.SecureString = "12345678";
+            #endif
             e.StoreSecureString = true;
             }
 

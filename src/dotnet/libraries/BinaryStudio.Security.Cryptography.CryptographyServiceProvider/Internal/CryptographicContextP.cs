@@ -22,13 +22,14 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CertAddCertificateContextToStore(IntPtr Store,IntPtr InputContext,CERT_STORE_ADD Disposition) { return CertAddCertificateContextToStore(Store,InputContext,Disposition,IntPtr.Zero); }
         Boolean CryptographicFunctions.CertAddCertificateContextToStore(IntPtr Store,IntPtr InputContext,CERT_STORE_ADD Disposition,out IntPtr OutputContext) { return CertAddCertificateContextToStore(Store,InputContext,Disposition,out OutputContext); }
         Boolean CryptographicFunctions.CertAddCertificateLinkToStore(IntPtr Store,IntPtr CertContext,Int32 AddDisposition,out IntPtr OutputContext) { return CertAddCertificateLinkToStore(Store,CertContext,AddDisposition,out OutputContext); }
-        Boolean CryptographicFunctions.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero) { return CertAddCRLContextToStore(Store,Context,Disposition,Zero); }
+        Boolean CryptographicFunctions.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition) { return CertAddCRLContextToStore(Store,Context,Disposition,IntPtr.Zero); }
         Boolean CryptographicFunctions.CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext) { return CertAddCRLContextToStore(Store,Context,Disposition,out StoreContext); }
         Boolean CryptographicFunctions.CertAddEncodedCertificateToStore(IntPtr CertStore,Int32 CertEncodingType,Byte[] CertEncodedData,Int32 CertEncodedLength,Int32 AddDisposition,out IntPtr CertContext) { return CertAddEncodedCertificateToStore(CertStore,CertEncodingType,CertEncodedData,CertEncodedLength,AddDisposition,out CertContext); }
-        Boolean CryptographicFunctions.CertCloseStore(IntPtr handle, UInt32 flags) { return CertCloseStore(handle, flags); }
+        Boolean CryptographicFunctions.CertCloseStore(IntPtr handle, Int32 flags) { return CertCloseStore(handle, flags); }
         Boolean CryptographicFunctions.CertDeleteCertificateFromStore(IntPtr CertContext) { return CertDeleteCertificateFromStore(CertContext); }
         Boolean CryptographicFunctions.CertDeleteCRLFromStore(IntPtr Context) { return CertDeleteCRLFromStore(Context); }
         Boolean CryptographicFunctions.CertExportCertStore(IntPtr Store,ref CRYPT_DATA_BLOB PFX,IntPtr Password,IntPtr Para,Int32 Flags){ throw new NotSupportedException(); }
+        Boolean CryptographicFunctions.CertExportCertStore(IntPtr Store,ref CRYPT_DATA_BLOB PFX,IntPtr Password,Int32 Flags){ throw new NotSupportedException(); }
         Boolean CryptographicFunctions.CertFreeCertificateContext(IntPtr CertContext) { return CertFreeCertificateContext(CertContext); }
         Boolean CryptographicFunctions.CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Byte[] Data, ref Int32 Size) { return CertGetCertificateContextProperty(Context,PropertyIndex,Data,ref Size); }
         Boolean CryptographicFunctions.CertRetrieveLogoOrBiometricInfo(IntPtr CertContext,String LogoOrBiometricType,Int32 RetrievalFlags,Int32 Timeout,Int32 Flags,IntPtr Reserved,out IntPtr ppbData,out Int32 pcbData,out IntPtr ppwszMimeType) { return CertRetrieveLogoOrBiometricInfo(CertContext,LogoOrBiometricType,RetrievalFlags,Timeout,Flags,Reserved,out ppbData,out pcbData,out ppwszMimeType); }
@@ -118,7 +119,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertAddCertificateContextToStore(IntPtr Store,IntPtr InputContext,CERT_STORE_ADD Disposition,out IntPtr OutputContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertAddCertificateLinkToStore(IntPtr Store,IntPtr CertContext,Int32 AddDisposition,out IntPtr OutputContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertAddEncodedCertificateToStore(IntPtr CertStore,Int32 CertEncodingType,[MarshalAs(UnmanagedType.LPArray)] Byte[] CertEncodedData,Int32 CertEncodedLength,Int32 AddDisposition,out IntPtr CertContext);
-        [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertCloseStore(IntPtr handle, UInt32 flags);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertCloseStore(IntPtr handle,Int32 flags);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertDeleteCertificateFromStore(IntPtr CertContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr CertContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, ref Int32 Size);

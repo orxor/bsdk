@@ -250,6 +250,25 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
+        protected static unsafe String PtrToString(SByte* value, Encoding encoding) {
+            if (value == null) { return null; }
+            var size = encoding.GetByteCount("!");
+            var left = value;
+            var count = 0;
+            for (;;left += size, count++) {
+                if ((size == 1) && (*left == 0)) { break; }
+                if ((size == 2) && (*(UInt16*)left == 0)) { break; }
+                if ((size == 4) && (*(UInt32*)left == 0)) { break; }
+                }
+            var r = new String(value,0,count*size,encoding);
+            return r;
+            }
+
+        protected static unsafe String PtrToString(IntPtr value, Encoding encoding) {
+            if (value == IntPtr.Zero) { return null; }
+            return PtrToString((SByte*)value,encoding);
+            }
+
         #region {locks}
         protected static IDisposable ReadLock(ReaderWriterLockSlim o)            { return new ReadLockScope(o);            }
         protected static IDisposable WriteLock(ReaderWriterLockSlim o)           { return new WriteLockScope(o);           }

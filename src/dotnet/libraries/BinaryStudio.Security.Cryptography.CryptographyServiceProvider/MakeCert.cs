@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,6 +14,8 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Internal;
+using BinaryStudio.Serialization;
+using X509Certificate = BinaryStudio.Security.Cryptography.Certificates.X509Certificate;
 
 namespace BinaryStudio.Security.Cryptography
     {
@@ -52,29 +55,23 @@ namespace BinaryStudio.Security.Cryptography
                                 ExtensionsA[i].Value.Data = (Byte*)manager.Alloc(block);
                                 }
                             }
-                        return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(
+                        return (new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(
                             Handle,ref SubjectIssuerBlob,0,null,&AlgIdT,
-                            &NotBeforeT,&NotAfterT,&ExtensionsE),
-                            NotZero))
-                            {
-                            KeySpec = Key.KeySpec,
-                            Container = Key.Container
-                            };
+                            &NotBeforeT,&NotAfterT,&ExtensionsE),NotZero))).
+                            SetProviderInfo(Key);
                         }
                     }
-                return new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(
+                return (new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(
                     Handle,ref SubjectIssuerBlob,0,null,
-                    &AlgIdT,&NotBeforeT,&NotAfterT,null),NotZero))
-                    {
-                    KeySpec = Key.KeySpec,
-                    Container = Key.Container
-                    };
+                    &AlgIdT,&NotBeforeT,&NotAfterT,null),NotZero))).
+                    SetProviderInfo(Key);
                 }
             }
         #endregion
         #region M:MakeCertificate(CryptKey,String,String,String,DateTime,DateTime,IList<CertificateExtension>):X509Certificate
         private X509Certificate MakeCertificate(CryptKey Key, String SubjectName, String SerialNumber, String AlgId,DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions) {
             var SourceCertificate = MakeCertificate(Key,SubjectName,AlgId,NotBefore,NotAfter,Extensions);
+            Debug.Print($"SourceCertificate:\n{SourceCertificate.Serialize()}");
             var Builder = Asn1Object.Load(new ReadOnlyMemoryMappingStream(SourceCertificate.Bytes)).First();
             if (!String.IsNullOrWhiteSpace(SerialNumber)) {
                 for (var i = 0;i < Builder[0].Count; i++) {
@@ -94,21 +91,35 @@ namespace BinaryStudio.Security.Cryptography
                     }
                 using (var o = new MemoryStream()) {
                     Builder.WriteTo(o,true);
-                    return new X509Certificate(o.ToArray()){
-                        KeySpec = SourceCertificate.KeySpec,
-                        Container = SourceCertificate.Container
-                        };
+                    return (new X509Certificate(o.ToArray())).SetProviderInfo(Key);
                     }
                 }
             return SourceCertificate;
             }
         #endregion
         #region M:MakeCertificate(ALG_ID,String,String,DateTime,DateTime,IList<CertificateExtension>,Stream,SecureString,{out}X509Certificate,Boolean)
-        private const Int32 EXPORT_PRIVATE_KEYS = 0x0004;
+        private const Int32 REPORT_NO_PRIVATE_KEY                   = 0x0001;
+        private const Int32 REPORT_NOT_ABLE_TO_EXPORT_PRIVATE_KEY   = 0x0002;
+        private const Int32 EXPORT_PRIVATE_KEYS                     = 0x0004;
+        private const Int32 PKCS12_INCLUDE_EXTENDED_PROPERTIES      = 0x0010;
+        private const Int32 PKCS12_PROTECT_TO_DOMAIN_SIDS           = 0x0020;
+        private const Int32 PKCS12_EXPORT_SILENT                    = 0x0040;
+        private const Int32 PKCS12_EXPORT_PBES2_PARAMS              = 0x0080; 
+        private const Int32 PKCS12_DISABLE_ENCRYPT_CERTIFICATES     = 0x0100;
+        private const Int32 PKCS12_ENCRYPT_CERTIFICATES             = 0x0200;
+        private const Int32 PKCS12_EXPORT_ECC_CURVE_PARAMETERS      = 0x1000;
+        private const Int32 PKCS12_EXPORT_ECC_CURVE_OID             = 0x2000;
+        #if FEATURE_SECURE_STRING_PASSWORD
         public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
             DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
             Stream PrivateKeyStream, SecureString SecureCode,out X509Certificate Certificate,
             Boolean DeletePrivateKey, out String Container, out String ProviderName, out CRYPT_PROVIDER_TYPE ProviderType)
+        #else
+        public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
+            DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
+            Stream PrivateKeyStream, String SecureCode,out X509Certificate Certificate,
+            Boolean DeletePrivateKey, out String Container, out String ProviderName, out CRYPT_PROVIDER_TYPE ProviderType)
+        #endif
             {
             if (SubjectName == null) { throw new ArgumentNullException(nameof(SubjectName)); }
             Certificate = null;
@@ -128,7 +139,7 @@ namespace BinaryStudio.Security.Cryptography
                             : $@"\\.\REGISTRY\{Guid.NewGuid().ToString("D").ToLowerInvariant()}";
                     using (var contextS = AcquireContext(ProviderType, Container,CryptographicContextFlags.CRYPT_NEWKEYSET)) {
                         contextS.SecureCode = SecureCode;
-                        var flags = (PrivateKeyStream != null) ? CryptGenKeyFlags.CRYPT_EXPORTABLE : CryptGenKeyFlags.CRYPT_NONE;
+                        var flags = CryptGenKeyFlags.CRYPT_EXPORTABLE;
                         String algid;
                         switch (AlgId) {
                             case ALG_ID.CALG_GR3410_12_256: algid = ObjectIdentifiers.szOID_CP_GOST_R3411_12_256_R3410; break;
@@ -144,17 +155,23 @@ namespace BinaryStudio.Security.Cryptography
                                 using (var store = new X509CertificateStorage(X509StoreName.Memory)) {
                                     store.Add(Certificate);
                                     var pfx = new CRYPT_DATA_BLOB();
+                                    #if FEATURE_SECURE_STRING_PASSWORD
                                     var psw = Marshal.SecureStringToGlobalAllocUnicode(SecureCode);
+                                    #else
+                                    var psw = (IntPtr)manager.StringToMem(SecureCode,Encoding.Unicode);
+                                    #endif
                                     try
                                         {
-                                        Validate(entries.CertExportCertStore(store.Handle,ref pfx,psw,IntPtr.Zero,EXPORT_PRIVATE_KEYS));
+                                        Validate(entries.CertExportCertStore(store.Handle,ref pfx,psw,EXPORT_PRIVATE_KEYS|REPORT_NO_PRIVATE_KEY|REPORT_NOT_ABLE_TO_EXPORT_PRIVATE_KEY|PKCS12_INCLUDE_EXTENDED_PROPERTIES));
                                         pfx.Data = (Byte*)manager.Alloc(pfx.Size);
-                                        Validate(entries.CertExportCertStore(store.Handle,ref pfx,psw,IntPtr.Zero,EXPORT_PRIVATE_KEYS));
+                                        Validate(entries.CertExportCertStore(store.Handle,ref pfx,psw,EXPORT_PRIVATE_KEYS|REPORT_NO_PRIVATE_KEY|REPORT_NOT_ABLE_TO_EXPORT_PRIVATE_KEY|PKCS12_INCLUDE_EXTENDED_PROPERTIES));
                                         PrivateKeyStream.Write(pfx.Data,pfx.Size);
                                         }
                                     finally
                                         {
+                                        #if FEATURE_SECURE_STRING_PASSWORD
                                         Marshal.ZeroFreeGlobalAllocUnicode(psw);
+                                        #endif
                                         }
                                     }
                                 }
@@ -171,11 +188,19 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #region M:MakeCertificate(ALG_ID,String,String,DateTime,DateTime,IList<CertificateExtension>,Stream,SecureString,{out}X509Certificate,X509Certificate,Boolean)
+        #if FEATURE_SECURE_STRING_PASSWORD
         public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
             DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
             Stream PrivateKeyStream, SecureString SecureCode,
             out X509Certificate Certificate,X509Certificate IssuerCertificate,
             Boolean DeletePrivateKey, out String Container, out String ProviderName, out CRYPT_PROVIDER_TYPE ProviderType)
+        #else
+        public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
+            DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
+            Stream PrivateKeyStream, String SecureCode,
+            out X509Certificate Certificate,X509Certificate IssuerCertificate,
+            Boolean DeletePrivateKey, out String Container, out String ProviderName, out CRYPT_PROVIDER_TYPE ProviderType)
+        #endif
             {
             if (SubjectName == null) { throw new ArgumentNullException(nameof(SubjectName)); }
             if (IssuerCertificate == null) { throw new ArgumentNullException(nameof(IssuerCertificate)); }
@@ -208,10 +233,7 @@ namespace BinaryStudio.Security.Cryptography
                     }
                 using (var o = new MemoryStream()) {
                     Builder.WriteTo(o,true);
-                    Certificate = new X509Certificate(o.ToArray()){
-                        KeySpec = SubjectCertificate.KeySpec,
-                        Container = SubjectCertificate.Container
-                        };
+                    Certificate = (new X509Certificate(o.ToArray())).SetProviderInfo(SubjectCertificate);
                     }
                 }
             var containerT = Certificate.Container;
@@ -225,19 +247,26 @@ namespace BinaryStudio.Security.Cryptography
             if (PrivateKeyStream != null) {
                 using (var manager = new LocalMemoryManager())
                 using (var store = new X509CertificateStorage(X509StoreName.Memory)) {
+                    Debug.Print($"Certificate:\n{Certificate.Serialize()}");
                     store.Add(Certificate);
                     var pfx = new CRYPT_DATA_BLOB();
+                    #if FEATURE_SECURE_STRING_PASSWORD
                     var psw = Marshal.SecureStringToGlobalAllocUnicode(SecureCode);
+                    #else
+                    var psw = (IntPtr)manager.StringToMem(SecureCode,Encoding.Unicode);
+                    #endif
                     try
                         {
-                        Validate(entries.CertExportCertStore(store.Handle,ref pfx,psw,IntPtr.Zero,EXPORT_PRIVATE_KEYS));
+                        Validate(entries.CertExportCertStore(store.Handle,ref pfx,psw,EXPORT_PRIVATE_KEYS|REPORT_NO_PRIVATE_KEY|REPORT_NOT_ABLE_TO_EXPORT_PRIVATE_KEY|PKCS12_INCLUDE_EXTENDED_PROPERTIES));
                         pfx.Data = (Byte*)manager.Alloc(pfx.Size);
-                        Validate(entries.CertExportCertStore(store.Handle,ref pfx,psw,IntPtr.Zero,EXPORT_PRIVATE_KEYS));
+                        Validate(entries.CertExportCertStore(store.Handle,ref pfx,psw,EXPORT_PRIVATE_KEYS|REPORT_NO_PRIVATE_KEY|REPORT_NOT_ABLE_TO_EXPORT_PRIVATE_KEY|PKCS12_INCLUDE_EXTENDED_PROPERTIES));
                         PrivateKeyStream.Write(pfx.Data,pfx.Size);
                         }
                     finally
                         {
+                        #if FEATURE_SECURE_STRING_PASSWORD
                         Marshal.ZeroFreeGlobalAllocUnicode(psw);
+                        #endif
                         }
                     }
                 if (DeletePrivateKey) {

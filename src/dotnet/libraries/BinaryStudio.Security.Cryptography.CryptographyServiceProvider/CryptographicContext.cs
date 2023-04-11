@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+#if FEATURE_SECURE_STRING_PASSWORD
 using System.Security;
+#endif
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -61,7 +63,7 @@ namespace BinaryStudio.Security.Cryptography
         public virtual IDictionary<ALG_ID,String> SupportedAlgorithms { get { return new ReadOnlyDictionary<ALG_ID,String>(new Dictionary<ALG_ID,String>()); }}
         public virtual String ProviderName { get { return "Auto"; }}
         public virtual String Container { get; }
-        public virtual KEY_SPEC_TYPE KeySpec { get; }
+        public virtual KEY_SPEC_TYPE KeySpec { get;internal set; }
         public virtual CRYPT_PROVIDER_TYPE ProviderType { get { return CRYPT_PROVIDER_TYPE.AUTO; }}
         public virtual Boolean IsMachineKeySet { get; }
         public virtual CryptographicContextFlags ProviderFlags { get; }
@@ -100,7 +102,7 @@ namespace BinaryStudio.Security.Cryptography
             var r = GetParameter<String>(CRYPT_PARAM.PP_CP_FQCN, 0, Encoding.ASCII);
             return (r != null)
                     ? r
-                    : null;
+                    : UniqueContainer;
             }}
         #endregion
         #region P:UniqueContainer:String
@@ -108,9 +110,10 @@ namespace BinaryStudio.Security.Cryptography
             var r = GetParameter<String>(CRYPT_PARAM.PP_UNIQUE_CONTAINER, 0, Encoding.ASCII);
             return (r != null)
                     ? r
-                    : null;
+                    : Container;
             }}
         #endregion
+        #if FEATURE_SECURE_STRING_PASSWORD
         #region P:SecureCode:SecureString
         public SecureString SecureCode {
             set
@@ -144,6 +147,41 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+        #else
+        #region P:SecureCode:String
+        public String SecureCode {
+            set
+                {
+                if (value != null) {
+                    var i = Marshal.StringToHGlobalAnsi(value);
+                    try
+                        {
+                        for (;;) {
+                            try
+                                {
+                                SetParameter(CRYPT_PARAM.PP_KEYEXCHANGE_PIN, i, 0);
+                                return;
+                                }
+                            catch (ResourceIsBusyException)
+                                {
+                                Thread.Sleep(5000);
+                                }
+                            }
+                        }
+                    finally
+                        {
+                        Marshal.FreeHGlobal(i);
+                        }
+                    }
+                else
+                    {
+                    SetParameter(CRYPT_PARAM.PP_KEYEXCHANGE_PIN, IntPtr.Zero, 0);
+                    SetParameter(CRYPT_PARAM.PP_SIGNATURE_PIN, IntPtr.Zero, 0);
+                    }
+                }
+            }
+        #endregion
+        #endif
         #region P:Version:Version
         public virtual Version Version { get {
             var r = GetParameter<UInt32>(CRYPT_PARAM.PP_VERSION, 0, null);
@@ -345,7 +383,18 @@ namespace BinaryStudio.Security.Cryptography
             if (certificate.GetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, out var Info) == HRESULT.S_OK) {
                 flags |= CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_USE_PROV_INFO_FLAG;
                 }
-            var r = AcquireContext(this,certificate,flags);
+            if (ProviderFlags.HasFlag(CryptographicContextFlags.CRYPT_SILENT)) { flags |= CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_SILENT_FLAG; }
+            CryptographicContext r;
+            try
+                {
+                r = AcquireContext(this,certificate,flags);
+                }
+            catch (CertificatePrivateKeyMissingException)
+                {
+                if (String.IsNullOrEmpty(certificate.Container)) { throw; }
+                r = AcquireContext(ProviderType,certificate.Container,ProviderFlags & ~CryptographicContextFlags.CRYPT_VERIFYCONTEXT);
+                r.KeySpec = certificate.KeySpec;
+                }
             if (RequestSecureString != null) {
                 var e = new RequestSecureStringEventArgs{
                     Info = certificate.Subject,
@@ -353,7 +402,7 @@ namespace BinaryStudio.Security.Cryptography
                     };
                 lock(StoredSecureStrings) {
                     if (StoredSecureStrings.TryGetValue(r.FullQualifiedContainerName,out var StoredSecureString)) {
-                        r.SecureCode = e.SecureString;
+                        r.SecureCode = StoredSecureString;
                         return r;
                         }
                     }
@@ -597,6 +646,7 @@ namespace BinaryStudio.Security.Cryptography
             return base.GetService(service);
             }
         #endregion
+        #if FEATURE_SECURE_STRING_PASSWORD
         #region M:GetSecureString(String):SecureString
         public unsafe static SecureString GetSecureString(String value) {
             fixed (Char* c = value) {
@@ -604,8 +654,19 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+        #else
+        #region M:GetSecureString(String):String
+        public static String GetSecureString(String value) {
+            return value;
+            }
+        #endregion
+        #endif
 
+        #if FEATURE_SECURE_STRING_PASSWORD
         private static readonly IDictionary<String,SecureString> StoredSecureStrings = new Dictionary<String,SecureString>();
+        #else
+        private static readonly IDictionary<String,String> StoredSecureStrings = new Dictionary<String,String>();
+        #endif
 
         static CryptographicContext() {
             #if LINUX

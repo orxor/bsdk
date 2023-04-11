@@ -58,7 +58,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
                         case ".crl":
                             {
                             var o = new X509CertificateRevocationList(File.ReadAllBytes(filename));
-                            Validate(Entries.CertAddCRLContextToStore(Handle, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,IntPtr.Zero));
+                            Validate(Entries.CertAddCRLContextToStore(Handle, o.Handle, CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS));
                             yield return o;
                             }
                             break;

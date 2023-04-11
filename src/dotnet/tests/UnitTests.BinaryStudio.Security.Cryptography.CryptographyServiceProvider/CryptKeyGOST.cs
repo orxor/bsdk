@@ -28,6 +28,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
             {
             }
 
+        #if FEATURE_SECURE_STRING_PASSWORD
         #region M:MakeSelfSignedCert({out}X509Certificate,SecureString,Boolean)
         private static void MakeSelfSignedCert(out X509Certificate Certificate,SecureString SecureCode, Boolean DeletePrivateKey) {
             var dt = DateTime.Now;
@@ -40,6 +41,20 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
                 out Certificate,DeletePrivateKey, out var Container, out var providerName,out var providerType);
             }
         #endregion
+        #else
+        #region M:MakeSelfSignedCert({out}X509Certificate,String,Boolean)
+        private static void MakeSelfSignedCert(out X509Certificate Certificate,String SecureCode, Boolean DeletePrivateKey) {
+            var dt = DateTime.Now;
+            CryptographicContext.MakeCertificate(ALG_ID.CALG_GR3410EL,"CN=R-CA, C=ru","010203",
+                dt.AddYears(-1),dt.AddYears(1),
+                new CertificateExtension[] {
+                    new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef")
+                    },
+                Stream.Null, SecureCode,
+                out Certificate,DeletePrivateKey, out var Container, out var providerName,out var providerType);
+            }
+        #endregion
+        #endif
 
         #region T:MakeSelfSignedCert
         [TestMethod]

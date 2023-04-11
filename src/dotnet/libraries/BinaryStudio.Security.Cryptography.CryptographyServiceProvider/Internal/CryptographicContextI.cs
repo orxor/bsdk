@@ -17,7 +17,6 @@ namespace BinaryStudio.Security.Cryptography.Internal
         public override String ProviderName { get { return providername; }}
         public override String Container { get; }
         public override CRYPT_PROVIDER_TYPE ProviderType { get; }
-        public override KEY_SPEC_TYPE KeySpec { get { return keyspec; }}
         public override CryptographicContextFlags ProviderFlags { get; }
 
         public override unsafe IDictionary<ALG_ID,String> SupportedAlgorithms { get {
@@ -52,7 +51,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 ProviderType = providertype;
                 providername = provider;
                 Handle = r;
-                keyspec = (KEY_SPEC_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_KEYSPEC,0,null);
+                KeySpec = (KEY_SPEC_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_KEYSPEC,0,null);
                 if (String.IsNullOrEmpty(providername)) { providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII); }
                 }
             catch (Exception e)
@@ -73,7 +72,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 {
                 Validate(entries.CryptAcquireCertificatePrivateKey(certificate.Handle,flags,IntPtr.Zero,out var r, out var keyspec, out var freeprov));
                 Handle = r;
-                this.keyspec = keyspec;
+                KeySpec = keyspec;
                 }
             catch(Exception e)
                 {
@@ -94,7 +93,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
                 {
                 Validate(entries.CryptAcquireCertificatePrivateKey(certificate.Handle,flags,IntPtr.Zero,out var r, out var keyspec, out var freeprov));
                 Handle = r;
-                this.keyspec = keyspec;
+                KeySpec = keyspec;
                 }
             catch(Exception e)
                 {
@@ -118,7 +117,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
             Handle = r;
             ProviderType = (CRYPT_PROVIDER_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_PROVTYPE,0,null);
             Task.Factory.StartNew(() => { providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII); });
-            keyspec = context.KeySpec;
+            KeySpec = context.KeySpec;
             }
         #endregion
         #region ctor{CryptographicContext,String,CryptographicContextFlags}
@@ -134,7 +133,7 @@ namespace BinaryStudio.Security.Cryptography.Internal
             Handle = r;
             ProviderType = (CRYPT_PROVIDER_TYPE)GetParameter<Int32>(CRYPT_PARAM.PP_PROVTYPE,0,null);
             Task.Factory.StartNew(() => { providername = GetParameter<String>(CRYPT_PARAM.PP_NAME, 0, Encoding.ASCII); });
-            keyspec = context.KeySpec;
+            KeySpec = context.KeySpec;
             }
         #endregion
         #region ctor{CRYPT_PROVIDER_TYPE,CryptographicContextFlags}
@@ -187,6 +186,5 @@ namespace BinaryStudio.Security.Cryptography.Internal
         #endregion
 
         private String providername;
-        private KEY_SPEC_TYPE keyspec;
         }
     }

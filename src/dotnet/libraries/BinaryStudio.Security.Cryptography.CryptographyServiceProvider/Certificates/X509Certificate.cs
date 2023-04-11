@@ -243,19 +243,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
             HashAlgorithm = Source.SignatureAlgorithm.HashAlgorithm;
             KeySpec = key.KeySpec;
-            using (var manager = new LocalMemoryManager()) {
-                var pi = new CRYPT_KEY_PROV_INFO {
-                    ContainerName = 
-                        (Environment.OSVersion.Platform <= PlatformID.WinCE)
-                         ? (IntPtr)manager.StringToMem(key.Context.FullQualifiedContainerName, Entries.UnicodeEncoding)
-                         : (IntPtr)manager.StringToMem(key.Context.Container, Entries.UnicodeEncoding),
-                    ProviderName = (IntPtr)manager.StringToMem(key.Context.ProviderName, Entries.UnicodeEncoding),
-                    ProviderFlags = key.Context.ProviderFlags & (~CryptographicContextFlags.CRYPT_SILENT),
-                    ProviderType = key.Context.ProviderType,
-                    KeySpec = key.KeySpec
-                    };
-                //SetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, 0, ref pi);
-                }
+            SetProviderInfo(key);
             }
         #endregion
 
@@ -333,6 +321,38 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             return Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
             }
         #endregion
+        #region M:SetProviderInfo(CryptKey):X509Certificate
+        internal unsafe X509Certificate SetProviderInfo(CryptKey source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            using (var manager = new LocalMemoryManager()) {
+                var pi = new CRYPT_KEY_PROV_INFO {
+                    ContainerName = 
+                        (Environment.OSVersion.Platform <= PlatformID.WinCE)
+                         ? (IntPtr)manager.StringToMem(source.Context.UniqueContainer, Entries.UnicodeEncoding)
+                         : (IntPtr)manager.StringToMem(source.Context.Container, Entries.UnicodeEncoding),
+                    ProviderName = (IntPtr)manager.StringToMem(source.Context.ProviderName, Entries.UnicodeEncoding),
+                    ProviderFlags = source.Context.ProviderFlags & (~CryptographicContextFlags.CRYPT_SILENT),
+                    ProviderType = source.Context.ProviderType,
+                    KeySpec = source.KeySpec
+                    };
+                SetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, 0, ref pi);
+                KeySpec = source.KeySpec;
+                Container = source.Context.Container;
+                }
+            return this;
+            }
+        #endregion
+        #region M:SetProviderInfo(X509Certificate):X509Certificate
+        internal X509Certificate SetProviderInfo(X509Certificate source) {
+            if (source == null) { throw new ArgumentNullException(nameof(source)); }
+            if (source.GetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID,out CRYPT_KEY_PROV_INFO ProviderInfo) == HRESULT.S_OK) {
+                SetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, 0, ref ProviderInfo);
+                }
+            KeySpec = source.KeySpec;
+            Container = source.Container;
+            return this;
+            }
+        #endregion
 
         #region M:Verify(CertificateChainPolicy)
         public void Verify(CertificateChainPolicy policy) {
@@ -377,7 +397,17 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                 writer.WriteValue(nameof(Subject),Subject);
                 writer.WriteValue(nameof(Issuer),Issuer);
                 writer.WriteValue(nameof(Thumbprint),Thumbprint);
-                writer.WriteValue(nameof(Source),Source);
+                //writer.WriteValue(nameof(Source),Source);
+                if (GetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID,out CRYPT_KEY_PROV_INFO ProviderInfo) == HRESULT.S_OK) {
+                    writer.WritePropertyName("ProviderInfo");
+                    using (writer.Object()) {
+                        if (ProviderInfo.ContainerName != IntPtr.Zero) { writer.WriteValue(nameof(ProviderInfo.ContainerName), PtrToString(ProviderInfo.ContainerName, Entries.UnicodeEncoding)); }
+                        if (ProviderInfo.ProviderName  != IntPtr.Zero) { writer.WriteValue(nameof(ProviderInfo.ProviderName),  PtrToString(ProviderInfo.ProviderName, Entries.UnicodeEncoding)); }
+                        writer.WriteValue(nameof(ProviderInfo.ProviderType),ProviderInfo.ProviderType);
+                        writer.WriteValue(nameof(ProviderInfo.ProviderFlags),ProviderInfo.ProviderFlags);
+                        writer.WriteValue(nameof(ProviderInfo.KeySpec),ProviderInfo.KeySpec);
+                        }
+                    }
                 }
             }
         #endregion

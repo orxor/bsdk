@@ -19,13 +19,13 @@
     <Language>en-US</Language>
     <DocumentationSources>
       <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.PlatformComponents.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.PlatformComponents.en-US.xml" />
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.PlatformComponents.xml" />
 <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.en-US.xml" />
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.xml" />
 <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.en-US.xml" />
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.xml" />
 <DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.dll" />
-<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.en-US.xml" /></DocumentationSources>
+<DocumentationSource sourceFile="bin\Debug\net40\BinaryStudio.Security.Cryptography.xml" /></DocumentationSources>
     <FrameworkVersion>4.0.30319</FrameworkVersion>
     <SyntaxFilters>CSharp</SyntaxFilters>
     <CleanIntermediates>False</CleanIntermediates>

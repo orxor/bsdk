@@ -30652,6 +30652,10 @@
             <summary>Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</summary>
             <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</returns>
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CertificatePrivateKeyMissingException.#ctor(System.String)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.CertificatePrivateKeyMissingException"/> class with a specified message that describes the error.</summary>
+            <param name="message">The message that describes the exception. The caller of this constructor is required to ensure that this string has been localized for the current system culture.</param>
+        </member>
         <member name="T:System.Collections.ObjectModel.InternalReadOnlyCollection`1">
             <summary>Provides the base class for a generic read-only collection.</summary>
             <typeparam name="T">The type of elements in the collection.</typeparam>

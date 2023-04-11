@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace BinaryStudio.Serialization
     {
@@ -329,6 +330,19 @@ namespace BinaryStudio.Serialization
                 }
             }
         #endregion
+
+        public static String Serialize(this IJsonSerializable source) {
+            var builder = new StringBuilder();
+            using (IJsonWriter writer = new DefaultJsonWriter(new JsonTextWriter(new StringWriter(builder)){
+                Formatting = Formatting.Indented,
+                Indentation = 2,
+                IndentChar = ' '
+                }))
+                {
+                source.WriteTo(writer);
+                }
+            return builder.ToString();
+            }
 
         public static IDisposable ElementScope(this XmlWriter writer, String localname)
             {

@@ -72,7 +72,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
         #region M:Add(X509CertificateRevocationList)
         public void Add(X509CertificateRevocationList o) {
             if (o == null) {throw new ArgumentNullException(nameof(o)); }
-            Validate(Entries.CertAddCRLContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS,IntPtr.Zero));
+            Validate(Entries.CertAddCRLContextToStore(Store,o.Handle,CERT_STORE_ADD.CERT_STORE_ADD_ALWAYS));
             }
         #endregion
         #region M:Remove(X509Certificate)
@@ -90,8 +90,8 @@ namespace BinaryStudio.Security.Cryptography.Certificates.Internal
             }
         #endregion
 
-        private const UInt32 CERT_CLOSE_STORE_FORCE_FLAG = 0x00000001;
-        private const UInt32 CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002;
+        private const Int32 CERT_CLOSE_STORE_FORCE_FLAG = 0x00000001;
+        private const Int32 CERT_CLOSE_STORE_CHECK_FLAG = 0x00000002;
 
         #region M:Dispose(Boolean)
         /// <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
