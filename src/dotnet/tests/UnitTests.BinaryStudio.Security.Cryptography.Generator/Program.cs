@@ -55,7 +55,14 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 var SecureCode = CryptographicContext.GetSecureString("12345678");
                 var RequestSecureCode = new RequestSecureCode(SecureCode);
                 var dt = DateTime.Now;
-                var AlgId = ALG_ID.CALG_GR3410EL;
+                var AlgId = ALG_ID.CALG_GR3410_12_512;
+                var ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH;
+                switch (AlgId)
+                    {
+                    case ALG_ID.CALG_GR3410EL: ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH; break;
+                    case ALG_ID.CALG_GR3410_12_256: ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2012_256; break;
+                    case ALG_ID.CALG_GR3410_12_512: ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512; break;
+                    }
                 DoSet(AlgId,dt,SecureCode,"R-CA",new Byte[]{ 1,2,3}, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.NonRepudiation, out var RootCertificate);
                 DoSet(AlgId,dt,SecureCode,"I-CA",new Byte[]{ 4,5,6}, RootCertificate, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature, false,
                     new Uri[]{ new Uri("http://localhost/R-CA.crl"),  },
@@ -67,152 +74,119 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 DoCRLSet(AlgId,dt,RequestSecureCode,IntermediateCertificate);
                 MakeCRL(AlgId,dt,04,RequestSecureCode,RootCertificate,"R-CA{Revoked}.crl",IntermediateCertificate);
                 MakeCRL(AlgId,dt,05,RequestSecureCode,IntermediateCertificate,"I-CA{Revoked}.crl",User1,User3);
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,IncludeSigningCertificate}.p7a")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            User1
-                            },
-                            CryptographicMessageFlags.Attached|
-                            CryptographicMessageFlags.IncludeSigningCertificate|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,IncludeSigningCertificate,InvalidSignature}.p7a")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            new X509Certificate(File.ReadAllBytes("User1{InvalidSignature}.cer")){
-                                Container = User1.Container,
-                                KeySpec = User1.KeySpec
-                                }
-                            },
-                            CryptographicMessageFlags.Attached|
-                            CryptographicMessageFlags.IncludeSigningCertificate|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,IncludeSigningCertificate,Expired}.p7a")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            new X509Certificate(File.ReadAllBytes("User1{Expired}.cer")){
-                                Container = User1.Container,
-                                KeySpec = User1.KeySpec
-                                }
-                            },
-                            CryptographicMessageFlags.Attached|
-                            CryptographicMessageFlags.IncludeSigningCertificate|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,IncludeSigningCertificate,Future}.p7a")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            new X509Certificate(File.ReadAllBytes("User1{Future}.cer")){
-                                Container = User1.Container,
-                                KeySpec = User1.KeySpec
-                                }
-                            },
-                            CryptographicMessageFlags.Attached|
-                            CryptographicMessageFlags.IncludeSigningCertificate|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,User2,User3,IncludeSigningCertificate}.p7a")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            User1,
-                            User2,
-                            User3
-                            },
-                            CryptographicMessageFlags.Attached|
-                            CryptographicMessageFlags.IncludeSigningCertificate|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1}.p7a")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            User1
-                            },
-                            CryptographicMessageFlags.Attached|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,User2,User3}.p7a")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            User1,
-                            User2,
-                            User3
-                            },
-                            CryptographicMessageFlags.Attached|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,IncludeSigningCertificate}.p7d")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            User1
-                            },
-                            CryptographicMessageFlags.Detached|
-                            CryptographicMessageFlags.IncludeSigningCertificate|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,User2,User3,IncludeSigningCertificate}.p7d")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            User1,
-                            User2,
-                            User3
-                            },
-                            CryptographicMessageFlags.Detached|
-                            CryptographicMessageFlags.IncludeSigningCertificate|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1}.p7d")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            User1
-                            },
-                            CryptographicMessageFlags.Detached|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
-                using (var context = CryptographicContext.AcquireContext(CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                    using (var output = File.OpenWrite("{User1,User2,User3}.p7d")) {
-                        context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                            User1,
-                            User2,
-                            User3
-                            },
-                            CryptographicMessageFlags.Detached|
-                            CryptographicMessageFlags.IndefiniteLength|
-                            CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
-                        }
-                    }
+                DoCmsSet(ProviderType,RequestSecureCode,CryptographicMessageFlags.Attached,new []{
+                    User1,
+                    User2,
+                    User3
+                    });
+                DoCmsSet(ProviderType,RequestSecureCode,CryptographicMessageFlags.Detached,new []{
+                    User1,
+                    User2,
+                    User3
+                    });
                 DoInvalidSignature("{User1,IncludeSigningCertificate}.p7a","{User1,IncludeSigningCertificate,InvalidMessageSignature}.p7a");
-                //DoInvalidSignature("{User1,User2,User3,IncludeSigningCertificate}.p7a","{User1,User2,User3,IncludeSigningCertificate,InvalidSignature}.p7a");
-                //DoInvalidSignature("{User1}.p7a","{User1,InvalidSignature}.p7a");
-                //DoInvalidSignature("{User1,User2,User3}.p7a","{User1,User2,User3,InvalidSignature}.p7a");
-                //DoInvalidSignature("{User1,IncludeSigningCertificate}.p7d","{User1,IncludeSigningCertificate,InvalidSignature}.p7d");
-                //DoInvalidSignature("{User1,User2,User3,IncludeSigningCertificate}.p7d","{User1,User2,User3,IncludeSigningCertificate,InvalidSignature}.p7d");
-                //DoInvalidSignature("{User1}.p7d","{User1,InvalidSignature}.p7d");
-                //DoInvalidSignature("{User1,User2,User3}.p7d","{User1,User2,User3,InvalidSignature}.p7d");
+                DoInvalidSignature("{User1,IncludeSigningCertificate}.p7d","{User1,IncludeSigningCertificate,InvalidMessageSignature}.p7d");
+                DoInvalidSignature("{User1}.p7a","{User1,InvalidMessageSignature}.p7a");
+                DoInvalidSignature("{User1}.p7d","{User1,InvalidMessageSignature}.p7d");
                 }
             catch (Exception e)
                 {
                 Console.WriteLine(Exceptions.ToString(e));
+                }
+            }
+
+        private static void DoCmsSet(CRYPT_PROVIDER_TYPE ProviderType, RequestSecureString RequestSecureCode,CryptographicMessageFlags flags, X509Certificate[] certificates)
+            {
+            var e = flags.HasFlag(CryptographicMessageFlags.Attached)
+                ? "p7a"
+                : "p7d";
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate}}.{e}")) {
+                    context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0]
+                        },
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,InvalidSignature}}.{e}")) {
+                    context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes("User1{InvalidSignature}.cer")){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,Expired}}.{e}")) {
+                    context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes("User1{Expired}.cer")){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,Future}}.{e}")) {
+                    context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes("User1{Future}.cer")){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,User2,User3,IncludeSigningCertificate}}.{e}")) {
+                    context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0],
+                        certificates[1],
+                        certificates[2]
+                        },
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1}}.{e}")) {
+                    context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0]
+                        },
+                        flags|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,User2,User3}}.{e}")) {
+                    context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0],
+                        certificates[1],
+                        certificates[2]
+                        },
+                        flags|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
                 }
             }
 
