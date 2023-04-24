@@ -416,5 +416,21 @@ namespace BinaryStudio.PlatformComponents.Win32
                 default : { return new PlatformException(scode,message); }
                 }
             }
+
+        #if NET35 || NET40
+        #region M:GetSCODE(Exception):HRESULT
+        public static HRESULT GetSCODE(Exception e)
+            {
+            return (HRESULT)Marshal.GetHRForException(e);
+            }
+        #endregion
+        #else
+        #region M:GetSCODE(Exception):HRESULT
+        public static HRESULT GetSCODE(Exception e)
+            {
+            return (HRESULT)e.HResult;
+            }
+        #endregion
+        #endif
         }
     }

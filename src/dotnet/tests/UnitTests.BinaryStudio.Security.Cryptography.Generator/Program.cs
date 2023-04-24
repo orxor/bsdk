@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Security;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Web.UI.WebControls.WebParts;
@@ -67,9 +68,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 DoSet(AlgId,dt,SecureCode,"I-CA",new Byte[]{ 4,5,6}, RootCertificate, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature, false,
                     new Uri[]{ new Uri("http://localhost/R-CA.crl"),  },
                     out var IntermediateCertificate);
-                DoSet(AlgId,dt,SecureCode,"User1",new Byte[]{  7, 8, 9}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User1);
-                DoSet(AlgId,dt,SecureCode,"User2",new Byte[]{ 10,11,12}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User2);
-                DoSet(AlgId,dt,SecureCode,"User3",new Byte[]{ 13,14,15}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User3);
+                DoSet(AlgId,dt,SecureCode,"User1",new Byte[]{  7, 8, 9}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User1);
+                DoSet(AlgId,dt,SecureCode,"User2",new Byte[]{ 10,11,12}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User2);
+                DoSet(AlgId,dt,SecureCode,"User3",new Byte[]{ 13,14,15}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User3);
                 DoCRLSet(AlgId,dt,RequestSecureCode,RootCertificate);
                 DoCRLSet(AlgId,dt,RequestSecureCode,IntermediateCertificate);
                 MakeCRL(AlgId,dt,04,RequestSecureCode,RootCertificate,"R-CA{Revoked}.crl",IntermediateCertificate);
@@ -88,11 +89,129 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 DoInvalidSignature("{User1,IncludeSigningCertificate}.p7d","{User1,IncludeSigningCertificate,InvalidMessageSignature}.p7d");
                 DoInvalidSignature("{User1}.p7a","{User1,InvalidMessageSignature}.p7a");
                 DoInvalidSignature("{User1}.p7d","{User1,InvalidMessageSignature}.p7d");
+                DoEncSet(ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_28147),"CP_GOST_28147",
+                    new []{
+                        User1,
+                        User2,
+                        User3
+                        });
+                DoEncSet(ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_R3412_2015_M),"CP_GOST_R3412_2015_M",
+                    new []{
+                        User1,
+                        User2,
+                        User3
+                        });
+                DoEncSet(ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_R3412_2015_K),"CP_GOST_R3412_2015_K",
+                    new []{
+                        User1,
+                        User2,
+                        User3
+                        });
                 }
             catch (Exception e)
                 {
                 Console.WriteLine(Exceptions.ToString(e));
                 }
+            }
+
+        private static void DoEncSet(CRYPT_PROVIDER_TYPE ProviderType,Oid AlgId, String Prefix, X509Certificate[] certificates) {
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc")) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0]
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,User2,User3,IncludeSigningCertificate}}{{{Prefix}}}.enc")) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0],
+                        certificates[1],
+                        certificates[2]
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1}}{{{Prefix}}}.enc")) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0]
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,User2,User3}}{{{Prefix}}}.enc")) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0],
+                        certificates[1],
+                        certificates[2]
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,InvalidSignature}}{{{Prefix}}}.enc")) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes("User1{InvalidSignature}.cer")){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,Expired}}{{{Prefix}}}.enc")) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes("User1{Expired}.cer")){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,Future}}{{{Prefix}}}.enc")) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes("User1{Future}.cer")){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            DoInvalidSignature($"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc",$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}{{InvalidMessage}}.enc");
+            DoInvalidSignature($"{{User1}}{{{Prefix}}}.enc",$"{{User1}}{{{Prefix}}}{{InvalidMessage}}.enc");
             }
 
         private static void DoCmsSet(CRYPT_PROVIDER_TYPE ProviderType, RequestSecureString RequestSecureCode,CryptographicMessageFlags flags, X509Certificate[] certificates)

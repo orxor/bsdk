@@ -163,6 +163,38 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+        #region M:OpenToEncode(Action<Byte[],Boolean>,UInt32,CRYPT_OPEN_MESSAGE_FLAGS,CMSG_TYPE,{ref}CMSG_ENVELOPED_ENCODE_INFO):CryptographicMessage
+        public static unsafe CryptographicMessage OpenToEncode(Action<Byte[],Boolean> OutputHandler,UInt32 Length,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo) {
+            if (OutputHandler == null) { throw new ArgumentNullException(nameof(OutputHandler)); }
+            var so = new CMSG_STREAM_INFO(Length,delegate(IntPtr arg, Byte* Data, UInt32 Size, Boolean Final) {
+                var Bytes = new Byte[Size];
+                for (var i = 0; i < Size; i++) {
+                    Bytes[i] = Data[i];
+                    }
+                try
+                    {
+                    OutputHandler(Bytes, Final);
+                    }
+                catch(Exception e)
+                    {
+                    return false;
+                    }
+                return true;
+                }, IntPtr.Zero);
+            try
+                {
+                return new CryptographicMessage(
+                    Validate(Entries,Entries.CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING|CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, Flags, Type,ref EncodeInfo,ref so),NotZero),
+                    ref so);
+                }
+            catch (Exception e)
+                {
+                e.Add("MessageFlags",Flags);
+                e.Add("MessageType",Type);
+                throw;
+                }
+            }
+        #endregion
         #region M:Control(CRYPT_MESSAGE_FLAGS,CMSG_CTRL,IntPtr):Boolean
         public Boolean Control(CRYPT_MESSAGE_FLAGS Flags, CMSG_CTRL CtrlType, IntPtr CtrlPara)
             {

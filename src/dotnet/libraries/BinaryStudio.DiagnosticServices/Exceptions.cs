@@ -14,6 +14,7 @@ namespace BinaryStudio.DiagnosticServices
     {
     public static class Exceptions
         {
+        #region M:Add<T>({this}T,String,Object):T
         public static T Add<T>(this T e, String key, Object value)
             where T: Exception
             {
@@ -44,6 +45,7 @@ namespace BinaryStudio.DiagnosticServices
                 }
             return e;
             }
+        #endregion
 
         private static String LineBefore(String source) {
             var o = source.Split(new []{'\r','\n'}, StringSplitOptions.RemoveEmptyEntries);

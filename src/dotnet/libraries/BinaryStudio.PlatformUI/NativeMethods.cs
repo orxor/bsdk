@@ -1141,7 +1141,7 @@ namespace BinaryStudio.PlatformUI
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern UInt32 GetPrivateProfileString(String section, String key, String defaultValue, [Out] StringBuilder buffer, UInt32 bufferCharLength, String path);
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern Int32 GetPrivateProfileInt(String section, String key, Int32 defaultValue, String path);
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)] public static extern Int32 WritePrivateProfileString(String section, String key, String value, String path);
-        [DllImport("uxtheme.dll", CharSet = CharSet.Auto)] public static extern HResult SetWindowTheme(IntPtr hWnd, string subAppName, string subIdList);
+        [DllImport("uxtheme.dll", CharSet = CharSet.Auto)] public static extern HRESULT SetWindowTheme(IntPtr hWnd, string subAppName, string subIdList);
 
         [Flags]
         public enum LoadLibraryFlags : uint

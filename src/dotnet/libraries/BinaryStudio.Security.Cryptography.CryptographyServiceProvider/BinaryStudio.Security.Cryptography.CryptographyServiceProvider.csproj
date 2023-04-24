@@ -19,10 +19,11 @@
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(RuntimeIdentifier)' != 'linux-x64'">
-    <DefineConstants>$(DefineConstants);CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_SIGNER_ENCODE_INFO_HAS_CMS_FIELDS</DefineConstants>
+    <DefineConstants>$(DefineConstants);CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_SIGNER_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_ENVELOPED_ENCODE_INFO_HAS_CMS_FIELDS</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="CreateMessage.cs" />
+    <Compile Remove="EncryptMessage.cs" />
     <Compile Remove="VerifyMessage.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -41,9 +42,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Internal\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -58,6 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreateMessage.cs">
+      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EncryptMessage.cs">
       <DependentUpon>CryptographicContext.cs</DependentUpon>
     </Compile>
     <Compile Include="VerifyMessage.cs">

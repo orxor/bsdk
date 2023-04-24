@@ -661,6 +661,102 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
         #endif
+        #region M:Write(Stream,UInt32)
+        private static unsafe void Write(Stream stream, UInt32 r) {
+            var buffer = new Byte[sizeof(UInt32)];
+            fixed (Byte* i = buffer) {
+                *(UInt32*)i = r;
+                }
+            stream.Write(buffer,0,buffer.Length);
+            }
+        #endregion
+        #region M:Write(Stream,Int32)
+        private static unsafe void Write(Stream stream, Int32 r) {
+            var buffer = new Byte[sizeof(Int32)];
+            fixed (Byte* i = buffer) {
+                *(Int32*)i = r;
+                }
+            stream.Write(buffer,0,buffer.Length);
+            }
+        #endregion
+        #region M:Write(Stream,Byte[])
+        private static unsafe void Write(Stream stream, Byte[] r) {
+            stream.Write(r,0,r.Length);
+            }
+        #endregion
+        #region M:ReadUInt32(Stream,{out}UInt32):HRESULT
+        private static unsafe HRESULT ReadUInt32(Stream stream, out UInt32 r) {
+            r = 0;
+            var buffer = new Byte[sizeof(UInt32)];
+            if (stream.Read(buffer,0, sizeof(UInt32)) == sizeof(UInt32)) {
+                fixed (Byte* i = buffer) {
+                    r = *(UInt32*)i;
+                    return HRESULT.S_OK;
+                    }
+                }
+            return HRESULT.CRYPT_E_STREAM_INSUFFICIENT_DATA;
+            }
+        #endregion
+        #region M:ReadInt32(Stream,{out}Int32):HRESULT
+        private static unsafe HRESULT ReadInt32(Stream stream, out Int32 r)
+            {
+            r = 0;
+            var buffer = new Byte[sizeof(Int32)];
+            if (stream.Read(buffer,0, sizeof(Int32)) == sizeof(Int32)) {
+                fixed (Byte* i = buffer) {
+                    r = *(Int32*)i;
+                    return HRESULT.S_OK;
+                    }
+                }
+            return HRESULT.CRYPT_E_STREAM_INSUFFICIENT_DATA;
+            }
+        #endregion
+        #region M:ReadByte(Stream,{out}Byte):HRESULT
+        private static HRESULT ReadByte(Stream stream, out Byte r)
+            {
+            r = 0;
+            var buffer = new Byte[sizeof(Byte)];
+            if (stream.Read(buffer,0, sizeof(Byte)) == sizeof(Byte)) {
+                r = buffer[0];
+                return HRESULT.S_OK;
+                }
+            return HRESULT.CRYPT_E_STREAM_INSUFFICIENT_DATA;
+            }
+        #endregion
+        #region M:ReadPascalString(Stream,{out}String):HRESULT
+        private HRESULT ReadPascalString(Stream stream, out String r) {
+            return ReadPascalString(stream, Encoding.UTF8, out r);
+            }
+        #endregion
+        #region M:ReadPascalString(Stream,Encoding,{out}String):HRESULT
+        private HRESULT ReadPascalString(Stream stream, Encoding encoding, out String r) {
+            r = null;
+            Validate(ReadByte(stream, out var length));
+            var buffer = new Byte[length];
+            if (stream.Read(buffer, 0, length) == length) {
+                r = encoding.GetString(buffer);
+                return HRESULT.S_OK;
+                }
+            return HRESULT.CRYPT_E_STREAM_INSUFFICIENT_DATA;
+            }
+        #endregion
+        #region M:ReadBlock(Stream,{out}Byte[]):HRESULT
+        private HRESULT ReadBlock(Stream stream,out Byte[] r) {
+            Validate(ReadInt32(stream, out var size));
+            r = new Byte[size];
+            if (stream.Read(r, 0, size) == size) { return HRESULT.S_OK; }
+            r = null;
+            return HRESULT.CRYPT_E_STREAM_INSUFFICIENT_DATA;
+            }
+        #endregion
+        #region M:ReadBlock(Stream,Int32,{out}Byte[]):HRESULT
+        private static HRESULT ReadBlock(Stream stream,Int32 size, out Byte[] r) {
+            r = new Byte[size];
+            if (stream.Read(r, 0, size) == size) { return HRESULT.S_OK; }
+            r = null;
+            return HRESULT.CRYPT_E_STREAM_INSUFFICIENT_DATA;
+            }
+        #endregion
 
         #if FEATURE_SECURE_STRING_PASSWORD
         private static readonly IDictionary<String,SecureString> StoredSecureStrings = new Dictionary<String,SecureString>();
@@ -701,6 +797,9 @@ namespace BinaryStudio.Security.Cryptography
             #else
             DefaultContext= new CryptographicContextS();
             #endif
+            EncryptTaskCount = Is64BitProcess
+                ? 32
+                : 8;
             }
 
         #region M:CopyToMemory(OidCollection):LocalMemoryHandle
