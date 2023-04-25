@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net47;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net40</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -20,6 +20,7 @@
     <PackageReference Include="WebView2.Runtime.X86" Version="108.0.1462.44" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
     <ProjectReference Include="..\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
   </ItemGroup>
   <ItemGroup>

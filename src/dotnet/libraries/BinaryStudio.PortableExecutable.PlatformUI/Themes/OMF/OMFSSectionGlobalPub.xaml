@@ -6,13 +6,11 @@
                     xmlns:u="http://schemas.helix.global"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:c="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Controls"
-                    xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-                    xmlns:wpf1="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
                     mc:Ignorable="d">
   <DataTemplate DataType="{x:Type e:ModelOMFSSectionGlobalPub}">
     <Grid>
       <Grid.Resources>
-        <wpf1:CoreWebView2CreationProperties x:Key="BYOWebView2CreationProperties" BrowserExecutableFolder="Microsoft.WebView2.FixedVersionRuntime.108.0.1462.46.x64"/>
+        <!--<wpf1:CoreWebView2CreationProperties x:Key="BYOWebView2CreationProperties" BrowserExecutableFolder="Microsoft.WebView2.FixedVersionRuntime.108.0.1462.46.x64"/>-->
         <u:HTConverter x:Key="Converter"/>
         <u:VisibilityInverter x:Key="VisibilityInverter"/>
         <XmlDataProvider x:Key="FD-XSLT" XPath="*" IsAsynchronous="True" Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/FDOMFSSectionGlobalPub.xslt"/>
@@ -23,9 +21,9 @@
                                 VerticalAlignment="Top"/>
       </Border>-->
       <Border BorderThickness="1" BorderBrush="Red">
-        <wpf1:WebView2 c:CefSharpBehaviors.Source="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource HT-XSLT},IsAsync=True}"
+        <!--<wpf1:WebView2 c:CefSharpBehaviors.Source="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource HT-XSLT},IsAsync=True}"
                        CreationProperties="{StaticResource BYOWebView2CreationProperties}"
-                       Height="500"/>
+                       Height="500"/>-->
       </Border>
       <!--<WebBrowser u:WebBrowserBehaviors.Source="{Binding Source,Mode=OneWay,Converter={StaticResource Converter},ConverterParameter={StaticResource HT-XSLT},IsAsync=True}"/>-->
       <!--<FlowDocumentScrollViewer VerticalScrollBarVisibility="Hidden"

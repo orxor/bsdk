@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Web.WebView2.Wpf;
+//using Microsoft.Web.WebView2.Wpf;
 
 namespace BinaryStudio.PortableExecutable.PlatformUI.Controls
     {
@@ -19,16 +19,16 @@ namespace BinaryStudio.PortableExecutable.PlatformUI.Controls
             //        return;
             //        }
             //    }
-            if (sender is WebView2 browser) {
-                if (e.NewValue is String String) {
-                    var filename = Path.GetTempFileName() + ".html";
-                    File.WriteAllText(filename,String);
-                    //browser.EnsureCoreWebView2Async(null).Wait();
-                    browser.Source = new Uri($"file://{filename}");
-                    //browser.CoreWebView2.NavigateToString(String);
-                    return;
-                    }
-                }
+            //if (sender is WebView2 browser) {
+            //    if (e.NewValue is String String) {
+            //        var filename = Path.GetTempFileName() + ".html";
+            //        File.WriteAllText(filename,String);
+            //        //browser.EnsureCoreWebView2Async(null).Wait();
+            //        browser.Source = new Uri($"file://{filename}");
+            //        //browser.CoreWebView2.NavigateToString(String);
+            //        return;
+            //        }
+            //    }
             }
 
         //private static async void OnLoadingStateChanged(Object sender,LoadingStateChangedEventArgs e) {

@@ -7,6 +7,7 @@ using System.Windows.Markup;
 [assembly: InternalsVisibleTo("BinaryStudio.Security.Cryptography")]
 [assembly: InternalsVisibleTo("BinaryStudio.Security.Cryptography.CryptographicMessageSyntax")]
 [assembly: InternalsVisibleTo("BinaryStudio.Security.Cryptography.Reporting")]
+[assembly: InternalsVisibleTo("BinaryStudio.Security.Cryptography.PlatformUI")]
 [assembly: InternalsVisibleTo("UnitTests.BinaryStudio.Security.Cryptography.Generator")]
 
 #if UseWPF

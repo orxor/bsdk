@@ -1,5 +1,4 @@
-﻿using BinaryStudio.PlatformUI.Extensions;
-using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
+﻿using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
