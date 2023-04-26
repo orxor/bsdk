@@ -55,13 +55,21 @@ namespace BinaryStudio.Security.Cryptography
                                 ExtensionsA[i].Value.Data = (Byte*)manager.Alloc(block);
                                 }
                             }
-                        return (new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(
-                            Handle,ref SubjectIssuerBlob,0,null,&AlgIdT,
+                        var context = Key.Context;
+                        var pi = new CRYPT_KEY_PROV_INFO {
+                            ContainerName = (IntPtr)manager.StringToMem(Key.Container, entries.UnicodeEncoding),
+                            ProviderName = (IntPtr)manager.StringToMem(context.ProviderName, entries.UnicodeEncoding),
+                            ProviderFlags = context.ProviderFlags & (~CryptographicContextFlags.CRYPT_SILENT),
+                            ProviderType = context.ProviderType,
+                            KeySpec = Key.KeySpec
+                            };
+                        return (new X509Certificate(Validate(entries,entries.CertCreateSelfSignCertificate(
+                            Handle,ref SubjectIssuerBlob,0,&pi,&AlgIdT,
                             &NotBeforeT,&NotAfterT,&ExtensionsE),NotZero))).
                             SetProviderInfo(Key);
                         }
                     }
-                return (new X509Certificate(Validate(entries.CertCreateSelfSignCertificate(
+                return (new X509Certificate(Validate(entries,entries.CertCreateSelfSignCertificate(
                     Handle,ref SubjectIssuerBlob,0,null,
                     &AlgIdT,&NotBeforeT,&NotAfterT,null),NotZero))).
                     SetProviderInfo(Key);
@@ -147,7 +155,7 @@ namespace BinaryStudio.Security.Cryptography
                             case ALG_ID.CALG_GR3410EL:      algid = ObjectIdentifiers.szOID_CP_GOST_R3411_R3410EL;      break;
                             default: throw new InvalidOperationException();
                             }
-                        using (var key = CryptKey.GenKey(contextS, ALG_ID.AT_SIGNATURE, flags)) {
+                        using (var key = CryptKey.GenKey(contextS, ALG_ID.AT_KEYEXCHANGE, flags)) {
                             Certificate = contextS.MakeCertificate(key,SubjectName,SerialNumber,algid,NotBefore,NotAfter,Extensions);
                             key.Certificate = Certificate;
                             if (PrivateKeyStream != null) {

@@ -273,7 +273,7 @@ namespace BinaryStudio.Security.Cryptography
                             }
                         break;
                         }
-                    yield return new MemoryBlock(order,block, size);
+                    yield return new MemoryBlock(order,block, size + offset);
                     offset = 0;
                     order++;
                     }

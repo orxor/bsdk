@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="http://schemas.helix.global">
+  <DataTemplate DataType="{x:Type u:EAsn1}">
+    <Decorator>
+      <u:Asn1Control Margin="5" SnapsToDevicePixels="True" DataContext="{Binding Source}"/>
+    </Decorator>
+  </DataTemplate>
+</ResourceDictionary>

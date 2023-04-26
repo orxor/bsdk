@@ -210,8 +210,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                         CryptographicMessageFlags.Split);
                     }
                 }
-            DoInvalidSignature($"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc",$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}{{InvalidMessage}}.enc");
-            DoInvalidSignature($"{{User1}}{{{Prefix}}}.enc",$"{{User1}}{{{Prefix}}}{{InvalidMessage}}.enc");
+            DoInvalidSignature($"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc",$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}{{InvalidMessage}}.enc", 8);
+            DoInvalidSignature($"{{User1}}{{{Prefix}}}.enc",$"{{User1}}{{{Prefix}}}{{InvalidMessage}}.enc", 8);
             }
 
         private static void DoCmsSet(CRYPT_PROVIDER_TYPE ProviderType, RequestSecureString RequestSecureCode,CryptographicMessageFlags flags, X509Certificate[] certificates)
@@ -360,7 +360,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 }
             using (var Output = new MemoryStream()) {
                 CryptographicContext.MakeCertificate(AlgId,$"CN={SubjectName}",String.Join(String.Empty,SerialNumber.Select(i=> i.ToString("x2"))),
-                    DateTime.AddYears(-1),DateTime.AddYears(5),
+                    DateTime.AddDays(-1),DateTime.AddYears(5),
                     Extensions,Output, SecureCode,
                     out Certificate,false, out var Container, out var ProviderName, out var ProviderType);
                 var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
@@ -419,7 +419,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 }
             using (var Output = new MemoryStream()) {
                 CryptographicContext.MakeCertificate(AlgId,$"CN={SubjectName}",String.Join(String.Empty,SerialNumber.Select(i=> i.ToString("x2"))),
-                    DateTime.AddYears(-1),DateTime.AddYears(5),
+                    DateTime.AddDays(-1),DateTime.AddYears(5),
                     Extensions,Output, SecureCode,
                     out Certificate,IssuerCertificate,false, out var Container, out var ProviderName, out var ProviderType);
                 var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
@@ -472,11 +472,11 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
         #endregion
         #region M:DoInvalidSignature(String,String)
-        private static void DoInvalidSignature(String InputFileName, String OutputFileName) {
+        private static void DoInvalidSignature(String InputFileName, String OutputFileName, Int32 offset = 5) {
             var r = File.ReadAllBytes(InputFileName);
             var i = r.Length;
-            Swap(ref r[i - 5], ref r[i - 9]);
-            Swap(ref r[i - 7], ref r[i - 8]);
+            Swap(ref r[i - offset],     ref r[i - offset - 4]);
+            Swap(ref r[i - offset - 2], ref r[i - offset - 3]);
             File.WriteAllBytes(OutputFileName, r);
             }
         #endregion

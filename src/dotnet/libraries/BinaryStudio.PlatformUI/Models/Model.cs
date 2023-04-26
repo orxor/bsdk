@@ -47,6 +47,17 @@ namespace BinaryStudio.PlatformUI.Models
                 if (ctor == null) { throw new MissingMethodException(); }
                 return ctor.Invoke(new Object[]{ source });
                 }
+            foreach (var i in Types) {
+                if (i.Key.IsAssignableFrom(type)) {
+                    var ctor = i.Value.GetConstructor(
+                        BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Instance,
+                        null,new Type[]{
+                        type
+                        },null);
+                    if (ctor == null) { throw new MissingMethodException(); }
+                    return ctor.Invoke(new Object[]{ source });
+                    }
+                }
             return source;
             }
         #endregion

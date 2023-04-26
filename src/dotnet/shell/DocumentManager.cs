@@ -41,6 +41,12 @@ internal class DocumentManager
                 o = oo[0];
                 }
                 break;
+            default:
+                {
+                var oo = Asn1Object.Load(new ReadOnlyMemoryMappingStream(File.ReadAllBytes(filename))).ToArray();
+                o = oo[0];
+                }
+                break;
             }
         if (o != null) {
             var r = new View {

@@ -11,7 +11,12 @@
         Foreground="{DynamicResource ControlTextBrushKey}"
         Title="MainWindow" Height="450" Width="800" Loaded="OnLoaded">
   <u:MainWindow.Resources>
-    <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/Models.xaml"/>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/Models.xaml"/>
+        <ResourceDictionary Source="DataTemplates.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
   </u:MainWindow.Resources>
   <u:MainWindow.VectorIcon>
     <DrawingBrush>

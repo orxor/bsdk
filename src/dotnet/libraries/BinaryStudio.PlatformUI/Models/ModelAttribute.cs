@@ -2,6 +2,7 @@
 
 namespace BinaryStudio.PlatformUI.Models
     {
+    [AttributeUsage(AttributeTargets.Class,AllowMultiple = true)]
     public class ModelAttribute : Attribute
         {
         public Type Type { get; }
