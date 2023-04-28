@@ -22,6 +22,8 @@ namespace BinaryStudio.Security.Cryptography
     using CRYPT_DATA_BLOB = CRYPT_BLOB;
     public partial class CryptographicContext
         {
+        private static readonly Random random = new Random();
+
         #region M:MakeCertificate(CryptKey,String,String,DateTime,DateTime,IList<CertificateExtension>):X509Certificate
         private unsafe X509Certificate MakeCertificate(CryptKey Key, String SubjectName, String AlgId,DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions) {
             EnsureEntries(out var entries);
@@ -50,7 +52,6 @@ namespace BinaryStudio.Security.Cryptography
                                 Extensions[i].BuildBody();
                                 Extensions[i].Body[0].WriteTo(MemoryStream,true);
                                 var block = MemoryStream.ToArray();
-                                File.WriteAllBytes("x.bin",block);
                                 ExtensionsA[i].Value.Size = block.Length;
                                 ExtensionsA[i].Value.Data = (Byte*)manager.Alloc(block);
                                 }
@@ -125,7 +126,7 @@ namespace BinaryStudio.Security.Cryptography
         #else
         public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
             DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
-            Stream PrivateKeyStream, String SecureCode,out X509Certificate Certificate,
+            Stream PrivateKeyStream, Stream OutputKeyStream, String SecureCode,out X509Certificate Certificate,
             Boolean DeletePrivateKey, out String Container, out String ProviderName, out CRYPT_PROVIDER_TYPE ProviderType)
         #endif
             {
@@ -158,6 +159,7 @@ namespace BinaryStudio.Security.Cryptography
                         using (var key = CryptKey.GenKey(contextS, ALG_ID.AT_KEYEXCHANGE, flags)) {
                             Certificate = contextS.MakeCertificate(key,SubjectName,SerialNumber,algid,NotBefore,NotAfter,Extensions);
                             key.Certificate = Certificate;
+                            #region PFX
                             if (PrivateKeyStream != null) {
                                 using (var manager = new LocalMemoryManager())
                                 using (var store = new X509CertificateStorage(X509StoreName.Memory)) {
@@ -183,6 +185,10 @@ namespace BinaryStudio.Security.Cryptography
                                         }
                                     }
                                 }
+                            #endregion
+                            if (OutputKeyStream != null) {
+                                key.ExportPrivateKey(OutputKeyStream,SecureCode);
+                                }
                             }
                         }
                     if (DeletePrivateKey && (PrivateKeyStream != null)) {
@@ -205,7 +211,7 @@ namespace BinaryStudio.Security.Cryptography
         #else
         public static unsafe void MakeCertificate(ALG_ID AlgId,String SubjectName,String SerialNumber,
             DateTime NotBefore,DateTime NotAfter,IList<CertificateExtension> Extensions,
-            Stream PrivateKeyStream, String SecureCode,
+            Stream PrivateKeyStream, Stream OutputKeyStream, String SecureCode,
             out X509Certificate Certificate,X509Certificate IssuerCertificate,
             Boolean DeletePrivateKey, out String Container, out String ProviderName, out CRYPT_PROVIDER_TYPE ProviderType)
         #endif
@@ -225,7 +231,7 @@ namespace BinaryStudio.Security.Cryptography
                     extensions.Add(new CertificateAuthorityKeyIdentifier(IssuerCertificate.Source));
                     }
                 }
-            MakeCertificate(AlgId,SubjectName,SerialNumber,NotBefore,NotAfter,extensions,null,SecureCode,out var SubjectCertificate,false,out Container, out ProviderName, out ProviderType);
+            MakeCertificate(AlgId,SubjectName,SerialNumber,NotBefore,NotAfter,extensions,null,null,SecureCode,out var SubjectCertificate,false,out Container, out ProviderName, out ProviderType);
             var Builder = Asn1Object.Load(new ReadOnlyMemoryMappingStream(SubjectCertificate.Bytes)).First();
             Builder[0][SubjectCertificate.Source.IssuerFieldIndex] = IssuerCertificate.Source.Subject.BuildSequence();
             using (var context = AcquireContext(ProviderType,IssuerCertificate.Container,CryptographicContextFlags.CRYPT_SILENT)) {
@@ -250,6 +256,9 @@ namespace BinaryStudio.Security.Cryptography
                 if (key != null) {
                     key.Context.SecureCode = SecureCode;
                     key.Certificate = Certificate;
+                    if (OutputKeyStream != null) {
+                        key.ExportPrivateKey(OutputKeyStream,SecureCode);
+                        }
                     }
                 }
             if (PrivateKeyStream != null) {
@@ -322,5 +331,9 @@ namespace BinaryStudio.Security.Cryptography
             return CRYPT_PROVIDER_TYPE.AUTO;
             }
         #endregion
+
+        private const Int32 PLAINTEXTKEYBLOB = 0x8;
+        private const Int32 SALT_LENGTH = 16;
+        private const Int32 HP_PBKDF2_SALT = 0x0017;
         }
     }

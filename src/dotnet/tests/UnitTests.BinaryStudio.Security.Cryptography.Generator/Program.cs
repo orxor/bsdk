@@ -23,6 +23,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
     {
     internal class Program
         {
+        private static readonly Random Random = new Random();
         public static readonly Byte[] InputString = Encoding.ASCII.GetBytes("The data that can be hashed and signed.");
         private class RequestSecureCode : RequestSecureString
             {
@@ -49,14 +50,14 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
 
         private static void Main(String[] args)
             {
-            Console.WriteLine("Press [ENTER] to continue...");
-            Console.ReadLine();
+            //Console.WriteLine("Press [ENTER] to continue...");
+            //Console.ReadLine();
             try
                 {
                 var SecureCode = CryptographicContext.GetSecureString("12345678");
                 var RequestSecureCode = new RequestSecureCode(SecureCode);
                 var dt = DateTime.Now;
-                var AlgId = ALG_ID.CALG_GR3410_12_512;
+                var AlgId = ALG_ID.CALG_GR3410EL;
                 var ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH;
                 switch (AlgId)
                     {
@@ -358,15 +359,21 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             if (KeyUsage != 0) {
                 Extensions.Add(new CertificateKeyUsage(KeyUsage));
                 }
-            using (var Output = new MemoryStream()) {
+            using (MemoryStream POutput = new MemoryStream(),
+                                BOutput = new MemoryStream())
+                {
                 CryptographicContext.MakeCertificate(AlgId,$"CN={SubjectName}",String.Join(String.Empty,SerialNumber.Select(i=> i.ToString("x2"))),
                     DateTime.AddDays(-1),DateTime.AddYears(5),
-                    Extensions,Output, SecureCode,
+                    Extensions,POutput, BOutput, SecureCode,
                     out Certificate,false, out var Container, out var ProviderName, out var ProviderType);
                 var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
                 using (var PrivateKeyOutput = File.Create($"{SubjectName}.pfx")) {
-                    Output.Seek(0,SeekOrigin.Begin);
-                    Output.CopyTo(PrivateKeyOutput);
+                    POutput.Seek(0,SeekOrigin.Begin);
+                    POutput.CopyTo(PrivateKeyOutput);
+                    }
+                using (var PrivateKeyOutput = File.Create($"{SubjectName}.pri")) {
+                    BOutput.Seek(0,SeekOrigin.Begin);
+                    BOutput.CopyTo(PrivateKeyOutput);
                     }
                 if (IsViPNet) {
                     File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
@@ -417,15 +424,21 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             if ((DistributionPoints != null) && (DistributionPoints.Length != 0)) {
                 Extensions.Add(new CRLDistributionPoints(DistributionPoints.Select(i => new DistributionPoint(i)).ToArray()));
                 }
-            using (var Output = new MemoryStream()) {
+            using (MemoryStream POutput = new MemoryStream(),
+                                BOutput = new MemoryStream())
+                {
                 CryptographicContext.MakeCertificate(AlgId,$"CN={SubjectName}",String.Join(String.Empty,SerialNumber.Select(i=> i.ToString("x2"))),
                     DateTime.AddDays(-1),DateTime.AddYears(5),
-                    Extensions,Output, SecureCode,
+                    Extensions,POutput,BOutput, SecureCode,
                     out Certificate,IssuerCertificate,false, out var Container, out var ProviderName, out var ProviderType);
                 var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
                 using (var PrivateKeyOutput = File.Create($"{SubjectName}.pfx")) {
-                    Output.Seek(0,SeekOrigin.Begin);
-                    Output.CopyTo(PrivateKeyOutput);
+                    POutput.Seek(0,SeekOrigin.Begin);
+                    POutput.CopyTo(PrivateKeyOutput);
+                    }
+                using (var PrivateKeyOutput = File.Create($"{SubjectName}.pri")) {
+                    BOutput.Seek(0,SeekOrigin.Begin);
+                    BOutput.CopyTo(PrivateKeyOutput);
                     }
                 if (IsViPNet) {
                     File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
@@ -472,11 +485,14 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
         #endregion
         #region M:DoInvalidSignature(String,String)
-        private static void DoInvalidSignature(String InputFileName, String OutputFileName, Int32 offset = 5) {
+        private static void DoInvalidSignature(String InputFileName, String OutputFileName, Int32 offset = 8) {
             var r = File.ReadAllBytes(InputFileName);
-            var i = r.Length;
-            Swap(ref r[i - offset],     ref r[i - offset - 4]);
-            Swap(ref r[i - offset - 2], ref r[i - offset - 3]);
+            var l = r.Length - offset - 1;
+            var buffer = new Byte[offset];
+            Random.NextBytes(buffer);
+            for (var i = 0; i < offset; i++) {
+                r[l + i] = buffer[i];
+                }
             File.WriteAllBytes(OutputFileName, r);
             }
         #endregion

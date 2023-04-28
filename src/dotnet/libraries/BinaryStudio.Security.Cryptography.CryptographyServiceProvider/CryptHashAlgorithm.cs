@@ -11,7 +11,10 @@ namespace BinaryStudio.Security.Cryptography
         private const Int32 BLOCK_SIZE_64K = 64*1024;
         private Int32 HashSizeValue = -1;
         private Byte[] HashValue;
-        public override IntPtr Handle { get { return handle; }}
+        public override IntPtr Handle { get {
+            EnsureHandle();
+            return handle;
+            }}
         internal CryptographicContext Context { get; }
         internal ALG_ID Algorithm { get; }
         
@@ -92,6 +95,12 @@ namespace BinaryStudio.Security.Cryptography
             var SignatureLength = 0;
             Validate(Entries.CryptSignHash(Handle,KeySpec, null, ref SignatureLength));
             Validate(Entries.CryptSignHash(Handle,KeySpec, Signature = new Byte[SignatureLength], ref SignatureLength));
+            }
+        #endregion
+        #region M:SetParameter(Int32,Byte[],Int32):Boolean
+        public Boolean SetParameter(Int32 Param,Byte[] Data,Int32 Flags) {
+            EnsureHandle();
+            return (EnsureEntries().CryptSetHashParam(Handle,Param,Data,Flags));
             }
         #endregion
 

@@ -26,10 +26,17 @@ namespace BinaryStudio.PlatformComponents
             return r;
             }
 
+        #region M:StringToMem(String,Encoding):void*
         public unsafe void* StringToMem(String value, Encoding encoding) {
+            return StringToMem(value,encoding,out var size);
+            }
+        #endregion
+        #region M:StringToMem(String,Encoding,{out}Int32):void*
+        public unsafe void* StringToMem(String value, Encoding encoding, out Int32 c) {
+            c = 0;
             if (value == null) { return null; }
             var bytes = encoding.GetBytes(value);
-            var c = bytes.Length;
+            c = bytes.Length;
             var r = (Byte*)Alloc(c + 1);
             for (var i = 0; i < c; i++)
                 {
@@ -37,6 +44,7 @@ namespace BinaryStudio.PlatformComponents
                 }
             return r;
             }
+        #endregion
 
         #region M:Dispose(Boolean)
         private void Dispose(Boolean disposing) {

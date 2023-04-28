@@ -43,7 +43,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptAcquireCertificatePrivateKey(IntPtr Certificate, CRYPT_ACQUIRE_FLAGS Flags, IntPtr Parameters,out IntPtr CryptProvOrNCryptKey, out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey) { return CryptAcquireCertificatePrivateKey(Certificate,Flags,Parameters,out CryptProvOrNCryptKey,out KeySpec,out CallerFreeProvOrNCryptKey); }
         Boolean CryptographicFunctions.CryptAcquireContext(out IntPtr CryptProv, String Container, String Provider, Int32 ProvType, Int32 Flags) { return CryptAcquireContext(out CryptProv,Container,Provider,ProvType,Flags); }
         Boolean CryptographicFunctions.CryptCreateHash(IntPtr Provider, ALG_ID Algorithm, IntPtr Key, out IntPtr Handle) { return CryptCreateHash(Provider,Algorithm,Key,0,out Handle); }
-        Boolean CryptographicFunctions.CryptDeriveKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r) { return CryptDeriveKey(Context,AlgId,Flags,out r); }
+        Boolean CryptographicFunctions.CryptDeriveKey(IntPtr Context,ALG_ID AlgId,IntPtr BaseData,Int32 Flags,out IntPtr Key) { return CryptDeriveKey(Context,AlgId,BaseData,Flags,out Key); }
         Boolean CryptographicFunctions.CryptDestroyHash(IntPtr Handle) { return CryptDestroyHash(Handle); }
         Boolean CryptographicFunctions.CryptDestroyKey(IntPtr Key) { return CryptDestroyKey(Key); }
         Boolean CryptographicFunctions.CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r) { return CryptDuplicateKey(Key,Reserved,Flags,out r); }
@@ -56,6 +56,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptGetHashParam(IntPtr Handle, Int32 Parameter, Byte[] Block, ref Int32 BlockSize) { return CryptGetHashParam(Handle,Parameter,Block,ref BlockSize,0); }
         Boolean CryptographicFunctions.CryptGetHashParam(IntPtr Handle, Int32 Parameter, out Int32 Block, ref Int32 BlockSize) { return CryptGetHashParam(Handle,Parameter, out Block,ref BlockSize,0); }
         Boolean CryptographicFunctions.CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,ref Int32 DataSize, Int32 Flags) { return CryptGetKeyParam(Key,Param,Data,ref DataSize,Flags); }
+        Boolean CryptographicFunctions.CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,IntPtr Data,ref Int32 DataSize, Int32 Flags) { return CryptGetKeyParam(Key,Param,Data,ref DataSize,Flags); }
         Boolean CryptographicFunctions.CryptGetProvParam(IntPtr Context,CRYPT_PARAM Parameter,Byte[] Data,ref Int32 DataSize,Int32 Flags) { return CryptGetProvParam(Context,Parameter,Data,ref DataSize,Flags); }
         Boolean CryptographicFunctions.CryptGetProvParam(IntPtr Context,CRYPT_PARAM Parameter,IntPtr Data,ref Int32 DataSize,Int32 Flags) { return CryptGetProvParam(Context,Parameter,Data,ref DataSize,Flags); }
         Boolean CryptographicFunctions.CryptGetUserKey(IntPtr Context,KEY_SPEC_TYPE KeySpec,out IntPtr r) { return CryptGetUserKey(Context,KeySpec,out r); }
@@ -67,6 +68,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptMsgGetParam(IntPtr Message, CMSG_PARAM Parameter, Int32 SignerIndex, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data, ref Int32 Size) { return CryptMsgGetParam(Message,Parameter,SignerIndex,Data,ref Size); }
         Boolean CryptographicFunctions.CryptMsgUpdate(IntPtr Message, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data, Int32 Size, Boolean Final) { return CryptMsgUpdate(Message,Data,Size,Final); }
         Boolean CryptographicFunctions.CryptMsgUpdate(IntPtr Message, IntPtr Data, Int32 Size, Boolean Final) { return CryptMsgUpdate(Message,Data,Size,Final); }
+        Boolean CryptographicFunctions.CryptSetHashParam(IntPtr Hash,Int32 Param,ref CRYPT_DATA_BLOB Data,Int32 Flags) { return CryptSetHashParam(Hash,Param,ref Data,Flags); }
         Boolean CryptographicFunctions.CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,Int32 Flags) { return CryptSetKeyParam(Key,Param,Data,Flags); }
         Boolean CryptographicFunctions.CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,IntPtr Data,Int32 Flags) { return CryptSetKeyParam(Key,Param,Data,Flags); }
         Boolean CryptographicFunctions.CryptSetProvParam(IntPtr Context,CRYPT_PARAM Parameter,Byte[] Data,Int32 Flags) { return CryptSetProvParam(Context,Parameter,Data,Flags); }
@@ -103,8 +105,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         void CryptographicFunctions.CertCloseServerOcspResponse(IntPtr ServerOcspResponse,Int32 Flags) { CertCloseServerOcspResponse(ServerOcspResponse,Flags); }
 
         [DllImport("advapi32.dll", SetLastError = true)] private new static extern Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,ref Int32 DataLen,Int32 Flags);
+        [DllImport("advapi32.dll", SetLastError = true)] private new static extern Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,IntPtr Data,ref Int32 DataLen,Int32 Flags);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptCreateHash(IntPtr Provider, ALG_ID Algorithm, IntPtr Key, Int32 Flags, out IntPtr Handle);
-        [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptDeriveKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
+        [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptDeriveKey(IntPtr Context,ALG_ID AlgId,IntPtr BaseData,Int32 Flags,out IntPtr Key);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptDestroyHash(IntPtr Handle);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptDestroyKey(IntPtr Key);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r);
@@ -118,6 +121,9 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptGetUserKey(IntPtr Context,KEY_SPEC_TYPE KeySpec,out IntPtr UserKey);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptHashData(IntPtr Handle, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, Int32 DataSize, Int32 Flags);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptImportKey(IntPtr Context,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr r);
+        [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptSetHashParam(IntPtr Hash,Int32 Param,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 Flags);
+        [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptSetHashParam(IntPtr Hash,Int32 Param,ref CRYPT_DATA_BLOB Data,Int32 Flags);
+        [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptSetHashParam(IntPtr Hash,Int32 Param,IntPtr Data,Int32 Flags);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 Flags);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,IntPtr Data,Int32 Flags);
         [DllImport("advapi32.dll", SetLastError = true)] private static extern Boolean CryptSetProvParam(IntPtr Context,CRYPT_PARAM Parameter,[MarshalAs(UnmanagedType.LPArray)] Byte[] Data,Int32 Flags);
@@ -231,6 +237,20 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                     ref e,IntPtr.Zero,ref StreamInfo);
                 }
             }
+
+        unsafe Boolean CryptographicFunctions.CryptSetHashParam(IntPtr Hash,Int32 Param,Byte[] Data,Int32 Flags) {
+            if ((Flags & CRYPT_PASS_THROUGHT_DATA_BLOB) == CRYPT_PASS_THROUGHT_DATA_BLOB) {
+                fixed (Byte* o = Data) {
+                    var r = new CRYPT_DATA_BLOB {
+                        Data = o,
+                        Size = Data.Length
+                        };
+                    return CryptSetHashParam(Hash,Param,(IntPtr)(&r), Flags & ~CRYPT_PASS_THROUGHT_DATA_BLOB);
+                    }
+                }
+            return CryptSetHashParam(Hash,Param,Data,Flags);
+            }
+
 
         #region ctor
         internal CryptographicContextS() {

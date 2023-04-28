@@ -1,13 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading;
+using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 
 namespace BinaryStudio.Security.Cryptography
     {
+    using CRYPT_DATA_BLOB=CRYPT_BLOB;
     public class CryptKey : CryptographicObject
         {
         public override IntPtr Handle { get { return handle; }}
@@ -78,6 +81,51 @@ namespace BinaryStudio.Security.Cryptography
                 : null;
             }
         #endregion
+        #region M:ExportPrivateKey(Stream,String)
+        public unsafe void ExportPrivateKey(Stream OutputStream,String Password) {
+            if (OutputStream == null) { throw new ArgumentNullException(nameof(OutputStream)); }
+            var entries = (CryptographicFunctions)Context.GetService(typeof(CryptographicFunctions));
+            var salt = new Byte[SALT_LENGTH];
+            (new Random()).NextBytes(salt);
+            var HashAlgId = ALG_ID.CALG_PBKDF2_94_256;
+            switch (this.AlgId) {
+                case ALG_ID.CALG_DH_EL_SF:            HashAlgId = ALG_ID.CALG_GR3411;   break;
+                case ALG_ID.CALG_DH_GR3410_12_256_SF: HashAlgId = ALG_ID.CALG_PBKDF2_2012_256; break;
+                case ALG_ID.CALG_DH_GR3410_12_512_SF: HashAlgId = ALG_ID.CALG_PBKDF2_2012_512; break;
+                }
+            OutputStream.Write(MAGIC_PRI0);
+            OutputStream.Write((Int32)AlgId);
+            OutputStream.Write((Int32)KeySpec);
+            OutputStream.Write((Int32)HashAlgId);
+            OutputStream.Write(salt.Length);
+            OutputStream.Write(salt,0,salt.Length);
+            using (var hash = new CryptHashAlgorithm(Context,HashAlgId)) {
+                if (HashAlgId != ALG_ID.CALG_GR3411) {
+                    Validate(hash.SetParameter(HP_PBKDF2_SALT,salt,CRYPT_PASS_THROUGHT_DATA_BLOB));
+                    Validate(hash.SetParameter(HP_PBKDF2_PASSWORD,Encoding.ASCII.GetBytes(Password),CRYPT_PASS_THROUGHT_DATA_BLOB));
+                    }
+                Validate(entries.CryptDeriveKey(Context.Handle,ALG_ID.CALG_G28147,hash.Handle,CRYPT_EXPORTABLE,out var DerivedKeyU));
+                using (var DerivedKey = new CryptKey(Context,DerivedKeyU)) {
+                    Byte[] Data;
+                    var Size = 0;
+                    var AlgId = (HashAlgId == ALG_ID.CALG_GR3411)
+                        ? ALG_ID.CALG_PRO_EXPORT
+                        : ALG_ID.CALG_PRO12_EXPORT;
+                    DerivedKey.SetParameter(KEY_PARAM.KP_ALGID,&AlgId);
+                    DerivedKey.GetParameter(KEY_PARAM.KP_IV, out Byte[] SV);
+                    OutputStream.Write((Int32)ALG_ID.CALG_G28147);
+                    OutputStream.Write((Int32)AlgId);
+                    OutputStream.Write(SV.Length);
+                    OutputStream.Write(SV,0,SV.Length);
+                    OutputStream.Write(PRIVATEKEYBLOB);
+                    Validate(entries.CryptExportKey(Handle,DerivedKeyU,PRIVATEKEYBLOB,0,null, ref Size));
+                    Validate(entries.CryptExportKey(Handle,DerivedKeyU,PRIVATEKEYBLOB,0,Data = new Byte[Size], ref Size));
+                    OutputStream.Write(Size);
+                    OutputStream.Write(Data,0,Size);
+                    }
+                }
+            }
+        #endregion
 
         #region P:SecureCode:SecureString
         public SecureString SecureCode {
@@ -133,7 +181,7 @@ namespace BinaryStudio.Security.Cryptography
             return GetParameter(key, 0);
             }
         #endregion
-        #region M:GetParameter(KEY_PARAM,UInt32):Byte[]
+        #region M:GetParameter(KEY_PARAM,Int32):Byte[]
         internal Byte[] GetParameter(KEY_PARAM key, Int32 flags) {
             for (var i = 0x200;;) {
                 var r = new Byte[i];
@@ -159,10 +207,59 @@ namespace BinaryStudio.Security.Cryptography
             return null;
             }
         #endregion
+        #region M:GetParameter(KEY_PARAM,{out}Int32):Boolean
+        public unsafe Boolean GetParameter(KEY_PARAM key,out Int32 value) {
+            value = 0;
+            var entries = (CryptographicFunctions)Context.GetService(typeof(CryptographicFunctions));
+            var r = 0;
+            var o = sizeof(Int32);
+            if (entries.CryptGetKeyParam(Handle, key, (IntPtr)(&r), ref o, 0)) {
+                value = r;
+                return true;
+                }
+            return false;
+            }
+        #endregion
+        #region M:GetParameter(KEY_PARAM,{out}Byte[]):Boolean
+        public unsafe Boolean GetParameter(KEY_PARAM key,out Byte[] value) {
+            value = null;
+            for (var i = 0x200;;) {
+                var r = new Byte[i];
+                if (Context.CryptGetKeyParam(Handle, key, r, ref i, 0)) {
+                    value = new Byte[i];
+                    Array.Copy(r,value,i);
+                    return true;
+                    }
+                var e = (Int32)Context.GetLastWin32Error();
+                var FacilityI = ((Int32)e >> 16) & 0x1fff;
+                var FacilityE = (FACILITY)FacilityI;
+                if (FacilityE == FACILITY.WIN32) { e = ((Int32)e & 0xffff); }
+                if ((Win32ErrorCode)e == Win32ErrorCode.ERROR_MORE_DATA) { continue; }
+                if ((HRESULT)e == HRESULT.NTE_BAD_KEY) {
+                    /*
+                     * При вызове метода CryptGetKeyParam с буфером недостаточной длины GetLastError() возвращает ошибку NTE_BAD_KEY (0x80090003 Плохой ключ.),
+                     * хотя ожидается ошибка ERROR_MORE_DATA. Стабильно воспроизводится при запросе сертификата (параметра KP_CERTIFICATE).
+                     */
+                    if (key == KEY_PARAM.KP_CERTIFICATE) {
+                        if (Context.ProviderName.StartsWith("Crypto-Pro", StringComparison.OrdinalIgnoreCase) && (Context.Version.Major == 5)) {
+                            continue;
+                            }
+                        }
+                    }
+                break;
+                }
+            return false;
+            }
+        #endregion
         #region M:SetParameter(KEY_PARAM,IntPtr):Byte[]
         internal void SetParameter(KEY_PARAM index, IntPtr value) {
             Validate(((CryptographicFunctions)context.GetService(typeof(CryptographicFunctions))).
                 CryptSetKeyParam(Handle,index,value, 0));
+            }
+        #endregion
+        #region M:SetParameter(KEY_PARAM,void*):Byte[]
+        internal unsafe void SetParameter(KEY_PARAM index, void* value) {
+            SetParameter(index,(IntPtr)value);
             }
         #endregion
         #region M:Dispose(Boolean)
@@ -190,5 +287,12 @@ namespace BinaryStudio.Security.Cryptography
 
         private IntPtr handle;
         private CryptographicContext context;
+        private const Int32 SALT_LENGTH = 32;
+        private const Int32 HP_PBKDF2_SALT     = 0x0017;
+        private const Int32 HP_PBKDF2_PASSWORD = 0x0018;
+        private const Int32 CRYPT_EXPORTABLE = 0x00000001;
+        private const Int32 PLAINTEXTKEYBLOB = 0x8;
+        private const Int32 PRIVATEKEYBLOB   = 0x7;
+        private const Int32 MAGIC_PRI0 = 0x30495250;
         }
     }

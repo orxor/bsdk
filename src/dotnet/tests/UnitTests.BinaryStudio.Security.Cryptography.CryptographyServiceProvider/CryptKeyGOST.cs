@@ -37,7 +37,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
                 new CertificateExtension[] {
                     new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef")
                     },
-                Stream.Null, SecureCode,
+                Stream.Null, Stream.Null, SecureCode,
                 out Certificate,DeletePrivateKey, out var Container, out var providerName,out var providerType);
             }
         #endregion
@@ -50,7 +50,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
                 new CertificateExtension[] {
                     new CertificateSubjectKeyIdentifier(false,"89abcdeffedcba98765432100123456789abcdef")
                     },
-                Stream.Null, SecureCode,
+                Stream.Null, Stream.Null, SecureCode,
                 out Certificate,DeletePrivateKey, out var Container, out var providerName,out var providerType);
             }
         #endregion
@@ -76,7 +76,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.CryptographyServiceProvid
                 var dt = DateTime.Now;
                 CryptographicContext.MakeCertificate(ALG_ID.CALG_GR3410EL, "CN=I-CA, C=ru", "040506",
                     dt.AddYears(-1), dt.AddYears(1), null,
-                    Stream.Null, SecureCode,
+                    Stream.Null, Stream.Null, SecureCode,
                     out var SubjectCertificate,
                     IssuerCertificate, true, out var container, out var providerName,out var providerType);
                 }

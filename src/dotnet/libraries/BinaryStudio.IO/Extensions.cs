@@ -47,6 +47,16 @@ namespace BinaryStudio.IO
             target.Write(r,0,length);
             }
         #endregion
+        #region M:Write({this}Stream,Int32)
+        public static unsafe void Write(this Stream target, Int32 value) {
+            if (target == null) { throw new ArgumentNullException(nameof(target)); }
+            var r = new Byte[sizeof(Int32)];
+            fixed (Byte* o = r) {
+                *((Int32*)o) = value;
+                target.Write(r,0,r.Length);
+                }
+            }
+        #endregion
 
         public static IDisposable StorePosition(this BinaryReader source)
             {
@@ -73,5 +83,6 @@ namespace BinaryStudio.IO
                 source.Position = position;
                 source = null;
                 }
-            }        }
+            }
+        }
     }

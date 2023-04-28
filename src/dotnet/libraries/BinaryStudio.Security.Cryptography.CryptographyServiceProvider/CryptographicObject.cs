@@ -368,5 +368,6 @@ namespace BinaryStudio.Security.Cryptography
         protected const Int32 CERT_SIMPLE_NAME_STR = 1;
         protected const Int32 CERT_OID_NAME_STR    = CERT_SIMPLE_NAME_STR + 1;
         protected const Int32 CERT_X500_NAME_STR   = CERT_OID_NAME_STR    + 1;
+        protected const Int32 CRYPT_PASS_THROUGHT_DATA_BLOB = 0x01000000;
         }
     }
