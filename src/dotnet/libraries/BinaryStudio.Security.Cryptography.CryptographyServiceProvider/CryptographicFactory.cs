@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Internal;
+using BinaryStudio.Services;
 
 namespace BinaryStudio.Security.Cryptography
     {

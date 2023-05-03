@@ -57,7 +57,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 var SecureCode = CryptographicContext.GetSecureString("12345678");
                 var RequestSecureCode = new RequestSecureCode(SecureCode);
                 var dt = DateTime.Now;
-                var AlgId = ALG_ID.CALG_GR3410EL;
+                var AlgId = ALG_ID.CALG_GR3410_12_512;
                 var ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH;
                 switch (AlgId)
                     {
@@ -211,8 +211,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                         CryptographicMessageFlags.Split);
                     }
                 }
-            DoInvalidSignature($"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc",$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}{{InvalidMessage}}.enc", 8);
-            DoInvalidSignature($"{{User1}}{{{Prefix}}}.enc",$"{{User1}}{{{Prefix}}}{{InvalidMessage}}.enc", 8);
+            DoInvalidSignature($"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc",$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}{{InvalidMessage}}.enc", 80);
+            DoInvalidSignature($"{{User1}}{{{Prefix}}}.enc",$"{{User1}}{{{Prefix}}}{{InvalidMessage}}.enc", 80);
             }
 
         private static void DoCmsSet(CRYPT_PROVIDER_TYPE ProviderType, RequestSecureString RequestSecureCode,CryptographicMessageFlags flags, X509Certificate[] certificates)
@@ -360,7 +360,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 Extensions.Add(new CertificateKeyUsage(KeyUsage));
                 }
             using (MemoryStream POutput = new MemoryStream(),
-                                BOutput = new MemoryStream())
+                                BOutput = (AlgId == ALG_ID.CALG_GR3410EL)
+                                 ? new MemoryStream()
+                                 : null)
                 {
                 CryptographicContext.MakeCertificate(AlgId,$"CN={SubjectName}",String.Join(String.Empty,SerialNumber.Select(i=> i.ToString("x2"))),
                     DateTime.AddDays(-1),DateTime.AddYears(5),
@@ -371,10 +373,11 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     POutput.Seek(0,SeekOrigin.Begin);
                     POutput.CopyTo(PrivateKeyOutput);
                     }
-                using (var PrivateKeyOutput = File.Create($"{SubjectName}.pri")) {
-                    BOutput.Seek(0,SeekOrigin.Begin);
-                    BOutput.CopyTo(PrivateKeyOutput);
-                    }
+                if (BOutput != null)
+                    using (var PrivateKeyOutput = File.Create($"{SubjectName}.pri")) {
+                        BOutput.Seek(0,SeekOrigin.Begin);
+                        BOutput.CopyTo(PrivateKeyOutput);
+                        }
                 if (IsViPNet) {
                     File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
                     DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
@@ -425,7 +428,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 Extensions.Add(new CRLDistributionPoints(DistributionPoints.Select(i => new DistributionPoint(i)).ToArray()));
                 }
             using (MemoryStream POutput = new MemoryStream(),
-                                BOutput = new MemoryStream())
+                                BOutput = (AlgId == ALG_ID.CALG_GR3410EL)
+                                 ? new MemoryStream()
+                                 : null)
                 {
                 CryptographicContext.MakeCertificate(AlgId,$"CN={SubjectName}",String.Join(String.Empty,SerialNumber.Select(i=> i.ToString("x2"))),
                     DateTime.AddDays(-1),DateTime.AddYears(5),
@@ -436,10 +441,11 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     POutput.Seek(0,SeekOrigin.Begin);
                     POutput.CopyTo(PrivateKeyOutput);
                     }
-                using (var PrivateKeyOutput = File.Create($"{SubjectName}.pri")) {
-                    BOutput.Seek(0,SeekOrigin.Begin);
-                    BOutput.CopyTo(PrivateKeyOutput);
-                    }
+                if (BOutput != null)
+                    using (var PrivateKeyOutput = File.Create($"{SubjectName}.pri")) {
+                        BOutput.Seek(0,SeekOrigin.Begin);
+                        BOutput.CopyTo(PrivateKeyOutput);
+                        }
                 if (IsViPNet) {
                     File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
                     DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
@@ -487,7 +493,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
         #region M:DoInvalidSignature(String,String)
         private static void DoInvalidSignature(String InputFileName, String OutputFileName, Int32 offset = 8) {
             var r = File.ReadAllBytes(InputFileName);
-            var l = r.Length - offset - 1;
+            var l = r.Length - offset;
             var buffer = new Byte[offset];
             Random.NextBytes(buffer);
             for (var i = 0; i < offset; i++) {

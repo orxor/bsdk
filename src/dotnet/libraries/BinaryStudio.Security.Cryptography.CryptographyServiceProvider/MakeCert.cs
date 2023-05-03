@@ -15,6 +15,7 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Internal;
 using BinaryStudio.Serialization;
+using BinaryStudio.Services;
 using X509Certificate = BinaryStudio.Security.Cryptography.Certificates.X509Certificate;
 
 namespace BinaryStudio.Security.Cryptography

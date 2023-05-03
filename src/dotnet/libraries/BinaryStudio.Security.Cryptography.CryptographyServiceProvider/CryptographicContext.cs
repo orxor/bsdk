@@ -33,6 +33,7 @@ using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Internal;
 using BinaryStudio.Serialization;
 using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
+using BinaryStudio.Services;
 
 namespace BinaryStudio.Security.Cryptography
     {

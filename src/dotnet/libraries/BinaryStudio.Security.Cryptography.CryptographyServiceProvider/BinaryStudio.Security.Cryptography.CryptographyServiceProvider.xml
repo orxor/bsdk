@@ -59,7 +59,7 @@
             </summary>
             <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
             <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
-            <seealso cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)"/>
+            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.IX509CertificateStorage.Add(BinaryStudio.Security.Cryptography.Certificates.X509Certificate)">
             <summary>
@@ -306,7 +306,7 @@
             </summary>
             <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
             <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
-            <seealso cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)"/>
+            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Add(BinaryStudio.Security.Cryptography.Certificates.X509Certificate)">
             <summary>
@@ -346,7 +346,7 @@
             </summary>
             <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
             <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
-            <seealso cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)"/>
+            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.Internal.EX509CertificateStorage.Dispose(System.Boolean)">
             <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
@@ -423,7 +423,7 @@
             </summary>
             <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextC.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Security.Cryptography.CertEnumSystemStoreCallbackString)">
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextC.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Services.CertEnumSystemStoreCallbackString)">
             <summary>The CertEnumSystemStore function retrieves the system stores available. The function calls the provided callback function for each system store found.</summary>
             <param name="Flags">Specifies the location of the system store.</param>
             <param name="SystemStoreLocationPara">Specific argument specific for <paramref name="Flags"/>.</param>
@@ -446,7 +446,7 @@
             </summary>
             <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextP.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Security.Cryptography.CertEnumSystemStoreCallbackString)">
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextP.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Services.CertEnumSystemStoreCallbackString)">
             <summary>The CertEnumSystemStore function retrieves the system stores available. The function calls the provided callback function for each system store found.</summary>
             <param name="Flags">Specifies the location of the system store.</param>
             <param name="SystemStoreLocationPara">Specific argument specific for <paramref name="Flags"/>.</param>
@@ -462,7 +462,7 @@
             -or-
             <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextS.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Security.Cryptography.CertEnumSystemStoreCallbackString)">
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextS.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Services.CertEnumSystemStoreCallbackString)">
             <summary>The CertEnumSystemStore function retrieves the system stores available. The function calls the provided callback function for each system store found.</summary>
             <param name="Flags">Specifies the location of the system store.</param>
             <param name="SystemStoreLocationPara">Specific argument specific for <paramref name="Flags"/>.</param>

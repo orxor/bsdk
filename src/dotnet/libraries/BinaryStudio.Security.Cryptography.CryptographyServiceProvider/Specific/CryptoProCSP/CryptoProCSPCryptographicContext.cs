@@ -11,6 +11,7 @@ using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Services;
 using Microsoft.Win32;
 
 namespace BinaryStudio.Security.Cryptography.Specific.CryptoProCSP

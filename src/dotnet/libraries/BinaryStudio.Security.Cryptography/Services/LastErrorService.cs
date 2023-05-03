@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BinaryStudio.Security.Cryptography
+namespace BinaryStudio.Services
     {
     public interface LastErrorService
         {

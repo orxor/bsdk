@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Services;
 using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 
 // ReSharper disable ParameterHidesMember

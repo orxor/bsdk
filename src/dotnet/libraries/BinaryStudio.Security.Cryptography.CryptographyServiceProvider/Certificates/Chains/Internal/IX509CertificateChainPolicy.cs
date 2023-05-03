@@ -1,5 +1,6 @@
 ﻿using System;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Services;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {

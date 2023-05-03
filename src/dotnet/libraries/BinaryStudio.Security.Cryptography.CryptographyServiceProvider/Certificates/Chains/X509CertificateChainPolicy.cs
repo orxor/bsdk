@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Services;
 
 // ReSharper disable VirtualMemberCallInConstructor
 

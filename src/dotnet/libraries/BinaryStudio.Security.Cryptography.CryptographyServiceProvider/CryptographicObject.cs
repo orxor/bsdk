@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Services;
 
 namespace BinaryStudio.Security.Cryptography
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using BinaryStudio.Serialization;
+using BinaryStudio.Services;
 
 namespace BinaryStudio.Security.Cryptography.Certificates
     {

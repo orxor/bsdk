@@ -295,7 +295,7 @@
               Looks up a localized string similar to This certificate or one of the certificates in the certificate chain is not time valid..
             </summary>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD)">
             <summary>
             The function adds a certificate context to the certificate store.
             </summary>
@@ -319,7 +319,7 @@
                     CERT_STORE_ADD_NEW
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching certificate or a link to a matching certificate exists, the operation fails. <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
+                    If a matching certificate or a link to a matching certificate exists, the operation fails. <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
                   </td>
                 </tr>
                 <tr>
@@ -327,7 +327,7 @@
                     CERT_STORE_ADD_NEWER
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching certificate or a link to a matching certificate exists and the <b>NotBefore</b> time of the existing context is equal to or greater than the <b>NotBefore</b> time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.<br/>
+                    If a matching certificate or a link to a matching certificate exists and the <b>NotBefore</b> time of the existing context is equal to or greater than the <b>NotBefore</b> time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.<br/>
                     If the <b>NotBefore</b> time of the existing context is less than the <b>NotBefore</b> time of the new context being added, the existing certificate or link is deleted and a new certificate is created and added to the store. If a matching certificate or a link to a matching certificate does not exist, a new link is added.<br/>
                     If <a href="https://learn.microsoft.com/en-us/windows/win32/secgloss/c-gly#:~:text=a%20CERT_REQUEST_INFO%20structure.-,certificate%20revocation%20list,-(CRL)%20A%20document">certificate revocation lists</a> (CRLs) or <a href="https://learn.microsoft.com/en-us/windows/win32/secgloss/c-gly#:~:text=and%20Code%20Signing.-,certificate%20trust%20list,-(CTL)%20A%20predefined">certificate trust list</a> (CTLs) are being compared, the <b>ThisUpdate</b> time is used.
                   </td>
@@ -337,7 +337,7 @@
                     CERT_STORE_ADD_NEWER_INHERIT_PROPERTIES
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching certificate or a link to a matching certificate exists and the NotBefore time of the existing context is equal to or greater than the NotBefore time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the CRYPT_E_EXISTS code.<br/>
+                    If a matching certificate or a link to a matching certificate exists and the NotBefore time of the existing context is equal to or greater than the NotBefore time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the CRYPT_E_EXISTS code.<br/>
                     If the NotBefore time of the existing context is less than the NotBefore time of the new context being added, the existing context is deleted before creating and adding the new context. The new added context inherits properties from the existing certificate.<br/>
                     If CRLs or CTLs are being compared, the ThisUpdate time is used.
                   </td>
@@ -372,7 +372,7 @@
             </param>
             <returns>
             If the function succeeds, the return value is <see langword="true"/>. If the function fails, the return value is <see langword="false"/>.
-            For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. Some possible error codes follow:
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. Some possible error codes follow:
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -396,7 +396,7 @@
               <a href="https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore">CertAddCertificateContextToStore</a>
             </remarks>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD,System.IntPtr@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD,System.IntPtr@)">
             <summary>
             The function adds a certificate context to the certificate store.
             </summary>
@@ -420,7 +420,7 @@
                     CERT_STORE_ADD_NEW
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching certificate or a link to a matching certificate exists, the operation fails. <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
+                    If a matching certificate or a link to a matching certificate exists, the operation fails. <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
                   </td>
                 </tr>
                 <tr>
@@ -428,7 +428,7 @@
                     CERT_STORE_ADD_NEWER
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching certificate or a link to a matching certificate exists and the <b>NotBefore</b> time of the existing context is equal to or greater than the <b>NotBefore</b> time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.<br/>
+                    If a matching certificate or a link to a matching certificate exists and the <b>NotBefore</b> time of the existing context is equal to or greater than the <b>NotBefore</b> time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.<br/>
                     If the <b>NotBefore</b> time of the existing context is less than the <b>NotBefore</b> time of the new context being added, the existing certificate or link is deleted and a new certificate is created and added to the store. If a matching certificate or a link to a matching certificate does not exist, a new link is added.<br/>
                     If <a href="https://learn.microsoft.com/en-us/windows/win32/secgloss/c-gly#:~:text=a%20CERT_REQUEST_INFO%20structure.-,certificate%20revocation%20list,-(CRL)%20A%20document">certificate revocation lists</a> (CRLs) or <a href="https://learn.microsoft.com/en-us/windows/win32/secgloss/c-gly#:~:text=and%20Code%20Signing.-,certificate%20trust%20list,-(CTL)%20A%20predefined">certificate trust list</a> (CTLs) are being compared, the <b>ThisUpdate</b> time is used.
                   </td>
@@ -438,7 +438,7 @@
                     CERT_STORE_ADD_NEWER_INHERIT_PROPERTIES
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching certificate or a link to a matching certificate exists and the NotBefore time of the existing context is equal to or greater than the NotBefore time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the CRYPT_E_EXISTS code.<br/>
+                    If a matching certificate or a link to a matching certificate exists and the NotBefore time of the existing context is equal to or greater than the NotBefore time of the new context being added, the operation fails and <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the CRYPT_E_EXISTS code.<br/>
                     If the NotBefore time of the existing context is less than the NotBefore time of the new context being added, the existing context is deleted before creating and adding the new context. The new added context inherits properties from the existing certificate.<br/>
                     If CRLs or CTLs are being compared, the ThisUpdate time is used.
                   </td>
@@ -471,10 +471,10 @@
               </table>
             </p>
             </param>
-            <param name="OutputContext">A pointer to a pointer to the copy to be made of the certificate that was added to the store. Value must be freed by using <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/>.</param>
+            <param name="OutputContext">A pointer to a pointer to the copy to be made of the certificate that was added to the store. Value must be freed by using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/>.</param>
             <returns>
             If the function succeeds, the return value is <see langword="true"/>. If the function fails, the return value is <see langword="false"/>.
-            For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. Some possible error codes follow:
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. Some possible error codes follow:
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -498,7 +498,7 @@
               <a href="https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certaddcertificatecontexttostore">CertAddCertificateContextToStore</a>
             </remarks>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateLinkToStore(System.IntPtr,System.IntPtr,System.Int32,System.IntPtr@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertAddCertificateLinkToStore(System.IntPtr,System.IntPtr,System.Int32,System.IntPtr@)">
             <summary>
             The function adds a link in a certificate store to a certificate context in a different store. Instead of creating and adding a duplicate of the certificate context, this function adds a link to the original certificate.
             </summary>
@@ -520,7 +520,7 @@
                     CERT_STORE_ADD_NEW
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching certificate or a link to a matching certificate exists, the operation fails. <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
+                    If a matching certificate or a link to a matching certificate exists, the operation fails. <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
                   </td>
                 </tr>
                 <tr>
@@ -543,7 +543,7 @@
             </p>
             </param>
             <param name="OutputContext">
-            A pointer to a pointer to a copy of the link created. If a copy of the link is created, that copy must be freed using the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/> function.
+            A pointer to a pointer to a copy of the link created. If a copy of the link is created, that copy must be freed using the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/> function.
             </param>
             <returns>
             If the function succeeds, the return value is <see langword="true"/>.<br/>
@@ -568,8 +568,8 @@
              </table>
             </returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCRLContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD)" -->
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCRLContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD,System.IntPtr@)">
+        <!-- Badly formed XML comment ignored for member "M:BinaryStudio.Services.CryptographicFunctions.CertAddCRLContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD)" -->
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertAddCRLContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD,System.IntPtr@)">
             <summary>
             The function adds a certificate revocation list (CRL) context to the specified certificate store.
             </summary>
@@ -591,7 +591,7 @@
                     CERT_STORE_ADD_NEW
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching CRL or a link to a matching CRL exists, the operation fails. <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
+                    If a matching CRL or a link to a matching CRL exists, the operation fails. <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
                   </td>
                 </tr>
                 <tr>
@@ -600,7 +600,7 @@
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                     If a matching CRL or a link to a matching CRL exists, the function compares the <see cref="F:BinaryStudio.PlatformComponents.Win32.CRL_INFO.ThisUpdate"/> times on the CRLs. If the existing CRL has a <see cref="F:BinaryStudio.PlatformComponents.Win32.CRL_INFO.ThisUpdate"/> time less than the <see cref="F:BinaryStudio.PlatformComponents.Win32.CRL_INFO.ThisUpdate"/> time on the new CRL, the old CRL or link is replaced just as with CERT_STORE_ADD_REPLACE_EXISTING.<br/>
-                    If the existing CRL has a <see cref="F:BinaryStudio.PlatformComponents.Win32.CRL_INFO.ThisUpdate"/> time greater than or equal to the <see cref="F:BinaryStudio.PlatformComponents.Win32.CRL_INFO.ThisUpdate"/> time on the CRL to be added, the function fails with <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returning the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.<br/>
+                    If the existing CRL has a <see cref="F:BinaryStudio.PlatformComponents.Win32.CRL_INFO.ThisUpdate"/> time greater than or equal to the <see cref="F:BinaryStudio.PlatformComponents.Win32.CRL_INFO.ThisUpdate"/> time on the CRL to be added, the function fails with <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returning the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.<br/>
                     If a matching CRL or a link to a matching CRL is not found in the store, a new CRL is added to the store.
                   </td>
                 </tr>
@@ -645,7 +645,7 @@
             <returns>
             If the function succeeds, the return value is TRUE.<br/>
             If the function fails, the return value is FALSE. Errors from the called functions <see cref="!:CertAddEncodedCRLToStore"/> and <see cref="!:CertSetCRLContextProperty"/> can be propagated to this function.<br/>
-            For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. Some possible error codes follow.
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. Some possible error codes follow.
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -666,7 +666,7 @@
              </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddEncodedCertificateToStore(System.IntPtr,System.Int32,System.Byte[],System.Int32,System.Int32,System.IntPtr@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertAddEncodedCertificateToStore(System.IntPtr,System.Int32,System.Byte[],System.Int32,System.Int32,System.IntPtr@)">
             <summary>
             The function creates a certificate context from an encoded certificate and adds it to the certificate store. The context created does not include any extended properties.<br/>
             The function also makes a copy of the encoded certificate before adding the certificate to the store.
@@ -700,7 +700,7 @@
                     CERT_STORE_ADD_NEW
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    If a matching certificate or a link to a matching certificate exists in the store, the operation fails. <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
+                    If a matching certificate or a link to a matching certificate exists in the store, the operation fails. <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns the <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_EXISTS"/> code.
                   </td>
                 </tr>
                 <tr>
@@ -732,11 +732,11 @@
             </p>
             </param>
             <param name="CertContext">
-            A pointer to a pointer to the decoded certificate context. When a copy is made, its context must be freed by using <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/>.
+            A pointer to a pointer to the decoded certificate context. When a copy is made, its context must be freed by using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/>.
             </param>
             <returns>
             If the function succeeds, the return value is TRUE.<br/>
-            If the function fails, the return value is FALSE. For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. Some possible error codes follow:
+            If the function fails, the return value is FALSE. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. Some possible error codes follow:
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -757,9 +757,9 @@
              </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)">
             <summary>
-            The function closes a certificate store handle and reduces the reference count on the store. There needs to be a corresponding call to <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> for each successful call to the <see cref="!:CertOpenStore"/> or <see cref="!:CertDuplicateStore"/> functions.
+            The function closes a certificate store handle and reduces the reference count on the store. There needs to be a corresponding call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> for each successful call to the <see cref="!:CertOpenStore"/> or <see cref="!:CertDuplicateStore"/> functions.
             </summary>
             <param name="Store">Handle of the certificate store to be closed.</param>
             <param name="Flags">
@@ -786,13 +786,13 @@
             </param>
             <returns>
             If the function succeeds, the return value is TRUE.<br/>
-            If the function fails, the return value is FALSE. For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>.<br/>
+            If the function fails, the return value is FALSE. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.<br/>
             If CERT_CLOSE_STORE_CHECK_FLAG is not set or if it is set and all contexts associated with the store have been freed, the return value is TRUE.<br/>
             If CERT_CLOSE_STORE_CHECK_FLAG is set and memory for one or more contexts associated with the store remains allocated, the return value is FALSE. The store is always closed even when the function returns FALSE.<br/>
-            GetLastError is set to <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_PENDING_CLOSE"/> if memory for contexts associated with the store remains allocated. Any existing value returned by <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> is preserved unless CERT_CLOSE_STORE_CHECK_FLAG is set.
+            GetLastError is set to <see cref="F:BinaryStudio.PlatformComponents.Win32.HRESULT.CRYPT_E_PENDING_CLOSE"/> if memory for contexts associated with the store remains allocated. Any existing value returned by <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> is preserved unless CERT_CLOSE_STORE_CHECK_FLAG is set.
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertDeleteCertificateFromStore(System.IntPtr)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertDeleteCertificateFromStore(System.IntPtr)">
             <summary>
             The function deletes the specified certificate context from the certificate store.
             </summary>
@@ -812,7 +812,7 @@
              </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertDeleteCRLFromStore(System.IntPtr)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertDeleteCRLFromStore(System.IntPtr)">
             <summary>
             The function deletes the specified certificate revocation list (CRL) context from the certificate store.
             </summary>
@@ -832,7 +832,7 @@
              </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Security.Cryptography.CertEnumSystemStoreCallbackString)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Services.CertEnumSystemStoreCallbackString)">
             <summary>
             The function retrieves the system stores available. The function calls the provided callback function for each system store found.
             </summary>
@@ -857,13 +857,13 @@
             If only the <i>computer_name</i> is specified, it must have either the leading backslashes (\) or a trailing backslash (\). Otherwise, it is interpreted as the <i>service_name</i> or <i>user_name</i>.
             </param>
             <param name="Arg">A pointer to a void that allows the application to declare, define, and initialize a structure to hold any information to be passed to the callback enumeration function.</param>
-            <param name="Callback">A pointer to the callback function used to show the details for each system store. This callback function determines the content and format for the presentation of information on each system store. The application must provide the <see cref="T:BinaryStudio.Security.Cryptography.CertEnumSystemStoreCallbackString"/> callback function.</param>
+            <param name="Callback">A pointer to the callback function used to show the details for each system store. This callback function determines the content and format for the presentation of information on each system store. The application must provide the <see cref="T:BinaryStudio.Services.CertEnumSystemStoreCallbackString"/> callback function.</param>
             <returns>
             If the function succeeds, the function returns TRUE.<br/>
             If the function fails, it returns FALSE.
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertExportCertStore(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB@,System.IntPtr,System.IntPtr,System.Int32)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertExportCertStore(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB@,System.IntPtr,System.IntPtr,System.Int32)">
             <summary>
             The function exports the certificates and, if available, their associated private keys from the referenced certificate store. This function replaces the older <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertExportCertStore(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB@,System.IntPtr,System.Int32)"/> function. It should be used for its enhanced private key security. The PFX BLOB created by this function is protected by a password.
             </summary>
@@ -934,10 +934,10 @@
             </param>
             <returns>
             Returns TRUE (nonzero) if the function succeeds, and FALSE (zero) if the function fails.<br/>
-            For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>.
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertExportCertStore(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB@,System.IntPtr,System.Int32)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertExportCertStore(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB@,System.IntPtr,System.Int32)">
             <summary>
             The function exports the certificates and, if available, their associated private keys from the referenced certificate store. This function replaces the older <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertExportCertStore(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB@,System.IntPtr,System.Int32)"/> function. It should be used for its enhanced private key security. The PFX BLOB created by this function is protected by a password.
             </summary>
@@ -994,18 +994,18 @@
             </param>
             <returns>
             Returns TRUE (nonzero) if the function succeeds, and FALSE (zero) if the function fails.<br/>
-            For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>.
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)">
             <summary>
-            The function frees a certificate context by decrementing its reference count. When the reference count goes to zero, <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/> frees the memory used by a certificate context.<br/>
+            The function frees a certificate context by decrementing its reference count. When the reference count goes to zero, <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/> frees the memory used by a certificate context.<br/>
             To free a context obtained by a get, duplicate, or create function, call the appropriate free function. To free a context obtained by a find or enumerate function, either pass it in as the previous context parameter to a subsequent invocation of the function, or call the appropriate free function. For more information, see the reference topic for the function that obtains the context.
             </summary>
             <param name="Context">A pointer to the <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> to be freed.</param>
             <returns>The function always returns TRUE.</returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)">
             <summary>
             The function retrieves the information contained in an extended property of a certificate context.
             </summary>
@@ -1043,7 +1043,7 @@
                     CERT_ARCHIVED_PROP_ID
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-                    Data type of <paramref name="Data"/>: NULL. If the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function returns true, then the specified property ID exists for the <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/>.<br/>
+                    Data type of <paramref name="Data"/>: NULL. If the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function returns true, then the specified property ID exists for the <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/>.<br/>
                     Indicates the certificate is skipped during enumerations. A certificate with this property set is found with explicit search operations, such as those used to find a certificate with a specific hash or a serial number. No data in <paramref name="Data"/> is associated with this property.
                   </td>
                 </tr>
@@ -1524,7 +1524,7 @@
                   </td>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                     Data type of <paramref name="Data"/>: A pointer to an array of <see cref="T:System.Byte"/> values. The size of this array is specified in the <paramref name="Size"/> parameter.<br/>
-                    Returns a pointer to encoded smart card data. Prior to calling <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/>, you can use this constant to retrieve a smart card certificate by using the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFindCertificateInStore(System.IntPtr,System.Int32,System.Int32,System.Int32,System.IntPtr,System.IntPtr)"/> function with the pvFindPara parameter set to CERT_SMART_CARD_DATA_PROP_ID and the dwFindType parameter set to CERT_FIND_PROPERTY.
+                    Returns a pointer to encoded smart card data. Prior to calling <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/>, you can use this constant to retrieve a smart card certificate by using the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertFindCertificateInStore(System.IntPtr,System.Int32,System.Int32,System.Int32,System.IntPtr,System.IntPtr)"/> function with the pvFindPara parameter set to CERT_SMART_CARD_DATA_PROP_ID and the dwFindType parameter set to CERT_FIND_PROPERTY.
                   </td>
                 </tr>
                 <tr>
@@ -1615,7 +1615,7 @@
             </param>
             <param name="Size">
             A pointer to a <see cref="T:System.Int32"/> value that specifies the size, in bytes, of the buffer pointed to by the <paramref name="Data"/> parameter. When the function returns, the <see cref="T:System.Int32"/> value contains the number of bytes to be stored in the buffer.<br/>
-            To obtain the required size of a buffer at run time, pass NULL for the <paramref name="Data"/> parameter, and set the value pointed to by this parameter to zero. If the <paramref name="Data"/> parameter is not NULL and the size specified in <paramref name="Size"/> is less than the number of bytes required to contain the data, the function fails, <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> returns <see cref="F:BinaryStudio.PlatformComponents.Win32.Win32ErrorCode.ERROR_MORE_DATA"/>, and the required size is placed in the variable pointed to by the <paramref name="Size"/> parameter.
+            To obtain the required size of a buffer at run time, pass NULL for the <paramref name="Data"/> parameter, and set the value pointed to by this parameter to zero. If the <paramref name="Data"/> parameter is not NULL and the size specified in <paramref name="Size"/> is less than the number of bytes required to contain the data, the function fails, <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returns <see cref="F:BinaryStudio.PlatformComponents.Win32.Win32ErrorCode.ERROR_MORE_DATA"/>, and the required size is placed in the variable pointed to by the <paramref name="Size"/> parameter.
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
@@ -1626,7 +1626,7 @@
             </param>
             <returns>
             If the function succeeds, the function returns TRUE.<br/>
-            If the function fails, it returns FALSE. For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>.
+            If the function fails, it returns FALSE. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.
             Some possible error codes follow.
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
@@ -1648,7 +1648,7 @@
              </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertRetrieveLogoOrBiometricInfo(System.IntPtr,System.String,System.Int32,System.Int32,System.Int32,System.IntPtr,System.IntPtr@,System.Int32@,System.IntPtr@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertRetrieveLogoOrBiometricInfo(System.IntPtr,System.String,System.Int32,System.Int32,System.Int32,System.IntPtr,System.IntPtr@,System.Int32@,System.IntPtr@)">
             <summary>
             The function performs a URL retrieval of logo or biometric information specified in either the szOID_LOGOTYPE_EXT or szOID_BIOMETRIC_EXT certificate extension. The szOID_BIOMETRIC_EXT extension (IETF RFC 3739) supports the addition of a signature or a pictorial representation of the human holder of the certificate. The szOID_LOGOTYPE_EXT extension (IETF RFC 3709) supports the addition of organizational pictorial representations in certificates.
             </summary>
@@ -1711,7 +1711,7 @@
             </param>
             <returns>
             Returns TRUE if successful or FALSE otherwise.<br/>
-            For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. Possible error codes returned by the <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/> function include, but are not limited to, the following.
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. Possible error codes returned by the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function include, but are not limited to, the following.
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -1764,7 +1764,7 @@
              </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertSerializeCertificateStoreElement(System.IntPtr,System.Int32,System.Byte[],System.Int32@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertSerializeCertificateStoreElement(System.IntPtr,System.Int32,System.Byte[],System.Int32@)">
             <summary>
             The function serializes a certificate context's encoded certificate and its encoded properties. The result can be persisted to storage so that the certificate and properties can be retrieved at a later time.
             </summary>
@@ -1785,10 +1785,10 @@
             </param>
             <returns>
             If the function succeeds, the return value is TRUE.<br/>
-            If the function fails, the return value is FALSE. For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>.
+            If the function fails, the return value is FALSE. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertSetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Int32,System.IntPtr)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertSetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Int32,System.IntPtr)">
             <summary>
             The function sets an extended property for a specified certificate context.
             </summary>
@@ -2017,7 +2017,7 @@
                  </td>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                    Data type of <paramref name="Data"/>: A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure.<br/>
-                   This property is implicitly set by a call to the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.
+                   This property is implicitly set by a call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.
                  </td>
                </tr>
                <tr>
@@ -2078,7 +2078,7 @@
                  </td>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                    Data type of <paramref name="Data"/>: A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure.<br/>
-                   This property is typically implicitly set by a call to the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.
+                   This property is typically implicitly set by a call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.
                  </td>
                </tr>
                <tr>
@@ -2114,7 +2114,7 @@
                  </td>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                    Data type of <paramref name="Data"/>: A pointer to a CRYPT_HASH_BLOB structure.<br/>
-                   This property is implicitly set by a call to the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.
+                   This property is implicitly set by a call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.
                  </td>
                </tr>
                <tr>
@@ -2183,7 +2183,7 @@
                  </td>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                    Data type of <paramref name="Data"/>: Pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure.<br/>
-                   This property is implicitly set by calling the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.<br/>
+                   This property is implicitly set by calling the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.<br/>
                    <b>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP</b>: This identifier is not supported.
                  </td>
                </tr>
@@ -2254,7 +2254,7 @@
                  </td>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                    Data type of <paramref name="Data"/>: Pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure.<br/>
-                   This property is implicitly set by calling the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.<br/>
+                   This property is implicitly set by calling the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.<br/>
                    <b>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP</b>: This identifier is not supported.
                  </td>
                </tr>
@@ -2264,7 +2264,7 @@
                  </td>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                    Data type of <paramref name="Data"/>: A pointer to a CRYPT_HASH_BLOB structure.<br/>
-                   This property is implicitly set by a call to the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.
+                   This property is implicitly set by a call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.
                  </td>
                </tr>
                <tr>
@@ -2350,7 +2350,7 @@
                  </td>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
                    Data type of <paramref name="Data"/>: Pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure.<br/>
-                   This property is implicitly set by calling the <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.<br/>
+                   This property is implicitly set by calling the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function.<br/>
                    <b>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP</b>: This identifier is not supported.
                  </td>
                </tr>
@@ -2383,7 +2383,7 @@
             </param>
             <returns>
             If the function succeeds, the function returns TRUE.<br/>
-            If the function fails, the function returns FALSE. For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. One possible error code is the following.
+            If the function fails, the function returns FALSE. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. One possible error code is the following.
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -2396,7 +2396,7 @@
              </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertSetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Int32,BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertSetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Int32,BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO@)">
             <summary>
             The function sets an extended property for a specified certificate context.
             </summary>
@@ -2413,7 +2413,7 @@
             <param name="Value">A reference to <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO"/>.</param>
             <returns>
             If the function succeeds, the function returns TRUE.<br/>
-            If the function fails, the function returns FALSE. For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. One possible error code is the following.
+            If the function fails, the function returns FALSE. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. One possible error code is the following.
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -2426,7 +2426,7 @@
              </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertStrToName(System.Int32,System.String,System.Int32,System.IntPtr,System.Byte[],System.Int32@,System.IntPtr)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertStrToName(System.Int32,System.String,System.Int32,System.IntPtr,System.Byte[],System.Int32@,System.IntPtr)">
             <summary>
             The function converts a null-terminated X.500 string to an encoded certificate name.
             </summary>
@@ -2588,7 +2588,7 @@
             A pointer to a string pointer that receives additional error information about an input string that is not valid.<br/>
             If the <paramref name="Name"/> string is not valid, <paramref name="Error"/> is updated by this function to point to the beginning of the character sequence that is not valid. If no errors are detected in the input string, <paramref name="Error"/> is set to NULL.<br/>
             If this information is not required, pass NULL for this parameter.<br/>
-            This parameter is updated for the following error codes returned from <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>.
+            This parameter is updated for the following error codes returned from <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
@@ -2614,10 +2614,10 @@
             </param>
             <returns>
             If the function succeeds, the function returns TRUE.<br/>
-            If the function fails, the function returns FALSE. For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>.
+            If the function fails, the function returns FALSE. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertVerifyCertificateChainPolicy(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_POLICY_PARA@,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_POLICY_STATUS@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertVerifyCertificateChainPolicy(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_POLICY_PARA@,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_POLICY_STATUS@)">
             <summary>
             The function checks a certificate chain to verify its validity, including its compliance with any specified validity policy criteria.
             </summary>
@@ -2726,7 +2726,7 @@
             A value of FALSE indicates that the function wasn't able to check for the policy.
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertVerifySubjectCertificateContext(System.IntPtr,System.IntPtr,System.Int32@)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertVerifySubjectCertificateContext(System.IntPtr,System.IntPtr,System.Int32@)">
             <summary>
             The function performs the enabled verification checks on a certificate by checking the validity of the certificate's issuer.
             </summary>
@@ -2767,7 +2767,7 @@
             If the function succeeds, the return value is TRUE.<br/>
             If the function fails, the return value is FALSE.<br/>
             For a verification check failure, TRUE is still returned. FALSE is returned only when a bad parameter is passed in.<br/>
-            For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. One possible error code is the following.
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. One possible error code is the following.
              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                <tr>
                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -2780,7 +2780,7 @@
               </table>
             </returns>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)">
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)">
             <summary>
             The function returns from a certificate store a subject certificate context uniquely identified by its issuer and serial number.
             </summary>
@@ -2798,9 +2798,9 @@
             </param>
             <param name="CertId">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
             <returns>
-              If the function succeeds, the function returns a pointer to a read-only <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/>. The <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> must be freed by calling <see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/>.<br/>
-              The returned certificate might not be valid. Usually, it is verified when getting its issuer certificate (<see cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertGetIssuerCertificateFromStore(System.IntPtr,System.IntPtr,System.IntPtr,System.Int32@)"/>).<br/>
-              For extended error information, call <see cref="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError"/>. One possible error code is the following:<br/>
+              If the function succeeds, the function returns a pointer to a read-only <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/>. The <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> must be freed by calling <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertFreeCertificateContext(System.IntPtr)"/>.<br/>
+              The returned certificate might not be valid. Usually, it is verified when getting its issuer certificate (<see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetIssuerCertificateFromStore(System.IntPtr,System.IntPtr,System.IntPtr,System.Int32@)"/>).<br/>
+              For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. One possible error code is the following:<br/>
               <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                 <tr>
                   <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
@@ -2816,7 +2816,7 @@
               <a href="https://learn.microsoft.com/en-us/windows/win32/api/wincrypt/nf-wincrypt-certgetsubjectcertificatefromstore">CertGetIssuerCertificateFromStore</a>
             </remarks>
         </member>
-        <member name="M:BinaryStudio.Security.Cryptography.LastErrorService.GetLastError">
+        <member name="M:BinaryStudio.Services.LastErrorService.GetLastError">
             <summary>
             Retrieves the calling thread's last-error code value. The last-error code is maintained on a per-thread
             basis. Multiple threads do not overwrite each other's last-error code.

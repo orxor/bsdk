@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Services;
 
 namespace BinaryStudio.Security.Cryptography
     {

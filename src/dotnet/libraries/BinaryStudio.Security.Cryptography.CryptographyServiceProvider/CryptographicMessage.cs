@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.PlatformComponents;
 using BinaryStudio.PlatformComponents.Win32;
+using BinaryStudio.Services;
 
 namespace BinaryStudio.Security.Cryptography
     {

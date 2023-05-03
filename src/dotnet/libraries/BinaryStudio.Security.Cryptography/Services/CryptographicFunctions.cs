@@ -4,7 +4,7 @@ using System.Text;
 using BinaryStudio.PlatformComponents.Win32;
 using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 
-namespace BinaryStudio.Security.Cryptography
+namespace BinaryStudio.Services
     {
     using CERT_NAME_BLOB = CRYPT_BLOB;
     using CRYPT_DATA_BLOB = CRYPT_BLOB;
