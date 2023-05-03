@@ -377,6 +377,10 @@
         <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.Dispose(System.Boolean)">
             <inheritdoc/> 
         </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.LDConfigItem.ToString">
+            <summary>Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</summary>
+            <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</returns>
+        </member>
         <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.GetService(System.Type)">
             <inheritdoc/> 
         </member>

@@ -63,9 +63,8 @@ namespace BinaryStudio.Security.Cryptography
         #region M:EnsureHandle
         private void EnsureHandle() {
             if (handle == IntPtr.Zero) {
-                var Size = sizeof(Int32);
                 Validate(EnsureEntries().CryptCreateHash(Context.Handle,Algorithm,IntPtr.Zero,out handle));
-                Validate(EnsureEntries().CryptGetHashParam(handle, HP_HASHSIZE, out HashSizeValue, ref Size));
+                Validate(EnsureEntries().CryptGetHashParam(handle, HP_HASHSIZE, out HashSizeValue));
                 }
             }
         #endregion

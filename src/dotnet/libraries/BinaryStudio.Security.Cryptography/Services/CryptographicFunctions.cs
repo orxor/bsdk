@@ -2044,7 +2044,7 @@ namespace BinaryStudio.Services
         ///      </td>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
         ///        Data type of <paramref name="Data"/>: A pointer to a <see cref="CRYPT_DATA_BLOB"/> structure.<br/>
-        ///        The <see cref="CRYPT_DATA_BLOB"/> structure specifies the name of a file that contains the private key associated with the certificate's public key. Inside the <see cref="CRYPT_DATA_BLOB"/> structure, the pbData member is a pointer to a null-terminated Unicode wide-character string, and the cbData member indicates the length of the string.
+        ///        The <see cref="CRYPT_DATA_BLOB"/> structure specifies the name of a file that contains the private key associated with the certificate's public key. Inside the <see cref="CRYPT_DATA_BLOB"/> structure, the <paramref name="Data"/> member is a pointer to a null-terminated Unicode wide-character string, and the cbData member indicates the length of the string.
         ///      </td>
         ///    </tr>
         ///    <tr>
@@ -2602,9 +2602,9 @@ namespace BinaryStudio.Services
         /// If CERT_STORE_REVOCATION_FLAG was enabled and the issuer does not have a CRL in the store, then CERT_STORE_NO_CRL_FLAG is set in addition to CERT_STORE_REVOCATION_FLAG.
         /// </param>
         /// <returns>
-        /// If the function succeeds, the return value is TRUE.<br/>
-        /// If the function fails, the return value is FALSE.<br/>
-        /// For a verification check failure, TRUE is still returned. FALSE is returned only when a bad parameter is passed in.<br/>
+        /// If the function succeeds, the return value is <see langword="true"/>.<br/>
+        /// If the function fails, the return value is <see langword="false"/>.<br/>
+        /// For a verification check failure, <see langword="true"/> is still returned. <see langword="false"/> is returned only when a bad parameter is passed in.<br/>
         /// For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
         ///  <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
         ///    <tr>
@@ -2619,8 +2619,425 @@ namespace BinaryStudio.Services
         /// </returns>
         Boolean CertVerifySubjectCertificateContext(IntPtr Subject,IntPtr Issuer,ref Int32 Flags);
         #endregion
-        Boolean CryptAcquireCertificatePrivateKey(IntPtr Certificate, CRYPT_ACQUIRE_FLAGS Flags, IntPtr Parameters,out IntPtr CryptProvOrNCryptKey, out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey);
-        Boolean CryptAcquireContext(out IntPtr CryptProv, String Container, String Provider, Int32 ProvType, Int32 Flags);
+        #region M:CryptAcquireCertificatePrivateKey(IntPtr,CRYPT_ACQUIRE_FLAGS,IntPtr,{out}IntPtr,{out}KEY_SPEC_TYPE,{out}Boolean):Boolean
+        /// <summary>
+        /// The <b>CryptAcquireCertificatePrivateKey</b> function obtains the private key for a certificate. This function is used to obtain access to a user's private key when the user's certificate is available, but the handle of the user's key container is not available. This function can only be used by the owner of a private key and not by any other user.<br/>
+        /// If a CSP handle and the key container containing a user's private key are available, the <see cref="CryptGetUserKey"/> function should be used instead.
+        /// </summary>
+        /// <param name="Certificate">The address of a <see cref="CERT_CONTEXT"/> structure that contains the certificate context for which a private key will be obtained.</param>
+        /// <param name="Flags">
+        /// A set of flags that modify the behavior of this function. This can be zero or a combination of one or more of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_ACQUIRE_CACHE_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If a handle is already acquired and cached, that same handle is returned. Otherwise, a new handle is acquired and cached by using the certificate's <b>CERT_KEY_CONTEXT_PROP_ID</b> property.<br/>
+        ///       When this flag is set, the <paramref name="CallerFreeProvOrNCryptKey"/> parameter receives <b>FALSE</b> and the calling application must not release the handle. The handle is freed when the certificate context is freed; however, you must retain the certificate context referenced by the <paramref name="Certificate"/> parameter as long as the key is in use, otherwise operations that rely on the key will fail.
+        ///     </td>
+        ///    </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_ACQUIRE_COMPARE_KEY_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The public key in the certificate is compared with the public key returned by the cryptographic service provider (CSP). If the keys do not match, the acquisition operation fails and the last error code is set to <b>NTE_BAD_PUBLIC_KEY</b>. If a cached handle is returned, no comparison is made.
+        ///     </td>
+        ///    </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_ACQUIRE_NO_HEALING
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This function will not attempt to re-create the <b>CERT_KEY_PROV_INFO_PROP_ID</b> property in the certificate context if this property cannot be retrieved.
+        ///     </td>
+        ///    </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_ACQUIRE_SILENT_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP should not display any user interface (UI) for this context. If the CSP must display UI to operate, the call fails and the <b>NTE_SILENT_CONTEXT</b> error code is set as the last error.
+        ///     </td>
+        ///    </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_ACQUIRE_USE_PROV_INFO_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Uses the certificate's <b>CERT_KEY_PROV_INFO_PROP_ID</b> property to determine whether caching should be accomplished. For more information about the <b>CERT_KEY_PROV_INFO_PROP_ID</b> property, see <see cref="CertSetCertificateContextProperty"/>.<br/>
+        ///       This function will only use caching if during a previous call, the dwFlags member of the <see cref="CRYPT_KEY_PROV_INFO"/> structure contained <b>CERT_SET_KEY_CONTEXT_PROP</b>.
+        ///     </td>
+        ///    </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_ACQUIRE_WINDOW_HANDLE_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Any UI that is needed by the CSP or KSP will be a child of the <b>HWND</b> that is supplied in the <paramref name="Parameters"/> parameter. For a CSP key, using this flag will cause the <see cref="CryptSetProvParam"/> function with the flag <b>PP_CLIENT_HWND</b> using this <b>HWND</b> to be called with <b>NULL</b> for <b>HCRYPTPROV</b>. For a KSP key, using this flag will cause the <b>NCryptSetProperty</b> function with the <b>NCRYPT_WINDOW_HANDLE_PROPERTY</b> flag to be called using the <b>HWND</b>.<br/>
+        ///       Do not use this flag with <b>CRYPT_ACQUIRE_SILENT_FLAG</b>.
+        ///     </td>
+        ///    </tr>
+        /// </table>
+        /// The following flags determine which technology is used to obtain the key. If none of these flags is present, this function will only attempt to obtain the key by using CryptoAPI.<br/>
+        /// <b>Windows Server 2003 and Windows XP</b>: These flags are not supported.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_ACQUIRE_ALLOW_NCRYPT_KEY_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This function will attempt to obtain the key by using CryptoAPI. If that fails, this function will attempt to obtain the key by using the Cryptography API: Next Generation (CNG).<br/>
+        ///       The <paramref name="KeySpec"/> variable receives the <b>CERT_NCRYPT_KEY_SPEC</b> flag if CNG is used to obtain the key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_ACQUIRE_ONLY_NCRYPT_KEY_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This function will only attempt to obtain the key by using CNG and will not use CryptoAPI to obtain the key.<br/>
+        ///       The <paramref name="KeySpec"/> variable receives the <b>CERT_NCRYPT_KEY_SPEC</b> flag if CNG is used to obtain the key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_ACQUIRE_PREFER_NCRYPT_KEY_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This function will attempt to obtain the key by using CNG. If that fails, this function will attempt to obtain the key by using CryptoAPI.<br/>
+        ///       The <paramref name="KeySpec"/> variable receives the <b>CERT_NCRYPT_KEY_SPEC</b> flag if CNG is used to obtain the key.
+        ///       <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///         <tr>
+        ///           <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             <b>Note:</b> CryptoAPI does not support the CNG Diffie-Hellman or DSA asymmetric algorithms. CryptoAPI only supports Diffie-Hellman and DSA public keys through the legacy CSPs. If this flag is set for a certificate that contains a Diffie-Hellman or DSA public key, this function will implicitly change this flag to <b>CRYPT_ACQUIRE_ALLOW_NCRYPT_KEY_FLAG</b> to first attempt to use CryptoAPI to obtain the key.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Parameters">
+        /// If the <b>CRYPT_ACQUIRE_WINDOW_HANDLE_FLAG</b> is set, then this is the address of an HWND. If the <b>CRYPT_ACQUIRE_WINDOW_HANDLE_FLAG</b> is not set, then this parameter must be <b>NULL</b>.<br/>
+        /// <b>Windows Server 2008 R2, Windows 7, Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP</b>: This parameter reserved for future use and must be <b>NULL</b>.
+        /// </param>
+        /// <param name="CryptProvOrNCryptKey">
+        /// The address of an <b>HCRYPTPROV_OR_NCRYPT_KEY_HANDLE</b> variable that receives the handle of either the CryptoAPI provider or the CNG key. If the <paramref name="KeySpec"/> variable receives the <b>CERT_NCRYPT_KEY_SPEC</b> flag, this is a CNG key handle of type <b>NCRYPT_KEY_HANDLE</b>; otherwise, this is a CryptoAPI provider handle of type <b>HCRYPTPROV</b>.<br/>
+        /// For more information about when and how to release this handle, see the description of the <paramref name="CallerFreeProvOrNCryptKey"/> parameter.
+        /// </param>
+        /// <param name="KeySpec">
+        /// The address of a <see cref="Int32"/> variable that receives additional information about the key. This can be one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       AT_KEYEXCHANGE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key pair is a key exchange pair.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       AT_SIGNATURE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key pair is a signature pair.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CERT_NCRYPT_KEY_SPEC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key is a CNG key.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This value is not supported.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="CallerFreeProvOrNCryptKey">
+        /// The address of a <see cref="Boolean"/> variable that receives a value that indicates whether the caller must free the handle returned in the <paramref name="CryptProvOrNCryptKey"/> variable. This receives <b>FALSE</b> if any of the following is true:
+        /// <list type="bullet">
+        ///   <item>Public key acquisition or comparison fails.</item>
+        ///   <item>The <paramref name="Flags"/> parameter contains the <b>CRYPT_ACQUIRE_CACHE_FLAG</b> flag.</item>
+        ///   <item>The <paramref name="Flags"/> parameter contains the <b>CRYPT_ACQUIRE_USE_PROV_INFO_FLAG</b> flag, the certificate context property is set to <b>CERT_KEY_PROV_INFO_PROP_ID</b> with the <b>CRYPT_KEY_PROV_INFO</b> structure, and the <paramref name="Flags"/> member of the <b>CRYPT_KEY_PROV_INFO</b> structure is set to <b>CERT_SET_KEY_CONTEXT_PROP_ID</b>.</item>
+        /// </list>
+        /// If this variable receives <b>FALSE</b>, the calling application must not release the handle returned in the <paramref name="CryptProvOrNCryptKey"/> variable. The handle will be released on the last free action of the certificate context.<br/>
+        /// If this variable receives <b>TRUE</b>, the caller is responsible for releasing the handle returned in the <paramref name="CryptProvOrNCryptKey"/> variable. If the <paramref name="KeySpec"/> variable receives the <b>CERT_NCRYPT_KEY_SPEC</b> value, the handle must be released by passing it to the <b>NCryptFreeObject</b> function; otherwise, the handle is released by passing it to the <see cref="CryptReleaseContext"/> function.
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       NTE_BAD_PUBLIC_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The public key in the certificate does not match the public key returned by the CSP. This error code is returned if the <b>CRYPT_ACQUIRE_COMPARE_KEY_FLAG</b> is set and the public key in the certificate does not match the public key returned by the cryptographic provider.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_SILENT_CONTEXT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter contained the <b>CRYPT_ACQUIRE_SILENT_FLAG</b> flag and the CSP could not continue an operation without displaying a user interface.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptAcquireCertificatePrivateKey(IntPtr Certificate,CRYPT_ACQUIRE_FLAGS Flags,IntPtr Parameters,out IntPtr CryptProvOrNCryptKey,out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey);
+        #endregion
+        #region M:CryptAcquireContext({out}IntPtr,String,String,Int32,Int32):Boolean
+        /// <summary>
+        /// The <b>CryptAcquireContext</b> function is used to acquire a handle to a particular key container within a particular cryptographic service provider (CSP). This returned handle is used in calls to CryptoAPI functions that use the selected CSP.<br/>
+        /// This function first attempts to find a CSP with the characteristics described in the <paramref name="ProvType"/> and <paramref name="Provider"/> parameters. If the CSP is found, the function attempts to find a key container within the CSP that matches the name specified by the <paramref name="Container"/> parameter. To acquire the context and the key container of a private key associated with the public key of a certificate, use <see cref="CryptAcquireCertificatePrivateKey"/>.<br/>
+        /// With the appropriate setting of <paramref name="Flags"/>, this function can also create and destroy key containers and can provide access to a CSP with a temporary key container if access to a private key is not required.
+        /// </summary>
+        /// <param name="CryptProv">A pointer to a handle of a CSP. When you have finished using the CSP, release the handle by calling the <see cref="CryptReleaseContext"/> function.</param>
+        /// <param name="Container">The key container name. This is a null-terminated string that identifies the key container to the CSP. This name is independent of the method used to store the keys. Some CSPs store their key containers internally (in hardware), some use the system registry, and others use the file system. In most cases, when <paramref name="Flags"/> is set to <b>CRYPT_VERIFYCONTEXT</b>, <paramref name="Container"/> must be set to <b>NULL</b>. However, for hardware-based CSPs, such as a smart card CSP, can be access publicly available information in the specfied container.</param>
+        /// <param name="Provider">
+        /// A null-terminated string that contains the name of the CSP to be used.<br/>
+        /// If this parameter is <b>NULL</b>, the user default provider is used.<br/>
+        /// An application can obtain the name of the CSP in use by using the <see cref="CryptGetProvParam"/> function to read the <b>PP_NAME</b> CSP value in the <b>Param</b> parameter.<br/>
+        /// The default CSP can change between operating system releases. To ensure interoperability on different operating system platforms, the CSP should be explicitly set by using this parameter instead of using the default CSP.
+        /// </param>
+        /// <param name="ProvType">Specifies the type of provider to acquire.</param>
+        /// <param name="Flags">
+        /// One or more of the following flags. Note, most applications should set the <b>CRYPT_VERIFYCONTEXT</b> flag unless they need to create digital signatures or decrypt messages.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_VERIFYCONTEXT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The caller does not need access to persisted private keys. Apps that use ephemeral keys, or that perform only hashing, encryption, and digital signature verification should set this flag. Only applications that create signatures or decrypt messages need access to a private key (and should not set this flag).<br/>
+        ///       For file-based CSPs, when this flag is set, the <paramref name="Container"/> parameter must be set to <b>NULL</b>. The application has no access to the persisted private keys of public/private key pairs. When this flag is set, temporary public/private key pairs can be created, but they are not persisted.<br/>
+        ///       For hardware-based CSPs, such as a smart card CSP, if the <paramref name="Container"/> parameter is <b>NULL</b> or blank, this flag implies that no access to any keys is required, and that no UI should be presented to the user. This form is used to connect to the CSP to query its capabilities but not to actually use its keys. If the <paramref name="Container"/> parameter is not <b>NULL</b> and not blank, then this flag implies that access to only the publicly available information within the specified container is required. The CSP should not ask for a PIN. Attempts to access private information (for example, the <see cref="CryptSignHash"/> function) will fail.<br/>
+        ///       When <b>CryptAcquireContext</b> is called, many CSPs require input from the owning user before granting access to the private keys in the key container. For example, the private keys can be encrypted, requiring a password from the user before they can be used. However, if the <b>CRYPT_VERIFYCONTEXT</b> flag is specified, access to the private keys is not required and the user interface can be bypassed.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_NEWKEYSET
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Creates a new key container with the name specified by <paramref name="Container"/>. If <paramref name="Container"/> is <b>NULL</b>, a key container with the default name is created.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_MACHINE_KEYSET
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       By default, keys and key containers are stored as user keys. For Base Providers, this means that user key containers are stored in the user's profile. A key container created without this flag by an administrator can be accessed only by the user creating the key container and a user with administration privileges. <b>Windows XP</b>: A key container created without this flag by an administrator can be accessed only by the user creating the key container and the local system account.<br/>
+        ///       A key container created without this flag by a user that is not an administrator can be accessed only by the user creating the key container and the local system account.<br/>
+        ///       The <b>CRYPT_MACHINE_KEYSET</b> flag can be combined with all of the other flags to indicate that the key container of interest is a computer key container and the CSP treats it as such. For Base Providers, this means that the keys are stored locally on the computer that created the key container. If a key container is to be a computer container, the <b>CRYPT_MACHINE_KEYSET</b> flag must be used with all calls to <b>CryptAcquireContext</b> that reference the computer container. The key container created with <b>CRYPT_MACHINE_KEYSET</b> by an administrator can be accessed only by its creator and by a user with administrator privileges unless access rights to the container are granted using <see cref="CryptSetProvParam"/>.<br/>
+        ///       <b>Windows XP</b>: The key container created with <b>CRYPT_MACHINE_KEYSET</b> by an administrator can be accessed only by its creator and by the local system account unless access rights to the container are granted using <see cref="CryptSetProvParam"/>.<br/>
+        ///       The key container created with <b>CRYPT_MACHINE_KEYSET</b> by a user that is not an administrator can be accessed only by its creator and by the local system account unless access rights to the container are granted using <see cref="CryptSetProvParam"/>.<br/>
+        ///       The <b>CRYPT_MACHINE_KEYSET</b> flag is useful when the user is accessing from a service or user account that did not log on interactively. When key containers are created, most CSPs do not automatically create any public/private key pairs. These keys must be created as a separate step with the <see cref="CryptGenKey"/> function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_DELETEKEYSET
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Delete the key container specified by pszContainer. If <paramref name="Container"/> is <b>NULL</b>, the key container with the default name is deleted. All key pairs in the key container are also destroyed.<br/>
+        ///       When this flag is set, the value returned in <paramref name="Provider"/> is undefined, and thus, the <see cref="CryptReleaseContext"/> function need not be called afterward.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SILENT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The application requests that the CSP not display any user interface (UI) for this context. If the CSP must display the UI to operate, the call fails and the <b>NTE_SILENT_CONTEXT</b> error code is set as the last error. In addition, if calls are made to <see cref="CryptGenKey"/> with the <b>CRYPT_USER_PROTECTED</b> flag with a context that has been acquired with the <b>CRYPT_SILENT</b> flag, the calls fail and the CSP sets <b>NTE_SILENT_CONTEXT</b>.<br/>
+        ///       <b>CRYPT_SILENT</b> is intended for use with applications for which the UI cannot be displayed by the CSP.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_DEFAULT_CONTAINER_OPTIONAL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains a context for a smart card CSP that can be used for hashing and symmetric key operations but cannot be used for any operation that requires authentication to a smart card using a PIN. This type of context is most often used to perform operations on an empty smart card, such as setting the PIN by using <see cref="CryptSetProvParam"/>. This flag can only be used with smart card CSPs.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This flag is not supported.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_BUSY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Some CSPs set this error if the <b>CRYPT_DELETEKEYSET</b> flag value is set and another thread or process is using this key container.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_FILE_NOT_FOUND
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The profile of the user is not loaded and cannot be found. This happens when the application impersonates a user, for example, the IUSR<i>_ComputerName</i> account.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_NOT_ENOUGH_MEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The operating system ran out of memory during the operation.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter has a value that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY_STATE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The user password has changed since the private keys were encrypted.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEYSET
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key container could not be opened. A common cause of this error is that the key container does not exist. To create a key container, call <b>CryptAcquireContext</b> using the <b>CRYPT_NEWKEYSET</b> flag. This error code can also indicate that access to an existing key container is denied. Access rights to the container can be granted by the key set creator by using <see cref="CryptSetProvParam"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEYSET_PARAM
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Container"/> or <paramref name="Provider"/> parameter is set to a value that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_PROV_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The value of the <paramref name="ProvType"/> parameter is out of range. All provider types must be from 1 through 999, inclusive.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_SIGNATURE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The provider DLL signature could not be verified. Either the DLL or the digital signature has been tampered with.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_EXISTS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter is <b>CRYPT_NEWKEYSET</b>, but the key container already exists.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_KEYSET_ENTRY_BAD
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Container"/> key container was found but is corrupt.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_KEYSET_NOT_DEF
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The requested provider does not exist.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_NO_MEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP ran out of memory during the operation.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_PROV_DLL_NOT_FOUND
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The provider DLL file does not exist or is not on the current path.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_PROV_TYPE_ENTRY_BAD
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The provider type specified by <paramref name="ProvType"/> is corrupt. This error can relate to either the user default CSP list or the computer default CSP list.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_PROV_TYPE_NO_MATCH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The provider type specified by <paramref name="ProvType"/> does not match the provider type found. Note that this error can only occur when <paramref name="Provider"/> specifies an actual CSP name.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_PROV_TYPE_NOT_DEF
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       No entry exists for the provider type specified by <paramref name="ProvType"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_PROVIDER_DLL_FAIL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The provider DLL file could not be loaded or failed to initialize.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_SIGNATURE_FILE_BAD
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       An error occurred while loading the DLL file image, prior to verifying its signature.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptAcquireContext(out IntPtr CryptProv,String Container,String Provider,Int32 ProvType,Int32 Flags);
+        #endregion
         Boolean CryptCreateHash(IntPtr Provider, ALG_ID Algorithm, IntPtr Key, out IntPtr Handle);
         Boolean CryptDeriveKey(IntPtr Context,ALG_ID AlgId,IntPtr BaseData,Int32 Flags,out IntPtr Key);
         Boolean CryptDestroyHash(IntPtr Handle);
@@ -2632,10 +3049,281 @@ namespace BinaryStudio.Services
         Boolean CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags, Byte[] Data,ref Int32 DataLen);
         Boolean CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
         Boolean CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer);
-        Boolean CryptGetHashParam(IntPtr Handle, Int32 Parameter, Byte[] Block, ref Int32 BlockSize);
-        Boolean CryptGetHashParam(IntPtr Handle, Int32 Parameter, out Int32 Block, ref Int32 BlockSize);
-        Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,ref Int32 DataLen,Int32 Flags);
-        Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,IntPtr Data,ref Int32 DataLen,Int32 Flags);
+        #region M:CryptGetHashParam(IntPtr,Int32,Byte[],{ref}Int32):Boolean
+        /// <summary>
+        /// The <b>CryptGetHashParam</b> function retrieves data that governs the operations of a hash object. The actual hash value can be retrieved by using this function.
+        /// </summary>
+        /// <param name="Hash">Handle of the hash object to be queried (HCRYPTHASH).</param>
+        /// <param name="Parameter">
+        /// Query type. This parameter can be set to one of the following queries.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:15%">
+        ///       HP_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:15%">
+        ///       Hash algorithm
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       An <see cref="ALG_ID"/> that indicates the algorithm specified when the hash object was created. For a list of hash algorithms, see <see cref="CryptCreateHash"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       HP_HASHSIZE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Hash value size
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <see cref="Int32"/> value indicating the number of bytes in the hash value. This value will vary depending on the hash algorithm. Applications must retrieve this value just before the <b>HP_HASHVAL</b> value so the correct amount of memory can be allocated.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       HP_HASHVAL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Hash value
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The hash value or message hash for the hash object specified by <paramref name="Hash"/>. This value is generated based on the data supplied to the hash object earlier through the <see cref="CryptHashData"/> and <see cref="CryptHashSessionKey"/> functions.<br/>
+        ///       The <b>CryptGetHashParam</b> function completes the hash. After <b>CryptGetHashParam</b> has been called, no more data can be added to the hash. Additional calls to <see cref="CryptHashData"/> or <see cref="CryptHashSessionKey"/> fail. After the application is done with the hash, <see cref="CryptDestroyHash"/> should be called to destroy the hash object.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// <b>CryptoPro CSP</b>:<br/>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       HP_HASHVAL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The little-endian hash value according GostR3411-94-Digest CPCMS [RFC 4490]. Calculated hash value
+        ///       returning through <paramref name="Block"/>. Hash value size returning by <paramref name="BlockSize"/>.<br/>
+        ///       During this call hash object is closing.<br/>
+        ///       GOST R 34.11-94 and GOST R 34.11-2012 (also HMAC) are padding to block size (if required), step functions are executed for the last block (if required), for the length and for the checksum.<br/>
+        ///       GOST 28147-89 and GOST R 34.13-2015 HMAC ("magma" and "grasshopper") are padding to block size (if required), and executing last block step function (if required).<br/>
+        ///       The hash function calculation can be continued with:
+        ///       <list type="bullet">
+        ///         <item>subsequent call of CryptSetHashParam(HP_OPEN,TRUE) for CSP 3.6 and above;</item>
+        ///         <item>preliminary call <see cref="CryptDuplicateKey"/> (Microsoft);</item>
+        ///       </list>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       HP_OID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns null-terminated OID string. For hash objects GOST R 34.11-94 and MAC GOST 28147-89 returns the identifier of the S-box.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       HP_OPAQUEBLOB
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns a blob containing the internal state of the MAC GOST 28147-89 object.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       HP_HASHSTATEBLOB
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns a blob containing the internal state of hash objects CALG_GR3411, CALG_GR3411_2012_256, CALG_GR3411_2012_512.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       HP_SHAREDKEYMODE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns the number of components into which the key is decomposed by the CALG_SHAREDKEY_HASH object, or from which the key is assembled by the CALG_FITTINGKEY_HASH object.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       HP_IKE_SPI_COOKIE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns 32-35 bytes of hash value (when numbering 0..63) hash objects CALG_GR3411_2012_512 and CALG_GR3411_2012_512_HMAC.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Block">
+        /// A pointer to a buffer that receives the specified value data. The form of this data varies, depending on the value number.<br/>
+        /// This parameter can be <b>NULL</b> to determine the memory size required.
+        /// </param>
+        /// <param name="BlockSize">
+        /// A reference to a <see cref="Int32"/> value specifying the size, in bytes, of the <paramref name="Block"/> buffer. When the function returns, the <see cref="Int32"/> value contains the number of bytes stored in the buffer.<br/>
+        /// If <paramref name="Block"/> is <b>NULL</b>, set the value of <paramref name="BlockSize"/> to zero.
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the function returns <see langword="true"/>.<br/>
+        /// If the function fails, it returns <see langword="false"/>. For extended error information, call <see cref="LastErrorService.GetLastError"/>.<br/>
+        /// The error codes prefaced by "NTE" are generated by the particular CSP you are using. Some possible error codes follow.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_MORE_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If the buffer specified by the <paramref name="Block"/> parameter is not large enough to hold the returned data, the function sets the ERROR_MORE_DATA code and stores the required buffer size, in bytes, in the variable pointed to by <paramref name="BlockSize"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The hash object specified by the <paramref name="Hash"/> parameter is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Parameter"/> parameter specifies an unknown value number.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context that was specified when the hash was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// <b>CryptoPro CSP</b>:<br/>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       SCARD_W_CANCELLED_BY_USER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The requested operation was canceled by the user.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptGetHashParam(IntPtr Hash,Int32 Parameter,Byte[] Block,ref Int32 BlockSize);
+        #endregion
+        #region M:CryptGetHashParam(IntPtr,Int32,{out}Int32):Boolean
+        /// <summary>
+        /// The <b>CryptGetHashParam</b> function retrieves data that governs the operations of a hash object. The actual hash value can be retrieved by using this function.
+        /// </summary>
+        /// <param name="Hash">Handle of the hash object to be queried (HCRYPTHASH).</param>
+        /// <param name="Parameter">
+        /// Query type. This parameter can be set to one of the following queries.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:15%">
+        ///       HP_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:15%">
+        ///       Hash algorithm
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       An <see cref="ALG_ID"/> that indicates the algorithm specified when the hash object was created. For a list of hash algorithms, see <see cref="CryptCreateHash"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       HP_HASHSIZE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Hash value size
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <see cref="Int32"/> value indicating the number of bytes in the hash value. This value will vary depending on the hash algorithm. Applications must retrieve this value just before the <b>HP_HASHVAL</b> value so the correct amount of memory can be allocated.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Value">A reference to a variable that receives the specified value.</param>
+        /// <returns>
+        /// If the function succeeds, the function returns <see langword="true"/>.<br/>
+        /// If the function fails, it returns <see langword="false"/>. For extended error information, call <see cref="LastErrorService.GetLastError"/>.<br/>
+        /// The error codes prefaced by "NTE" are generated by the particular CSP you are using. Some possible error codes follow.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The hash object specified by the <paramref name="Hash"/> parameter is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Parameter"/> parameter specifies an unknown value number.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context that was specified when the hash was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// <b>CryptoPro CSP</b>:<br/>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       SCARD_W_CANCELLED_BY_USER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The requested operation was canceled by the user.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptGetHashParam(IntPtr Hash,Int32 Parameter,out Int32 Value);
+        #endregion
+        Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Parameter,Byte[] Data,ref Int32 DataLen,Int32 Flags);
+        Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Parameter,IntPtr Data,ref Int32 DataLen,Int32 Flags);
         Boolean CryptGetProvParam(IntPtr Context,CRYPT_PARAM Parameter,Byte[] Data,ref Int32 DataSize,Int32 Flags);
         Boolean CryptGetProvParam(IntPtr Context,CRYPT_PARAM Parameter,IntPtr Data,ref Int32 DataSize,Int32 Flags);
         Boolean CryptGetUserKey(IntPtr Context,KEY_SPEC_TYPE KeySpec,out IntPtr UserKey);
@@ -2647,13 +3335,647 @@ namespace BinaryStudio.Services
         Boolean CryptMsgGetParam(IntPtr Message, CMSG_PARAM Parameter, Int32 SignerIndex,Byte[] Data, ref Int32 Size);
         Boolean CryptMsgUpdate(IntPtr Message, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data, Int32 Size, Boolean Final);
         Boolean CryptMsgUpdate(IntPtr Message, IntPtr Data, Int32 Size, Boolean Final);
+        #region M:CryptSetHashParam(IntPtr,Int32,Byte[],Int32):Boolean
+        /// <summary>
+        /// The <b>CryptSetHashParam</b> function customizes the operations of a
+        /// <a href="https://learn.microsoft.com/en-us/windows/desktop/SecGloss/h-gly">hash object</a>, including
+        /// setting up initial hash contents and selecting a specific hashing algorithm.
+        /// </summary>
+        /// <param name="Hash">A handle to the hash object on which to set parameters (HCRYPTHASH).</param>
+        /// <param name="Param">This parameter can be one of the following values.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///        HP_HMAC_INFO
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        A pointer to an <b>HMAC_INFO</b> structure that specifies the cryptographic hash algorithm and the inner and outer strings to be used.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_HASHVAL
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        A byte array that contains a hash value to place directly into the hash object. Before setting this value, the size of the hash value must be determined by using the <see cref="CryptGetHashParam"/> function to read the HP_HASHSIZE value.<br/>
+        ///        Some <a href="https://learn.microsoft.com/en-us/windows/desktop/SecGloss/c-gly">cryptographic service providers</a> (CSPs) do not support this capability.
+        ///      </td>
+        ///    </tr>
+        /// </table>
+        /// <b>CryptoPro CSP</b>:<br/>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///        HP_HASHVAL
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливается для объекта функции хэширования типа CALG_GR3411, CALG_GR3411_2012_256 и CALG_GR3411_2012_512. Величина, 32 байта для объектов типа CALG_GR3411 и CALG_GR3411_2012_256, 64 байта для объектов типа CALG_GR3411_2012_512, в little-endian порядке байт в соответствии с типом GostR3411-94-Digest CPCMS [RFC 4490], должна быть установлена в буфер <paramref name="Data"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_HASHVAL_BLOB
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливается для объекта функции хэширования типа CALG_GR3411, CALG_GR3411_2012_256 и CALG_GR3411_2012_512. В буфер <paramref name="Data"/> передаётся указатель на структуру <see cref="CRYPT_DATA_BLOB"/>, содержащую хэш-значение.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_HASHSIZE
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливается для объекта функции хэширования типа CALG_G28147_IMIT, CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT. В буфер <paramref name="Data"/> записывается величина DWORD, определяющая число байтов имитовставки в диапазоне от 1 до 4, от 1 до 8, от 1 до 16 соответственно. По умолчанию длина имитовставки для объекта хэша CALG_G28147_IMIT равна 4 байтам, для CALG_GR3413_2015_M_IMIT и CALG_GR3413_2015_K_IMIT составляет 4 и 8 байт соответственно.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        KP_HASHOID
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Идентификатор функции хэширования. Строка, заканчивающаяся нулем. Не допускается задавать для объектов типа CALG_GR3411_HMAC / CALG_GR3411_HMAC34, CALG_GR3411_2012_256_HMAC / CALG_GR3411_2012_512_HMAC и CALG_GR3411_2012_256 / CALG_GR3411_2012_512.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_TLS1PRF_SEED
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Составляющая аргумента функции GOSTR3411_PRF. Принимает различные значения в сообщениях клиента и сервера при реализации TLS Handshake Protocol. Задается в виде структуры <see cref="CRYPT_DATA_BLOB"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_TLS1PRF_LABEL
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Составляющая аргумента функции GOSTR3411_PRF. Принимает различные значения в сообщениях клиента и сервера при реализации TLS Handshake Protocol. Задается в виде структуры <see cref="CRYPT_DATA_BLOB"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_PBKDF2_SALT
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Задает синхропосылку размерности от 8 до 32 байт для объекта хэша типа CALG_PBKDF2_94_256, CALG_PBKDF2_2012_256 и CALG_PBKDF2_2012_512. Задается в виде структуры <see cref="CRYPT_DATA_BLOB"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_PBKDF2_PASSWORD
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Задает пароль для объекта хэша типа CALG_PBKDF2_94_256, CALG_PBKDF2_2012_256 и CALG_PBKDF2_2012_512. Задается в виде структуры <see cref="CRYPT_DATA_BLOB"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_PBKDF2_COUNT
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливается для объекта функции хэширования типа CALG_PBKDF2_94_256, CALG_PBKDF2_2012_256 и CALG_PBKDF2_2012_512. В буфер <paramref name="Data"/> записывается величина DWORD, определяющая число итераций алгоритма. По умолчанию количество итераций равно 2000, минимальное допустимое значение параметра 1000.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_PADDING
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливается для объектов функции хэширования типа CALG_ANSI_X9_19_MAC и CALG_MAC. В буфер <paramref name="Data"/> записывается величина DWORD, определяющая тип выравнивания данных. По умолчанию тип паддинга — ZERO_PADDING, возможен также ISO_IEC_7816_4_PADDING.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_OPEN
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Если через параметр <paramref name="Data"/> передаётся величина FALSE типа DWORD, производит повторную инициализацию объекта хэша типа CALG_GR3411, CALG_GR3411_HMAC, CALG_GR3411_HMAC34, CALG_G28147_IMIT, CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT, CALG_GR3411_2012_256, CALG_GR3411_2012_512, CALG_GR3411_2012_256_HMAC, CALG_GR3411_2012_512_HMAC в случае, если он закрыт. Если в <paramref name="Data"/> передаётся величина TRUE типа DWORD, закрытый объект функции хэширования типа CALG_GR3411, CALG_GR3411_2012_256, CALG_GR3411_2012_512 или CALG_G28147_IMIT открывается для дальнейшего хэширования данных. Передача в <paramref name="Data"/> величины TRUE для объектов хэша типа CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT приводит к завершению функции с ошибкой NTE_BAD_TYPE.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_KEYMIXSTART
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Осуществляет диверсификацию ключа, ассоциированного с объектом хэширования, по алгоритму CALG_PRO_DIVERS. Через параметр <paramref name="Data"/> передаётся блоб диверсификации ключа в форме <see cref="CRYPT_DATA_BLOB"/>, см. <see cref="CryptImportKey"/>. Допускается многократный вызов с различными параметрами диверсификации.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_HASHSTARTVECT
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Задает стартовый вектор для алгоритмов имитовставки по ГОСТ 28147-89 (8 байт) и хэширования по ГОСТ Р 34.11-94 (32 байта).
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_OPAQUEBLOB
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает блоб, содержащий внутреннее состояние объекта имитовставки ГОСТ 28147-89.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_HASHSTATEBLOB
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает блоб, содержащий внутреннее состояние объектов хэширования CALG_GR3411, CALG_GR3411_2012_256, CALG_GR3411_2012_512.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_SHAREDKEYMODE
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает значение числа от 2 до 5 компонент, на которые раскладывается ключ объектом CALG_SHAREDKEY_HASH, либо из которых собирается ключ объектом CALG_FITTINGKEY_HASH.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_HMAC_FIXEDKEY
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает значение ключа для объекта хэша типа CALG_GR3411_HMAC_FIXEDKEY, CALG_GR3411_2012_256_HMAC_FIXEDKEY и CALG_GR3411_2012_512_HMAC_FIXEDKEY. Через параметр <paramref name="Data"/> передаётся ключ в форме <see cref="CRYPT_DATA_BLOB"/>. Если размер переданных в блобе данных меньше размера соответствующего ключа, то ключ дополняется нулями, иначе - в качестве ключа устанавливается результат хэширования переданных данных.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_PRFKEYMAT_SEED
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает значение seed для объекта хэша типа CALG_GR3411_PRFKEYMAT, CALG_GR3411_2012_256_PRFKEYMAT и CALG_GR3411_2012_512_PRFKEYMAT. Через параметр <paramref name="Data"/> передаётся seed в форме <see cref="CRYPT_DATA_BLOB"/>. При этом предыдущее значение seed будет удалено.
+        ///      </td>
+        ///    </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Data">A value data buffer. Place the value data in this buffer before calling <b>CryptSetHashParam</b>. The form of this data varies, depending on the value number.</param>
+        /// <param name="Flags">
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///        CRYPT_PASS_THROUGHT_DATA_BLOB
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Decorate input <paramref name="Data"/> parameter with <see cref="CRYPT_DATA_BLOB"/> structure.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the function returns <see langword="true"/>.<br/>
+        /// If the function fails, it returns <see langword="false"/>. For extended error information, call <see cref="LastErrorService.GetLastError"/>.<br/>
+        /// The error codes prefaced by "NTE" are generated by the particular CSP you are using. Some possible error codes follow.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///        ERROR_INVALID_HANDLE
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        One of the parameters specifies a handle that is not valid.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        ERROR_BUSY
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The CSP context is currently being used by another process.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        ERROR_INVALID_PARAMETER
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_BAD_FLAGS
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The <paramref name="Flags"/> parameter is nonzero or the <paramref name="Data"/> buffer contains a value that is not valid.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_BAD_HASH
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The hash object specified by the <paramref name="Hash"/> parameter is not valid.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_BAD_TYPE
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The <paramref name="Param"/> parameter specifies an unknown value.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_BAD_UID
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The CSP context that was specified when the hKey key was created cannot be found.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_FAIL
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The function failed in some unexpected way.
+        ///      </td>
+        ///    </tr>
+        /// </table>
+        /// <b>CryptoPro CSP</b>:<br/>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///        NTE_BAD_HASH_STATE
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        An attempt was made to get the value of the hash function for "non-closed" hash object.
+        ///      </td>
+        ///    </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptSetHashParam(IntPtr Hash,Int32 Param,Byte[] Data,Int32 Flags);
+        #endregion
+        #region M:CryptSetHashParam(IntPtr,Int32,{ref}CRYPT_DATA_BLOB,Int32):Boolean
+        /// <summary>
+        /// The <b>CryptSetHashParam</b> function customizes the operations of a
+        /// <a href="https://learn.microsoft.com/en-us/windows/desktop/SecGloss/h-gly">hash object</a>, including
+        /// setting up initial hash contents and selecting a specific hashing algorithm throught <see cref="CRYPT_DATA_BLOB"/>.
+        /// </summary>
+        /// <param name="Hash">A handle to the hash object on which to set parameters (HCRYPTHASH).</param>
+        /// <param name="Param">This parameter can be one of the following values.<br/>
+        /// <b>CryptoPro CSP</b>:<br/>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///        HP_HASHVAL_BLOB
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливается для объекта функции хэширования типа CALG_GR3411, CALG_GR3411_2012_256 и CALG_GR3411_2012_512. В буфер <paramref name="Data"/> передаётся указатель на структуру <see cref="CRYPT_DATA_BLOB"/>, содержащую хэш-значение.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_TLS1PRF_SEED
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Составляющая аргумента функции GOSTR3411_PRF. Принимает различные значения в сообщениях клиента и сервера при реализации TLS Handshake Protocol. Задается в виде структуры <see cref="CRYPT_DATA_BLOB"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_TLS1PRF_LABEL
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Составляющая аргумента функции GOSTR3411_PRF. Принимает различные значения в сообщениях клиента и сервера при реализации TLS Handshake Protocol. Задается в виде структуры <see cref="CRYPT_DATA_BLOB"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_PBKDF2_SALT
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Задает синхропосылку размерности от 8 до 32 байт для объекта хэша типа CALG_PBKDF2_94_256, CALG_PBKDF2_2012_256 и CALG_PBKDF2_2012_512. Задается в виде структуры <see cref="CRYPT_DATA_BLOB"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_PBKDF2_PASSWORD
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Задает пароль для объекта хэша типа CALG_PBKDF2_94_256, CALG_PBKDF2_2012_256 и CALG_PBKDF2_2012_512. Задается в виде структуры <see cref="CRYPT_DATA_BLOB"/>.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_KEYMIXSTART
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Осуществляет диверсификацию ключа, ассоциированного с объектом хэширования, по алгоритму CALG_PRO_DIVERS. Через параметр <paramref name="Data"/> передаётся блоб диверсификации ключа в форме <see cref="CRYPT_DATA_BLOB"/>, см. <see cref="CryptImportKey"/>. Допускается многократный вызов с различными параметрами диверсификации.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_OPAQUEBLOB
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает блоб, содержащий внутреннее состояние объекта имитовставки ГОСТ 28147-89.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_HASHSTATEBLOB
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает блоб, содержащий внутреннее состояние объектов хэширования CALG_GR3411, CALG_GR3411_2012_256, CALG_GR3411_2012_512.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_HMAC_FIXEDKEY
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает значение ключа для объекта хэша типа CALG_GR3411_HMAC_FIXEDKEY, CALG_GR3411_2012_256_HMAC_FIXEDKEY и CALG_GR3411_2012_512_HMAC_FIXEDKEY. Через параметр <paramref name="Data"/> передаётся ключ в форме <see cref="CRYPT_DATA_BLOB"/>. Если размер переданных в блобе данных меньше размера соответствующего ключа, то ключ дополняется нулями, иначе - в качестве ключа устанавливается результат хэширования переданных данных.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        HP_PRFKEYMAT_SEED
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        Устанавливает значение seed для объекта хэша типа CALG_GR3411_PRFKEYMAT, CALG_GR3411_2012_256_PRFKEYMAT и CALG_GR3411_2012_512_PRFKEYMAT. Через параметр <paramref name="Data"/> передаётся seed в форме <see cref="CRYPT_DATA_BLOB"/>. При этом предыдущее значение seed будет удалено.
+        ///      </td>
+        ///    </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Data">A value data structure.</param>
+        /// <param name="Flags">This parameter is reserved for future use and must be set to zero.</param>
+        /// <returns>
+        /// If the function succeeds, the function returns <see langword="true"/>.<br/>
+        /// If the function fails, it returns <see langword="false"/>. For extended error information, call <see cref="LastErrorService.GetLastError"/>.<br/>
+        /// The error codes prefaced by "NTE" are generated by the particular CSP you are using. Some possible error codes follow.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///        ERROR_INVALID_HANDLE
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        One of the parameters specifies a handle that is not valid.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        ERROR_BUSY
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The CSP context is currently being used by another process.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        ERROR_INVALID_PARAMETER
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_BAD_FLAGS
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The <paramref name="Flags"/> parameter is nonzero or the <paramref name="Data"/> buffer contains a value that is not valid.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_BAD_HASH
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The hash object specified by the <paramref name="Hash"/> parameter is not valid.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_BAD_TYPE
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The <paramref name="Param"/> parameter specifies an unknown value.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_BAD_UID
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The CSP context that was specified when the hKey key was created cannot be found.
+        ///      </td>
+        ///    </tr>
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        NTE_FAIL
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        The function failed in some unexpected way.
+        ///      </td>
+        ///    </tr>
+        /// </table>
+        /// <b>CryptoPro CSP</b>:<br/>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///        NTE_BAD_HASH_STATE
+        ///      </td>
+        ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///        An attempt was made to get the value of the hash function for "non-closed" hash object.
+        ///      </td>
+        ///    </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptSetHashParam(IntPtr Hash,Int32 Param,ref CRYPT_DATA_BLOB Data,Int32 Flags);
+        #endregion
         Boolean CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,Int32 Flags);
         Boolean CryptSetKeyParam(IntPtr Key,KEY_PARAM Param,IntPtr Data,Int32 Flags);
         Boolean CryptSetProvParam(IntPtr Context,CRYPT_PARAM Parameter,Byte[] Data,Int32 Flags);
         Boolean CryptSetProvParam(IntPtr Context,CRYPT_PARAM Parameter,IntPtr Data,Int32 Flags);
-        Boolean CryptSignHash(IntPtr Handle, KEY_SPEC_TYPE KeySpec, Byte[] Signature, ref Int32 Length);
+        #region M:CryptSignHash(IntPtr,KEY_SPEC_TYPE,Byte[],{ref}Int32):Boolean
+        /// <summary>
+        /// The CryptSignHash function signs hash.
+        /// </summary>
+        /// <param name="Hash">Handle of the hash object to be signed (HCRYPTHASH).</param>
+        /// <param name="KeySpec">
+        /// Identifies the private key to use from the provider's container. It can be AT_KEYEXCHANGE or AT_SIGNATURE.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       AT_KEYEXCHANGE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Key exchange.
+        ///     </td>
+        ///    </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       AT_SIGNATURE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Digital signature.
+        ///     </td>
+        ///    </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Signature">
+        /// A pointer to a buffer receiving the signature data.<br/>
+        /// This parameter can be <see langword="null"/> to set the buffer size for memory allocation purposes.
+        /// </param>
+        /// <param name="Length">A reference to a <see cref="Int32"/> value that specifies the size, in bytes, of the <paramref name="Signature"/> buffer. When the function returns, the <see cref="Int32"/> value contains the number of bytes stored in the buffer.</param>
+        /// <returns>
+        /// If the function succeeds, the function returns <see langword="true"/>.<br/>
+        /// If the function fails, it returns <see langword="false"/>. For extended error information, call <see cref="LastErrorService.GetLastError"/>.<br/>
+        /// The error codes prefaced by "NTE" are generated by the particular CSP you are using. Some possible error codes follow.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_MORE_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///       The buffer specified by the pbSignature parameter is not large enough to hold the returned data. The required buffer size, in bytes, is in the <paramref name="Length"/> value.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///       The <paramref name="Hash"/> handle specifies an algorithm that this CSP does not support, or the <paramref name="KeySpec"/> parameter has an incorrect value.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///       The hash object specified by the <paramref name="Hash"/> parameter is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///       The CSP context that was specified when the hash object was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_NO_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///       The private key specified by <paramref name="KeySpec"/> does not exist.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_NO_MEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+        ///       The CSP ran out of memory during the operation.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// <b>CryptoPro CSP</b>:<br/>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       NTE_FAIL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Нарушение целостности ключей в ОЗУ.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_SILENT_CONTEXT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Операция не может быть выполнена без пользовательского интерфейса.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SCARD_W_CANCELLED_BY_USER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Пользователь прервал операцию нажатием клавиши Cancel.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SCARD_W_WRONG_CHV
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Пользователь ввёл неправильный пароль или пароль, установленный функцией <see cref="CryptSetProvParam"/>, неправильный.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SCARD_E_INVALID_CHV
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Пользователь ввёл пароль с нарушением формата или пароль, установленный функцией <see cref="CryptSetProvParam"/>, имеет неправильный формат. Например, пароль имеет недопустимую длину или содержит недопустимые символы.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SCARD_W_CHV_BLOCKED
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Ввод Pin-кода был заблокирован смарт-картой, т.к. исчерпалось количество попыток, разрешенное картой для ввода.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SCARD_W_REMOVED_CARD
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Носитель контейнера был удален из считывателя.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SCARD_E_NO_KEY_CONTAINER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Контекст открыт с флагом CRYPT_DEFAULT_CONTAINER_OPTIONAL, и не связан ни с одним контейнером, поэтому выполнение данной операции недоступно.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_BAD_FORMAT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Неподходящий формат подписываемого документа.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_MESSAGE_EXCEEDS_MAX_SIZE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Попытка подписи слишком большого документа.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptSignHash(IntPtr Hash, KEY_SPEC_TYPE KeySpec, Byte[] Signature, ref Int32 Length);
+        #endregion
         Boolean CryptVerifyCertificateSignature(IntPtr Context,Int32 SubjectType,IntPtr Subject,Int32 IssuerType,IntPtr Issuer,Int32 Flags);
         Boolean CryptVerifySignature(IntPtr Handle, Byte[] Signature, Int32 SignatureSize, IntPtr Key);
         Int32 CertNameToStrA(Int32 CertEncodingType,ref CRYPT_BLOB Name,Int32 StrType,IntPtr psz,Int32 csz);

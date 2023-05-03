@@ -4,43 +4,34 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+#if !NET35 && !NET40
+using System.Reflection;
+#endif
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text.RegularExpressions;
+using System.Text;
+using System.Threading;
 #if FEATURE_SECURE_STRING_PASSWORD
 using System.Security;
 #endif
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
 using BinaryStudio.DiagnosticServices;
-#if LINUX
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using BinaryStudio.DiagnosticServices;
+#if !NET35 && !NET40
 using BinaryStudio.DiagnosticServices.Logging;
-using BinaryStudio.PlatformComponents;
-using BinaryStudio.PlatformComponents.Win32;
 #endif
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
+using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.CryptographyServiceProvider;
 using BinaryStudio.Security.Cryptography.Certificates;
-using BinaryStudio.PlatformComponents.Win32;
 using BinaryStudio.Security.Cryptography.Internal;
-using BinaryStudio.Serialization;
-using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
 using BinaryStudio.Services;
+using FILETIME=System.Runtime.InteropServices.ComTypes.FILETIME;
+using Process=System.Diagnostics.Process;
 
 namespace BinaryStudio.Security.Cryptography
     {
     using CERT_NAME_BLOB=CRYPT_BLOB;
-    #if LINUX
-    using Process=System.Diagnostics.Process;
-    #endif
     public abstract partial class CryptographicContext : CryptographicObject
         {
         public const String URI_GOST_CIPHER	                 = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gost28147";
@@ -58,7 +49,7 @@ namespace BinaryStudio.Security.Cryptography
         public const String	URN_GOST_SIGN_2012_256           = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-256";
         public const String	URN_GOST_SIGN_2012_512           = "urn:ietf:params:xml:ns:cpxmlsec:algorithms:gostr34102012-gostr34112012-512";
 
-        public static CryptographicContext DefaultContext { get; }
+        public static CryptographicContext DefaultContext { get { return (CryptographicContext)GlobalServices.GetService(typeof(CryptographicContext)); }}
         public static IEnumerable<RegisteredProviderInfo> RegisteredProviders { get { return DefaultContext.GetRegisteredProviders(); }}
         public static IDictionary<CRYPT_PROVIDER_TYPE,String> AvailableTypes { get { return DefaultContext.GetAvailableTypes(); }}
         public virtual IDictionary<ALG_ID,String> SupportedAlgorithms { get { return new ReadOnlyDictionary<ALG_ID,String>(new Dictionary<ALG_ID,String>()); }}
@@ -470,7 +461,6 @@ namespace BinaryStudio.Security.Cryptography
             }
         #endregion
 
-        #if LINUX
         private class LDConfigItem
             {
             public String FileName { get; }
@@ -541,7 +531,6 @@ namespace BinaryStudio.Security.Cryptography
                 Console.WriteLine(Exceptions.ToString(e));
                 }
             }
-        #endif
 
         #region M:GetParameter(CRYPT_PARAM,Int32):void*
         internal Byte[] GetParameter(CRYPT_PARAM key, Int32 flags) {
@@ -766,41 +755,52 @@ namespace BinaryStudio.Security.Cryptography
         #endif
 
         static CryptographicContext() {
-            #if LINUX
-            LDConfigEnsure();
-            #region {ViPNet CSP}
-            if (File.Exists(ITCSLibrary)) {
-                if (!libraries.Any(i => String.Equals(i.Value,ITCSLibrary,StringComparison.OrdinalIgnoreCase))) {
-                    var AssemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                    var LDLibraryPath = new List<String>((Environment.GetEnvironmentVariable("LD_LIBRARY_PATH")??String.Empty).Split(':',StringSplitOptions.RemoveEmptyEntries));
-                    if (!LDLibraryPath.Contains(ITCSLibraryPath)) {
-                        throw new InvalidProgramException($"ViPNet CSP installed at '{ITCSLibraryPath}' but does not configured for run-time bindings. Use {{ldconfig}} to configure dynamic linker run-time bindings or set {{LD_LIBRARY_PATH}} environment variable to specify library path explicitly.");
-                        }
-                    }
-                DefaultContext= new CryptographicContextP();
-                return;
-                }
-            #endregion
-            #region {Crypto PRO CSP}
-            if (File.Exists("/etc/opt/cprocsp/config64.ini")) {
-                var cnfig = File.ReadAllText("/etc/opt/cprocsp/config64.ini");
-                var regex = new Regex(@"[""]libcapi20[.]so[""]\p{Zs}*[=]\p{Zs}*[""](.+libcapi20[.]so)[""]\n");
-                var match = regex.Match(cnfig);
-                if (match.Success) {
-                    var capiso = match.Groups[1].Value;
-                    if (File.Exists(capiso)) {
-                        PlatformContext.Logger.Log(LogLevel.Information, $"library:{capiso}");
-                        DefaultContext= new CryptographicContextC();
-                        }
-                    }
-                }
-            #endregion
-            #else
-            DefaultContext= new CryptographicContextS();
-            #endif
             EncryptTaskCount = Is64BitProcess
                 ? 32
                 : 8;
+            GlobalServices.ServiceResolve += ServiceResolve;
+            }
+
+        private static void ServiceResolve(Object sender, ServiceResolveEventArgs e) {
+            if (e.RequestingService is Type type) {
+                if ((type == typeof(CryptographicFunctions)) || (type == typeof(CryptographicContext))) {
+                    #if !NET35 && !NET40
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+                        LDConfigEnsure();
+                        #region {ViPNet CSP}
+                        if (File.Exists(ITCSLibrary)) {
+                            if (!libraries.Any(i => String.Equals(i.Value,ITCSLibrary,StringComparison.OrdinalIgnoreCase))) {
+                                var AssemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                                var LDLibraryPath = new List<String>((Environment.GetEnvironmentVariable("LD_LIBRARY_PATH")??String.Empty).Split(new []{':' },StringSplitOptions.RemoveEmptyEntries));
+                                if (!LDLibraryPath.Contains(ITCSLibraryPath)) {
+                                    throw new InvalidProgramException($"ViPNet CSP installed at '{ITCSLibraryPath}' but does not configured for run-time bindings. Use {{ldconfig}} to configure dynamic linker run-time bindings or set {{LD_LIBRARY_PATH}} environment variable to specify library path explicitly.");
+                                    }
+                                }
+                            e.Service = new CryptographicContextP();
+                            return;
+                            }
+                        #endregion
+                        #region {Crypto PRO CSP}
+                        if (File.Exists("/etc/opt/cprocsp/config64.ini")) {
+                            var cnfig = File.ReadAllText("/etc/opt/cprocsp/config64.ini");
+                            var regex = new Regex(@"[""]libcapi20[.]so[""]\p{Zs}*[=]\p{Zs}*[""](.+libcapi20[.]so)[""]\n");
+                            var match = regex.Match(cnfig);
+                            if (match.Success) {
+                                var capiso = match.Groups[1].Value;
+                                if (File.Exists(capiso)) {
+                                    PlatformContext.Logger.Log(LogLevel.Information, $"library:{capiso}");
+                                    e.Service = new CryptographicContextC();
+                                    return;
+                                    }
+                                }
+                            }
+                        #endregion
+                        return;
+                        }
+                    #endif
+                    e.Service = new CryptographicContextS();
+                    }
+                }
             }
 
         #region M:CopyToMemory(OidCollection):LocalMemoryHandle

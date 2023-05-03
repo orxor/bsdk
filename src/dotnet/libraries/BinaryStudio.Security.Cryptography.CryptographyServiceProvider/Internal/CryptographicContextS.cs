@@ -55,7 +55,6 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r) { return CryptGenKey(Context,AlgId,Flags,out r); }
         Boolean CryptographicFunctions.CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer) { return CryptGenRandom(Context,Length,Buffer); }
         Boolean CryptographicFunctions.CryptGetHashParam(IntPtr Handle, Int32 Parameter, Byte[] Block, ref Int32 BlockSize) { return CryptGetHashParam(Handle,Parameter,Block,ref BlockSize,0); }
-        Boolean CryptographicFunctions.CryptGetHashParam(IntPtr Handle, Int32 Parameter, out Int32 Block, ref Int32 BlockSize) { return CryptGetHashParam(Handle,Parameter, out Block,ref BlockSize,0); }
         Boolean CryptographicFunctions.CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,Byte[] Data,ref Int32 DataSize, Int32 Flags) { return CryptGetKeyParam(Key,Param,Data,ref DataSize,Flags); }
         Boolean CryptographicFunctions.CryptGetKeyParam(IntPtr Key,KEY_PARAM Param,IntPtr Data,ref Int32 DataSize, Int32 Flags) { return CryptGetKeyParam(Key,Param,Data,ref DataSize,Flags); }
         Boolean CryptographicFunctions.CryptGetProvParam(IntPtr Context,CRYPT_PARAM Parameter,Byte[] Data,ref Int32 DataSize,Int32 Flags) { return CryptGetProvParam(Context,Parameter,Data,ref DataSize,Flags); }
@@ -237,6 +236,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
                 return CryptMsgOpenToEncode(EncodingType,Flags,Type,
                     ref e,IntPtr.Zero,ref StreamInfo);
                 }
+            }
+
+        Boolean CryptographicFunctions.CryptGetHashParam(IntPtr Handle, Int32 Parameter, out Int32 Value) {
+            var Size = sizeof(Int32);
+            return CryptGetHashParam(Handle,Parameter, out Value,ref Size,0);
             }
 
         unsafe Boolean CryptographicFunctions.CryptSetHashParam(IntPtr Hash,Int32 Param,Byte[] Data,Int32 Flags) {

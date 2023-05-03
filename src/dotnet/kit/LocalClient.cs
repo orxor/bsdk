@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BinaryStudio.DiagnosticServices.Logging;
 using BinaryStudio.Security.Cryptography.Certificates;
+using BinaryStudio.Services;
 using log4net;
 using Operations;
 using Options;
