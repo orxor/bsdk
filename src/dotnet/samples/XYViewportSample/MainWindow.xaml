@@ -1,0 +1,17 @@
+﻿<Window x:Class="XYViewportSample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XYViewportSample"
+        xmlns:u="http://schemas.helix.global"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+  <Grid>
+    <u:XYViewport Margin="20">
+      <u:XYViewportNode u:XYViewport.Left="100" u:XYViewport.Top="100" Width="50" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Hello!</u:XYViewportNode>
+      <u:XYViewportNode u:XYViewport.Left="370" u:XYViewport.Top="270" Width="50" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">World!</u:XYViewportNode>
+      <u:XYViewportNode u:XYViewport.Left="370" u:XYViewport.Top="970" Width="50" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Another</u:XYViewportNode>
+    </u:XYViewport>
+  </Grid>
+</Window>

@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net40</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Version>1.0.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Themes\OMF\FDOMFSSectionGlobalPub.xslt" />
+    <None Remove="Themes\OMF\HTOMFSSectionGlobalPub.xslt" />
+    <None Remove="Themes\OMF\OMFSSectionSrcModule.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1462.37" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+    <PackageReference Include="WebView2.Runtime.X64" Version="108.0.1462.44" />
+    <PackageReference Include="WebView2.Runtime.X86" Version="108.0.1462.44" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
+    <ProjectReference Include="..\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\OMF\HTOMFSSectionGlobalPub.xslt" />
+    <Resource Include="Themes\OMF\FDOMFSSectionGlobalPub.xslt" />
+    <Resource Include="Themes\OMF\OMFSSectionSrcModule.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Themes\OMF\Symbols\S_REGISTER16.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\OMF\Symbols\S_DATASYM16_16.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

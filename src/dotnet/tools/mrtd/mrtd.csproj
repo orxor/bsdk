@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net40</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
+  </ItemGroup>
+</Project>

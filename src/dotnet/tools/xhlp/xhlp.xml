@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>xhlp</name>
+    </assembly>
+    <members>
+        <member name="T:xhlp.SimpleClass">
+            <summary>
+            <p>
+              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 0,0
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 0,1
+                  </td>
+                </tr>
+              </table>
+            </p>
+            <p>
+              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <style>
+                  td.n { border: solid blue 1.0pt; mso-border-alt: solid windowtext .5pt; padding: 0cm 5.4pt 0cm 5.4pt; }
+                </style>
+                <tr>
+                  <td class="n">
+                    CELL 0,0
+                  </td>
+                  <td class="n">
+                    CELL 0,1
+                  </td>
+                </tr>
+                <tr>
+                  <td class="n">
+                    CELL 1,0
+                  </td>
+                  <td class="n">
+                    CELL 1,1
+                  </td>
+                </tr>
+              </table>
+            </p>
+            </summary>
+        </member>
+        <member name="M:xhlp.SimpleClass.F1">
+            <summary>
+            <p>
+              <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 0,0
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 0,1
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,0
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,1
+                  </td>
+                </tr>
+              </table>
+            </p>
+            </summary>
+        </member>
+        <member name="M:xhlp.SimpleClass.F2">
+            <summary>
+            <p>
+              <table style="font-family: Consolas;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 0,0
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 0,1
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,0
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,1
+                  </td>
+                </tr>
+              </table>
+            </p>
+            </summary>
+        </member>
+        <member name="M:xhlp.SimpleClass.F3">
+            <summary>
+            <p>
+              <table style="font-family: Consolas;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+                    width:20%
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 0,1
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,0
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,1
+                  </td>
+                </tr>
+              </table>
+            </p>
+            </summary>
+        </member>
+        <member name="M:xhlp.SimpleClass.F4">
+            <summary>
+            <p>
+              <table style="font-family: Consolas;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:100px">
+                    width:100px
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 0,1
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,0
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,1
+                  </td>
+                </tr>
+              </table>
+            </p>
+            </summary>
+        </member>
+        <member name="M:xhlp.SimpleClass.F5">
+            <summary>
+            <p>
+              Table 2x3
+              <table style="font-family: Consolas;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+                    width:20%
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;;width:60%">
+                    width:60%
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+                    CELL 1,0
+                  </td>
+                  <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
+                    CELL 1,1
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </table>
+            </p>
+            </summary>
+        </member>
+    </members>
+</doc>

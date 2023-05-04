@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <Page Update="Themes\Controls\HexBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Controls\Primitives\RangeSelectionTrackingControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern.Dark{Violet}.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern.Dark{Sting}.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern.Dark{Snow}.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern\DataGrid.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern\Expander.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern\ListBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern\ScrollViewer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern\TabControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Controls\Primitives\Thumb.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Controls\Primitives\XYViewport.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Themes\Modern\TextBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

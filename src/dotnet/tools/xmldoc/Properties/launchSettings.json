@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "xmldoc": {
+      "commandName": "Project",
+      "commandLineArgs": "input:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.xml lang:ru-RU"
+    }
+  }
+}

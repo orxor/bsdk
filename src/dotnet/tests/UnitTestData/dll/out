@@ -1,0 +1,2393 @@
+Open Watcom Executable Image Dump Utility Version 1.6
+Portions Copyright (c) 1984-2002 Sybase, Inc. All Rights Reserved.
+Source code is available under the Sybase Open Watcom Public License.
+See http://www.openwatcom.org/ for details.
+
+
+                     CodeView debugging information (CV4)                     
+==============================================================================
+debugging information base  = 00093000H
+subsection directory offset = 0012857CH
+Signature NB09
+
+cbDirHeader - length of directory header      =     0010H
+cbDirEntry  - lentgh of each entry            =     000CH
+cDir        - number of directory entries     = 000001DBH
+lfoNextDir  - offset of next directory        = 00000000H
+flags       - directory and sst flags         = 00000000H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0001H
+  lfo         - offset from base              = 00000008H
+  cb          - subsection size               = 00000022H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0002H
+  lfo         - offset from base              = 0000002CH
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0003H
+  lfo         - offset from base              = 00000050H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0004H
+  lfo         - offset from base              = 00000074H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0005H
+  lfo         - offset from base              = 00000098H
+  cb          - subsection size               = 00000014H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0006H
+  lfo         - offset from base              = 000000ACH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0007H
+  lfo         - offset from base              = 000000CCH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0008H
+  lfo         - offset from base              = 000000ECH
+  cb          - subsection size               = 00000014H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0009H
+  lfo         - offset from base              = 00000100H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     000AH
+  lfo         - offset from base              = 00000120H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     000BH
+  lfo         - offset from base              = 00000144H
+  cb          - subsection size               = 00000022H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     000CH
+  lfo         - offset from base              = 00000168H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     000DH
+  lfo         - offset from base              = 0000018CH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     000EH
+  lfo         - offset from base              = 000001ACH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     000FH
+  lfo         - offset from base              = 000001CCH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0010H
+  lfo         - offset from base              = 000001ECH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0011H
+  lfo         - offset from base              = 0000020CH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0012H
+  lfo         - offset from base              = 0000022CH
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0013H
+  lfo         - offset from base              = 0000024CH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0014H
+  lfo         - offset from base              = 0000026CH
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0015H
+  lfo         - offset from base              = 0000028CH
+  cb          - subsection size               = 0000001BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0016H
+  lfo         - offset from base              = 000002A8H
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0017H
+  lfo         - offset from base              = 000002C8H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0018H
+  lfo         - offset from base              = 000002E8H
+  cb          - subsection size               = 00000015H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0019H
+  lfo         - offset from base              = 00000300H
+  cb          - subsection size               = 00000015H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     001AH
+  lfo         - offset from base              = 00000318H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     001BH
+  lfo         - offset from base              = 0000033CH
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     001CH
+  lfo         - offset from base              = 00000360H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     001DH
+  lfo         - offset from base              = 00000380H
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     001EH
+  lfo         - offset from base              = 000003A8H
+  cb          - subsection size               = 00000014H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     001FH
+  lfo         - offset from base              = 000003BCH
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0020H
+  lfo         - offset from base              = 000003E0H
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0021H
+  lfo         - offset from base              = 00000400H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0022H
+  lfo         - offset from base              = 00000424H
+  cb          - subsection size               = 00000013H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0023H
+  lfo         - offset from base              = 00000438H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0024H
+  lfo         - offset from base              = 0000045CH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0025H
+  lfo         - offset from base              = 0000047CH
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0026H
+  lfo         - offset from base              = 0000049CH
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0027H
+  lfo         - offset from base              = 000004C0H
+  cb          - subsection size               = 00000022H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0028H
+  lfo         - offset from base              = 000004E4H
+  cb          - subsection size               = 0000001CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0029H
+  lfo         - offset from base              = 00000500H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     002AH
+  lfo         - offset from base              = 00000520H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     002BH
+  lfo         - offset from base              = 00000540H
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     002CH
+  lfo         - offset from base              = 00000560H
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     002DH
+  lfo         - offset from base              = 00000580H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     002EH
+  lfo         - offset from base              = 000005A4H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     002FH
+  lfo         - offset from base              = 000005C4H
+  cb          - subsection size               = 00000012H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0030H
+  lfo         - offset from base              = 000005D8H
+  cb          - subsection size               = 0000000FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0031H
+  lfo         - offset from base              = 000005E8H
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0032H
+  lfo         - offset from base              = 00000608H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0033H
+  lfo         - offset from base              = 0000062CH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0034H
+  lfo         - offset from base              = 0000064CH
+  cb          - subsection size               = 0000001CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0035H
+  lfo         - offset from base              = 00000668H
+  cb          - subsection size               = 00000022H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0036H
+  lfo         - offset from base              = 0000068CH
+  cb          - subsection size               = 00000015H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0037H
+  lfo         - offset from base              = 000006A4H
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0038H
+  lfo         - offset from base              = 000006C4H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0039H
+  lfo         - offset from base              = 000006E4H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     003AH
+  lfo         - offset from base              = 00000704H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     003BH
+  lfo         - offset from base              = 00000724H
+  cb          - subsection size               = 00000022H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     003CH
+  lfo         - offset from base              = 00000748H
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     003DH
+  lfo         - offset from base              = 00000768H
+  cb          - subsection size               = 0000001CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     003EH
+  lfo         - offset from base              = 00000784H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     003FH
+  lfo         - offset from base              = 000007A8H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0040H
+  lfo         - offset from base              = 000007C8H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0041H
+  lfo         - offset from base              = 000007ECH
+  cb          - subsection size               = 00000028H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0042H
+  lfo         - offset from base              = 00000814H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0043H
+  lfo         - offset from base              = 00000838H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0044H
+  lfo         - offset from base              = 00000858H
+  cb          - subsection size               = 0000001AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0045H
+  lfo         - offset from base              = 00000874H
+  cb          - subsection size               = 0000001CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0046H
+  lfo         - offset from base              = 00000890H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0047H
+  lfo         - offset from base              = 000008B0H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0048H
+  lfo         - offset from base              = 000008D0H
+  cb          - subsection size               = 00000011H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0049H
+  lfo         - offset from base              = 000008E4H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     004AH
+  lfo         - offset from base              = 00000908H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     004BH
+  lfo         - offset from base              = 00000928H
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     004CH
+  lfo         - offset from base              = 00000948H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     004DH
+  lfo         - offset from base              = 0000096CH
+  cb          - subsection size               = 00000022H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     004EH
+  lfo         - offset from base              = 00000990H
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     004FH
+  lfo         - offset from base              = 000009B0H
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0050H
+  lfo         - offset from base              = 000009D8H
+  cb          - subsection size               = 00000028H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0051H
+  lfo         - offset from base              = 00000A00H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0052H
+  lfo         - offset from base              = 00000A24H
+  cb          - subsection size               = 00000029H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0053H
+  lfo         - offset from base              = 00000A50H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0054H
+  lfo         - offset from base              = 00000A74H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0055H
+  lfo         - offset from base              = 00000A98H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0056H
+  lfo         - offset from base              = 00000ABCH
+  cb          - subsection size               = 00000015H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0057H
+  lfo         - offset from base              = 00000AD4H
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0058H
+  lfo         - offset from base              = 00000AFCH
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0059H
+  lfo         - offset from base              = 00000B24H
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     005AH
+  lfo         - offset from base              = 00000B4CH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     005BH
+  lfo         - offset from base              = 00000B6CH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     005CH
+  lfo         - offset from base              = 00000B8CH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     005DH
+  lfo         - offset from base              = 00000BACH
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     005EH
+  lfo         - offset from base              = 00000BCCH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     005FH
+  lfo         - offset from base              = 00000BECH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0060H
+  lfo         - offset from base              = 00000C0CH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0061H
+  lfo         - offset from base              = 00000C2CH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0062H
+  lfo         - offset from base              = 00000C4CH
+  cb          - subsection size               = 00000025H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0063H
+  lfo         - offset from base              = 00000C74H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0064H
+  lfo         - offset from base              = 00000C98H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0065H
+  lfo         - offset from base              = 00000CBCH
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0066H
+  lfo         - offset from base              = 00000CE0H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0067H
+  lfo         - offset from base              = 00000D04H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0068H
+  lfo         - offset from base              = 00000D28H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0069H
+  lfo         - offset from base              = 00000D4CH
+  cb          - subsection size               = 00000025H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     006AH
+  lfo         - offset from base              = 00000D74H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     006BH
+  lfo         - offset from base              = 00000D98H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     006CH
+  lfo         - offset from base              = 00000DBCH
+  cb          - subsection size               = 00000013H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     006DH
+  lfo         - offset from base              = 00000DD0H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     006EH
+  lfo         - offset from base              = 00000DF4H
+  cb          - subsection size               = 0000001AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     006FH
+  lfo         - offset from base              = 00000E10H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0070H
+  lfo         - offset from base              = 00000E30H
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0071H
+  lfo         - offset from base              = 00000E50H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0072H
+  lfo         - offset from base              = 00000E70H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0073H
+  lfo         - offset from base              = 00000E90H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0074H
+  lfo         - offset from base              = 00000EB0H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0075H
+  lfo         - offset from base              = 00000ED0H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0076H
+  lfo         - offset from base              = 00000EF0H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0077H
+  lfo         - offset from base              = 00000F10H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0078H
+  lfo         - offset from base              = 00000F30H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0079H
+  lfo         - offset from base              = 00000F50H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     007AH
+  lfo         - offset from base              = 00000F70H
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     007BH
+  lfo         - offset from base              = 00000F90H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     007CH
+  lfo         - offset from base              = 00000FB0H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     007DH
+  lfo         - offset from base              = 00000FD0H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     007EH
+  lfo         - offset from base              = 00000FF4H
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     007FH
+  lfo         - offset from base              = 00001014H
+  cb          - subsection size               = 0000001CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0080H
+  lfo         - offset from base              = 00001030H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0081H
+  lfo         - offset from base              = 00001050H
+  cb          - subsection size               = 00000013H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0082H
+  lfo         - offset from base              = 00001064H
+  cb          - subsection size               = 0000001CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0083H
+  lfo         - offset from base              = 00001080H
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0084H
+  lfo         - offset from base              = 000010A0H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0085H
+  lfo         - offset from base              = 000010C0H
+  cb          - subsection size               = 00000012H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0086H
+  lfo         - offset from base              = 000010D4H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0087H
+  lfo         - offset from base              = 000010F4H
+  cb          - subsection size               = 0000001CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0088H
+  lfo         - offset from base              = 00001110H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0089H
+  lfo         - offset from base              = 00001130H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     008AH
+  lfo         - offset from base              = 00001150H
+  cb          - subsection size               = 00000012H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     008BH
+  lfo         - offset from base              = 00001164H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     008CH
+  lfo         - offset from base              = 00001188H
+  cb          - subsection size               = 00000011H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     008DH
+  lfo         - offset from base              = 0000119CH
+  cb          - subsection size               = 00000013H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     008EH
+  lfo         - offset from base              = 000011B0H
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     008FH
+  lfo         - offset from base              = 000011D0H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0090H
+  lfo         - offset from base              = 000011F0H
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0091H
+  lfo         - offset from base              = 00001210H
+  cb          - subsection size               = 0000001CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0092H
+  lfo         - offset from base              = 0000122CH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0093H
+  lfo         - offset from base              = 0000124CH
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0094H
+  lfo         - offset from base              = 0000126CH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0095H
+  lfo         - offset from base              = 0000128CH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0096H
+  lfo         - offset from base              = 000012ACH
+  cb          - subsection size               = 0000001DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0097H
+  lfo         - offset from base              = 000012CCH
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0098H
+  lfo         - offset from base              = 000012ECH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0099H
+  lfo         - offset from base              = 0000130CH
+  cb          - subsection size               = 00000020H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     009AH
+  lfo         - offset from base              = 0000132CH
+  cb          - subsection size               = 0000001BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     009BH
+  lfo         - offset from base              = 00001348H
+  cb          - subsection size               = 00000028H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     009CH
+  lfo         - offset from base              = 00001370H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     009DH
+  lfo         - offset from base              = 00001394H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     009EH
+  lfo         - offset from base              = 000013B8H
+  cb          - subsection size               = 00000025H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     009FH
+  lfo         - offset from base              = 000013E0H
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A0H
+  lfo         - offset from base              = 00001408H
+  cb          - subsection size               = 00000033H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A1H
+  lfo         - offset from base              = 0000143CH
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A2H
+  lfo         - offset from base              = 00001464H
+  cb          - subsection size               = 00000021H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A3H
+  lfo         - offset from base              = 00001488H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A4H
+  lfo         - offset from base              = 000014A8H
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A5H
+  lfo         - offset from base              = 000014C8H
+  cb          - subsection size               = 0000001EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A6H
+  lfo         - offset from base              = 000014E8H
+  cb          - subsection size               = 0000002CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A7H
+  lfo         - offset from base              = 00001514H
+  cb          - subsection size               = 00000037H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A8H
+  lfo         - offset from base              = 0000154CH
+  cb          - subsection size               = 0000001FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00A9H
+  lfo         - offset from base              = 0000156CH
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00AAH
+  lfo         - offset from base              = 00001594H
+  cb          - subsection size               = 00000025H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00ABH
+  lfo         - offset from base              = 000015BCH
+  cb          - subsection size               = 0000003CH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00ACH
+  lfo         - offset from base              = 000015F8H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00ADH
+  lfo         - offset from base              = 00001644H
+  cb          - subsection size               = 0000001AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00AEH
+  lfo         - offset from base              = 00001660H
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00AFH
+  lfo         - offset from base              = 00001688H
+  cb          - subsection size               = 00000032H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B0H
+  lfo         - offset from base              = 000016BCH
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B1H
+  lfo         - offset from base              = 000016E4H
+  cb          - subsection size               = 00000055H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B2H
+  lfo         - offset from base              = 0000173CH
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B3H
+  lfo         - offset from base              = 00001764H
+  cb          - subsection size               = 0000003DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B4H
+  lfo         - offset from base              = 000017A4H
+  cb          - subsection size               = 00000048H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B5H
+  lfo         - offset from base              = 000017ECH
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B6H
+  lfo         - offset from base              = 00001814H
+  cb          - subsection size               = 00000032H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B7H
+  lfo         - offset from base              = 00001848H
+  cb          - subsection size               = 00000056H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B8H
+  lfo         - offset from base              = 000018A0H
+  cb          - subsection size               = 00000057H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00B9H
+  lfo         - offset from base              = 000018F8H
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00BAH
+  lfo         - offset from base              = 00001944H
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00BBH
+  lfo         - offset from base              = 00001990H
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00BCH
+  lfo         - offset from base              = 000019DCH
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00BDH
+  lfo         - offset from base              = 00001A28H
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00BEH
+  lfo         - offset from base              = 00001A74H
+  cb          - subsection size               = 00000057H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00BFH
+  lfo         - offset from base              = 00001ACCH
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C0H
+  lfo         - offset from base              = 00001B18H
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C1H
+  lfo         - offset from base              = 00001B64H
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C2H
+  lfo         - offset from base              = 00001BB0H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C3H
+  lfo         - offset from base              = 00001BFCH
+  cb          - subsection size               = 00000056H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C4H
+  lfo         - offset from base              = 00001C54H
+  cb          - subsection size               = 00000032H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C5H
+  lfo         - offset from base              = 00001C88H
+  cb          - subsection size               = 00000033H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C6H
+  lfo         - offset from base              = 00001CBCH
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C7H
+  lfo         - offset from base              = 00001CE4H
+  cb          - subsection size               = 00000032H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C8H
+  lfo         - offset from base              = 00001D18H
+  cb          - subsection size               = 00000025H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00C9H
+  lfo         - offset from base              = 00001D40H
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00CAH
+  lfo         - offset from base              = 00001D68H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00CBH
+  lfo         - offset from base              = 00001DB4H
+  cb          - subsection size               = 00000048H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00CCH
+  lfo         - offset from base              = 00001DFCH
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00CDH
+  lfo         - offset from base              = 00001E48H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00CEH
+  lfo         - offset from base              = 00001E94H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00CFH
+  lfo         - offset from base              = 00001EE0H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D0H
+  lfo         - offset from base              = 00001F2CH
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D1H
+  lfo         - offset from base              = 00001F78H
+  cb          - subsection size               = 00000031H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D2H
+  lfo         - offset from base              = 00001FACH
+  cb          - subsection size               = 00000032H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D3H
+  lfo         - offset from base              = 00001FE0H
+  cb          - subsection size               = 00000033H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D4H
+  lfo         - offset from base              = 00002014H
+  cb          - subsection size               = 00000032H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D5H
+  lfo         - offset from base              = 00002048H
+  cb          - subsection size               = 00000056H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D6H
+  lfo         - offset from base              = 000020A0H
+  cb          - subsection size               = 0000003FH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D7H
+  lfo         - offset from base              = 000020E0H
+  cb          - subsection size               = 00000033H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D8H
+  lfo         - offset from base              = 00002114H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00D9H
+  lfo         - offset from base              = 00002160H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00DAH
+  lfo         - offset from base              = 000021ACH
+  cb          - subsection size               = 0000003DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00DBH
+  lfo         - offset from base              = 000021ECH
+  cb          - subsection size               = 0000007AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00DCH
+  lfo         - offset from base              = 00002268H
+  cb          - subsection size               = 0000007AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00DDH
+  lfo         - offset from base              = 000022E4H
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00DEH
+  lfo         - offset from base              = 0000230CH
+  cb          - subsection size               = 00000032H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00DFH
+  lfo         - offset from base              = 00002340H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E0H
+  lfo         - offset from base              = 0000238CH
+  cb          - subsection size               = 00000032H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E1H
+  lfo         - offset from base              = 000023C0H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E2H
+  lfo         - offset from base              = 0000240CH
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E3H
+  lfo         - offset from base              = 00002458H
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E4H
+  lfo         - offset from base              = 00002480H
+  cb          - subsection size               = 00000024H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E5H
+  lfo         - offset from base              = 000024A4H
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E6H
+  lfo         - offset from base              = 000024CCH
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E7H
+  lfo         - offset from base              = 000024F4H
+  cb          - subsection size               = 00000023H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E8H
+  lfo         - offset from base              = 00002518H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00E9H
+  lfo         - offset from base              = 00002564H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00EAH
+  lfo         - offset from base              = 000025B0H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00EBH
+  lfo         - offset from base              = 000025FCH
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00ECH
+  lfo         - offset from base              = 00002648H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00EDH
+  lfo         - offset from base              = 00002694H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00EEH
+  lfo         - offset from base              = 000026E0H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00EFH
+  lfo         - offset from base              = 0000272CH
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F0H
+  lfo         - offset from base              = 00002778H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F1H
+  lfo         - offset from base              = 000027C4H
+  cb          - subsection size               = 00000049H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F2H
+  lfo         - offset from base              = 00002810H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F3H
+  lfo         - offset from base              = 0000285CH
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F4H
+  lfo         - offset from base              = 000028A8H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F5H
+  lfo         - offset from base              = 000028F4H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F6H
+  lfo         - offset from base              = 00002940H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F7H
+  lfo         - offset from base              = 0000298CH
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F8H
+  lfo         - offset from base              = 000029D8H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00F9H
+  lfo         - offset from base              = 00002A24H
+  cb          - subsection size               = 00000031H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00FAH
+  lfo         - offset from base              = 00002A58H
+  cb          - subsection size               = 00000030H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00FBH
+  lfo         - offset from base              = 00002A88H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00FCH
+  lfo         - offset from base              = 00002AD4H
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00FDH
+  lfo         - offset from base              = 00002B20H
+  cb          - subsection size               = 0000004BH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00FEH
+  lfo         - offset from base              = 00002B6CH
+  cb          - subsection size               = 0000003EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     00FFH
+  lfo         - offset from base              = 00002BACH
+  cb          - subsection size               = 0000003EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0100H
+  lfo         - offset from base              = 00002BECH
+  cb          - subsection size               = 0000004AH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0101H
+  lfo         - offset from base              = 00002C38H
+  cb          - subsection size               = 00000030H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0102H
+  lfo         - offset from base              = 00002C68H
+  cb          - subsection size               = 00000025H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0103H
+  lfo         - offset from base              = 00002C90H
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0104H
+  lfo         - offset from base              = 00002CB8H
+  cb          - subsection size               = 00000026H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0105H
+  lfo         - offset from base              = 00002CE0H
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0106H
+  lfo         - offset from base              = 00002D08H
+  cb          - subsection size               = 00000027H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0107H
+  lfo         - offset from base              = 00002D30H
+  cb          - subsection size               = 00000025H
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0108H
+  lfo         - offset from base              = 00002D58H
+  cb          - subsection size               = 0000003DH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     0109H
+  lfo         - offset from base              = 00002D98H
+  cb          - subsection size               = 0000003EH
+
+  subsection  - subsection index              =     0120H
+  iMod        - module index (1 based)        =     010AH
+  lfo         - offset from base              = 00002DD8H
+  cb          - subsection size               = 0000007AH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     009FH
+  lfo         - offset from base              = 00002E54H
+  cb          - subsection size               = 0000008CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     009FH
+  lfo         - offset from base              = 00002EE0H
+  cb          - subsection size               = 00000070H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00A0H
+  lfo         - offset from base              = 00002F50H
+  cb          - subsection size               = 0000012CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00A0H
+  lfo         - offset from base              = 0000307CH
+  cb          - subsection size               = 0000007CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00A1H
+  lfo         - offset from base              = 000030F8H
+  cb          - subsection size               = 000000F4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00A1H
+  lfo         - offset from base              = 000031ECH
+  cb          - subsection size               = 000000ACH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00A9H
+  lfo         - offset from base              = 00003298H
+  cb          - subsection size               = 00000240H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00A9H
+  lfo         - offset from base              = 000034D8H
+  cb          - subsection size               = 000000C0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00AAH
+  lfo         - offset from base              = 00003598H
+  cb          - subsection size               = 00000174H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00AAH
+  lfo         - offset from base              = 0000370CH
+  cb          - subsection size               = 00000088H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00ABH
+  lfo         - offset from base              = 00003794H
+  cb          - subsection size               = 000008BCH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00ABH
+  lfo         - offset from base              = 00004050H
+  cb          - subsection size               = 000002BCH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00ACH
+  lfo         - offset from base              = 0000430CH
+  cb          - subsection size               = 000008C8H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00ACH
+  lfo         - offset from base              = 00004BD4H
+  cb          - subsection size               = 000003ACH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00ADH
+  lfo         - offset from base              = 00004F80H
+  cb          - subsection size               = 00000034H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00AEH
+  lfo         - offset from base              = 00004FB4H
+  cb          - subsection size               = 00000184H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00AEH
+  lfo         - offset from base              = 00005138H
+  cb          - subsection size               = 000000BCH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00AFH
+  lfo         - offset from base              = 000051F4H
+  cb          - subsection size               = 000002CCH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00AFH
+  lfo         - offset from base              = 000054C0H
+  cb          - subsection size               = 00000124H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B0H
+  lfo         - offset from base              = 000055E4H
+  cb          - subsection size               = 00000268H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B0H
+  lfo         - offset from base              = 0000584CH
+  cb          - subsection size               = 00000214H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B1H
+  lfo         - offset from base              = 00005A60H
+  cb          - subsection size               = 00000610H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B1H
+  lfo         - offset from base              = 00006070H
+  cb          - subsection size               = 000002F8H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B2H
+  lfo         - offset from base              = 00006368H
+  cb          - subsection size               = 00000230H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B2H
+  lfo         - offset from base              = 00006598H
+  cb          - subsection size               = 00000100H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B3H
+  lfo         - offset from base              = 00006698H
+  cb          - subsection size               = 000002D4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B3H
+  lfo         - offset from base              = 0000696CH
+  cb          - subsection size               = 00000120H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B4H
+  lfo         - offset from base              = 00006A8CH
+  cb          - subsection size               = 00000F5CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B4H
+  lfo         - offset from base              = 000079E8H
+  cb          - subsection size               = 00000700H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B5H
+  lfo         - offset from base              = 000080E8H
+  cb          - subsection size               = 000000E4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B5H
+  lfo         - offset from base              = 000081CCH
+  cb          - subsection size               = 000000E8H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B6H
+  lfo         - offset from base              = 000082B4H
+  cb          - subsection size               = 000002D4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B6H
+  lfo         - offset from base              = 00008588H
+  cb          - subsection size               = 00000220H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B7H
+  lfo         - offset from base              = 000087A8H
+  cb          - subsection size               = 00000E44H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B7H
+  lfo         - offset from base              = 000095ECH
+  cb          - subsection size               = 0000060CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B8H
+  lfo         - offset from base              = 00009BF8H
+  cb          - subsection size               = 00001BDCH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B8H
+  lfo         - offset from base              = 0000B7D4H
+  cb          - subsection size               = 00000C98H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00B9H
+  lfo         - offset from base              = 0000C46CH
+  cb          - subsection size               = 000021A4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00B9H
+  lfo         - offset from base              = 0000E610H
+  cb          - subsection size               = 000010F4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00BAH
+  lfo         - offset from base              = 0000F704H
+  cb          - subsection size               = 0000088CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00BAH
+  lfo         - offset from base              = 0000FF90H
+  cb          - subsection size               = 000002E0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00BBH
+  lfo         - offset from base              = 00010270H
+  cb          - subsection size               = 0000147CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00BBH
+  lfo         - offset from base              = 000116ECH
+  cb          - subsection size               = 00000AF4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00BCH
+  lfo         - offset from base              = 000121E0H
+  cb          - subsection size               = 00002804H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00BCH
+  lfo         - offset from base              = 000149E4H
+  cb          - subsection size               = 00001840H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00BDH
+  lfo         - offset from base              = 00016224H
+  cb          - subsection size               = 000004A0H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00BDH
+  lfo         - offset from base              = 000166C4H
+  cb          - subsection size               = 00000314H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00BEH
+  lfo         - offset from base              = 000169D8H
+  cb          - subsection size               = 00001138H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00BEH
+  lfo         - offset from base              = 00017B10H
+  cb          - subsection size               = 00000520H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00BFH
+  lfo         - offset from base              = 00018030H
+  cb          - subsection size               = 0000082CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00BFH
+  lfo         - offset from base              = 0001885CH
+  cb          - subsection size               = 00000298H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C0H
+  lfo         - offset from base              = 00018AF4H
+  cb          - subsection size               = 00000744H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C0H
+  lfo         - offset from base              = 00019238H
+  cb          - subsection size               = 000002E0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C1H
+  lfo         - offset from base              = 00019518H
+  cb          - subsection size               = 00000E1CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C1H
+  lfo         - offset from base              = 0001A334H
+  cb          - subsection size               = 00000550H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C2H
+  lfo         - offset from base              = 0001A884H
+  cb          - subsection size               = 000014B8H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C2H
+  lfo         - offset from base              = 0001BD3CH
+  cb          - subsection size               = 000008F4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C3H
+  lfo         - offset from base              = 0001C630H
+  cb          - subsection size               = 00000B98H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C3H
+  lfo         - offset from base              = 0001D1C8H
+  cb          - subsection size               = 00000518H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C4H
+  lfo         - offset from base              = 0001D6E0H
+  cb          - subsection size               = 000005A0H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C4H
+  lfo         - offset from base              = 0001DC80H
+  cb          - subsection size               = 000002A0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C5H
+  lfo         - offset from base              = 0001DF20H
+  cb          - subsection size               = 000012B4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C5H
+  lfo         - offset from base              = 0001F1D4H
+  cb          - subsection size               = 00000164H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C6H
+  lfo         - offset from base              = 0001F338H
+  cb          - subsection size               = 00000324H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C6H
+  lfo         - offset from base              = 0001F65CH
+  cb          - subsection size               = 00000210H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C7H
+  lfo         - offset from base              = 0001F86CH
+  cb          - subsection size               = 00000488H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C7H
+  lfo         - offset from base              = 0001FCF4H
+  cb          - subsection size               = 0000013CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C8H
+  lfo         - offset from base              = 0001FE30H
+  cb          - subsection size               = 00000244H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C8H
+  lfo         - offset from base              = 00020074H
+  cb          - subsection size               = 00000114H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00C9H
+  lfo         - offset from base              = 00020188H
+  cb          - subsection size               = 000002A4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00C9H
+  lfo         - offset from base              = 0002042CH
+  cb          - subsection size               = 00000190H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00CAH
+  lfo         - offset from base              = 000205BCH
+  cb          - subsection size               = 000033A4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00CAH
+  lfo         - offset from base              = 00023960H
+  cb          - subsection size               = 00000EC8H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00CBH
+  lfo         - offset from base              = 00024828H
+  cb          - subsection size               = 000005CCH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00CBH
+  lfo         - offset from base              = 00024DF4H
+  cb          - subsection size               = 000001F8H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00CCH
+  lfo         - offset from base              = 00024FECH
+  cb          - subsection size               = 00000568H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00CCH
+  lfo         - offset from base              = 00025554H
+  cb          - subsection size               = 000001A4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00CDH
+  lfo         - offset from base              = 000256F8H
+  cb          - subsection size               = 00000640H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00CDH
+  lfo         - offset from base              = 00025D38H
+  cb          - subsection size               = 00000190H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00CEH
+  lfo         - offset from base              = 00025EC8H
+  cb          - subsection size               = 0000080CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00CEH
+  lfo         - offset from base              = 000266D4H
+  cb          - subsection size               = 0000028CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00CFH
+  lfo         - offset from base              = 00026960H
+  cb          - subsection size               = 00000A14H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00CFH
+  lfo         - offset from base              = 00027374H
+  cb          - subsection size               = 00000388H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D0H
+  lfo         - offset from base              = 000276FCH
+  cb          - subsection size               = 00000A30H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D0H
+  lfo         - offset from base              = 0002812CH
+  cb          - subsection size               = 000001C4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D1H
+  lfo         - offset from base              = 000282F0H
+  cb          - subsection size               = 0000055CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D1H
+  lfo         - offset from base              = 0002884CH
+  cb          - subsection size               = 00000204H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D2H
+  lfo         - offset from base              = 00028A50H
+  cb          - subsection size               = 00001248H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D2H
+  lfo         - offset from base              = 00029C98H
+  cb          - subsection size               = 0000039CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D3H
+  lfo         - offset from base              = 0002A034H
+  cb          - subsection size               = 000003F0H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D3H
+  lfo         - offset from base              = 0002A424H
+  cb          - subsection size               = 00000194H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D4H
+  lfo         - offset from base              = 0002A5B8H
+  cb          - subsection size               = 00000EE8H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D4H
+  lfo         - offset from base              = 0002B4A0H
+  cb          - subsection size               = 00000640H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D5H
+  lfo         - offset from base              = 0002BAE0H
+  cb          - subsection size               = 00001138H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D5H
+  lfo         - offset from base              = 0002CC18H
+  cb          - subsection size               = 000006F0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D6H
+  lfo         - offset from base              = 0002D308H
+  cb          - subsection size               = 00000444H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D6H
+  lfo         - offset from base              = 0002D74CH
+  cb          - subsection size               = 00000170H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D7H
+  lfo         - offset from base              = 0002D8BCH
+  cb          - subsection size               = 00000F20H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D7H
+  lfo         - offset from base              = 0002E7DCH
+  cb          - subsection size               = 000008C4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D8H
+  lfo         - offset from base              = 0002F0A0H
+  cb          - subsection size               = 00000D88H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D8H
+  lfo         - offset from base              = 0002FE28H
+  cb          - subsection size               = 000004E4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00D9H
+  lfo         - offset from base              = 0003030CH
+  cb          - subsection size               = 00001928H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00D9H
+  lfo         - offset from base              = 00031C34H
+  cb          - subsection size               = 00000C04H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00DAH
+  lfo         - offset from base              = 00032838H
+  cb          - subsection size               = 00000468H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00DAH
+  lfo         - offset from base              = 00032CA0H
+  cb          - subsection size               = 0000013CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00DBH
+  lfo         - offset from base              = 00032DDCH
+  cb          - subsection size               = 00001950H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00DBH
+  lfo         - offset from base              = 0003472CH
+  cb          - subsection size               = 00000D0CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00DCH
+  lfo         - offset from base              = 00035438H
+  cb          - subsection size               = 00001E08H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00DCH
+  lfo         - offset from base              = 00037240H
+  cb          - subsection size               = 00000D0CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00DDH
+  lfo         - offset from base              = 00037F4CH
+  cb          - subsection size               = 000000ECH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00DDH
+  lfo         - offset from base              = 00038038H
+  cb          - subsection size               = 00000088H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00DEH
+  lfo         - offset from base              = 000380C0H
+  cb          - subsection size               = 00000448H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00DEH
+  lfo         - offset from base              = 00038508H
+  cb          - subsection size               = 00000264H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00DFH
+  lfo         - offset from base              = 0003876CH
+  cb          - subsection size               = 00001C0CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00DFH
+  lfo         - offset from base              = 0003A378H
+  cb          - subsection size               = 00000A50H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E0H
+  lfo         - offset from base              = 0003ADC8H
+  cb          - subsection size               = 0000059CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E0H
+  lfo         - offset from base              = 0003B364H
+  cb          - subsection size               = 00000454H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E1H
+  lfo         - offset from base              = 0003B7B8H
+  cb          - subsection size               = 000025A0H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E1H
+  lfo         - offset from base              = 0003DD58H
+  cb          - subsection size               = 0000111CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E2H
+  lfo         - offset from base              = 0003EE74H
+  cb          - subsection size               = 00002C08H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E2H
+  lfo         - offset from base              = 00041A7CH
+  cb          - subsection size               = 00001364H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E3H
+  lfo         - offset from base              = 00042DE0H
+  cb          - subsection size               = 0000043CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E3H
+  lfo         - offset from base              = 0004321CH
+  cb          - subsection size               = 000001CCH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E4H
+  lfo         - offset from base              = 000433E8H
+  cb          - subsection size               = 0000061CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E4H
+  lfo         - offset from base              = 00043A04H
+  cb          - subsection size               = 00000294H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E5H
+  lfo         - offset from base              = 00043C98H
+  cb          - subsection size               = 000001ECH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E5H
+  lfo         - offset from base              = 00043E84H
+  cb          - subsection size               = 000000C8H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E6H
+  lfo         - offset from base              = 00043F4CH
+  cb          - subsection size               = 00000A44H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E6H
+  lfo         - offset from base              = 00044990H
+  cb          - subsection size               = 000003D0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E7H
+  lfo         - offset from base              = 00044D60H
+  cb          - subsection size               = 0000014CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E7H
+  lfo         - offset from base              = 00044EACH
+  cb          - subsection size               = 000000A0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E8H
+  lfo         - offset from base              = 00044F4CH
+  cb          - subsection size               = 000008FCH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E8H
+  lfo         - offset from base              = 00045848H
+  cb          - subsection size               = 000003B0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00E9H
+  lfo         - offset from base              = 00045BF8H
+  cb          - subsection size               = 00000A84H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00E9H
+  lfo         - offset from base              = 0004667CH
+  cb          - subsection size               = 00000438H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00EAH
+  lfo         - offset from base              = 00046AB4H
+  cb          - subsection size               = 00000BF0H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00EAH
+  lfo         - offset from base              = 000476A4H
+  cb          - subsection size               = 000004F8H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00EBH
+  lfo         - offset from base              = 00047B9CH
+  cb          - subsection size               = 0000097CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00EBH
+  lfo         - offset from base              = 00048518H
+  cb          - subsection size               = 000003FCH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00ECH
+  lfo         - offset from base              = 00048914H
+  cb          - subsection size               = 00000B08H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00ECH
+  lfo         - offset from base              = 0004941CH
+  cb          - subsection size               = 0000048CH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00EDH
+  lfo         - offset from base              = 000498A8H
+  cb          - subsection size               = 000008FCH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00EDH
+  lfo         - offset from base              = 0004A1A4H
+  cb          - subsection size               = 000003B0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00EEH
+  lfo         - offset from base              = 0004A554H
+  cb          - subsection size               = 000008E8H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00EEH
+  lfo         - offset from base              = 0004AE3CH
+  cb          - subsection size               = 000003B0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00EFH
+  lfo         - offset from base              = 0004B1ECH
+  cb          - subsection size               = 00000C50H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00EFH
+  lfo         - offset from base              = 0004BE3CH
+  cb          - subsection size               = 000005D0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F0H
+  lfo         - offset from base              = 0004C40CH
+  cb          - subsection size               = 000009DCH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F0H
+  lfo         - offset from base              = 0004CDE8H
+  cb          - subsection size               = 00000508H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F1H
+  lfo         - offset from base              = 0004D2F0H
+  cb          - subsection size               = 00000B58H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F1H
+  lfo         - offset from base              = 0004DE48H
+  cb          - subsection size               = 00000598H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F2H
+  lfo         - offset from base              = 0004E3E0H
+  cb          - subsection size               = 0000082CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F2H
+  lfo         - offset from base              = 0004EC0CH
+  cb          - subsection size               = 00000354H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F3H
+  lfo         - offset from base              = 0004EF60H
+  cb          - subsection size               = 000006F4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F3H
+  lfo         - offset from base              = 0004F654H
+  cb          - subsection size               = 00000304H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F4H
+  lfo         - offset from base              = 0004F958H
+  cb          - subsection size               = 00000944H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F4H
+  lfo         - offset from base              = 0005029CH
+  cb          - subsection size               = 00000404H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F5H
+  lfo         - offset from base              = 000506A0H
+  cb          - subsection size               = 00000804H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F5H
+  lfo         - offset from base              = 00050EA4H
+  cb          - subsection size               = 00000354H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F6H
+  lfo         - offset from base              = 000511F8H
+  cb          - subsection size               = 000006E4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F6H
+  lfo         - offset from base              = 000518DCH
+  cb          - subsection size               = 00000304H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F7H
+  lfo         - offset from base              = 00051BE0H
+  cb          - subsection size               = 00000830H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F7H
+  lfo         - offset from base              = 00052410H
+  cb          - subsection size               = 00000354H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F8H
+  lfo         - offset from base              = 00052764H
+  cb          - subsection size               = 0000082CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F8H
+  lfo         - offset from base              = 00052F90H
+  cb          - subsection size               = 00000354H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00F9H
+  lfo         - offset from base              = 000532E4H
+  cb          - subsection size               = 000003C4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00F9H
+  lfo         - offset from base              = 000536A8H
+  cb          - subsection size               = 000001E4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00FAH
+  lfo         - offset from base              = 0005388CH
+  cb          - subsection size               = 00000734H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00FAH
+  lfo         - offset from base              = 00053FC0H
+  cb          - subsection size               = 00000268H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00FBH
+  lfo         - offset from base              = 00054228H
+  cb          - subsection size               = 0000094CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00FBH
+  lfo         - offset from base              = 00054B74H
+  cb          - subsection size               = 00000400H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00FCH
+  lfo         - offset from base              = 00054F74H
+  cb          - subsection size               = 00000914H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00FCH
+  lfo         - offset from base              = 00055888H
+  cb          - subsection size               = 00000400H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00FDH
+  lfo         - offset from base              = 00055C88H
+  cb          - subsection size               = 00000BF8H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00FDH
+  lfo         - offset from base              = 00056880H
+  cb          - subsection size               = 00000560H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00FEH
+  lfo         - offset from base              = 00056DE0H
+  cb          - subsection size               = 00008698H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00FEH
+  lfo         - offset from base              = 0005F478H
+  cb          - subsection size               = 000009D4H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     00FFH
+  lfo         - offset from base              = 0005FE4CH
+  cb          - subsection size               = 00006CA4H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     00FFH
+  lfo         - offset from base              = 00066AF0H
+  cb          - subsection size               = 000007BCH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0100H
+  lfo         - offset from base              = 000672ACH
+  cb          - subsection size               = 00006734H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0100H
+  lfo         - offset from base              = 0006D9E0H
+  cb          - subsection size               = 00000B50H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0101H
+  lfo         - offset from base              = 0006E530H
+  cb          - subsection size               = 00000344H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0101H
+  lfo         - offset from base              = 0006E874H
+  cb          - subsection size               = 000000A0H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0102H
+  lfo         - offset from base              = 0006E914H
+  cb          - subsection size               = 000001F0H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0102H
+  lfo         - offset from base              = 0006EB04H
+  cb          - subsection size               = 000001FCH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0103H
+  lfo         - offset from base              = 0006ED00H
+  cb          - subsection size               = 0000057CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0103H
+  lfo         - offset from base              = 0006F27CH
+  cb          - subsection size               = 00000460H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0104H
+  lfo         - offset from base              = 0006F6DCH
+  cb          - subsection size               = 0000012CH
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0104H
+  lfo         - offset from base              = 0006F808H
+  cb          - subsection size               = 00000070H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0105H
+  lfo         - offset from base              = 0006F878H
+  cb          - subsection size               = 00000638H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0105H
+  lfo         - offset from base              = 0006FEB0H
+  cb          - subsection size               = 000002C8H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0106H
+  lfo         - offset from base              = 00070178H
+  cb          - subsection size               = 000001A8H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0106H
+  lfo         - offset from base              = 00070320H
+  cb          - subsection size               = 00000218H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0107H
+  lfo         - offset from base              = 00070538H
+  cb          - subsection size               = 00000070H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0107H
+  lfo         - offset from base              = 000705A8H
+  cb          - subsection size               = 00000048H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0108H
+  lfo         - offset from base              = 000705F0H
+  cb          - subsection size               = 000007B8H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0108H
+  lfo         - offset from base              = 00070DA8H
+  cb          - subsection size               = 000001BCH
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     0109H
+  lfo         - offset from base              = 00070F64H
+  cb          - subsection size               = 000006A0H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     0109H
+  lfo         - offset from base              = 00071604H
+  cb          - subsection size               = 00000290H
+
+  subsection  - subsection index              =     0125H
+  iMod        - module index (1 based)        =     010AH
+  lfo         - offset from base              = 00071894H
+  cb          - subsection size               = 00003534H
+
+  subsection  - subsection index              =     0127H
+  iMod        - module index (1 based)        =     010AH
+  lfo         - offset from base              = 00074DC8H
+  cb          - subsection size               = 00000790H
+
+  subsection  - subsection index              =     012AH
+  iMod        - module index (1 based)        =     FFFFH
+  lfo         - offset from base              = 00075558H
+  cb          - subsection size               = 000362A8H
+
+  subsection  - subsection index              =     0129H
+  iMod        - module index (1 based)        =     FFFFH
+  lfo         - offset from base              = 000AB800H
+  cb          - subsection size               = 00023CD8H
+
+  subsection  - subsection index              =     0134H
+  iMod        - module index (1 based)        =     FFFFH
+  lfo         - offset from base              = 000CF4D8H
+  cb          - subsection size               = 000062C8H
+
+  subsection  - subsection index              =     0128H
+  iMod        - module index (1 based)        =     FFFFH
+  lfo         - offset from base              = 000D57A0H
+  cb          - subsection size               = 0000002DH
+
+  subsection  - subsection index              =     012BH
+  iMod        - module index (1 based)        =     FFFFH
+  lfo         - offset from base              = 000D57D0H
+  cb          - subsection size               = 00050388H
+
+  subsection  - subsection index              =     012DH
+  iMod        - module index (1 based)        =     FFFFH
+  lfo         - offset from base              = 00125B58H
+  cb          - subsection size               = 00000504H
+
+  subsection  - subsection index              =     012EH
+  iMod        - module index (1 based)        =     FFFFH
+  lfo         - offset from base              = 0012605CH
+  cb          - subsection size               = 0000031AH
+
+  subsection  - subsection index              =     0133H
+  iMod        - module index (1 based)        =     FFFFH
+  lfo         - offset from base              = 00126378H
+  cb          - subsection size               = 00000BA8H
+

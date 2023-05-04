@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net45</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
+  </ItemGroup>
+
+</Project>

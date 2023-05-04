@@ -1,0 +1,60 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:u="clr-namespace:BinaryStudio.PlatformUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/Menu.xaml"/>
+    <ResourceDictionary Source="/BinaryStudio.PlatformUI;component/Themes/Modern/ScrollViewer.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveBorderBrushKey}"                       Color="#ffcccedb"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionBrushKey}"                      Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ActiveCaptionTextBrushKey}"                  Color="#ff525252"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.AppWorkspaceBrushKey}"                       Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlBrushKey}"                            Color="#fff0f0f0"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlDarkBrushKey}"                        Color="#ffbcbcbc"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlDarkDarkBrushKey}"                    Color="#ffacacac"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlLightBrushKey}"                       Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlLightLightBrushKey}"                  Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ControlTextBrushKey}"                        Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.DesktopBrushKey}"                            Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GradientActiveCaptionBrushKey}"              Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GradientInactiveCaptionBrushKey}"            Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.GrayTextBrushKey}"                           Color="#ff717171"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightBrushKey}"                          Color="#ff3399ff"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightLightBrushKey}"                     Color="#ff54adff"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightTextBrushKey}"                      Color="#ffdddddd"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HighlightLightTextBrushKey}"                 Color="#ffffffff"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.HotTrackBrushKey}"                           Color="#ff0054e3"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveBorderBrushKey}"                     Color="#ffcccedb"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionBrushKey}"                    Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveCaptionTextBrushKey}"                Color="#ffa2a4a5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InfoBrushKey}"                               Color="#fffdfbac"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InfoTextBrushKey}"                           Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBrushKey}"                               Color="#fff6f6f6"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuBarBrushKey}"                            Color="#fff6f6f6"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuHighlightBrushKey}"                      Color="#ffc9def5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.MenuTextBrushKey}"                           Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.ScrollBarBrushKey}"                          Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowBrushKey}"                             Color="#fff5f5f5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowFrameBrushKey}"                        Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.WindowTextBrushKey}"                         Color="#ff1e1e1e"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.SelectionBrushKey}"                          Color="#ff0054e3"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedBrushKey}"                          Color="#fff0f0f0"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedTextBrushKey}"                      Color="#ff717171"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverBrushKey}"                 Color="#ff1c97ea"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemUnselectedMouseOverTextBrushKey}"             Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedBrushKey}"                            Color="#ff007acc"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedTextBrushKey}"                        Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedMouseOverBrushKey}"                   Color="#ff007acc"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.TabItemSelectedMouseOverTextBrushKey}"               Color="#fff1f1f1"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveSelectionHighlightBrushKey}"                 Color="#ffeeeef2"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.InactiveSelectionHighlightTextBrushKey}"             Color="#ffa2a4a5"/>
+  <SolidColorBrush x:Key="{x:Static u:Theme.DataGridColumnHeaderBackgroundBrushKey}"             Color="#ffeeeef2"/>
+  <Style x:Key="{x:Type TabControl}"   TargetType="{x:Type TabControl}"   BasedOn="{StaticResource {x:Static u:Theme.TabControlStyleKey}}"/>
+  <Style x:Key="{x:Type TabItem}"      TargetType="{x:Type TabItem}"      BasedOn="{StaticResource {x:Static u:Theme.TabItemStyleKey}}"/>
+  <Style x:Key="{x:Type DataGrid}"     TargetType="{x:Type DataGrid}"     BasedOn="{StaticResource {x:Static u:Theme.DataGridStyleKey}}"/>
+  <Style x:Key="{x:Type Menu}"         TargetType="{x:Type Menu}"         BasedOn="{StaticResource {x:Static u:Theme.MenuStyleKey}}"/>
+  <Style x:Key="{x:Type ScrollViewer}" TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Static u:Theme.ScrollViewerStyleKey}}"/>
+  <Style x:Key="{x:Type ListBox}"      TargetType="{x:Type ListBox}"      BasedOn="{StaticResource {x:Static u:Theme.ListBoxStyleKey}}"/>
+  <Style x:Key="{x:Type ListBoxItem}"  TargetType="{x:Type ListBoxItem}"  BasedOn="{StaticResource {x:Static u:Theme.ListBoxItemStyleKey}}"/>
+</ResourceDictionary>

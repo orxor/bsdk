@@ -1,0 +1,79 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net40;net45;net5.0</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
+    <IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows>
+	  <NoWarn>1701;1702;CS1591;1570;1522;0169;0649;NETSDK1138</NoWarn>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <DefineConstants>$(DefineConstants);CERT_CHAIN_PARA_HAS_EXTRA_FIELDS</DefineConstants>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
+    <DocumentationFile>BinaryStudio.PlatformComponents.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Linux{Debug}'">
+    <DefineConstants>$(DefineConstants);DEBUG</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' != 'linux-x64'">
+    <DefineConstants>$(DefineConstants);CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;CMSG_SIGNER_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_ENVELOPED_ENCODE_INFO_HAS_CMS_FIELDS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Win32ErrorCode.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Win32ErrorCode.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\HResult.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Win32ErrorCode.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Win32ErrorCode.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Properties\Messages.ps1">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Messages.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(IsWindows)' == 'true'">
+    <Win32Resource>$(ProjectDir)obj\$(Configuration)\$(TargetFramework)\Messages.res</Win32Resource>
+  </PropertyGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(IsWindows)' == 'true'">
+    <Exec Command="PowerShell.exe -File $(ProjectDir)Properties\Messages.ps1 -Source $(ProjectDir)Properties\Messages.xml -Target $(ProjectDir)obj\$(ConfigurationName)\$(TargetFramework)\Messages.mc" />
+  </Target>
+</Project>

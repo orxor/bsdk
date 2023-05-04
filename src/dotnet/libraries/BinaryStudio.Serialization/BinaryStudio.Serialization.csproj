@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net35;net40;net45;net5.0</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Deterministic>false</Deterministic>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+  </ItemGroup>
+  <ItemGroup  Condition="'$(TargetFramework)'!='net35'">
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+</Project>

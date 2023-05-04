@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
+    <StartupObject>UnitTests.BinaryStudio.Security.Cryptography.Generator.Program</StartupObject>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
+    <Prefer32Bit>true</Prefer32Bit>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
+  </ItemGroup>
+</Project>

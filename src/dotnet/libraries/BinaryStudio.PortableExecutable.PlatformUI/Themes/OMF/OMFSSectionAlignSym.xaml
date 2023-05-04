@@ -1,0 +1,132 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:e="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Models"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:u="http://schemas.helix.global"
+                    xmlns:c="clr-namespace:BinaryStudio.PortableExecutable.PlatformUI.Controls"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    mc:Ignorable="d">
+  <DataTemplate DataType="{x:Type e:ModelOMFSSectionAlignSym}">
+    <Grid TextOptions.TextRenderingMode="Auto">
+      <Grid.Resources>
+        <c:CPUTypeConverter x:Key="CPU"/>
+        <u:AddInt64 x:Key="ADD64"/>
+        <u:SubInt64 x:Key="SUB64"/>
+      </Grid.Resources>
+      <RichTextBox BorderThickness="0" Background="Transparent" Margin="2,5,2,5" IsReadOnly="True"
+                   HorizontalAlignment="Stretch" SnapsToDevicePixels="True" UseLayoutRounding="True"
+                   IsDocumentEnabled="True" AcceptsTab="True" AcceptsReturn="True"
+                   Foreground="{DynamicResource ControlTextBrushKey}">
+        <i:Interaction.Behaviors>
+          <c:WaitCursorBehavior/>
+        </i:Interaction.Behaviors>
+        <RichTextBox.ContextMenu>
+          <ContextMenu Style="{StaticResource {x:Static u:Theme.ContextMenuStyleKey}}">
+            <MenuItem Header="Copy" Command="ApplicationCommands.Copy" InputGestureText="Ctrl+C"/>
+            <MenuItem Header="Copy {XAML-V}" Command="u:PlatformCommands.CopyToXamlV" InputGestureText="Ctrl+Alt+C"/>
+            <MenuItem Header="Copy {XAML-E}" Command="u:PlatformCommands.CopyToXamlE" InputGestureText="Ctrl+Alt+E"/>
+          </ContextMenu>
+        </RichTextBox.ContextMenu>
+        <RichTextBox.Resources>
+          <Style TargetType="{x:Type TableCell}" x:Key="TableCell">
+            <Setter Property="BorderThickness" Value="0,1,1,0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlDarkBrushKey}"/>
+            <Setter Property="Padding" Value="5,0,5,0"/>
+          </Style>
+        </RichTextBox.Resources>
+        <FlowDocument PageWidth="{Binding RelativeSource={RelativeSource AncestorType=RichTextBox},Path=ActualWidth,Mode=OneWay}">
+          <Section>
+            <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
+                   u:RichTextBoxOptions.IsAutoFit="True">
+              <Table.Columns>
+                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+                <TableColumn u:RichTextBoxOptions.IsAutoFit="True"/>
+              </Table.Columns>
+              <TableRowGroup>
+                <TableRow>
+                  <TableCell Style="{StaticResource TableCell}">
+                    <Paragraph>Offset</Paragraph>
+                  </TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
+                    <Paragraph>
+                      <Run Text="{Binding Source.FileOffset,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+                    </Paragraph>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell Style="{StaticResource TableCell}">
+                    <Paragraph>Size</Paragraph>
+                  </TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
+                    <Paragraph>
+                      <Run Text="{Binding Source.Size,Mode=OneWay,StringFormat=x8}"/><Run Text="16" BaselineAlignment="Subscript" FontSize="7"/>
+                      <Run Text="{}{"/><Run Text="{Binding Source.Size,Mode=OneWay}"/><Run Text="10" BaselineAlignment="Subscript" FontSize="7"/><Run Text="{}}"/>
+                    </Paragraph>
+                  </TableCell>
+                </TableRow>
+              </TableRowGroup>
+            </Table>
+          </Section>
+          <Section>
+            <Paragraph Margin="0,5,0,5">Symbols:</Paragraph>
+            <Table BorderThickness="1,0,0,1" CellSpacing="0" BorderBrush="{DynamicResource ControlDarkBrushKey}" Margin="0"
+                   u:TextProperties.IsSharedSizeScope="True"
+                   u:TextProperties.IsAutoSize="True" Name="SYMBOLS">
+              <Table.Columns>
+                <TableColumn u:TextProperties.IsAutoSize="True"/>
+                <TableColumn u:TextProperties.IsAutoSize="True"/>
+                <TableColumn u:TextProperties.SharedSizeGroup="SharedSize0"/>
+                <TableColumn u:TextProperties.SharedSizeGroup="SharedSize1"/>
+              </Table.Columns>
+              <TableRowGroup>
+                <TableRow>
+                  <TableCell Style="{StaticResource TableCell}">
+                    <Paragraph>Offset</Paragraph>
+                  </TableCell>
+                  <TableCell Style="{StaticResource TableCell}">
+                    <Paragraph>Symbol</Paragraph>
+                  </TableCell>
+                  <TableCell Style="{StaticResource TableCell}" ColumnSpan="2">
+                    <Paragraph>Details</Paragraph>
+                  </TableCell>
+                </TableRow>
+              </TableRowGroup>
+              <u:TableBoundRowGroup ItemsSource="{Binding Symbols}">
+                <TableRow>
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Style="{StaticResource TableCell}">
+                    <Paragraph>
+                      <Run Text="{Binding Offset,Mode=OneWay,StringFormat=x8}"/>
+                    </Paragraph>
+                  </TableCell>
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Style="{StaticResource TableCell}">
+                    <Paragraph>
+                      <Run Text="{Binding Type,Mode=OneWay}"/>
+                    </Paragraph>
+                  </TableCell>
+                  <TableCell d:DataContext="{d:DesignInstance Type=u:CodeViewSymbol}" Padding="0" BorderThickness="0,1,1,0" BorderBrush="{DynamicResource ControlDarkBrushKey}" ColumnSpan="2" Name="TableCell2">
+                    <TableCell.Resources>
+                      <ResourceDictionary>
+                        <ResourceDictionary.MergedDictionaries>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_COMPILE.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_PROCSYM.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_OBJNAME.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_SSEARCH.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_BPRELSYM.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_BLOCKSYM.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_DATASYM16_16.xaml"/>
+                          <ResourceDictionary Source="/BinaryStudio.PortableExecutable.PlatformUI;component/Themes/OMF/Symbols/S_REGISTER16.xaml"/>
+                        </ResourceDictionary.MergedDictionaries>
+                      </ResourceDictionary>
+                    </TableCell.Resources>
+                    <u:DocumentSectionContent Margin="0" Content="{Binding}" u:Diagnostics.Key="0000"/>
+                  </TableCell>
+                </TableRow>
+              </u:TableBoundRowGroup>
+            </Table>
+          </Section>
+        </FlowDocument>
+      </RichTextBox>
+    </Grid>
+  </DataTemplate>
+</ResourceDictionary>

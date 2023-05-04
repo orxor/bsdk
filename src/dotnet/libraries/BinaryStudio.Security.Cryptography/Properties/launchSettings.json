@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BinaryStudio.Security.Cryptography": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

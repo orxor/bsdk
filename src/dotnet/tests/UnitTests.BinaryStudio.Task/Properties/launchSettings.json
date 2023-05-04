@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "UnitTests.BinaryStudio.Task": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net40</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <PlatformTarget>x64</PlatformTarget>
+    <RootNamespace>Shell</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.13" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1462.37" />
+    <PackageReference Include="WebView2.Runtime.X64" Version="108.0.1462.44" />
+    <PackageReference Include="WebView2.Runtime.X86" Version="108.0.1462.44" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libraries\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
+    <ProjectReference Include="..\libraries\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj" />
+    <ProjectReference Include="..\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
+    <ProjectReference Include="..\libraries\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
+    <ProjectReference Include="..\libraries\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
+  </ItemGroup>
+</Project>

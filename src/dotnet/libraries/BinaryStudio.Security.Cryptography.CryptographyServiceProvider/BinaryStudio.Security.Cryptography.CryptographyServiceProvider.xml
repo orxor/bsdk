@@ -1,0 +1,642 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BinaryStudio.Security.Cryptography.CryptographyServiceProvider</name>
+    </assembly>
+    <members>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChain.GetEnumerator">
+            <summary>Returns an enumerator that iterates through the collection.</summary>
+            <returns>An enumerator that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChain.System#Collections#IEnumerable#GetEnumerator">
+            <summary>Returns an enumerator that iterates through a collection.</summary>
+            <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChain.Count">
+            <summary>Gets the number of elements in the collection.</summary>
+            <returns>The number of elements in the collection.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChain.#ctor(BinaryStudio.PlatformComponents.Win32.CERT_SIMPLE_CHAIN*,System.Int32)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChain"/> class from specified source.</summary>
+            <param name="source">Source of chain data.</param>
+            <param name="index">Chain index.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainContext.GetEnumerator">
+            <summary>Returns an enumerator that iterates through the collection.</summary>
+            <returns>An enumerator that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainContext.System#Collections#IEnumerable#GetEnumerator">
+            <summary>Returns an enumerator that iterates through a collection.</summary>
+            <returns>An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.</returns>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainContext.Count">
+            <summary>Gets the number of elements in the collection.</summary>
+            <returns>The number of elements in the collection.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainContext.#ctor(BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_CONTEXT*)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainContext"/> class from specified source.</summary>
+            <param name="context">Source of chain context.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainElement.#ctor(BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_ELEMENT*,System.Int32)">
+            <summary>Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainElement"/> class from specified source.</summary>
+            <param name="source">Source of chain element.</param>
+            <param name="index">Element index.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainElement.System#Runtime#Serialization#ISerializable#GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>Populates a <see cref="T:System.Runtime.Serialization.SerializationInfo"/> with the data needed to serialize the target object.</summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> to populate with data.</param>
+            <param name="context">The destination (see <see cref="T:System.Runtime.Serialization.StreamingContext"/>) for this serialization.</param>
+            <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateChainElement.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>The special constructor is used to deserialize values.</summary>
+            <param name="info">The data needed to deserialize an object.</param>
+            <param name="context">Describes the source of a given serialized stream, and provides an additional caller-defined context.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.IX509CertificateStorage.Find(BinaryStudio.PlatformComponents.Win32.CERT_INFO*)">
+            <summary>
+            Finds a subject certificate context uniquely identified by its issuer and serial number in certificate store.
+            </summary>
+            <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
+            <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
+            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.IX509CertificateStorage.Add(BinaryStudio.Security.Cryptography.Certificates.X509Certificate)">
+            <summary>
+            Adds a certificate to an X.509 certificate store.
+            </summary>
+            <param name="o">The certificate to add.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="o"/> is null.</exception>
+            <seealso cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD)"/>
+            <seealso cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD,System.IntPtr@)"/>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.Certificates.X509Certificate">
+            <summary>
+            Represents an X.509 certificate.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Представляет сертификат X.509.
+              </summary>
+            </translate>
+            
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Handle">
+            <summary>
+            Gets a handle to a certificate context described by
+            an unmanaged <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> structure.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Version">
+            <summary>
+            The X.509 version number.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Получает версию формата сертификата X.509.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.SerialNumber">
+            <summary>
+            The unique serial number that the issuing certification authority (CA) assigns to the certificate.
+            The serial number is unique for all certificates issued by a given CA.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Уникальный серийный номер, присвоенный сертификату центром сертификации.
+              Серийный номер уникален для всех сертификатов, выданных определенным центром сертификации.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Thumbprint">
+            <summary>
+            The digest (or thumbprint) of the certificate data.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Сводка данных (или отпечаток) сертификата.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.NotBefore">
+            <summary>
+            The beginning date for the period in which the certificate is valid.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Начальная дата периода действия сертификата.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.NotAfter">
+            <summary>
+            The final date for the period in which the certificate is valid.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Конечная дата периода действия сертификата.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Issuer">
+            <summary>
+            Information regarding the CA that issued the certificate.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Информация о центре сертификации, выдавшем сертификат.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Subject">
+            <summary>
+            The name of the individual, computer, device, or CA to whom the certificate is issued.
+            If the issuing CA exists on a domain member server in your enterprise, this will be a distinguished name
+            within the enterprise. Otherwise, this may be a full name and e-mail name or other personal identifier.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Имя лица, компьютера, устройства или центра сертификации, которому выдан сертификат.
+              Если выдающий сертификаты центр сертификации находится на рядовом сервере домена предприятия,
+              это будет различающееся имя внутри предприятия. Иначе это может быть полное имя и адрес
+              электронной почты или другой персональный идентификатор.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Country">
+            <summary>
+            The country code associated with the certificate.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Код страны, ассоциированной с сертификатом.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.SignatureAlgorithm">
+            <summary>
+            Gets the algorithm used to create the signature of a certificate.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Получает алгоритм, используемый для создания подписи сертификата.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.HashAlgorithm">
+            <summary>
+            Gets the hash algorithm used to create the signature of a certificate.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Получает алгоритм хэширования, используемый для создания подписи сертификата.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Container">
+            <summary>
+            The name of the container associated with the certificate.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Имя контейнера, ассоциированного с сертификатом.
+              </summary>
+            </translate>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Bytes">
+            <summary>
+            Gets the raw data of a certificate.
+            </summary>
+            <translate lang="ru-RU">
+              <summary>
+              Бинарный образ сертификата.
+              </summary>
+            </translate>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.Dispose(System.Boolean)">
+            <inheritdoc/> 
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.BinaryStudio#DiagnosticServices#IExceptionSerializable#WriteTo(System.IO.TextWriter)">
+            <inheritdoc />
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.WriteTo(BinaryStudio.Serialization.IJsonWriter)">
+            <summary>Writes the JSON representation of the object.</summary>
+            <param name="writer">The <see cref="T:BinaryStudio.Serialization.IJsonWriter"/> to write to.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.GetHashCode">
+            <summary>Serves as the default hash function.</summary>
+            <returns>A hash code for the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+            <translate lang="ru-RU">
+              <summary>Возвращает строку, представляющую текущий объект.</summary>
+              <returns>Строка, представляющая текущий объект.</returns>
+            </translate>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509Certificate.GetService(System.Type)">
+            <inheritdoc/> 
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateRevocationList.Dispose(System.Boolean)">
+            <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateRevocationList.GetHashCode">
+            <summary>Serves as the default hash function.</summary>
+            <returns>A hash code for the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateRevocationList.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage">
+            <summary>
+            Represents an X.509 store, where certificates are persisted and managed.
+            </summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.#ctor(System.IntPtr)">
+            <summary>
+            Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage"/> class using an <see cref="T:System.IntPtr"/>
+            handle to an <see langword="HCERTSTORE"/> store.
+            </summary>
+            <param name="store">A handle to an <see langword="HCERTSTORE"/> store.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="store"/> parameter is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.#ctor(BinaryStudio.Security.Cryptography.Certificates.X509StoreName)">
+            <summary>
+            Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage"/> class using the specified store name
+            from the current user's certificate stores (<see cref="F:BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation.CurrentUser"/>).
+            </summary>
+            <param name="storename">One of the enumeration values that specifies the name of the X.509 certificate store.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="storename"/> is not a valid name.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.#ctor(BinaryStudio.Security.Cryptography.Certificates.X509StoreName,BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage"/> class using the specified
+            <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509StoreName"/> and <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation"/> values.
+            </summary>
+            <param name="storename">One of the enumeration values that specifies the name of the X.509 certificate store.</param>
+            <param name="location">One of the enumeration values that specifies the location of the X.509 certificate store.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="location"/> is not a valid location or <paramref name="storename"/> is not a valid name.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.#ctor(System.String,BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage"/> class using the specified
+            <paramref name="storename"/> and <see cref="T:BinaryStudio.Security.Cryptography.Certificates.X509StoreLocation"/> values.
+            </summary>
+            <param name="storename">Specifies the name of the X.509 certificate store.</param>
+            <param name="location">One of the enumeration values that specifies the location of the X.509 certificate store.</param>
+            <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="location"/> is not a valid location or <paramref name="storename"/> is not a valid name.</exception>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Certificates">
+            <summary>
+            Returns a collection of certificates located in an X.509 certificate store.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.CertificateRevocationLists">
+            <summary>
+            Returns a collection of certificate revocation list (CRL) located in an X.509 certificate store.
+            </summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Find(BinaryStudio.PlatformComponents.Win32.CERT_INFO*)">
+            <summary>
+            Finds a subject certificate context uniquely identified by its issuer and serial number in certificate store.
+            </summary>
+            <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
+            <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
+            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Add(BinaryStudio.Security.Cryptography.Certificates.X509Certificate)">
+            <summary>
+            Adds a certificate to an X.509 certificate store.
+            </summary>
+            <param name="o">The certificate to add.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="o"/> is <see langword="null"/>.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Add(BinaryStudio.Security.Cryptography.Certificates.X509CertificateRevocationList)">
+            <summary>
+            Adds a certificate revocation list (CRL) to an X.509 certificate store.
+            </summary>
+            <param name="o">The certificate revocation list (CRL) to add.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="o"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Remove(BinaryStudio.Security.Cryptography.Certificates.X509Certificate)">
+            <summary>
+            Removes a certificate from an X.509 certificate store.
+            </summary>
+            <param name="o">The certificate to remove.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="o"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Remove(BinaryStudio.Security.Cryptography.Certificates.X509CertificateRevocationList)">
+            <summary>
+            Removes a certificate revocation list (CRL) from an X.509 certificate store.
+            </summary>
+            <param name="o">The certificate revocation list (CRL) to remove.</param>
+            <exception cref="T:System.ArgumentNullException"><paramref name="o"/> is null.</exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Dispose(System.Boolean)">
+            <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.Internal.EX509CertificateStorage.Find(BinaryStudio.PlatformComponents.Win32.CERT_INFO*)">
+            <summary>
+            Finds a subject certificate context uniquely identified by its issuer and serial number in certificate store.
+            </summary>
+            <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
+            <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
+            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Certificates.Internal.EX509CertificateStorage.Dispose(System.Boolean)">
+            <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptKey.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+            </summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptKey.ToString">
+            <summary>Returns a string that represents the current object.</summary>
+            <returns>A string that represents the current object.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.GetCertificateChain(BinaryStudio.Security.Cryptography.Certificates.X509Certificate,BinaryStudio.Security.Cryptography.Certificates.IX509CertificateStorage,System.Security.Cryptography.OidCollection,System.Security.Cryptography.OidCollection,System.TimeSpan,System.DateTime,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_FLAGS,System.IntPtr)">
+            <summary>Builds a certificate chain context starting from an end certificate and going back, if possible, to a trusted root certificate.</summary>
+            <param name="certificate">The end certificate, the certificate for which a chain is being built. This certificate context will be the zero-index element in the first simple chain.</param>
+            <param name="store">The additional store to search for supporting certificates and certificate trust lists (CTLs). This parameter can be null if no additional store is to be searched.</param>
+            <param name="applicationPolicy">Application policy.</param>
+            <param name="issuancePolicy">Issuance policy.</param>
+            <param name="timeout">Optional time, before revocation checking times out. This member is optional.</param>
+            <param name="datetime">Indicates the time for which the chain is to be validated.</param>
+            <param name="flags">Flag values that indicate special processing.</param>
+            <param name="chainEngine">A handle of the chain engine.</param>
+            <returns>Returns chain context created.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.Dispose(System.Boolean)">
+            <inheritdoc/> 
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.LDConfigItem.ToString">
+            <summary>Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</summary>
+            <returns>A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicContext.GetService(System.Type)">
+            <inheritdoc/> 
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicObject.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the instance and optionally releases the managed resources.
+            </summary>
+            <param name="disposing"><see langword="true"/> to release both managed and unmanaged resources; <see langword="false"/> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicObject.Dispose">
+            <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicObject.Finalize">
+            <summary>
+            Allows an object to try to free resources and perform other cleanup operations before
+            it is reclaimed by garbage collection.
+            </summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicObject.GetService(System.Type)">
+            <summary>Gets the service object of the specified type.</summary>
+            <param name="service">An object that specifies the type of service object to get.</param>
+            <returns>A service object of type <paramref name="service"/>.
+            -or-
+            <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographicObject.GetLastWin32Error">
+            <summary>
+            Returns the error code returned by the last unmanaged function that was called.
+            using platform invoke that has the System.Runtime.InteropServices.DllImportAttribute.SetLastError flag set.
+            </summary>
+            <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextC.GetService(System.Type)">
+            <summary>Gets the service object of the specified type.</summary>
+            <param name="service">An object that specifies the type of service object to get.</param>
+            <returns>A service object of type <paramref name="service"/>.
+            -or-
+            <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextC.GetLastWin32Error">
+            <summary>
+            Returns the error code returned by the last unmanaged function that was called.
+            using platform invoke that has the System.Runtime.InteropServices.DllImportAttribute.SetLastError flag set.
+            </summary>
+            <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextC.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Services.CertEnumSystemStoreCallbackString)">
+            <summary>The CertEnumSystemStore function retrieves the system stores available. The function calls the provided callback function for each system store found.</summary>
+            <param name="Flags">Specifies the location of the system store.</param>
+            <param name="SystemStoreLocationPara">Specific argument specific for <paramref name="Flags"/>.</param>
+            <param name="Args">A pointer to a void that allows the application to declare, define, and initialize a structure to hold any information to be passed to the callback enumeration function.</param>
+            <param name="Callback">A pointer to the callback function used to show the details for each system store. This callback function determines the content and format for the presentation of information on each system store.</param>
+            <returns>If the function succeeds, the function returns <see langword="true"/>. If the function fails, it returns <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextP.GetService(System.Type)">
+            <summary>Gets the service object of the specified type.</summary>
+            <param name="service">An object that specifies the type of service object to get.</param>
+            <returns>A service object of type <paramref name="service"/>.
+            -or-
+            <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextP.GetLastWin32Error">
+            <summary>
+            Returns the error code returned by the last unmanaged function that was called.
+            using platform invoke that has the System.Runtime.InteropServices.DllImportAttribute.SetLastError flag set.
+            </summary>
+            <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextP.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Services.CertEnumSystemStoreCallbackString)">
+            <summary>The CertEnumSystemStore function retrieves the system stores available. The function calls the provided callback function for each system store found.</summary>
+            <param name="Flags">Specifies the location of the system store.</param>
+            <param name="SystemStoreLocationPara">Specific argument specific for <paramref name="Flags"/>.</param>
+            <param name="Args">A pointer to a void that allows the application to declare, define, and initialize a structure to hold any information to be passed to the callback enumeration function.</param>
+            <param name="Callback">A pointer to the callback function used to show the details for each system store. This callback function determines the content and format for the presentation of information on each system store.</param>
+            <returns>If the function succeeds, the function returns <see langword="true"/>. If the function fails, it returns <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextS.GetService(System.Type)">
+            <summary>Gets the service object of the specified type.</summary>
+            <param name="service">An object that specifies the type of service object to get.</param>
+            <returns>A service object of type <paramref name="service"/>.
+            -or-
+            <see langword="null"/> if there is no service object of type <paramref name="service"/>.</returns>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.CryptographicContextS.CertEnumSystemStore(BinaryStudio.PlatformComponents.Win32.CERT_SYSTEM_STORE_FLAGS,System.IntPtr,System.IntPtr,BinaryStudio.Services.CertEnumSystemStoreCallbackString)">
+            <summary>The CertEnumSystemStore function retrieves the system stores available. The function calls the provided callback function for each system store found.</summary>
+            <param name="Flags">Specifies the location of the system store.</param>
+            <param name="SystemStoreLocationPara">Specific argument specific for <paramref name="Flags"/>.</param>
+            <param name="Args">A pointer to a void that allows the application to declare, define, and initialize a structure to hold any information to be passed to the callback enumeration function.</param>
+            <param name="Callback">A pointer to the callback function used to show the details for each system store. This callback function determines the content and format for the presentation of information on each system store.</param>
+            <returns>If the function succeeds, the function returns <see langword="true"/>. If the function fails, it returns <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="T:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID">
+            <summary>
+              Looks up a localized string similar to A CTL used to create this chain did not have a valid signature..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_CTL_IS_NOT_TIME_VALID">
+            <summary>
+              Looks up a localized string similar to A certificate trust list (CTL) used to create this chain was not time valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_CTL_IS_NOT_VALID_FOR_USAGE">
+            <summary>
+              Looks up a localized string similar to A CTL used to create this chain is not valid for this usage..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_HAS_EXCLUDED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension, and one of the name choices in the end certificate is explicitly excluded..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_HAS_NOT_DEFINED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension and a name constraint is missing for one of the name choices in the end certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_HAS_NOT_PERMITTED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension, and there is not a permitted name constraint for one of the name choices in the end certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_HAS_NOT_SUPPORTED_CRITICAL_EXT">
+            <summary>
+              Looks up a localized string similar to The certificate does not support a critical extension..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_HAS_NOT_SUPPORTED_NAME_CONSTRAINT">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension that contains unsupported fields. The minimum and maximum fields are not supported. Thus minimum must always be zero and maximum must always be absent. Only UPN is supported for an Other Name..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_HAS_WEAK_HYGIENE">
+            <summary>
+              Looks up a localized string similar to CERT_TRUST_HAS_WEAK_HYGIENE.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_HAS_WEAK_SIGNATURE">
+            <summary>
+              Looks up a localized string similar to The certificate has not been strong signed. Typically this indicates that the MD2 or MD5 hashing algorithms were used to create a hash of the certificate..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_INVALID_BASIC_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a basic constraints extension, and either the certificate cannot be used to issue other certificates, or the chain path length has been exceeded..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_INVALID_EXTENSION">
+            <summary>
+              Looks up a localized string similar to One of the certificates has an extension that is not valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_INVALID_NAME_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a name constraints extension that is not valid..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_INVALID_POLICY_CONSTRAINTS">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain has a policy constraints extension, and one of the issued certificates has a disallowed policy mapping extension or does not have a required issuance policies extension..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_CYCLIC">
+            <summary>
+              Looks up a localized string similar to One of the certificates in the chain was issued by a certification authority that the original certificate had certified..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_EXPLICIT_DISTRUST">
+            <summary>
+              Looks up a localized string similar to The certificate is explicitly distrusted..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_NOT_SIGNATURE_VALID">
+            <summary>
+              Looks up a localized string similar to The certificate or one of the certificates in the certificate chain does not have a valid signature..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_NOT_TIME_NESTED">
+            <summary>
+              Looks up a localized string similar to CERT_TRUST_IS_NOT_TIME_NESTED.
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_NOT_VALID_FOR_USAGE">
+            <summary>
+              Looks up a localized string similar to The certificate or certificate chain is not valid for its proposed usage..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_OFFLINE_REVOCATION">
+            <summary>
+              Looks up a localized string similar to The revocation status of the certificate or one of the certificates in the certificate chain is either offline or stale..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_PARTIAL_CHAIN">
+            <summary>
+              Looks up a localized string similar to The certificate chain is not complete..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_REVOKED">
+            <summary>
+              Looks up a localized string similar to Trust for this certificate or one of the certificates in the certificate chain has been revoked..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_IS_UNTRUSTED_ROOT">
+            <summary>
+              Looks up a localized string similar to The certificate or certificate chain is based on an untrusted root..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_NO_ERROR">
+            <summary>
+              Looks up a localized string similar to No error found for this certificate or chain..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_NO_ISSUANCE_CHAIN_POLICY">
+            <summary>
+              Looks up a localized string similar to The end certificate does not have any resultant issuance policies, and one of the issuing certification authority certificates has a policy constraints extension requiring it..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.CERT_TRUST_REVOCATION_STATUS_UNKNOWN">
+            <summary>
+              Looks up a localized string similar to The revocation status of the certificate or one of the certificates in the certificate chain is unknown..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.InvalidFlagCombination">
+            <summary>
+              Looks up a localized string similar to The flags &quot;{0}&quot; can not be specified together..
+            </summary>
+        </member>
+        <member name="P:BinaryStudio.Security.Cryptography.CryptographyServiceProvider.Properties.Resources.TrustIsNotTimeValid">
+            <summary>
+              Looks up a localized string similar to This certificate or one of the certificates in the certificate chain is not time valid..
+            </summary>
+        </member>
+        <member name="M:BinaryStudio.Security.Cryptography.Internal.CryptographicContextI.GetLastWin32Error">
+            <summary>
+            Returns the error code returned by the last unmanaged function that was called.
+            using platform invoke that has the System.Runtime.InteropServices.DllImportAttribute.SetLastError flag set.
+            </summary>
+            <returns>The last error code set by a call to the Win32 SetLastError function.</returns>
+        </member>
+    </members>
+</doc>

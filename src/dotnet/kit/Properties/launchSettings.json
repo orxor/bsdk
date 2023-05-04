@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "kit": {
+      "commandName": "Project",
+      "commandLineArgs": "report:Name=GOSTCertificateSignature storename:folder://C:\\TFS\\icao\\repo\\ru",
+      "remoteDebugEnabled": false
+    }
+  }
+}

@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net40</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Data\Colors1.jpg" />
+    <None Remove="Data\Colors2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Data\Colors1.jpg" />
+    <Resource Include="Data\Colors2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Data\icaopkd-001-dsccrl-005181.7z">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\DataGrid\DataGridTextBlock.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\DataGrid\DataGridSimple.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\ListBox\ListBoxTextBlock.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

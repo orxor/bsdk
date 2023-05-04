@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net40;net45;net5.0</TargetFrameworks>
+    <!--<DocumentationFile>$(OutDir)\BinaryStudio.DirectoryServices.xml</DocumentationFile>-->
+    <NoWarn>1701;1702;1591;NETSDK1138</NoWarn>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SharpCompress" Version="0.24.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj">
+      <SetConfiguration>$(Configuration)</SetConfiguration>
+    </ProjectReference>
+    <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+  </ItemGroup>
+</Project>

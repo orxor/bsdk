@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net40;net45;net5.0</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <NoWarn>NU1701;NETSDK1138</NoWarn>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj"/>
+    <ProjectReference Include="..\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\OID.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OID.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\OID.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>OID.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

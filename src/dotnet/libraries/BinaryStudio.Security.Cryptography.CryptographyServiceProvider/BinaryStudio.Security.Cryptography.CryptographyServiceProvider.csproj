@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net40;net45;net5.0</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <NoWarn>NU1701;NETSDK1138;CS1591</NoWarn>
+    <AppendRuntimeIdentifierToOutputPath>true</AppendRuntimeIdentifierToOutputPath>
+    <Configurations>Debug;Release;Linux{Debug}</Configurations>
+    <DocumentationFile>BinaryStudio.Security.Cryptography.CryptographyServiceProvider.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net5.0'">
+    <RuntimeIdentifier Condition="'$(Configuration)'=='Linux{Debug}'">linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'linux-x64'">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' != 'linux-x64'">
+    <DefineConstants>$(DefineConstants);CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;CMSG_SIGNED_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_SIGNER_ENCODE_INFO_HAS_CMS_FIELDS;CMSG_ENVELOPED_ENCODE_INFO_HAS_CMS_FIELDS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="CreateMessage.cs" />
+    <Compile Remove="EncryptMessage.cs" />
+    <Compile Remove="VerifyMessage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
+    <ProjectReference Include="..\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="System.Memory">
+      <Version>4.5.5</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <Version>4.3.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <PackageReference Include="System.Memory">
+      <Version>4.5.5</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <Version>4.3.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CreateMessage.cs">
+      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EncryptMessage.cs">
+      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VerifyMessage.cs">
+      <DependentUpon>CryptographicContext.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

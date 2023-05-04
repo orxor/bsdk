@@ -1,0 +1,44 @@
+
+Microsoft (R) EXE File Header Utility  Version 3.20
+Copyright (C) Microsoft Corp 1985-1993.  All rights reserved.
+
+Library:                  MFC250D
+Description:              MFC250D_DLL
+Data:                     SHARED
+Initialization:           Global
+Initial CS:IP:            seg   1 offset 0054
+Initial SS:SP:            seg   0 offset 0000
+DGROUP:                   seg  20
+Heap allocation:          0400 bytes
+Application type:         WINDOWAPI
+Other module flags:       Contains gangload area; start: 0x4600; size 0x8e00
+Runs in protected mode only
+
+no. type address  file  mem   flags
+  1 CODE 00004800 05bc5 05bc5 PRELOAD, (movable), (discardable)
+  2 CODE 0000d400 000f8 000f9 (movable), (discardable)
+  3 CODE 0000d600 06f56 06f57 (movable), (discardable)
+  4 CODE 00014600 0dd54 0dd55 (movable), (discardable)
+  5 CODE 00022800 000b3 000b4 (movable), (discardable)
+  6 CODE 00022a00 011eb 011ec (movable), (discardable)
+  7 CODE 00023e00 039c8 039c9 (movable), (discardable)
+  8 CODE 00027800 0366a 0366b (movable), (discardable)
+  9 CODE 0002b200 0a7fa 0a7fb (movable), (discardable)
+ 10 CODE 00035e00 098c2 098c3 (movable), (discardable)
+ 11 CODE 0003f800 08f6a 08f6b (movable), (discardable)
+ 12 CODE 00048a00 06d02 06d03 (movable), (discardable)
+ 13 CODE 0004f800 09806 09807 (movable), (discardable)
+ 14 CODE 00059a00 061ea 061eb (movable), (discardable)
+ 15 CODE 0005fe00 0e160 0e161 (movable), (discardable)
+ 16 CODE 0006e400 07b68 07b69 (movable), (discardable)
+ 17 CODE 00076200 0c26e 0c26f (movable), (discardable)
+ 18 CODE 00082800 089d8 089d9 (movable), (discardable)
+ 19 CODE 0008b800 01abc 01abc (movable), (discardable)
+ 20 DATA 0000aa00 02398 02398 SHARED, PRELOAD, (movable)
+
+
+Exports:
+ord seg offset name
+  1   5  0060  WEP exported, shared data
+  2   1  4644  ___EXPORTEDSTUB exported, shared data
+

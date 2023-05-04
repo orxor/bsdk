@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net40</TargetFramework>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>xhlp.xml</DocumentationFile>
+  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.IO\BinaryStudio.IO.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj" />
+    <ProjectReference Include="..\..\libraries\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj" />
+    <ProjectReference Include="..\xmldoc\xmldoc.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="bsdk_lang.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <!--<Exec Command="move /Y $(OutDir)BinaryStudio.DirectoryServices.xml $(OutDir)BinaryStudio.DirectoryServices.en-US.xml&#xD;&#xA;move /Y $(OutDir)BinaryStudio.PortableExecutable.xml $(OutDir)BinaryStudio.PortableExecutable.en-US.xml" />-->
+  </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="call (TargetDir)\bsdk_lang.bat" />
+  </Target>
+</Project>
