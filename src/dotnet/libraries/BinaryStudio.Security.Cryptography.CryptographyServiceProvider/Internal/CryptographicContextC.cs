@@ -46,10 +46,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptDeriveKey(IntPtr Context,ALG_ID AlgId,IntPtr BaseData,Int32 Flags,out IntPtr Key) { return CryptDeriveKey(Context,AlgId,BaseData,Flags,out Key); }
         Boolean CryptographicFunctions.CryptDestroyHash(IntPtr Handle) { return CryptDestroyHash(Handle); }
         Boolean CryptographicFunctions.CryptDestroyKey(IntPtr Key) { return CryptDestroyKey(Key); }
-        Boolean CryptographicFunctions.CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r) { return CryptDuplicateKey(Key,Reserved,Flags,out r); }
+        Boolean CryptographicFunctions.CryptDuplicateHash(IntPtr Hash,out IntPtr Output) { return CryptDuplicateHash(Hash,IntPtr.Zero,0,out Output); }
+        Boolean CryptographicFunctions.CryptDuplicateKey(IntPtr Key,out IntPtr Output) { return CryptDuplicateKey(Key,IntPtr.Zero,0,out Output); }
         Boolean CryptographicFunctions.CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID GroupId,IntPtr Arg,CryptEnumOidInfoCallback Callback) { return CryptEnumOIDInfo((Int32)GroupId,0,Arg,Callback); }
-        Boolean CryptographicFunctions.CryptEnumProviders(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, StringBuilder name, ref Int32 sz) { return CryptEnumProviders(index,reserved,flags,out type,name,ref sz); }
-        Boolean CryptographicFunctions.CryptEnumProviderTypes(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, StringBuilder name, ref Int32 sz) { return CryptEnumProviderTypes(index,reserved,flags,out type,name,ref sz); }
+        Boolean CryptographicFunctions.CryptEnumProviders(Int32 Index,out Int32 Type, StringBuilder Name,ref Int32 Size) { return CryptEnumProviders(Index,IntPtr.Zero,0,out Type,Name,ref Size); }
+        Boolean CryptographicFunctions.CryptEnumProviderTypes(Int32 Index,out Int32 Type,StringBuilder Name,ref Int32 Size) { return CryptEnumProviderTypes(Index,IntPtr.Zero,0,out Type,Name,ref Size); }
         Boolean CryptographicFunctions.CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags,Byte[] Data,ref Int32 DataLen) { return CryptExportKey(Key,ExpKey,BlobType,Flags,Data,ref DataLen); }
         Boolean CryptographicFunctions.CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r) { return CryptGenKey(Context,AlgId,Flags,out r); }
         Boolean CryptographicFunctions.CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer) { return CryptGenRandom(Context,Length,Buffer); }
@@ -129,7 +130,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptDeriveKey(IntPtr Context,ALG_ID AlgId,IntPtr BaseData,Int32 Flags,out IntPtr Key);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptDestroyHash(IntPtr Handle);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptDestroyKey(IntPtr Key);
-        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r);
+        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr Output);
+        [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptDuplicateHash(IntPtr Hash,IntPtr Reserved,Int32 Flags,out IntPtr Output);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptEnumOIDInfo(Int32 GroupId,Int32 Flags,IntPtr Arg,CryptEnumOidInfoCallback Callback);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data,ref Int32 DataLen);
         [DllImport("libcapi20", SetLastError = true)] private static extern Boolean CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);

@@ -42,8 +42,6 @@
     <DocumentationSources>
       <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.dll" />
       <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.xml" />
-      <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.dll" />
-      <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.xml" />
       <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.dll" />
       <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.xml" />
     </DocumentationSources>

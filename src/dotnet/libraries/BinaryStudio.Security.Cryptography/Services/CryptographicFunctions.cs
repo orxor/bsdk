@@ -3038,14 +3038,560 @@ namespace BinaryStudio.Services
         /// </returns>
         Boolean CryptAcquireContext(out IntPtr CryptProv,String Container,String Provider,Int32 ProvType,Int32 Flags);
         #endregion
-        Boolean CryptCreateHash(IntPtr Provider, ALG_ID Algorithm, IntPtr Key, out IntPtr Handle);
+        #region M:CryptCreateHash(IntPtr,ALG_ID,IntPtr,{out}IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptCreateHash</b> function initiates the hashing of a stream of data. It creates and returns to the calling application a handle to a cryptographic service provider (CSP) hash object. This handle is used in subsequent calls to <see cref="CryptHashData"/> and <see cref="CryptHashSessionKey"/> to hash session keys and other streams of data.
+        /// </summary>
+        /// <param name="Provider">A handle to a CSP created by a call to <see cref="CryptAcquireContext"/>.</param>
+        /// <param name="Algorithm">
+        /// An <see cref="ALG_ID"/> value that identifies the hash algorithm to use.<br/>
+        /// Valid values for this parameter vary, depending on the CSP that is used.
+        /// </param>
+        /// <param name="Key">
+        /// If the type of hash algorithm is a keyed hash, such as the Hash-Based Message Authentication Code (HMAC) or Message Authentication Code (MAC) algorithm, the key for the hash is passed in this parameter. For nonkeyed algorithms, this parameter must be set to zero.<br/>
+        /// For keyed algorithms, the key must be to a block cipher key, such as RC2, that has a cipher mode of Cipher Block Chaining (CBC).
+        /// </param>
+        /// <param name="Handle">The reference to which the function copies a handle to the new hash object. When you have finished using the hash object, release the handle by calling the <see cref="CryptDestroyHash"/> function.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_NOT_ENOUGH_MEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The operating system ran out of memory during the operation.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Algorithm"/> parameter specifies an algorithm that this CSP does not support.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A keyed hash algorithm, such as CALG_MAC, is specified by <paramref name="Algorithm"/>, and the <paramref name="Key"/> parameter is either zero or it specifies a key handle that is not valid. This error code is also returned if the key is to a stream cipher or if the cipher mode is anything other than CBC.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_NO_MEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP ran out of memory during the operation
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptCreateHash(IntPtr Provider,ALG_ID Algorithm,IntPtr Key,out IntPtr Handle);
+        #endregion
+        #region M:CryptDeriveKey(IntPtr,ALG_ID,IntPtr,Int32,{out}IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptDeriveKey</b> function generates cryptographic session keys derived from a base data value. This function guarantees that when the same cryptographic service provider (CSP) and algorithms are used, the keys generated from the same base data are identical. The base data can be a password or any other user data.<br/>
+        /// This function is the same as <see cref="CryptGenKey"/>, except that the generated session keys are derived from base data instead of being random. <see cref="CryptDeriveKey"/> can only be used to generate session keys. It cannot generate public/private key pairs.<br/>
+        /// A handle to the session key is returned in the <paramref name="Key"/> parameter. This handle can be used with any CryptoAPI function that requires a key handle.
+        /// </summary>
+        /// <param name="Context">A <b>HCRYPTPROV</b> handle of a CSP created by a call to <see cref="CryptAcquireContext"/>.</param>
+        /// <param name="AlgId">An <see cref="ALG_ID"/> structure that identifies the symmetric encryption algorithm for which the key is to be generated. The algorithms available will most likely be different for each CSP. For more information about which algorithm identifier is used by the different providers for the key specs AT_KEYEXCHANGE and AT_SIGNATURE, see ALG_ID.</param>
+        /// <param name="BaseData">
+        /// A handle to a hash object that has been fed the exact base data.<br/>
+        /// To obtain this handle, an application must first create a hash object with <see cref="CryptCreateHash"/> and then add the base data to the hash object with CryptHashData.
+        /// </param>
+        /// <param name="Flags">
+        /// Specifies the type of key generated.<br/>
+        /// The sizes of a session key can be set when the key is generated. The key size, representing the length of the key modulus in bits, is set with the upper 16 bits of this parameter. Thus, if a 128-bit RC4 session key is to be generated, the value 0x00800000 is combined with any other <paramref name="Flags"/> predefined value with a bitwise-OR operation. Due to changing export control restrictions, the default CSP and default key length may change between operating system releases. It is important that both the encryption and decryption use the same CSP and that the key length be explicitly set using the <paramref name="Flags"/> parameter to ensure interoperability on different operating system platforms.<br/>
+        /// The lower 16 bits of this parameter can be zero or you can specify one or more of the following flags by using the bitwise-OR operator to combine them.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_CREATE_SALT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Typically, when a session key is made from a hash value, there are a number of leftover bits. For example, if the hash value is 128 bits and the session key is 40 bits, there will be 88 bits left over.<br/>
+        ///       If this flag is set, then the key is assigned a salt value based on the unused hash value bits. You can retrieve this salt value by using the <see cref="CryptGetKeyParam"/> function with the <b>Param</b> parameter set to <b>KP_SALT</b>.<br/>
+        ///       If this flag is not set, then the key is given a salt value of zero.<br/>
+        ///       When keys with nonzero salt values are exported (by using <see cref="CryptExportKey"/>), the salt value must also be obtained and kept with the key BLOB.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_EXPORTABLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If this flag is set, the session key can be transferred out of the CSP into a key BLOB through the <see cref="CryptExportKey"/> function. Because keys generally must be exportable, this flag should usually be set.<br/>
+        ///       If this flag is not set, then the session key is not exportable. This means the key is available only within the current session and only the application that created it is able to use it.<br/>
+        ///       This flag does not apply to public/private key pairs.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_NO_SALT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag specifies that a no salt value gets allocated for a 40-bit symmetric key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_UPDATE_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Some CSPs use session keys that are derived from multiple hash values. When this is the case, <see cref="CryptDeriveKey"/> must be called multiple times.<br/>
+        ///       If this flag is set, a new session key is not generated. Instead, the key specified by <paramref name="Key"/> is modified. The precise behavior of this flag is dependent on the type of key being generated and on the particular CSP being used.<br/>
+        ///       Microsoft cryptographic service providers ignore this flag.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SERVER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is used only with <a href="https://learn.microsoft.com/en-us/windows/desktop/SecGloss/s-gly">schannel</a> providers. If this flag is set, the key to be generated is a server-write key; otherwise, it is a client-write key.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Key">A reference to a <b>HCRYPTKEY</b> variable to receive the address of the handle of the newly generated key. When you have finished using the key, release the handle by calling the <see cref="CryptDestroyKey"/> function.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="AlgId"/> parameter specifies an algorithm that this CSP does not support.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter contains a value that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="BaseData"/> parameter does not contain a valid handle to a hash object.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH_STATE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       An attempt was made to add data to a hash object that is already marked "finished."
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Context"/> parameter does not contain a valid context handle.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_FAIL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The function failed in some unexpected way.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_SILENT_CONTEXT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The provider could not perform the action because the context was acquired as silent.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptDeriveKey(IntPtr Context,ALG_ID AlgId,IntPtr BaseData,Int32 Flags,out IntPtr Key);
-        Boolean CryptDestroyHash(IntPtr Handle);
+        #endregion
+        #region M:CryptDestroyHash(IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptDestroyHash</b> function destroys the hash object referenced by the <paramref name="Hash"/> parameter. After a hash object has been destroyed, it can no longer be used.<br/>
+        /// To help ensure security, we recommend that hash objects be destroyed after they have been used.
+        /// </summary>
+        /// <param name="Hash">The handle of the hash object to be destroyed.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_BUSY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The hash object specified by <paramref name="Hash"/> is currently being used and cannot be destroyed.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Hash"/> parameter specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Hash"/> parameter contains a value that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Hash"/> handle specifies an algorithm that this CSP does not support.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The hash object specified by the <paramref name="Hash"/> parameter is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context that was specified when the hash object was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptDestroyHash(IntPtr Hash);
+        #endregion
+        #region M:CryptDestroyKey(IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptDestroyKey</b> function releases the handle referenced by the <paramref name="Key"/> parameter. After a key handle has been released, it is no longer valid and cannot be used again.<br/>
+        /// If the handle refers to a session key, or to a public key that has been imported into the cryptographic service provider (CSP) through <see cref="CryptImportKey"/>, this function destroys the key and frees the memory that the key used. Many CSPs overwrite the memory where the key was held before freeing it. However, the underlying public/private key pair is not destroyed by this function. Only the handle is destroyed.
+        /// </summary>
+        /// <param name="Key">The handle of the key to be destroyed.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_BUSY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key object specified by <paramref name="Key"/> is currently being used and cannot be destroyed.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Key"/> parameter specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Key"/> parameter contains a value that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Key"/> parameter does not contain a valid handle to a key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context that was specified when the key was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptDestroyKey(IntPtr Key);
-        Boolean CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r);
+        #endregion
+        #region M:CryptDuplicateHash(IntPtr,{out}IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptDuplicateHash</b> function makes an exact copy of a hash to the point when the duplication is done. The duplicate hash includes the state of the hash.<br/>
+        /// A hash can be created in a piece-by-piece way. The <see cref="CryptDuplicateHash"/> function can be used to create separate hashes of two different contents that begin with the same content.
+        /// </summary>
+        /// <param name="Hash">Handle of the hash to be duplicated.</param>
+        /// <param name="Output">Reference of the handle of the duplicated hash. When you have finished using the hash, release the handle by calling the <see cref="CryptDestroyHash"/> function.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_CALL_NOT_IMPLEMENTED
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Because this is a new function, existing CSPs cannot implement it. This error is returned if the CSP does not support this function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A handle to the original hash is not valid.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptDuplicateHash(IntPtr Hash,out IntPtr Output);
+        #endregion
+        #region M:CryptDuplicateKey(IntPtr,{out}IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptDuplicateKey</b> function makes an exact copy of a key and the state of the key.
+        /// </summary>
+        /// <param name="Key">A handle to the key to be duplicated.</param>
+        /// <param name="Output">Reference of the handle to the duplicated key. When you have finished using the key, release the handle by calling the <see cref="CryptDestroyKey"/> function</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_CALL_NOT_IMPLEMENTED
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Because this is a new function, existing CSPs cannot implement it. This error is returned if the CSP does not support this function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A handle to the original key is not valid.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptDuplicateKey(IntPtr Key,out IntPtr Output);
+        #endregion
+        #region M:CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID,IntPtr,CryptEnumOidInfoCallback):Boolean
+        /// <summary>
+        /// The <b>CryptEnumOIDInfo</b> function enumerates predefined and registered object identifier (OID) <see cref="CRYPT_OID_INFO"/> structures. This function enumerates either all of the predefined and registered structures or only structures identified by a selected OID group. For each OID information structure enumerated, an application provided callback function, <paramref name="Callback"/>, is called.
+        /// </summary>
+        /// <param name="GroupId">
+        /// Indicates which OID groups to be matched. Setting <paramref name="GroupId"/> to zero matches all groups. If <paramref name="GroupId"/> is greater than zero, only the OID entries in the specified group are enumerated.<br/>
+        /// The currently defined OID group IDs are:
+        /// <list type="bullet">
+        ///   <item>CRYPT_HASH_ALG_OID_GROUP_ID</item>
+        ///   <item>CRYPT_ENCRYPT_ALG_OID_GROUP_ID</item>
+        ///   <item>CRYPT_PUBKEY_ALG_OID_GROUP_ID</item>
+        ///   <item>CRYPT_SIGN_ALG_OID_GROUP_ID</item>
+        ///   <item>CRYPT_RDN_ATTR_OID_GROUP_ID</item>
+        ///   <item>CRYPT_EXT_OR_ATTR_OID_GROUP_ID</item>
+        ///   <item>CRYPT_ENHKEY_USAGE_OID_GROUP_ID</item>
+        ///   <item>CRYPT_POLICY_OID_GROUP_ID</item>
+        ///   <item>CRYPT_TEMPLATE_OID_GROUP_ID</item>
+        ///   <item>CRYPT_KDF_OID_GROUP_ID<br/><b>Windows Server 2008, Windows Vista, Windows Server 2003 and Windows XP</b>: The CRYPT_KDF_OID_GROUP_ID value is not supported.</item>
+        ///   <item>CRYPT_LAST_OID_GROUP_ID</item>
+        ///   <item>CRYPT_FIRST_ALG_OID_GROUP_ID</item>
+        ///   <item>CRYPT_LAST_ALG_OID_GROUP_ID</item>
+        /// </list>
+        /// </param>
+        /// <param name="Arg">A pointer to arguments to be passed through to the callback function.</param>
+        /// <param name="Callback">A pointer to the callback function that is executed for each OID information entry enumerated.</param>
+        /// <returns>
+        /// If the callback function completes the enumeration, this function returns <b>TRUE</b>.<br/>
+        /// If the callback function has stopped the enumeration, this function returns <b>FALSE</b>.
+        /// </returns>
         Boolean CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID GroupId,IntPtr Arg,CryptEnumOidInfoCallback Callback);
-        Boolean CryptEnumProviders(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, StringBuilder name, ref Int32 sz);
-        Boolean CryptEnumProviderTypes(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, StringBuilder name, ref Int32 sz);
+        #endregion
+        #region M:CryptEnumProviders(Int32,{out}Int32,StringBuilder,{ref}Int32):Boolean
+        /// <summary>
+        /// The <b>CryptEnumProviders</b> function retrieves the first or next available cryptographic service providers (CSPs). Used in a loop, this function can retrieve in sequence all of the CSPs available on a computer.
+        /// </summary>
+        /// <param name="Index">Index of the next provider to be enumerated.</param>
+        /// <param name="Type">Reference of the <see cref="Int32"/> value designating the type of the enumerated provider.</param>
+        /// <param name="Name">
+        /// A pointer to a buffer that receives the data from the enumerated provider. This is a string including the terminating null character.<br/>
+        /// This parameter can be <b>NULL</b> to set the size of the name for memory allocation purposes.
+        /// </param>
+        /// <param name="Size">
+        /// A reference to a <see cref="Int32"/> value specifying the size, in bytes, of the buffer pointed to by the <paramref name="Name"/> parameter. When the function returns, the <see cref="Int32"/> value contains the number of bytes stored in the buffer.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> When processing the data returned in the buffer, applications must use the actual size of the data returned. The actual size can be slightly smaller than the size of the buffer specified on input. (On input, buffer sizes are usually specified large enough to ensure that the largest possible output data fits in the buffer.) On output, the variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_MORE_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Name"/> buffer was not large enough to hold the provider name.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_NO_MORE_ITEMS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       There are no more items to enumerate.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_NOT_ENOUGH_MEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The operating system ran out of memory.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_FAIL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Something was wrong with the type registration.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptEnumProviders(Int32 Index,out Int32 Type,StringBuilder Name,ref Int32 Size);
+        #endregion
+        #region M:CryptEnumProviderTypes(Int32,{out}Int32,StringBuilder,{ref}Int32):Boolean
+        /// <summary>
+        /// The <b>CryptEnumProviderTypes</b> function retrieves the first or next types of cryptographic service provider (CSP) supported on the computer. Used in a loop, this function retrieves in sequence all of the CSP types available on a computer.<br/>
+        /// Provider types include <b>PROV_RSA_FULL</b>, <b>PROV_RSA_SCHANNEL</b>, and <b>PROV_DSS</b>.
+        /// </summary>
+        /// <param name="Index">Index of the next provider type to be enumerated.</param>
+        /// <param name="Type">Reference of the <see cref="Int32"/> value designating the enumerated provider type.</param>
+        /// <param name="Name">
+        /// A pointer to a buffer that receives the data from the enumerated provider type. This is a string including the terminating <b>NULL</b> character. Some provider types do not have display names, and in this case no name is returned and the returned value pointed to by <paramref name="Size"/> is zero.<br/>
+        /// This parameter can be <b>NULL</b> to get the size of the name for memory allocation purposes.
+        /// </param>
+        /// <param name="Size">
+        /// A pointer to a <see cref="Int32"/> value specifying the size, in bytes, of the buffer pointed to by the <paramref name="Name"/> parameter. When the function returns, the <see cref="Int32"/> value contains the number of bytes stored or to be stored in the buffer. Some provider types do not have display names, and in this case no name is returned and the returned value pointed to by <paramref name="Size"/> is zero.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> When processing the data returned in the buffer, applications must use the actual size of the data returned. The actual size can be slightly smaller than the size of the buffer specified on input. (On input, buffer sizes are usually specified large enough to ensure that the largest possible output data fits in the buffer.) On output, the variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_NO_MORE_ITEMS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       There are no more items to enumerate.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_NOT_ENOUGH_MEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The operating system ran out of memory.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_FAIL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Something was wrong with the type registration.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptEnumProviderTypes(Int32 Index,out Int32 Type,StringBuilder Name,ref Int32 Size);
+        #endregion
         Boolean CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags, Byte[] Data,ref Int32 DataLen);
         Boolean CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
         Boolean CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer);

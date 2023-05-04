@@ -195,7 +195,7 @@ namespace BinaryStudio.Security.Cryptography
             var builder = new StringBuilder(512);
             for (;;) {
                 var sz = builder.Capacity;
-                if (!entries.CryptEnumProviders(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
+                if (!entries.CryptEnumProviders(i, out var type, builder, ref sz)) {
                     var e = (Win32ErrorCode)GetLastWin32Error();
                     if (e == Win32ErrorCode.ERROR_MORE_DATA) {
                         builder.Capacity = sz + 1;
@@ -220,7 +220,7 @@ namespace BinaryStudio.Security.Cryptography
             var builder = new StringBuilder(512);
             for (;;) {
                 var sz = builder.Capacity;
-                if (!entries.CryptEnumProviderTypes(i, IntPtr.Zero, 0, out var type, builder, ref sz)) {
+                if (!entries.CryptEnumProviderTypes(i, out var type, builder, ref sz)) {
                     var e = (Win32ErrorCode)GetLastWin32Error();
                     if (e == Win32ErrorCode.ERROR_MORE_DATA) {
                         builder.Capacity = sz + 1;
