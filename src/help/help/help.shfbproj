@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Import the common properties to support NuGet restore -->
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <!-- A target framework version is required by Visual Studio.  It can be any version with a targeting pack installed. -->
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <!-- The configuration and platform will be used to determine which assemblies to include from solution and
+				 project documentation sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>f376e3a8-9af1-491e-8990-3a9d0ad9ef16</ProjectGuid>
+    <SHFBSchemaVersion>2017.9.26.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual Studio adds them anyway -->
+    <AssemblyName>help</AssemblyName>
+    <RootNamespace>help</RootNamespace>
+    <Name>help</Name>
+    <!-- SHFB properties -->
+    <FrameworkVersion>.NET Framework 4.0</FrameworkVersion>
+    <OutputPath>.\Help\</OutputPath>
+    <HtmlHelpName>help</HtmlHelpName>
+    <Language>en-US</Language>
+    <TransformComponentArguments>
+      <Argument Key="logoFile" Value="Help.png" xmlns="" />
+      <Argument Key="logoHeight" Value="" xmlns="" />
+      <Argument Key="logoWidth" Value="" xmlns="" />
+      <Argument Key="logoAltText" Value="" xmlns="" />
+      <Argument Key="logoPlacement" Value="left" xmlns="" />
+      <Argument Key="logoAlignment" Value="left" xmlns="" />
+      <Argument Key="maxVersionParts" Value="" xmlns="" />
+    </TransformComponentArguments>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <SyntaxFilters>C#</SyntaxFilters>
+    <PresentationStyle>VS2013</PresentationStyle>
+    <CleanIntermediates>True</CleanIntermediates>
+    <KeepLogFile>True</KeepLogFile>
+    <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
+    <IndentHtml>False</IndentHtml>
+    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.dll" />
+      <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.Certificates.xml" />
+      <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.dll" />
+      <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.xml" />
+      <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.dll" />
+      <DocumentationSource sourceFile="..\..\dotnet\tools\xhlp\bin\Debug\net40\BinaryStudio.Security.Cryptography.xml" />
+    </DocumentationSources>
+  </PropertyGroup>
+  <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
+			 the build.  The others are optional common platform types that may appear. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Win32' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|Win32' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Content" />
+    <Folder Include="Content\VersionHistory" />
+    <Folder Include="icons" />
+    <Folder Include="media" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\VersionHistory\v1.0.0.0.aml" />
+    <None Include="Content\VersionHistory\VersionHistory.aml" />
+    <None Include="Content\Welcome.aml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ContentLayout Include="ContentLayout.content" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icons\Help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.DataProcessing\BinaryStudio.DataProcessing.csproj">
+      <Name>BinaryStudio.DataProcessing</Name>
+      <Project>{fabea7ba-b007-47c0-bc51-97a8a31e1e4e}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj">
+      <Name>BinaryStudio.DiagnosticServices</Name>
+      <Project>{c95424f3-2787-497c-8eb7-755f0278c86d}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.DirectoryServices\BinaryStudio.DirectoryServices.csproj">
+      <Name>BinaryStudio.DirectoryServices</Name>
+      <Project>{fd3581d0-72d2-4403-8250-3b1d00bd8465}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.IO\BinaryStudio.IO.csproj">
+      <Name>BinaryStudio.IO</Name>
+      <Project>{0bafb00a-aa45-4200-8c45-b4311be109da}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.PlatformComponents\BinaryStudio.PlatformComponents.csproj">
+      <Name>BinaryStudio.PlatformComponents</Name>
+      <Project>{ffa2a274-dacf-4b62-99fc-8ee7cf15afce}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.PlatformUI\BinaryStudio.PlatformUI.csproj">
+      <Name>BinaryStudio.PlatformUI</Name>
+      <Project>{0ed88b1d-5fe1-460a-9955-7ce3b9d935a8}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj">
+      <Name>BinaryStudio.PortableExecutable.PlatformUI</Name>
+      <Project>{01bb3770-3538-4cae-b524-41d213f3c0da}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.PortableExecutable\BinaryStudio.PortableExecutable.csproj">
+      <Name>BinaryStudio.PortableExecutable</Name>
+      <Project>{0b996372-eda2-4ee2-ac3e-f7302f2080a6}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.ReportingServices\BinaryStudio.ReportingServices.csproj">
+      <Name>BinaryStudio.ReportingServices</Name>
+      <Project>{5dfb7bbb-9aab-412b-962c-120d31a88a03}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation\BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.csproj">
+      <Name>BinaryStudio.Security.Cryptography.AbstractSyntaxNotation</Name>
+      <Project>{de9b959e-c5e1-4d74-8eef-2c831ef9b464}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography.Certificates\BinaryStudio.Security.Cryptography.Certificates.csproj">
+      <Name>BinaryStudio.Security.Cryptography.Certificates</Name>
+      <Project>{2ca08dcf-0135-4607-b940-af65bd4a3473}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax\BinaryStudio.Security.Cryptography.CryptographicMessageSyntax.csproj">
+      <Name>BinaryStudio.Security.Cryptography.CryptographicMessageSyntax</Name>
+      <Project>{4c6b0688-f528-41fa-a137-af5ad15aefee}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography.CryptographyServiceProvider\BinaryStudio.Security.Cryptography.CryptographyServiceProvider.csproj">
+      <Name>BinaryStudio.Security.Cryptography.CryptographyServiceProvider</Name>
+      <Project>{5066e5c9-8b8a-48de-9148-e3d31c558a47}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography.Interchange\BinaryStudio.Security.Cryptography.Interchange.csproj">
+      <Name>BinaryStudio.Security.Cryptography.Interchange</Name>
+      <Project>{4345733e-f46d-4315-9ed6-e5695078fb39}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax\BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax.csproj">
+      <Name>BinaryStudio.Security.Cryptography.PersonalInformationExchangeSyntax</Name>
+      <Project>{3afd0be1-597d-45da-966b-9408e9ece353}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj">
+      <Name>BinaryStudio.Security.Cryptography.PlatformUI</Name>
+      <Project>{440e427a-ac41-4995-ac59-bdd4a4473b30}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography.Reporting\BinaryStudio.Security.Cryptography.Reporting.csproj">
+      <Name>BinaryStudio.Security.Cryptography.Reporting</Name>
+      <Project>{a986a99e-aaa6-4d63-8e75-fe83920a1480}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Security.Cryptography\BinaryStudio.Security.Cryptography.csproj">
+      <Name>BinaryStudio.Security.Cryptography</Name>
+      <Project>{9d80a974-3e3c-44bf-aa94-eb361c491278}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\libraries\BinaryStudio.Serialization\BinaryStudio.Serialization.csproj">
+      <Name>BinaryStudio.Serialization</Name>
+      <Project>{a565512c-e636-41bf-9fcb-793d4133b73f}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dotnet\tools\xhlp\xhlp.csproj">
+      <Name>xhlp</Name>
+      <Project>{304d2a3d-7f4f-4058-9a4e-849c366fc800}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <!-- Import the common build targets during NuGet restore because before the packages are being installed, $(SHFBROOT) is not set yet -->
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="'$(MSBuildRestoreSessionId)' != ''" />
+  <!-- Import the SHFB build targets during build -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" Condition="'$(MSBuildRestoreSessionId)' == ''" />
+  <!-- The pre-build and post-build event properties must appear *after* the targets file import in order to be
+			 evaluated correctly. -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+</Project>

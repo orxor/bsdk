@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33516.290
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33423.256
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.DiagnosticServices", "src\dotnet\libraries\BinaryStudio.DiagnosticServices\BinaryStudio.DiagnosticServices.csproj", "{C95424F3-2787-497C-8EB7-755F0278C86D}"
 EndProject
@@ -86,6 +86,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.PortableExecutable.PlatformUI", "src\dotnet\libraries\BinaryStudio.PortableExecutable.PlatformUI\BinaryStudio.PortableExecutable.PlatformUI.csproj", "{01BB3770-3538-4CAE-B524-41D213F3C0DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryStudio.Security.Cryptography.PlatformUI", "src\dotnet\libraries\BinaryStudio.Security.Cryptography.PlatformUI\BinaryStudio.Security.Cryptography.PlatformUI.csproj", "{440E427A-AC41-4995-AC59-BDD4A4473B30}"
+EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "help", "src\help\help\help.shfbproj", "{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1125,6 +1127,36 @@ Global
 		{440E427A-AC41-4995-AC59-BDD4A4473B30}.Release|x64.Build.0 = Release|Any CPU
 		{440E427A-AC41-4995-AC59-BDD4A4473B30}.Release|x86.ActiveCfg = Release|Any CPU
 		{440E427A-AC41-4995-AC59-BDD4A4473B30}.Release|x86.Build.0 = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|ARM.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|x64.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Debug|x86.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|Any CPU.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|Any CPU.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|ARM.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|ARM.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|ARM64.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|ARM64.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|x64.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|x64.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|x86.ActiveCfg = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Linux{Debug}|x86.Build.0 = Debug|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|ARM.ActiveCfg = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|ARM.Build.0 = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|ARM64.Build.0 = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|x64.ActiveCfg = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|x64.Build.0 = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|x86.ActiveCfg = Release|Any CPU
+		{F376E3A8-9AF1-491E-8990-3A9D0AD9EF16}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -107,3 +107,6 @@
 /src/dotnet/tools/sha512/obj
 /src/dotnet/tools/xmldoc/bin
 /src/dotnet/tools/xmldoc/obj
+/src/dotnet/tools/xhlp/Help
+/src/help/help/Help/help.chm
+/src/help/help/obj/Debug
