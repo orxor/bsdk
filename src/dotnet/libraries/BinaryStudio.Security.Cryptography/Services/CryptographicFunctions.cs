@@ -3590,10 +3590,632 @@ namespace BinaryStudio.Services
         ///   </tr>
         /// </table>
         /// </returns>
+        /// <remarks>
+        /// This function enumerates the provider types available on a computer. Providers for any specific provider type can be enumerated using <see cref="CryptEnumProviders"/>.
+        /// </remarks>
         Boolean CryptEnumProviderTypes(Int32 Index,out Int32 Type,StringBuilder Name,ref Int32 Size);
         #endregion
-        Boolean CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags, Byte[] Data,ref Int32 DataLen);
-        Boolean CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
+        #region M:CryptExportKey(IntPtr,IntPtr,Int32,Int32,Byte[],{ref}Int32):Boolean
+        /// <summary>
+        /// The <b>CryptExportKey</b> function exports a cryptographic key or a key pair from a cryptographic service provider (CSP) in a secure manner.<br/>
+        /// A handle to the key to be exported is passed to the function, and the function returns a key BLOB. This key BLOB can be sent over a nonsecure transport or stored in a nonsecure storage location. This function can export an <a href="https://learn.microsoft.com/en-us/windows/desktop/SecGloss/s-gly">schannel</a> session key, regular session key, public key, or public/private key pair. The key BLOB to export is useless until the intended recipient uses the <see cref="CryptImportKey"/> function on it to import the key or key pair into a recipient's CSP.
+        /// </summary>
+        /// <param name="Key">A handle to the key to be exported.</param>
+        /// <param name="ExpKey">
+        /// A handle to a cryptographic key of the destination user. The key data within the exported key BLOB is encrypted using this key. This ensures that only the destination user is able to make use of the key BLOB. Both <paramref name="ExpKey"/> and <paramref name="Key"/> must come from the same CSP.<br/>
+        /// Most often, this is the key exchange public key of the destination user. However, certain protocols in some CSPs require that a session key belonging to the destination user be used for this purpose.<br/>
+        /// If the key BLOB type specified by <paramref name="BlobType"/> is <b>PUBLICKEYBLOB</b>, this parameter is unused and must be set to zero.<br/>
+        /// If the key BLOB type specified by <paramref name="BlobType"/> is <b>PRIVATEKEYBLOB</b>, this is typically a handle to a session key that is to be used to encrypt the key BLOB. Some CSPs allow this parameter to be zero, in which case the application must encrypt the private key BLOB manually so as to protect it.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> Some CSPs may modify this parameter as a result of the operation. Applications that subsequently use this key for other purposes should call the <see cref="CryptDuplicateKey"/> function to create a duplicate key handle. When the application has finished using the handle, release it by calling the <see cref="CryptDestroyKey"/> function.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <param name="BlobType">
+        /// Specifies the type of key BLOB to be exported in <paramref name="Data"/>. This must be one of the following constants:
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       OPAQUEKEYBLOB
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Used to store session keys in an <b>Schannel CSP</b> or any other vendor-specific format. <b>OPAQUEKEYBLOB</b>s are nontransferable and must be used within the CSP that generated the BLOB.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PRIVATEKEYBLOB
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Used to transport public/private key pairs.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PUBLICKEYBLOB
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Used to transport public keys.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SIMPLEBLOB
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Used to transport session keys.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PLAINTEXTKEYBLOB
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="PLAINTEXTKEYBLOB"/> used to export any key supported by the CSP in use.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SYMMETRICWRAPKEYBLOB
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Used to export and import a symmetric key wrapped with another symmetric key. The actual wrapped key is in the format specified in the IETF <a href="https://www.ietf.org/rfc/rfc3217.txt">RFC 3217</a> standard.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Flags">
+        /// Specifies additional options for the function. This parameter can be zero or a combination of one or more of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_BLOB_VER3
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag causes this function to export version 3 of a BLOB type.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_DESTROYKEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag destroys the original key in the <b>OPAQUEKEYBLOB</b>. This flag is available in <b>Schannel CSP</b>s only.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_OAEP
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag causes PKCS #1 version 2 formatting to be created with the RSA encryption and decryption when exporting SIMPLEBLOBs.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SSL2_FALLBACK
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The first eight bytes of the RSA encryption block padding must be set to 0x03 rather than to random data. This prevents version rollback attacks and is discussed in the SSL3 specification. This flag is available for Schannel CSPs only.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_Y_ONLY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Data">
+        /// A pointer to a buffer that receives the key BLOB data. The format of this BLOB varies depending on the BLOB type requested in the <paramref name="BlobType"/> parameter.<br/>
+        /// If this parameter is <b>NULL</b>, the required buffer size is placed in the value pointed to by the <paramref name="DataLen"/> parameter.
+        /// </param>
+        /// <param name="DataLen">
+        /// A pointer to a <see cref="Int32"/> value that, on entry, contains the size, in bytes, of the buffer pointed to by the <paramref name="Data"/> parameter. When the function returns, this value contains the number of bytes stored in the buffer.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> When processing the data returned in the buffer, applications must use the actual size of the data returned. The actual size can be slightly smaller than the size of the buffer specified on input. On input, buffer sizes are usually specified large enough to ensure that the largest possible output data fits in the buffer. On output, the variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        ///  To retrieve the required size of the pbData buffer, pass <b>NULL</b> for <paramref name="Data"/>. The required buffer size will be placed in the value pointed to by this parameter.
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_MORE_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If the buffer specified by the <paramref name="Data"/> parameter is not large enough to hold the returned data, the function sets the <b>ERROR_MORE_DATA</b> code and stores the required buffer size, in bytes, in the variable pointed to by <paramref name="DataLen"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Either the algorithm that works with the public key to be exported is not supported by this CSP, or an attempt was made to export a session key that was encrypted with something other than one of your public keys.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter is invalid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One or both of the keys specified by <paramref name="Key"/> and <paramref name="ExpKey"/> are not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY_STATE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       You do not have permission to export the key. That is, when the <paramref name="Key"/> key was created, the <b>CRYPT_EXPORTABLE</b> flag was not specified.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_PUBLIC_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key BLOB type specified by <paramref name="BlobType"/> is <b>PUBLICKEYBLOB</b>, but <paramref name="ExpKey"/> does not contain a public key handle.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="BlobType"/> parameter specifies an unknown BLOB type.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context that was specified when the <paramref name="Key"/> key was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_NO_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A session key is being exported, and the <paramref name="ExpKey"/> parameter does not specify a public key.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags,Byte[] Data,ref Int32 DataLen);
+        #endregion
+        #region M:CryptGenKey(IntPtr,ALG_ID,Int32,{out}IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptGenKey</b> function generates a random cryptographic session key or a public/private key pair. A handle to the key or key pair is returned in <paramref name="Key"/>. This handle can then be used as needed with any CryptoAPI function that requires a key handle.<br/>
+        /// The calling application must specify the algorithm when calling this function. Because this algorithm type is kept bundled with the key, the application does not need to specify the algorithm later when the actual cryptographic operations are performed.
+        /// </summary>
+        /// <param name="Context">A handle to a cryptographic service provider (CSP) created by a call to <see cref="CryptAcquireContext"/>.</param>
+        /// <param name="AlgId">
+        /// An <see cref="ALG_ID"/> value that identifies the algorithm for which the key is to be generated. Values for this parameter vary depending on the CSP used.<br/>
+        /// For a Diffie-Hellman CSP, use one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CALG_DH_EPHEM
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Specifies an "Ephemeral" Diffie-Hellman key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CALG_DH_SF
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Specifies a "Store and Forward" Diffie-Hellman key.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// In addition to generating session keys for symmetric algorithms, this function can also generate public/private key pairs. Each CryptoAPI client generally possesses two public/private key pairs. To generate one of these key pairs, set the Algid parameter to one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       AT_KEYEXCHANGE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Key exchange
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       AT_SIGNATURE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Digital signature
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> When key specifications <b>AT_KEYEXCHANGE</b> and <b>AT_SIGNATURE</b> are specified, the algorithm identifiers that are used to generate the key depend on the provider used. As a result, for these key specifications, the values returned from <see cref="CryptGetKeyParam"/> (when the <b>KP_ALGID</b> parameter is specified) depend on the provider used. To determine which algorithm identifier is used by the different providers for the key specs <b>AT_KEYEXCHANGE</b> and <b>AT_SIGNATURE</b>, see <see cref="ALG_ID"/>.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <param name="Flags">
+        /// Specifies the type of key generated. The sizes of a session key, RSA signature key, and RSA key exchange keys can be set when the key is generated. The key size, representing the length of the key modulus in bits, is set with the upper 16 bits of this parameter. Thus, if a 2,048-bit RSA signature key is to be generated, the value 0x08000000 is combined with any other <paramref name="Flags"/> predefined value with a bitwise-<b>OR</b> operation. The upper 16 bits of 0x08000000 is 0x0800, or decimal 2,048. The <b>RSA1024BIT_KEY</b> value can be used to specify a 1024-bit RSA key.<br/>
+        /// Due to changing export control restrictions, the default CSP and default key length may change between operating system versions. It is important that both the encryption and decryption use the same CSP and that the key length be explicitly set using the <paramref name="Flags"/> parameter to ensure interoperability on different operating system platforms.<br/>
+        /// In particular, the default RSA Full Cryptographic Service Provider is the Microsoft RSA Strong Cryptographic Provider. The default DSS Signature Diffie-Hellman Cryptographic Service Provider is the Microsoft Enhanced DSS Diffie-Hellman Cryptographic Provider. Each of these CSPs has a default 128-bit symmetric key length for RC2 and RC4 and a 1,024-bit default key length for public key algorithms.<br/>
+        /// If the upper 16 bits is zero, the default key size is generated. If a key larger than the maximum or smaller than the minimum is specified, the call fails with the <b>ERROR_INVALID_PARAMETER</b> code.<br/>
+        /// The following table lists minimum, default, and maximum signature and exchange key lengths beginning with Windows XP.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:60%">
+        ///       <b>Key type and provider</b>
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <b>Minimum length</b>
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <b>Default length</b>
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <b>Maximum length</b>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       RSA Base Provider Signature and ExchangeKeys
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       384
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       512
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       16,384
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       RSA Strong and Enhanced Providers Signature and Exchange Keys
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       384
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       16,384
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       DSS Base Providers Signature Keys
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       512
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       DSS Base Providers Exchange Keys
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Not applicable
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Not applicable
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Not applicable
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       DSS/DH Base Providers Signature Keys
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       512
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       DSS/DH Base Providers Exchange Keys
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       512
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       512
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       DSS/DH Enhanced Providers Signature Keys
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       512
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       DSS/DH Enhanced Providers Exchange Keys
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       512
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       1,024
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       4,096
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// For session key lengths, see <see cref="CryptDeriveKey"/>.<br/>
+        /// The lower 16-bits of this parameter can be zero or a combination of one or more of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_ARCHIVABLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If this flag is set, the key can be exported until its handle is closed by a call to <see cref="CryptDestroyKey"/>. This allows newly generated keys to be exported upon creation for archiving or key recovery. After the handle is closed, the key is no longer exportable.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_CREATE_IV
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_CREATE_SALT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If this flag is set, then the key is assigned a random salt value automatically. You can retrieve this salt value by using the <see cref="CryptGetKeyParam"/> function with the <b>Param</b> parameter set to <b>KP_SALT</b>.<br/>
+        ///       If this flag is not set, then the key is given a salt value of zero.<br/>
+        ///       When keys with nonzero salt values are exported (through <see cref="CryptExportKey"/>), then the salt value must also be obtained and kept with the key BLOB.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_DATA_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_EXPORTABLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If this flag is set, then the key can be transferred out of the CSP into a key BLOB by using the <see cref="CryptExportKey"/> function. Because session keys generally must be exportable, this flag should usually be set when they are created.<br/>
+        ///       If this flag is not set, then the key is not exportable. For a session key, this means that the key is available only within the current session and only the application that created it will be able to use it. For a public/private key pair, this means that the private key cannot be transported or backed up.<br/>
+        ///       This flag applies only to session key and private key BLOBs. It does not apply to public keys, which are always exportable.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_FORCE_KEY_PROTECTION_HIGH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag specifies strong key protection. When this flag is set, the user is prompted to enter a password for the key when the key is created. The user will be prompted to enter the password whenever this key is used. This flag is only used by the CSPs that are provided by Microsoft. Third party CSPs will define their own behavior for strong key protection.<br/>
+        ///       Specifying this flag causes the same result as calling this function with the <b>CRYPT_USER_PROTECTED</b> flag when strong key protection is specified in the system registry.<br/>
+        ///       If this flag is specified and the provider handle in the <paramref name="Context"/> parameter was created by using the <b>CRYPT_VERIFYCONTEXT</b> or <b>CRYPT_SILENT</b> flag, this function will set the last error to <b>NTE_SILENT_CONTEXT</b> and return zero.
+        ///       <b>Windows Server 2003 and Windows XP</b>: This flag is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_KEK
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_INITIATOR
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_NO_SALT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag specifies that a no salt value gets allocated for a forty-bit symmetric key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_ONLINE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_PREGEN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag specifies an initial Diffie-Hellman or DSS key generation. This flag is useful only with Diffie-Hellman and DSS CSPs. When used, a default key length will be used unless a key length is specified in the upper 16 bits of the <paramref name="Flags"/> parameter. If parameters that involve key lengths are set on a PREGEN Diffie-Hellman or DSS key using <see cref="CryptSetKeyParam"/>, the key lengths must be compatible with the key length set here.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_RECIPIENT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SF
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SGCKEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_USER_PROTECTED
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If this flag is set, the user is notified through a dialog box or another method when certain actions are attempting to use this key. The precise behavior is specified by the CSP being used. If the provider context was opened with the <b>CRYPT_SILENT</b> flag set, using this flag causes a failure and the last error is set to <b>NTE_SILENT_CONTEXT</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_VOLATILE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Key">Reference to which the function copies the handle of the newly generated key. When you have finished using the key, delete the handle to the key by calling the <see cref="CryptDestroyKey"/> function.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="AlgId"/> parameter specifies an algorithm that this CSP does not support.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter contains a value that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Context"/> parameter does not contain a valid context handle.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_FAIL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The function failed in some unexpected way.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_SILENT_CONTEXT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The provider could not perform the action because the context was acquired as silent.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr Key);
+        #endregion
         Boolean CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer);
         #region M:CryptGetHashParam(IntPtr,Int32,Byte[],{ref}Int32):Boolean
         /// <summary>
