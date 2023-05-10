@@ -370,7 +370,7 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
 
-        private CryptographicContext RequestSigningSecureString(X509Certificate certificate,RequestSecureString RequestSecureString) {
+        internal CryptographicContext RequestSigningSecureString(X509Certificate certificate,RequestSecureString RequestSecureString) {
             var flags = CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_CACHE_FLAG;
             if (certificate.GetProperty(CERT_PROP_ID.CERT_KEY_PROV_INFO_PROP_ID, out var Info) == HRESULT.S_OK) {
                 flags |= CRYPT_ACQUIRE_FLAGS.CRYPT_ACQUIRE_USE_PROV_INFO_FLAG;

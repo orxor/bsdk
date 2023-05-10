@@ -7,7 +7,6 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Web.UI.WebControls.WebParts;
 using BinaryStudio.DiagnosticServices;
 using BinaryStudio.IO;
 using BinaryStudio.PlatformComponents;
@@ -17,6 +16,7 @@ using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation;
 using BinaryStudio.Security.Cryptography.AbstractSyntaxNotation.Extensions;
 using BinaryStudio.Security.Cryptography.Certificates;
 using BinaryStudio.Security.Cryptography.Certificates.Builders;
+using BinaryStudio.Security.Cryptography.Specific.Fintech;
 using X509Certificate = BinaryStudio.Security.Cryptography.Certificates.X509Certificate;
 
 namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
@@ -48,16 +48,13 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 }
             }
 
-        private static void Main(String[] args)
+        private static void Perform(ALG_ID AlgId)
             {
-            //Console.WriteLine("Press [ENTER] to continue...");
-            //Console.ReadLine();
             try
                 {
                 var SecureCode = CryptographicContext.GetSecureString("12345678");
                 var RequestSecureCode = new RequestSecureCode(SecureCode);
                 var dt = DateTime.Now;
-                var AlgId = ALG_ID.CALG_GR3410_12_512;
                 var ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2001_DH;
                 switch (AlgId)
                     {
@@ -65,44 +62,57 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     case ALG_ID.CALG_GR3410_12_256: ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2012_256; break;
                     case ALG_ID.CALG_GR3410_12_512: ProviderType = CRYPT_PROVIDER_TYPE.PROV_GOST_2012_512; break;
                     }
-                DoSet(AlgId,dt,SecureCode,"R-CA",new Byte[]{ 1,2,3}, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.NonRepudiation, out var RootCertificate);
-                DoSet(AlgId,dt,SecureCode,"I-CA",new Byte[]{ 4,5,6}, RootCertificate, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature, false,
+                var Folder = $"{{{AlgId}}}";
+                if (Directory.Exists(Folder)) { Directory.Delete(Folder); }
+                Directory.CreateDirectory(Folder);
+                DoSet(Folder,AlgId,dt,SecureCode,"R-CA",new Byte[]{ 1,2,3}, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.NonRepudiation, out var RootCertificate);
+                DoSet(Folder,AlgId,dt,SecureCode,"I-CA",new Byte[]{ 4,5,6}, RootCertificate, X509KeyUsageFlags.CrlSign|X509KeyUsageFlags.KeyCertSign|X509KeyUsageFlags.DigitalSignature, false,
                     new Uri[]{ new Uri("http://localhost/R-CA.crl"),  },
                     out var IntermediateCertificate);
-                DoSet(AlgId,dt,SecureCode,"User1",new Byte[]{  7, 8, 9}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User1);
-                DoSet(AlgId,dt,SecureCode,"User2",new Byte[]{ 10,11,12}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User2);
-                DoSet(AlgId,dt,SecureCode,"User3",new Byte[]{ 13,14,15}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User3);
-                DoCRLSet(AlgId,dt,RequestSecureCode,RootCertificate);
-                DoCRLSet(AlgId,dt,RequestSecureCode,IntermediateCertificate);
-                MakeCRL(AlgId,dt,04,RequestSecureCode,RootCertificate,"R-CA{Revoked}.crl",IntermediateCertificate);
-                MakeCRL(AlgId,dt,05,RequestSecureCode,IntermediateCertificate,"I-CA{Revoked}.crl",User1,User3);
-                DoCmsSet(ProviderType,RequestSecureCode,CryptographicMessageFlags.Attached,new []{
+                DoSet(Folder,AlgId,dt,SecureCode,"User1",new Byte[]{  7, 8, 9}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User1);
+                DoSet(Folder,AlgId,dt,SecureCode,"User2",new Byte[]{ 10,11,12}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User2);
+                DoSet(Folder,AlgId,dt,SecureCode,"User3",new Byte[]{ 13,14,15}, IntermediateCertificate,X509KeyUsageFlags.DigitalSignature|X509KeyUsageFlags.DataEncipherment|X509KeyUsageFlags.KeyAgreement|X509KeyUsageFlags.KeyEncipherment, true, new Uri[]{ new Uri("http://localhost/I-CA.crl"),  }, out var User3);
+                DoCRLSet(Folder,AlgId,dt,RequestSecureCode,RootCertificate);
+                DoCRLSet(Folder,AlgId,dt,RequestSecureCode,IntermediateCertificate);
+                MakeCRL(Folder,AlgId,dt,04,RequestSecureCode,RootCertificate,"R-CA{Revoked}.crl",IntermediateCertificate);
+                MakeCRL(Folder,AlgId,dt,05,RequestSecureCode,IntermediateCertificate,"I-CA{Revoked}.crl",User1,User3);
+                DoCmsSet(Folder,ProviderType,RequestSecureCode,CryptographicMessageFlags.Attached,new []{
                     User1,
                     User2,
                     User3
                     });
-                DoCmsSet(ProviderType,RequestSecureCode,CryptographicMessageFlags.Detached,new []{
+                DoCmsSet(Folder ,ProviderType,RequestSecureCode,CryptographicMessageFlags.Detached,new []{
                     User1,
                     User2,
                     User3
                     });
-                DoInvalidSignature("{User1,IncludeSigningCertificate}.p7a","{User1,IncludeSigningCertificate,InvalidMessageSignature}.p7a");
-                DoInvalidSignature("{User1,IncludeSigningCertificate}.p7d","{User1,IncludeSigningCertificate,InvalidMessageSignature}.p7d");
-                DoInvalidSignature("{User1}.p7a","{User1,InvalidMessageSignature}.p7a");
-                DoInvalidSignature("{User1}.p7d","{User1,InvalidMessageSignature}.p7d");
-                DoEncSet(ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_28147),"CP_GOST_28147",
+                DoFTSet(Folder,ProviderType,RequestSecureCode,CryptographicMessageFlags.Attached,new []{
+                    User1,
+                    User2,
+                    User3
+                    });
+                DoFTSet(Folder ,ProviderType,RequestSecureCode,CryptographicMessageFlags.Detached,new []{
+                    User1,
+                    User2,
+                    User3
+                    });
+                DoInvalidSignature(Folder,"{User1,IncludeSigningCertificate}.p7a","{User1,IncludeSigningCertificate,InvalidMessageSignature}.p7a");
+                DoInvalidSignature(Folder,"{User1,IncludeSigningCertificate}.p7d","{User1,IncludeSigningCertificate,InvalidMessageSignature}.p7d");
+                DoInvalidSignature(Folder,"{User1}.p7a","{User1,InvalidMessageSignature}.p7a");
+                DoInvalidSignature(Folder,"{User1}.p7d","{User1,InvalidMessageSignature}.p7d");
+                DoEncSet(Folder,ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_28147),"CP_GOST_28147",
                     new []{
                         User1,
                         User2,
                         User3
                         });
-                DoEncSet(ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_R3412_2015_M),"CP_GOST_R3412_2015_M",
+                DoEncSet(Folder,ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_R3412_2015_M),"CP_GOST_R3412_2015_M",
                     new []{
                         User1,
                         User2,
                         User3
                         });
-                DoEncSet(ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_R3412_2015_K),"CP_GOST_R3412_2015_K",
+                DoEncSet(Folder,ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_R3412_2015_K),"CP_GOST_R3412_2015_K",
                     new []{
                         User1,
                         User2,
@@ -115,113 +125,178 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 }
             }
 
-        private static void DoEncSet(CRYPT_PROVIDER_TYPE ProviderType,Oid AlgId, String Prefix, X509Certificate[] certificates) {
-            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc")) {
-                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        certificates[0]
-                        },
-                        AlgId,
-                        CryptographicMessageFlags.IncludeSigningCertificate|
-                        CryptographicMessageFlags.IndefiniteLength|
-                        CryptographicMessageFlags.SkipCertificateValidation|
-                        CryptographicMessageFlags.Split);
-                    }
-                }
-            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,User2,User3,IncludeSigningCertificate}}{{{Prefix}}}.enc")) {
-                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        certificates[0],
-                        certificates[1],
-                        certificates[2]
-                        },
-                        AlgId,
-                        CryptographicMessageFlags.IncludeSigningCertificate|
-                        CryptographicMessageFlags.IndefiniteLength|
-                        CryptographicMessageFlags.SkipCertificateValidation|
-                        CryptographicMessageFlags.Split);
-                    }
-                }
-            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1}}{{{Prefix}}}.enc")) {
-                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        certificates[0]
-                        },
-                        AlgId,
-                        CryptographicMessageFlags.IndefiniteLength|
-                        CryptographicMessageFlags.SkipCertificateValidation|
-                        CryptographicMessageFlags.Split);
-                    }
-                }
-            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,User2,User3}}{{{Prefix}}}.enc")) {
-                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        certificates[0],
-                        certificates[1],
-                        certificates[2]
-                        },
-                        AlgId,
-                        CryptographicMessageFlags.IndefiniteLength|
-                        CryptographicMessageFlags.SkipCertificateValidation|
-                        CryptographicMessageFlags.Split);
-                    }
-                }
-            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,InvalidSignature}}{{{Prefix}}}.enc")) {
-                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        new X509Certificate(File.ReadAllBytes("User1{InvalidSignature}.cer")){
-                            Container = certificates[0].Container,
-                            KeySpec = certificates[0].KeySpec
-                            }
-                        },
-                        AlgId,
-                        CryptographicMessageFlags.IncludeSigningCertificate|
-                        CryptographicMessageFlags.IndefiniteLength|
-                        CryptographicMessageFlags.SkipCertificateValidation|
-                        CryptographicMessageFlags.Split);
-                    }
-                }
-            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,Expired}}{{{Prefix}}}.enc")) {
-                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        new X509Certificate(File.ReadAllBytes("User1{Expired}.cer")){
-                            Container = certificates[0].Container,
-                            KeySpec = certificates[0].KeySpec
-                            }
-                        },
-                        AlgId,
-                        CryptographicMessageFlags.IncludeSigningCertificate|
-                        CryptographicMessageFlags.IndefiniteLength|
-                        CryptographicMessageFlags.SkipCertificateValidation|
-                        CryptographicMessageFlags.Split);
-                    }
-                }
-            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,Future}}{{{Prefix}}}.enc")) {
-                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        new X509Certificate(File.ReadAllBytes("User1{Future}.cer")){
-                            Container = certificates[0].Container,
-                            KeySpec = certificates[0].KeySpec
-                            }
-                        },
-                        AlgId,
-                        CryptographicMessageFlags.IncludeSigningCertificate|
-                        CryptographicMessageFlags.IndefiniteLength|
-                        CryptographicMessageFlags.SkipCertificateValidation|
-                        CryptographicMessageFlags.Split);
-                    }
-                }
-            DoInvalidSignature($"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc",$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}{{InvalidMessage}}.enc", 80);
-            DoInvalidSignature($"{{User1}}{{{Prefix}}}.enc",$"{{User1}}{{{Prefix}}}{{InvalidMessage}}.enc", 80);
+        private static void Main(String[] args)
+            {
+            //Console.WriteLine("Press [ENTER] to continue...");
+            //Console.ReadLine();
+            Perform(ALG_ID.CALG_GR3410EL);
+            Perform(ALG_ID.CALG_GR3410_12_256);
+            Perform(ALG_ID.CALG_GR3410_12_512);
             }
 
-        private static void DoCmsSet(CRYPT_PROVIDER_TYPE ProviderType, RequestSecureString RequestSecureCode,CryptographicMessageFlags flags, X509Certificate[] certificates)
+        private static void DoEncSet(String Folder,CRYPT_PROVIDER_TYPE ProviderType,Oid AlgId, String Prefix, X509Certificate[] certificates) {
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc"))) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0]
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,User2,User3,IncludeSigningCertificate}}{{{Prefix}}}.enc"))) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0],
+                        certificates[1],
+                        certificates[2]
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1}}{{{Prefix}}}.enc"))) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0]
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,User2,User3}}{{{Prefix}}}.enc"))) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        certificates[0],
+                        certificates[1],
+                        certificates[2]
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,IncludeSigningCertificate,InvalidSignature}}{{{Prefix}}}.enc"))) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{InvalidSignature}.cer"))){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,IncludeSigningCertificate,Expired}}{{{Prefix}}}.enc"))) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{Expired}.cer"))){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,IncludeSigningCertificate,Future}}{{{Prefix}}}.enc"))) {
+                    context.EncryptMessage(new MemoryStream(InputString),output,new List<X509Certificate>{
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{Future}.cer"))){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            }
+                        },
+                        AlgId,
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.IndefiniteLength|
+                        CryptographicMessageFlags.SkipCertificateValidation|
+                        CryptographicMessageFlags.Split);
+                    }
+                }
+            DoInvalidSignature(Folder,$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}.enc",$"{{User1,IncludeSigningCertificate}}{{{Prefix}}}{{InvalidMessage}}.enc", 80);
+            DoInvalidSignature(Folder,$"{{User1}}{{{Prefix}}}.enc",$"{{User1}}{{{Prefix}}}{{InvalidMessage}}.enc", 80);
+            }
+
+        private static void DoFTSet(String Folder,CRYPT_PROVIDER_TYPE ProviderType, RequestSecureString RequestSecureCode,CryptographicMessageFlags flags, X509Certificate[] certificates)
+            {
+            var e = flags.HasFlag(CryptographicMessageFlags.Attached)
+                ? "fta"
+                : "ftd";
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var provider = new FintechMessageProvider(context))
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1}}.{e}"))) {
+                    provider.CreateMessageSignature(new MemoryStream(InputString),output,
+                        certificates[0],
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var provider = new FintechMessageProvider(context))
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,InvalidSignature}}.{e}"))) {
+                    provider.CreateMessageSignature(new MemoryStream(InputString),output,
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{InvalidSignature}.cer"))){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            },
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var provider = new FintechMessageProvider(context))
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,Expired}}.{e}"))) {
+                    provider.CreateMessageSignature(new MemoryStream(InputString),output,
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{Expired}.cer"))){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            },
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
+                using (var provider = new FintechMessageProvider(context))
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,Future}}.{e}"))) {
+                    provider.CreateMessageSignature(new MemoryStream(InputString),output,
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{Future}.cer"))){
+                            Container = certificates[0].Container,
+                            KeySpec = certificates[0].KeySpec
+                            },
+                        flags|
+                        CryptographicMessageFlags.IncludeSigningCertificate|
+                        CryptographicMessageFlags.SkipCertificateValidation,RequestSecureCode);
+                    }
+                }
+            }
+
+        private static void DoCmsSet(String Folder,CRYPT_PROVIDER_TYPE ProviderType, RequestSecureString RequestSecureCode,CryptographicMessageFlags flags, X509Certificate[] certificates)
             {
             var e = flags.HasFlag(CryptographicMessageFlags.Attached)
                 ? "p7a"
                 : "p7d";
             using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate}}.{e}")) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,IncludeSigningCertificate}}.{e}"))) {
                     context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
                         certificates[0]
                         },
@@ -232,9 +307,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     }
                 }
             using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,InvalidSignature}}.{e}")) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,IncludeSigningCertificate,InvalidSignature}}.{e}"))) {
                     context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        new X509Certificate(File.ReadAllBytes("User1{InvalidSignature}.cer")){
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{InvalidSignature}.cer"))){
                             Container = certificates[0].Container,
                             KeySpec = certificates[0].KeySpec
                             }
@@ -246,9 +321,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     }
                 }
             using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,Expired}}.{e}")) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,IncludeSigningCertificate,Expired}}.{e}"))) {
                     context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        new X509Certificate(File.ReadAllBytes("User1{Expired}.cer")){
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{Expired}.cer"))){
                             Container = certificates[0].Container,
                             KeySpec = certificates[0].KeySpec
                             }
@@ -260,9 +335,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     }
                 }
             using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,IncludeSigningCertificate,Future}}.{e}")) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,IncludeSigningCertificate,Future}}.{e}"))) {
                     context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
-                        new X509Certificate(File.ReadAllBytes("User1{Future}.cer")){
+                        new X509Certificate(File.ReadAllBytes(Path.Combine(Folder,"User1{Future}.cer"))){
                             Container = certificates[0].Container,
                             KeySpec = certificates[0].KeySpec
                             }
@@ -274,7 +349,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     }
                 }
             using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,User2,User3,IncludeSigningCertificate}}.{e}")) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,User2,User3,IncludeSigningCertificate}}.{e}"))) {
                     context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
                         certificates[0],
                         certificates[1],
@@ -287,7 +362,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     }
                 }
             using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1}}.{e}")) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1}}.{e}"))) {
                     context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
                         certificates[0]
                         },
@@ -297,7 +372,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     }
                 }
             using (var context = CryptographicContext.AcquireContext(ProviderType,CryptographicContextFlags.CRYPT_VERIFYCONTEXT|CryptographicContextFlags.CRYPT_SILENT)) {
-                using (var output = File.OpenWrite($"{{User1,User2,User3}}.{e}")) {
+                using (var output = File.OpenWrite(Path.Combine(Folder,$"{{User1,User2,User3}}.{e}"))) {
                     context.CreateMessageSignature(new MemoryStream(InputString),output,new List<X509Certificate>{
                         certificates[0],
                         certificates[1],
@@ -312,9 +387,9 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
 
 
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void UpdateViPNetContainer(SecureString SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, Byte[] Certificate,String Marker)
+        private static void UpdateViPNetContainer(String Folder,SecureString SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, Byte[] Certificate,String Marker)
         #else
-        private static void UpdateViPNetContainer(String SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, Byte[] Certificate,String Marker)
+        private static void UpdateViPNetContainer(String Folder,String SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, Byte[] Certificate,String Marker)
         #endif
             {
             var FullContainerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),$@"Infotecs\Containers\{Container}");
@@ -326,25 +401,25 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     Key.Certificate = new X509Certificate(Certificate);
                     }
                 }
-            File.Copy(FullContainerPath,$"{Marker}.cnt",true);
+            File.Copy(FullContainerPath,Path.Combine(Folder,$"{Marker}.cnt"),true);
             GC.Collect();
             }
 
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void UpdateViPNetContainer(SecureString SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, String Certificate)
+        private static void UpdateViPNetContainer(String Folder,SecureString SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, String Certificate)
         #else
-        private static void UpdateViPNetContainer(String SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, String Certificate)
+        private static void UpdateViPNetContainer(String Folder,String SecureCode,String Container,CRYPT_PROVIDER_TYPE ProviderType, String Certificate)
         #endif
             {
-            UpdateViPNetContainer(SecureCode,Container,ProviderType,
+            UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,
                 File.ReadAllBytes(Certificate),
                 Path.GetFileNameWithoutExtension(Certificate));
             }
 
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void DoSet(ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509KeyUsageFlags KeyUsage, out X509Certificate Certificate)
+        private static void DoSet(String Prefix,ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509KeyUsageFlags KeyUsage, out X509Certificate Certificate)
         #else
-        private static void DoSet(ALG_ID AlgId, DateTime DateTime, String SecureCode, String SubjectName,Byte[] SerialNumber, X509KeyUsageFlags KeyUsage, out X509Certificate Certificate)
+        private static void DoSet(String Folder,ALG_ID AlgId, DateTime DateTime, String SecureCode, String SubjectName,Byte[] SerialNumber, X509KeyUsageFlags KeyUsage, out X509Certificate Certificate)
         #endif
             {
             var Extensions = new List<CertificateExtension> {
@@ -369,39 +444,39 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     Extensions,POutput, BOutput, SecureCode,
                     out Certificate,false, out var Container, out var ProviderName, out var ProviderType);
                 var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
-                using (var PrivateKeyOutput = File.Create($"{SubjectName}.pfx")) {
+                using (var PrivateKeyOutput = File.Create(Path.Combine(Folder,$"{SubjectName}.pfx"))) {
                     POutput.Seek(0,SeekOrigin.Begin);
                     POutput.CopyTo(PrivateKeyOutput);
                     }
                 if (BOutput != null)
-                    using (var PrivateKeyOutput = File.Create($"{SubjectName}.pri")) {
+                    using (var PrivateKeyOutput = File.Create(Path.Combine(Folder,$"{SubjectName}.pri"))) {
                         BOutput.Seek(0,SeekOrigin.Begin);
                         BOutput.CopyTo(PrivateKeyOutput);
                         }
                 if (IsViPNet) {
-                    File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
-                    DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
-                    DoExpired(AlgId,SecureCode,Certificate,Certificate,-10,$"{SubjectName}{{Expired}}.cer");
-                    DoExpired(AlgId,SecureCode,Certificate,Certificate,+10,$"{SubjectName}{{Future}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{InvalidSignature}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{Expired}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{Future}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}.cer");
+                    File.WriteAllBytes(Path.Combine(Folder,$"{SubjectName}.cer"), Certificate.Bytes);
+                    DoInvalidSignature(Folder,Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
+                    DoExpired(Folder,AlgId,SecureCode,Certificate,Certificate,-10,$"{SubjectName}{{Expired}}.cer");
+                    DoExpired(Folder,AlgId,SecureCode,Certificate,Certificate,+10,$"{SubjectName}{{Future}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{InvalidSignature}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{Expired}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{Future}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}.cer");
                     }
                 else
                     {
-                    File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
-                    DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
-                    DoExpired(AlgId,SecureCode,Certificate,Certificate,-10,$"{SubjectName}{{Expired}}.cer");
-                    DoExpired(AlgId,SecureCode,Certificate,Certificate,+10,$"{SubjectName}{{Future}}.cer");
+                    File.WriteAllBytes(Path.Combine(Folder,$"{SubjectName}.cer"), Certificate.Bytes);
+                    DoInvalidSignature(Folder,Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
+                    DoExpired(Folder,AlgId,SecureCode,Certificate,Certificate,-10,$"{SubjectName}{{Expired}}.cer");
+                    DoExpired(Folder,AlgId,SecureCode,Certificate,Certificate,+10,$"{SubjectName}{{Future}}.cer");
                     }
                 }
             }
 
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void DoSet(ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509Certificate IssuerCertificate,  X509KeyUsageFlags KeyUsage, Boolean IsLeaf, Uri[] DistributionPoints, out X509Certificate Certificate)
+        private static void DoSet(String Folder,ALG_ID AlgId, DateTime DateTime, SecureString SecureCode, String SubjectName,Byte[] SerialNumber, X509Certificate IssuerCertificate,  X509KeyUsageFlags KeyUsage, Boolean IsLeaf, Uri[] DistributionPoints, out X509Certificate Certificate)
         #else
-        private static void DoSet(ALG_ID AlgId, DateTime DateTime, String SecureCode, String SubjectName,Byte[] SerialNumber, X509Certificate IssuerCertificate,  X509KeyUsageFlags KeyUsage, Boolean IsLeaf, Uri[] DistributionPoints, out X509Certificate Certificate)
+        private static void DoSet(String Folder,ALG_ID AlgId, DateTime DateTime, String SecureCode, String SubjectName,Byte[] SerialNumber, X509Certificate IssuerCertificate,  X509KeyUsageFlags KeyUsage, Boolean IsLeaf, Uri[] DistributionPoints, out X509Certificate Certificate)
         #endif
             {
             var Extensions = new List<CertificateExtension>{
@@ -437,46 +512,46 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                     Extensions,POutput,BOutput, SecureCode,
                     out Certificate,IssuerCertificate,false, out var Container, out var ProviderName, out var ProviderType);
                 var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
-                using (var PrivateKeyOutput = File.Create($"{SubjectName}.pfx")) {
+                using (var PrivateKeyOutput = File.Create(Path.Combine(Folder,$"{SubjectName}.pfx"))) {
                     POutput.Seek(0,SeekOrigin.Begin);
                     POutput.CopyTo(PrivateKeyOutput);
                     }
                 if (BOutput != null)
-                    using (var PrivateKeyOutput = File.Create($"{SubjectName}.pri")) {
+                    using (var PrivateKeyOutput = File.Create(Path.Combine(Folder,$"{SubjectName}.pri"))) {
                         BOutput.Seek(0,SeekOrigin.Begin);
                         BOutput.CopyTo(PrivateKeyOutput);
                         }
                 if (IsViPNet) {
-                    File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
-                    DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
-                    DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{Expired}}.cer");
-                    DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{Future}}.cer");
-                    DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{ExpiredKey}}.cer");
-                    DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{FutureKey}}.cer");
-                    DoEKU(AlgId,SecureCode,Certificate,IssuerCertificate,"1.3.6.1.5.5.7.3.1",$"{SubjectName}{{EKU}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{InvalidSignature}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{Expired}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{Future}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{ExpiredKey}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{FutureKey}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}{{EKU}}.cer");
-                    UpdateViPNetContainer(SecureCode,Container,ProviderType,$"{SubjectName}.cer");
+                    File.WriteAllBytes(Path.Combine(Folder,$"{SubjectName}.cer"), Certificate.Bytes);
+                    DoInvalidSignature(Folder,Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
+                    DoExpired(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{Expired}}.cer");
+                    DoExpired(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{Future}}.cer");
+                    DoExpiredKey(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{ExpiredKey}}.cer");
+                    DoExpiredKey(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{FutureKey}}.cer");
+                    DoEKU(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,"1.3.6.1.5.5.7.3.1",$"{SubjectName}{{EKU}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{InvalidSignature}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{Expired}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{Future}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{ExpiredKey}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{FutureKey}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}{{EKU}}.cer");
+                    UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,$"{SubjectName}.cer");
                     }
                 else
                     {
-                    File.WriteAllBytes($"{SubjectName}.cer", Certificate.Bytes);
-                    DoInvalidSignature(Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
-                    DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{Expired}}.cer");
-                    DoExpired(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{Future}}.cer");
-                    DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{ExpiredKey}}.cer");
-                    DoExpiredKey(AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{FutureKey}}.cer");
-                    DoEKU(AlgId,SecureCode,Certificate,IssuerCertificate,"1.3.6.1.5.5.7.3.1",$"{SubjectName}{{EKU}}.cer");
+                    File.WriteAllBytes(Path.Combine(Folder,$"{SubjectName}.cer"), Certificate.Bytes);
+                    DoInvalidSignature(Folder,Certificate,String.Join(String.Empty,SerialNumber.Reverse().Select(i=> i.ToString("x2"))),$"{SubjectName}{{InvalidSignature}}.cer");
+                    DoExpired(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{Expired}}.cer");
+                    DoExpired(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{Future}}.cer");
+                    DoExpiredKey(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,-10,$"{SubjectName}{{ExpiredKey}}.cer");
+                    DoExpiredKey(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,+10,$"{SubjectName}{{FutureKey}}.cer");
+                    DoEKU(Folder,AlgId,SecureCode,Certificate,IssuerCertificate,"1.3.6.1.5.5.7.3.1",$"{SubjectName}{{EKU}}.cer");
                     }
                 }
             }
 
         #region M:DoInvalidSignature(X509Certificate,String,{out}Byte[])
-        private static void DoInvalidSignature(X509Certificate SourceCertificate, String SerialNumber, out Byte[] Output) {
+        private static void DoInvalidSignature(String Folder,X509Certificate SourceCertificate, String SerialNumber, out Byte[] Output) {
             Output = null;
             var Builder = Asn1Object.Load(new ReadOnlyMemoryMappingStream(SourceCertificate.Bytes)).First();
             var Signature = Builder[2].Content.ToArray();
@@ -491,25 +566,25 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
         #endregion
         #region M:DoInvalidSignature(String,String)
-        private static void DoInvalidSignature(String InputFileName, String OutputFileName, Int32 offset = 8) {
-            var r = File.ReadAllBytes(InputFileName);
+        private static void DoInvalidSignature(String Folder,String InputFileName, String OutputFileName, Int32 offset = 8) {
+            var r = File.ReadAllBytes(Path.Combine(Folder,InputFileName));
             var l = r.Length - offset;
             var buffer = new Byte[offset];
             Random.NextBytes(buffer);
             for (var i = 0; i < offset; i++) {
                 r[l + i] = buffer[i];
                 }
-            File.WriteAllBytes(OutputFileName, r);
+            File.WriteAllBytes(Path.Combine(Folder,OutputFileName), r);
             }
         #endregion
         #region M:DoInvalidSignature(X509Certificate,String,String)
-        private static void DoInvalidSignature(X509Certificate SourceCertificate, String SerialNumber, String FileName) {
-            DoInvalidSignature(SourceCertificate,SerialNumber,out var o);
-            File.WriteAllBytes(FileName,o);
+        private static void DoInvalidSignature(String Folder,X509Certificate SourceCertificate, String SerialNumber, String FileName) {
+            DoInvalidSignature(Folder,SourceCertificate,SerialNumber,out var o);
+            File.WriteAllBytes(Path.Combine(Folder,FileName),o);
             }
         #endregion
         #region M:DoInvalidSignature(X509CertificateRevocationList,{out}Byte[])
-        private static void DoInvalidSignature(X509CertificateRevocationList Source, out Byte[] Output) {
+        private static void DoInvalidSignature(String Folder,X509CertificateRevocationList Source, out Byte[] Output) {
             Output = null;
             var Builder = Asn1Object.Load(new ReadOnlyMemoryMappingStream(Source.Bytes)).First();
             var Signature = Builder[2].Content.ToArray();
@@ -524,27 +599,27 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
         #endregion
         #region M:DoInvalidSignature(X509CertificateRevocationList,String)
-        private static void DoInvalidSignature(X509CertificateRevocationList Source, String FileName) {
-            DoInvalidSignature(Source,out var o);
-            File.WriteAllBytes(FileName,o);
+        private static void DoInvalidSignature(String Folder,X509CertificateRevocationList Source, String FileName) {
+            DoInvalidSignature(Folder,Source,out var o);
+            File.WriteAllBytes(Path.Combine(Folder,FileName),o);
             }
         #endregion
         #region M:DoExpired(ALG_ID,SecureString,X509Certificate,X509Certificate,Int32,FileName)
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void DoExpired(ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,String FileName)
+        private static void DoExpired(String Folder,ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,String FileName)
         #else
-        private static void DoExpired(ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,String FileName)
+        private static void DoExpired(String Folder,ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,String FileName)
         #endif
             {
-            DoExpired(AlgId,SecureCode,SourceCertificate,IssuerCertificate,Year,out var o);
-            File.WriteAllBytes(FileName,o);
+            DoExpired(Folder,AlgId,SecureCode,SourceCertificate,IssuerCertificate,Year,out var o);
+            File.WriteAllBytes(Path.Combine(Folder,FileName),o);
             }
         #endregion
         #region M:DoExpired(ALG_ID,SecureString,X509Certificate,X509Certificate,Int32,{out}Byte[])
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void DoExpired(ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,out Byte[] Output)
+        private static void DoExpired(String Folder,ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,out Byte[] Output)
         #else
-        private static void DoExpired(ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,out Byte[] Output)
+        private static void DoExpired(String Folder,ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,out Byte[] Output)
         #endif
             {
             var ProviderType = CryptographicContext.ProviderTypeFromAlgId(AlgId);
@@ -571,20 +646,20 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
         #endregion
         #region M:DoExpiredKey(ALG_ID,SecureString,X509Certificate,X509Certificate,Int32,FileName)
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void DoExpiredKey(ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,String FileName)
+        private static void DoExpiredKey(String Folder,ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,String FileName)
         #else
-        private static void DoExpiredKey(ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,String FileName)
+        private static void DoExpiredKey(String Folder,ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,String FileName)
         #endif
             {
-            DoExpiredKey(AlgId,SecureCode,SourceCertificate,IssuerCertificate,Year,out var o);
-            File.WriteAllBytes(FileName,o);
+            DoExpiredKey(Folder,AlgId,SecureCode,SourceCertificate,IssuerCertificate,Year,out var o);
+            File.WriteAllBytes(Path.Combine(Folder,FileName),o);
             }
         #endregion
         #region M:DoExpiredKey(ALG_ID,SecureString,X509Certificate,X509Certificate,Int32,{out}Byte[])
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void DoExpiredKey(ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,out Byte[] Output)
+        private static void DoExpiredKey(String Folder,ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,out Byte[] Output)
         #else
-        private static void DoExpiredKey(ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,out Byte[] Output)
+        private static void DoExpiredKey(String Folder,ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,Int32 Year,out Byte[] Output)
         #endif
             {
             var ProviderType = CryptographicContext.ProviderTypeFromAlgId(AlgId);
@@ -626,20 +701,20 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
         #endregion
         #region M:DoEKU(ALG_ID,SecureString,X509Certificate,X509Certificate,String,FileName)
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void DoEKU(ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,String EKU,String FileName)
+        private static void DoEKU(String Folder,ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,String EKU,String FileName)
         #else
-        private static void DoEKU(ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,String EKU,String FileName)
+        private static void DoEKU(String Folder,ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,String EKU,String FileName)
         #endif
             {
-            DoEKU(AlgId,SecureCode,SourceCertificate,IssuerCertificate,EKU,out var o);
-            File.WriteAllBytes(FileName,o);
+            DoEKU(Folder,AlgId,SecureCode,SourceCertificate,IssuerCertificate,EKU,out var o);
+            File.WriteAllBytes(Path.Combine(Folder,FileName),o);
             }
         #endregion
         #region M:DoEKU(ALG_ID,SecureString,X509Certificate,X509Certificate,String,{out}Byte[])
         #if FEATURE_SECURE_STRING_PASSWORD
-        private static void DoEKU(ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,String EKU,out Byte[] Output)
+        private static void DoEKU(String Folder,ALG_ID AlgId,SecureString SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,String EKU,out Byte[] Output)
         #else
-        private static void DoEKU(ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,String EKU,out Byte[] Output)
+        private static void DoEKU(String Folder,ALG_ID AlgId,String SecureCode, X509Certificate SourceCertificate,X509Certificate IssuerCertificate,String EKU,out Byte[] Output)
         #endif
             {
             var ProviderType = CryptographicContext.ProviderTypeFromAlgId(AlgId);
@@ -676,26 +751,26 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
         #endregion
         #region M:MakeCRL(ALG_ID,DateTime,BigInteger,RequestSecureString,X509Certificate,{out}X509CertificateRevocationList,X509Certificate[])
-        private static void MakeCRL(ALG_ID AlgId, DateTime DateTime, BigInteger Number, RequestSecureString SecureCode, X509Certificate IssuerCertificate, out X509CertificateRevocationList CRL,X509Certificate[] certificates) {
+        private static void MakeCRL(String Folder,ALG_ID AlgId, DateTime DateTime, BigInteger Number, RequestSecureString SecureCode, X509Certificate IssuerCertificate, out X509CertificateRevocationList CRL,X509Certificate[] certificates) {
             var Builder = new X509CertificateRevocationListBuilder(DateTime.AddMonths(-1),DateTime.AddMonths(10),Number);
             Builder.Entries.AddRange(certificates.Select(i => new CertificateRevocationListEntry(i.Source, DateTime.AddMonths(-1),X509CrlReason.Superseded)));
             Builder.Build(IssuerCertificate, SecureCode, out CRL);
             }
         #endregion
         #region M:MakeCRL(ALG_ID,DateTime,BigInteger,RequestSecureString,X509Certificate,String,{params}X509Certificate[])
-        private static void MakeCRL(ALG_ID AlgId, DateTime DateTime, BigInteger Number, RequestSecureString SecureCode, X509Certificate IssuerCertificate, String FileName,params X509Certificate[] certificates) {
-            MakeCRL(AlgId,DateTime,Number,SecureCode,IssuerCertificate,out var r,certificates);
-            File.WriteAllBytes(FileName,r.Bytes);
+        private static void MakeCRL(String Folder,ALG_ID AlgId, DateTime DateTime, BigInteger Number, RequestSecureString SecureCode, X509Certificate IssuerCertificate, String FileName,params X509Certificate[] certificates) {
+            MakeCRL(Folder,AlgId,DateTime,Number,SecureCode,IssuerCertificate,out var r,certificates);
+            File.WriteAllBytes(Path.Combine(Folder,FileName),r.Bytes);
             }
         #endregion
 
-        private static void DoCRLSet(ALG_ID AlgId, DateTime DateTime, RequestSecureString SecureCode, X509Certificate IssuerCertificate) {
+        private static void DoCRLSet(String Folder,ALG_ID AlgId, DateTime DateTime, RequestSecureString SecureCode, X509Certificate IssuerCertificate) {
             var IssuerName = IssuerCertificate.Source.Subject[ObjectIdentifiers.szOID_COMMON_NAME];
-            MakeCRL(AlgId,DateTime,1,SecureCode,IssuerCertificate,out var r, new X509Certificate[0]);
-            File.WriteAllBytes($"{IssuerName}.crl",r.Bytes);
-            DoInvalidSignature(r,$"{IssuerName}{{InvalidSignature}}.crl");
-            MakeCRL(AlgId,DateTime.AddYears(-10),2,SecureCode,IssuerCertificate,$"{IssuerName}{{Expired}}.crl");
-            MakeCRL(AlgId,DateTime.AddYears(+10),3,SecureCode,IssuerCertificate,$"{IssuerName}{{Future}}.crl");
+            MakeCRL(Folder,AlgId,DateTime,1,SecureCode,IssuerCertificate,out var r, new X509Certificate[0]);
+            File.WriteAllBytes(Path.Combine(Folder,$"{IssuerName}.crl"),r.Bytes);
+            DoInvalidSignature(Folder,r,$"{IssuerName}{{InvalidSignature}}.crl");
+            MakeCRL(Folder,AlgId,DateTime.AddYears(-10),2,SecureCode,IssuerCertificate,$"{IssuerName}{{Expired}}.crl");
+            MakeCRL(Folder,AlgId,DateTime.AddYears(+10),3,SecureCode,IssuerCertificate,$"{IssuerName}{{Future}}.crl");
             }
 
         private static void Swap(ref Byte x, ref Byte y)

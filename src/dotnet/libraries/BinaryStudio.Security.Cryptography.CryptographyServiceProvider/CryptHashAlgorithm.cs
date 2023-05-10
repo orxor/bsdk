@@ -37,6 +37,11 @@ namespace BinaryStudio.Security.Cryptography
 
         #region M:Compute(Stream):Byte[]
         public Byte[] Compute(Stream stream) {
+            return Compute(stream,null);
+            }
+        #endregion
+        #region M:Compute(Stream,Action<Byte[],Int32>):Byte[]
+        internal Byte[] Compute(Stream stream,Action<Byte[],Int32> predicate) {
             if (stream == null) { throw new ArgumentNullException(nameof(stream)); }
             if (!stream.CanRead) { throw new ArgumentOutOfRangeException(nameof(stream)); }
             var Block = new Byte[BLOCK_SIZE_64K];
@@ -46,6 +51,7 @@ namespace BinaryStudio.Security.Cryptography
                 if (Size == 0) { break; }
                 Yield();
                 Validate(Entries.CryptHashData(Handle,Block,Size));
+                predicate?.Invoke(Block, Size);
                 }
             HashValue = new Byte[HashSizeValue];
             Validate(Entries.CryptGetHashParam(Handle,HP_HASHVAL,HashValue,ref HashSizeValue));
@@ -60,6 +66,7 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+
         #region M:EnsureHandle
         private void EnsureHandle() {
             if (handle == IntPtr.Zero) {
@@ -88,6 +95,7 @@ namespace BinaryStudio.Security.Cryptography
                 }
             }
         #endregion
+
         #region M:SignHash(KEY_SPEC_TYPE,{out}Digest,{out}Signature)
         public void SignHash(KEY_SPEC_TYPE KeySpec,out Byte[] Digest, out Byte[] Signature) {
             if (HashValue == null) { throw new InvalidOperationException(); }
