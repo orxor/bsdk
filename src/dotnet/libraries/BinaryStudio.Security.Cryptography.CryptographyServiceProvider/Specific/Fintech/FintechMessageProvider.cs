@@ -42,6 +42,7 @@ namespace BinaryStudio.Security.Cryptography.Specific.Fintech
                         using (var hash = new CryptHashAlgorithm(context,Signer.HashAlgorithm)) {
                             Write(OutputStream,FT_SIGNATURE_CONTAINER_HEADER_MAGIC);
                             Write(OutputStream,Signer.HashAlgorithm.Value);
+                            Write(OutputStream,Signer.Bytes.Length);
                             Write(OutputStream,Signer.Bytes);
                             Write(OutputStream,FT_SIGNATURE_CONTAINER_BARRIER_MAGIC);
                             hash.Compute(InputStream, (block, size) => {

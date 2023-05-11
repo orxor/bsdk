@@ -100,6 +100,8 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                 DoInvalidSignature(Folder,"{User1,IncludeSigningCertificate}.p7d","{User1,IncludeSigningCertificate,InvalidMessageSignature}.p7d");
                 DoInvalidSignature(Folder,"{User1}.p7a","{User1,InvalidMessageSignature}.p7a");
                 DoInvalidSignature(Folder,"{User1}.p7d","{User1,InvalidMessageSignature}.p7d");
+                DoInvalidSignature(Folder,"{User1}.fta","{User1,InvalidMessageSignature}.fta", 16, 8);
+                DoInvalidSignature(Folder,"{User1}.ftd","{User1,InvalidMessageSignature}.ftd", 16, 8);
                 DoEncSet(Folder,ProviderType,new Oid(ObjectIdentifiers.szOID_CP_GOST_28147),"CP_GOST_28147",
                     new []{
                         User1,
@@ -566,12 +568,15 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
             }
         #endregion
         #region M:DoInvalidSignature(String,String)
-        private static void DoInvalidSignature(String Folder,String InputFileName, String OutputFileName, Int32 offset = 8) {
+        private static void DoInvalidSignature(String Folder,String InputFileName, String OutputFileName, Int32 offset = 8, Int32 size = -1) {
             var r = File.ReadAllBytes(Path.Combine(Folder,InputFileName));
+            size = (size == -1)
+                ? offset
+                : size;
             var l = r.Length - offset;
-            var buffer = new Byte[offset];
+            var buffer = new Byte[size];
             Random.NextBytes(buffer);
-            for (var i = 0; i < offset; i++) {
+            for (var i = 0; i < size; i++) {
                 r[l + i] = buffer[i];
                 }
             File.WriteAllBytes(Path.Combine(Folder,OutputFileName), r);
