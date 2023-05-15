@@ -701,7 +701,7 @@ namespace BinaryStudio.Services
         /// <param name="Para">
         /// This parameter must be NULL if the <paramref name="Flags"/> parameter does not contain PKCS12_PROTECT_TO_DOMAIN_SIDS or PKCS12_EXPORT_PBES2_PARAMS. Prior to Windows 8 and Windows Server 2012, therefore, this parameter must be NULL.<br/>
         /// Beginning with Windows 8 and Windows Server 2012, if the <paramref name="Flags"/> parameter contains PKCS12_PROTECT_TO_DOMAIN_SIDS, you can set the <paramref name="Para"/> parameter to point to an NCRYPT_DESCRIPTOR_HANDLE value to identify which Active Directory principal the PFX password will be protected to inside of the PFX BLOB. Currently, the password can be protected to an Active Directory user, computer, or group.<br/>
-        /// Beginning with Windows 10 1709 (Fall Creators update) and Windows Server 2019, if the dwFlags parameter contains PKCS12_EXPORT_PBES2_PARAMS, you should set the pvPara to an PKCS12_EXPORT_PBES2_PARAMS value to select the password-based encryption algorithm to use.
+        /// Beginning with Windows 10 1709 (Fall Creators update) and Windows Server 2019, if the <paramref name="Flags"/> parameter contains PKCS12_EXPORT_PBES2_PARAMS, you should set the pvPara to an PKCS12_EXPORT_PBES2_PARAMS value to select the password-based encryption algorithm to use.
         /// </param>
         /// <param name="Flags">
         /// Flag values can be set to any combination of the following.
@@ -936,7 +936,7 @@ namespace BinaryStudio.Services
         ///       <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
         ///         Data type of <paramref name="Data"/>: A pointer to an array of <see cref="Byte"/> values. The size of this array is specified in the <paramref name="Size"/> parameter.<br/>
         ///         Location of the cross certificates. Currently, this identifier is only applicable to certificates and not to CRLs or certificate trust lists (CTLs).<br/>
-        ///         The BYTE array contains an ASN.1-encoded CROSS_CERT_DIST_POINTS_INFO structure decoded by using the CryptDecodeObject function with a X509_CROSS_CERT_DIST_POINTS value for the lpszStuctType parameter.
+        ///         The <b>BYTE</b> array contains an ASN.1-encoded CROSS_CERT_DIST_POINTS_INFO structure decoded by using the CryptDecodeObject function with a X509_CROSS_CERT_DIST_POINTS value for the lpszStuctType parameter.
         ///       </td>
         ///     </tr>
         ///     <tr>
@@ -1535,7 +1535,7 @@ namespace BinaryStudio.Services
         /// <param name="Timeout">The maximum amount of time, in milliseconds, to wait for the retrieval.</param>
         /// <param name="Flags">This parameter is not used and must be zero.</param>
         /// <param name="Reserved">This parameter is not used and must be <see cref="IntPtr.Zero"/>.</param>
-        /// <param name="Data">The address of a BYTE pointer that receives the logotype or biometric data. This memory must be freed when it is no longer needed by passing this pointer to the CryptMemFree function.</param>
+        /// <param name="Data">The address of a <b>BYTE</b> pointer that receives the logotype or biometric data. This memory must be freed when it is no longer needed by passing this pointer to the CryptMemFree function.</param>
         /// <param name="DataSize">The address of a <see cref="Int32"/> variable that receives the number of bytes in the <paramref name="Data"/> buffer.</param>
         /// <param name="MimeType">
         /// The address of a pointer to a null-terminated Unicode string that receives the Multipurpose Internet Mail Extensions (MIME) type of the data. This memory must be freed when it is no longer needed by passing this pointer to the CryptMemFree function.<br/>
@@ -1903,7 +1903,7 @@ namespace BinaryStudio.Services
         ///      </td>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
         ///        Data type of <paramref name="Data"/>: A pointer to a CERT_KEY_CONTEXT structure.<br/>
-        ///        The structure specifies the certificate's private key. It contains both the HCRYPTPROV and key specification for the private key. For more information about the hCryptProv member and dwFlags settings, see CERT_KEY_PROV_HANDLE_PROP_ID, later in this topic.
+        ///        The structure specifies the certificate's private key. It contains both the HCRYPTPROV and key specification for the private key. For more information about the hCryptProv member and <paramref name="Flags"/> settings, see CERT_KEY_PROV_HANDLE_PROP_ID, later in this topic.
         ///      </td>
         ///    </tr>
         ///    <tr>
@@ -2571,7 +2571,7 @@ namespace BinaryStudio.Services
         /// <param name="Subject">A pointer to a <see cref="CERT_CONTEXT"/> structure containing the subject's certificate.</param>
         /// <param name="Issuer">A pointer to a <see cref="CERT_CONTEXT"/> containing the issuer's certificate. When checking just CERT_STORE_TIME_VALIDITY_FLAG, pIssuer can be NULL.</param>
         /// <param name="Flags">
-        /// A pointer to a DWORD value contain verification check flags. The following flags can be set to enable verification checks on the subject certificate. They can be combined using a bitwise-OR operation to enable multiple verifications.
+        /// A pointer to a <see cref="Int32"/> value contain verification check flags. The following flags can be set to enable verification checks on the subject certificate. They can be combined using a bitwise-OR operation to enable multiple verifications.
         ///  <table style="font-family: Consolas;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
         ///    <tr>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:40%">
@@ -2667,7 +2667,7 @@ namespace BinaryStudio.Services
         ///     </td>
         ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
         ///       Uses the certificate's <b>CERT_KEY_PROV_INFO_PROP_ID</b> property to determine whether caching should be accomplished. For more information about the <b>CERT_KEY_PROV_INFO_PROP_ID</b> property, see <see cref="CertSetCertificateContextProperty"/>.<br/>
-        ///       This function will only use caching if during a previous call, the dwFlags member of the <see cref="CRYPT_KEY_PROV_INFO"/> structure contained <b>CERT_SET_KEY_CONTEXT_PROP</b>.
+        ///       This function will only use caching if during a previous call, the <see cref="CRYPT_KEY_PROV_INFO.ProviderFlags"/> member of the <see cref="CRYPT_KEY_PROV_INFO"/> structure contained <b>CERT_SET_KEY_CONTEXT_PROP</b>.
         ///     </td>
         ///    </tr>
         ///   <tr>
@@ -3725,7 +3725,7 @@ namespace BinaryStudio.Services
         ///      </td>
         ///    </tr>
         ///  </table>
-        ///  To retrieve the required size of the pbData buffer, pass <b>NULL</b> for <paramref name="Data"/>. The required buffer size will be placed in the value pointed to by this parameter.
+        ///  To retrieve the required size of the <paramref name="Data"/> buffer, pass <b>NULL</b> for <paramref name="Data"/>. The required buffer size will be placed in the value pointed to by this parameter.
         /// </param>
         /// <returns>
         /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
@@ -4216,7 +4216,39 @@ namespace BinaryStudio.Services
         /// </returns>
         Boolean CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr Key);
         #endregion
+        #region M:CryptGenRandom(IntPtr,Int32,Byte[]):Boolean
+        /// <summary>
+        /// The <b>CryptGenRandom</b> function fills a buffer with cryptographically random bytes.
+        /// </summary>
+        /// <param name="Context">Handle of a cryptographic service provider (CSP) created by a call to <see cref="CryptAcquireContext"/>.</param>
+        /// <param name="Length">Number of bytes of random data to be generated.</param>
+        /// <param name="Buffer">
+        /// Buffer to receive the returned data. This buffer must be at least <paramref name="Length"/> bytes in length.<br/>
+        /// Optionally, the application can fill this buffer with data to use as an auxiliary random seed.
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer);
+        #endregion
         #region M:CryptGetHashParam(IntPtr,Int32,Byte[],{ref}Int32):Boolean
         /// <summary>
         /// The <b>CryptGetHashParam</b> function retrieves data that governs the operations of a hash object. The actual hash value can be retrieved by using this function.
@@ -4490,16 +4522,2439 @@ namespace BinaryStudio.Services
         /// </returns>
         Boolean CryptGetHashParam(IntPtr Hash,Int32 Parameter,out Int32 Value);
         #endregion
+        #region M:CryptGetKeyParam(IntPtr,KEY_PARAM,Byte[],{ref}Int32,Int32):Boolean
+        /// <summary>
+        /// The <b>CryptGetKeyParam</b> function retrieves data that governs the operations of a key. If the <b>Microsoft Cryptographic Service Provider</b> is used, the base symmetric keying material is not obtainable by this or any other function.
+        /// </summary>
+        /// <param name="Key">The handle of the key being queried.</param>
+        /// <param name="Parameter">
+        /// Specifies the type of query being made.<br/>
+        /// For all key types, this parameter can contain one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the key algorithm. The <paramref name="Data"/> parameter is a pointer to an <see cref="ALG_ID"/> value that receives the identifier of the algorithm that was specified when the key was created.<br/>
+        ///       When <b>AT_KEYEXCHANGE</b> or <b>AT_SIGNATURE</b> is specified for the <b>AlgId</b> parameter of the <see cref="CryptGenKey"/> function, the algorithm identifiers that are used to generate the key depend on the provider used. For more information, see <see cref="ALG_ID"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_BLOCKLEN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If a session key is specified by the <paramref name="Key"/> parameter, retrieve the block length of the key cipher. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the block length, in bits. For stream ciphers, this value is always zero.<br/>
+        ///       If a public/private key pair is specified by <paramref name="Key"/>, retrieve the encryption granularity of the key pair. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the encryption granularity, in bits. For example, the Microsoft Base Cryptographic Provider generates 512-bit RSA key pairs, so a value of 512 is returned for these keys. If the public key algorithm does not support encryption, the value retrieved is undefined.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_CERTIFICATE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <paramref name="Data"/> is the address of a buffer that receives the X.509 certificate that has been encoded by using Distinguished Encoding Rules (DER). The public key in the certificate must match the corresponding signature or exchange key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_GET_USE_COUNT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This value is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_KEYLEN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the actual length of the key. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the key length, in bits. <b>KP_KEYLEN</b> can be used to get the length of any key type. Microsoft cryptographic service providers (CSPs) return a key length of 64 bits for <b>CALG_DES</b>, 128 bits for <b>CALG_3DES_112</b>, and 192 bits for <b>CALG_3DES</b>. These lengths are different from the lengths returned when you are enumerating algorithms with the <b>Param</b> value of the <see cref="CryptGetProvParam"/> function set to <b>PP_ENUMALGS</b>. The length returned by this call is the actual size of the key, including the parity bits included in the key.<br/>
+        ///       Microsoft CSPs that support the <b>CALG_CYLINK_MEK</b> ALG_ID return 64 bits for that algorithm. <b>CALG_CYLINK_MEK</b> is a 40-bit key but has parity and zeroed key bits to make the key length 64 bits.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_SALT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the salt value of the key. The <paramref name="Data"/> parameter is a pointer to a <b>BYTE</b> array that receives the salt value in little-endian form. The size of the salt value varies depending on the CSP and algorithm being used. Salt values do not apply to public/private key pairs.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_PERMISSIONS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the key permissions. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the permission flags for the key.<br/>
+        ///       The following permission identifiers are currently defined. The key permissions can be zero or a combination of one or more of the following values.
+        ///       <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///             CRYPT_ARCHIVE
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///            Allow export during the lifetime of the handle of the key. This permission can be set only if it is already set in the internal permissions field of the key. Attempts to clear this permission are ignored.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_DECRYPT
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow decryption.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_ENCRYPT
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow encryption.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_EXPORT
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow the key to be exported.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_EXPORT_KEY
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow the key to be used for exporting keys.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_IMPORT_KEY
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow the key to be used for importing keys.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MAC
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow Message Authentication Codes (MACs) to be used with key.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_READ
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow values to be read.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_WRITE
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow values to be set.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a Digital Signature Standard (DSS) key is specified by the <paramref name="Key"/> parameter, the <paramref name="Parameter"/> value can also be set to one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_P
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       	Retrieve the modulus prime number P of the DSS key. The <paramref name="Data"/> parameter is a pointer to a buffer that receives the value in little-endian form. The <paramref name="DataLen"/> parameter contains the size of the buffer, in bytes.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_Q
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the modulus prime number Q of the DSS key. The <paramref name="Data"/> parameter is a pointer to a buffer that receives the value in little-endian form. The <paramref name="DataLen"/> parameter contains the size of the buffer, in bytes.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_G
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the generator G of the DSS key. The <paramref name="Data"/> parameter is a pointer to a buffer that receives the value in little-endian form. The <paramref name="DataLen"/> parameter contains the size of the buffer, in bytes.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a block cipher session key is specified by the <paramref name="Key"/> parameter, the <paramref name="Parameter"/> value can also be set to one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_EFFECTIVE_KEYLEN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the effective key length of an RC2 key. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the effective key length.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_IV
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the initialization vector of the key. The <paramref name="Data"/> parameter is a pointer to a <b>BYTE</b> array that receives the initialization vector. The size of this array is the block size, in bytes. For example, if the block length is 64 bits, the initialization vector consists of 8 bytes.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_PADDING
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the padding mode. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives a numeric identifier that identifies the padding method used by the cipher. This can be one of the following values.
+        ///       <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///             PKCS5_PADDING
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Specifies the PKCS 5 (sec 6.2) padding method.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             RANDOM_PADDING
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The padding uses random numbers. This padding method is not supported by the Microsoft supplied CSPs.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             ZERO_PADDING
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The padding uses zeros. This padding method is not supported by the Microsoft supplied CSPs.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_MODE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the cipher mode. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives a cipher mode identifier.
+        ///       The following cipher mode identifiers are currently defined.
+        ///       <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///             CRYPT_MODE_CBC
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is cipher block chaining.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MODE_CFB
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is cipher feedback (CFB). Microsoft CSPs currently support only 8-bit feedback in cipher feedback mode.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MODE_ECB
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is electronic codebook.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MODE_OFB
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is Output Feedback (OFB). Microsoft CSPs currently do not support Output Feedback Mode.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MODE_CTS
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is ciphertext stealing mode.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_MODE_BITS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the number of bits to feed back. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the number of bits that are processed per cycle when the OFB or CFB cipher modes are used.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a Diffie-Hellman algorithm or Digital Signature Algorithm (DSA) key is specified by <paramref name="Key"/>, the <paramref name="Parameter"/> value can also be set to the following value.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_VERIFY_PARAMS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Verifies the parameters of a Diffie-Hellman algorithm or DSA key. The <paramref name="Data"/> parameter is not used, and the value pointed to by <paramref name="DataLen"/> receives zero.<br/>
+        ///       This function returns a nonzero value if the key parameters are valid or zero otherwise.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_KEYVAL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This value is not used.<br/>
+        ///       <b>Windows Vista, Windows Server 2003 and Windows XP</b>: Retrieve the secret agreement value from an imported Diffie-Hellman algorithm key of type CALG_AGREEDKEY_ANY. The <paramref name="Data"/> parameter is the address of a buffer that receives the secret agreement value, in little-endian format. This buffer must be the same length as the key. The <paramref name="Flags"/> parameter must be set to 0xF42A19B6. This property can only be retrieved by a thread running under the local system account.This property is available for use in the operating systems listed above. It may be altered or unavailable in subsequent versions.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a certificate is specified by <paramref name="Key"/>, the <paramref name="Parameter"/> value can also be set to the following value.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_CERTIFICATE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A buffer that contains the DER-encoded X.509 certificate. The <paramref name="Data"/> parameter is not used, and the value pointed to by <paramref name="DataLen"/> receives zero.<br/>
+        ///       This function returns a nonzero value if the key parameters are valid or zero otherwise.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Data">
+        /// A pointer to a buffer that receives the data. The form of this data depends on the value of dwParam.<br/>
+        /// If the size of this buffer is not known, the required size can be retrieved at run time by passing NULL for this parameter and setting the value pointed to by <paramref name="DataLen"/> to zero. This function will place the required size of the buffer, in bytes, in the value pointed to by <paramref name="DataLen"/>.
+        /// </param>
+        /// <param name="DataLen">
+        /// A pointer to a <see cref="Int32"/> value that, on entry, contains the size, in bytes, of the buffer pointed to by the <paramref name="Data"/> parameter. When the function returns, the <see cref="Int32"/> value contains the number of bytes stored in the buffer.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> When processing the data returned in the buffer, applications must use the actual size of the data returned. The actual size may be slightly smaller than the size of the buffer specified on input. On input, buffer sizes are sometimes specified large enough to ensure that the largest possible output data fits in the buffer. On output, the variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <param name="Flags">This parameter is reserved for future use and must be set to zero.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_MORE_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If the buffer specified by the <paramref name="Data"/> parameter is not large enough to hold the returned data, the function sets the ERROR_MORE_DATA code and stores the required buffer size, in bytes, in the variable pointed to by <paramref name="DataLen"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter is nonzero.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY<br/>NTE_NO_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key specified by the <paramref name="Key"/> parameter is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Parameter"/> parameter specifies an unknown value number.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context that was specified when the key was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Parameter,Byte[] Data,ref Int32 DataLen,Int32 Flags);
+        #endregion
+        #region M:CryptGetKeyParam(IntPtr,KEY_PARAM,IntPtr,{ref}Int32,Int32):Boolean
+        /// <summary>
+        /// The <b>CryptGetKeyParam</b> function retrieves data that governs the operations of a key. If the <b>Microsoft Cryptographic Service Provider</b> is used, the base symmetric keying material is not obtainable by this or any other function.
+        /// </summary>
+        /// <param name="Key">The handle of the key being queried.</param>
+        /// <param name="Parameter">
+        /// Specifies the type of query being made.<br/>
+        /// For all key types, this parameter can contain one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the key algorithm. The <paramref name="Data"/> parameter is a pointer to an <see cref="ALG_ID"/> value that receives the identifier of the algorithm that was specified when the key was created.<br/>
+        ///       When <b>AT_KEYEXCHANGE</b> or <b>AT_SIGNATURE</b> is specified for the <b>AlgId</b> parameter of the <see cref="CryptGenKey"/> function, the algorithm identifiers that are used to generate the key depend on the provider used. For more information, see <see cref="ALG_ID"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_BLOCKLEN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If a session key is specified by the <paramref name="Key"/> parameter, retrieve the block length of the key cipher. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the block length, in bits. For stream ciphers, this value is always zero.<br/>
+        ///       If a public/private key pair is specified by <paramref name="Key"/>, retrieve the encryption granularity of the key pair. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the encryption granularity, in bits. For example, the Microsoft Base Cryptographic Provider generates 512-bit RSA key pairs, so a value of 512 is returned for these keys. If the public key algorithm does not support encryption, the value retrieved is undefined.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_CERTIFICATE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <paramref name="Data"/> is the address of a buffer that receives the X.509 certificate that has been encoded by using Distinguished Encoding Rules (DER). The public key in the certificate must match the corresponding signature or exchange key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_GET_USE_COUNT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This value is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_KEYLEN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the actual length of the key. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the key length, in bits. <b>KP_KEYLEN</b> can be used to get the length of any key type. Microsoft cryptographic service providers (CSPs) return a key length of 64 bits for <b>CALG_DES</b>, 128 bits for <b>CALG_3DES_112</b>, and 192 bits for <b>CALG_3DES</b>. These lengths are different from the lengths returned when you are enumerating algorithms with the <b>Param</b> value of the <see cref="CryptGetProvParam"/> function set to <b>PP_ENUMALGS</b>. The length returned by this call is the actual size of the key, including the parity bits included in the key.<br/>
+        ///       Microsoft CSPs that support the <b>CALG_CYLINK_MEK</b> ALG_ID return 64 bits for that algorithm. <b>CALG_CYLINK_MEK</b> is a 40-bit key but has parity and zeroed key bits to make the key length 64 bits.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_SALT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the salt value of the key. The <paramref name="Data"/> parameter is a pointer to a <b>BYTE</b> array that receives the salt value in little-endian form. The size of the salt value varies depending on the CSP and algorithm being used. Salt values do not apply to public/private key pairs.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_PERMISSIONS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the key permissions. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the permission flags for the key.<br/>
+        ///       The following permission identifiers are currently defined. The key permissions can be zero or a combination of one or more of the following values.
+        ///       <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///             CRYPT_ARCHIVE
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///            Allow export during the lifetime of the handle of the key. This permission can be set only if it is already set in the internal permissions field of the key. Attempts to clear this permission are ignored.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_DECRYPT
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow decryption.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_ENCRYPT
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow encryption.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_EXPORT
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow the key to be exported.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_EXPORT_KEY
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow the key to be used for exporting keys.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_IMPORT_KEY
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow the key to be used for importing keys.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MAC
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow Message Authentication Codes (MACs) to be used with key.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_READ
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow values to be read.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_WRITE
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Allow values to be set.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a Digital Signature Standard (DSS) key is specified by the <paramref name="Key"/> parameter, the <paramref name="Parameter"/> value can also be set to one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_P
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       	Retrieve the modulus prime number P of the DSS key. The <paramref name="Data"/> parameter is a pointer to a buffer that receives the value in little-endian form. The <paramref name="DataLen"/> parameter contains the size of the buffer, in bytes.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_Q
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the modulus prime number Q of the DSS key. The <paramref name="Data"/> parameter is a pointer to a buffer that receives the value in little-endian form. The <paramref name="DataLen"/> parameter contains the size of the buffer, in bytes.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_G
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the generator G of the DSS key. The <paramref name="Data"/> parameter is a pointer to a buffer that receives the value in little-endian form. The <paramref name="DataLen"/> parameter contains the size of the buffer, in bytes.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a block cipher session key is specified by the <paramref name="Key"/> parameter, the <paramref name="Parameter"/> value can also be set to one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_EFFECTIVE_KEYLEN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the effective key length of an RC2 key. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the effective key length.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_IV
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the initialization vector of the key. The <paramref name="Data"/> parameter is a pointer to a <b>BYTE</b> array that receives the initialization vector. The size of this array is the block size, in bytes. For example, if the block length is 64 bits, the initialization vector consists of 8 bytes.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_PADDING
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the padding mode. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives a numeric identifier that identifies the padding method used by the cipher. This can be one of the following values.
+        ///       <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///             PKCS5_PADDING
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             Specifies the PKCS 5 (sec 6.2) padding method.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             RANDOM_PADDING
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The padding uses random numbers. This padding method is not supported by the Microsoft supplied CSPs.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             ZERO_PADDING
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The padding uses zeros. This padding method is not supported by the Microsoft supplied CSPs.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_MODE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the cipher mode. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives a cipher mode identifier.
+        ///       The following cipher mode identifiers are currently defined.
+        ///       <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///             CRYPT_MODE_CBC
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is cipher block chaining.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MODE_CFB
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is cipher feedback (CFB). Microsoft CSPs currently support only 8-bit feedback in cipher feedback mode.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MODE_ECB
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is electronic codebook.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MODE_OFB
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is Output Feedback (OFB). Microsoft CSPs currently do not support Output Feedback Mode.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             CRYPT_MODE_CTS
+        ///           </td>
+        ///           <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             The cipher mode is ciphertext stealing mode.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_MODE_BITS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the number of bits to feed back. The <paramref name="Data"/> parameter is a pointer to a <see cref="Int32"/> value that receives the number of bits that are processed per cycle when the OFB or CFB cipher modes are used.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a Diffie-Hellman algorithm or Digital Signature Algorithm (DSA) key is specified by <paramref name="Key"/>, the <paramref name="Parameter"/> value can also be set to the following value.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_VERIFY_PARAMS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Verifies the parameters of a Diffie-Hellman algorithm or DSA key. The <paramref name="Data"/> parameter is not used, and the value pointed to by <paramref name="DataLen"/> receives zero.<br/>
+        ///       This function returns a nonzero value if the key parameters are valid or zero otherwise.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       KP_KEYVAL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This value is not used.<br/>
+        ///       <b>Windows Vista, Windows Server 2003 and Windows XP</b>: Retrieve the secret agreement value from an imported Diffie-Hellman algorithm key of type CALG_AGREEDKEY_ANY. The <paramref name="Data"/> parameter is the address of a buffer that receives the secret agreement value, in little-endian format. This buffer must be the same length as the key. The <paramref name="Flags"/> parameter must be set to 0xF42A19B6. This property can only be retrieved by a thread running under the local system account.This property is available for use in the operating systems listed above. It may be altered or unavailable in subsequent versions.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a certificate is specified by <paramref name="Key"/>, the <paramref name="Parameter"/> value can also be set to the following value.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       KP_CERTIFICATE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A buffer that contains the DER-encoded X.509 certificate. The <paramref name="Data"/> parameter is not used, and the value pointed to by <paramref name="DataLen"/> receives zero.<br/>
+        ///       This function returns a nonzero value if the key parameters are valid or zero otherwise.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Data">
+        /// A pointer to a buffer that receives the data. The form of this data depends on the value of dwParam.<br/>
+        /// If the size of this buffer is not known, the required size can be retrieved at run time by passing NULL for this parameter and setting the value pointed to by <paramref name="DataLen"/> to zero. This function will place the required size of the buffer, in bytes, in the value pointed to by <paramref name="DataLen"/>.
+        /// </param>
+        /// <param name="DataLen">
+        /// A pointer to a <see cref="Int32"/> value that, on entry, contains the size, in bytes, of the buffer pointed to by the <paramref name="Data"/> parameter. When the function returns, the <see cref="Int32"/> value contains the number of bytes stored in the buffer.
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> When processing the data returned in the buffer, applications must use the actual size of the data returned. The actual size may be slightly smaller than the size of the buffer specified on input. On input, buffer sizes are sometimes specified large enough to ensure that the largest possible output data fits in the buffer. On output, the variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <param name="Flags">This parameter is reserved for future use and must be set to zero.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_MORE_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If the buffer specified by the <paramref name="Data"/> parameter is not large enough to hold the returned data, the function sets the ERROR_MORE_DATA code and stores the required buffer size, in bytes, in the variable pointed to by <paramref name="DataLen"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter is nonzero.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY<br/>NTE_NO_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key specified by the <paramref name="Key"/> parameter is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Parameter"/> parameter specifies an unknown value number.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context that was specified when the key was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptGetKeyParam(IntPtr Key,KEY_PARAM Parameter,IntPtr Data,ref Int32 DataLen,Int32 Flags);
+        #endregion
+        #region M:CryptGetProvParam(IntPtr,CRYPT_PARAM,Byte[],{ref}Int32,Int32):Boolean
+        /// <summary>
+        /// The <b>CryptGetProvParam</b> function retrieves parameters that govern the operations of a cryptographic service provider (CSP).
+        /// </summary>
+        /// <param name="Context">A handle of the CSP target of the query. This handle must have been created by using the <see cref="CryptAcquireContext"/> function.</param>
+        /// <param name="Parameter">
+        /// The nature of the query. The following queries are defined.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       PP_ADMIN_PIN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns the administrator personal identification number (PIN) in the <paramref name="Data"/> parameter as a <b>LPSTR</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_APPLI_CERT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This constant is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_CHANGE_PASSWORD
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This constant is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_CERTCHAIN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns the certificate chain associated with the <paramref name="Context"/> handle. The returned certificate chain is <b>X509_ASN_ENCODING</b> encoded.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_CONTAINER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The name of the current key container as a null-terminated <b>CHAR</b> string. This string is exactly the same as the one passed in the <b>Container</b> parameter of the <see cref="CryptAcquireContext"/> function to specify the key container to use. The <b>Container</b> parameter can be read to determine the name of the default key container.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_CRYPT_COUNT_KEY_USE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Not implemented by Microsoft CSPs. This behavior may be implemented by other CSPs.
+        ///       <b>Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMALGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="PROV_ENUMALGS"/> structure that contains information about one algorithm supported by the CSP being queried.<br/>
+        ///       The first time this value is read, the dwFlags parameter must contain the <b>CRYPT_FIRST</b> flag. Doing so causes this function to retrieve the first element in the enumeration. The subsequent elements can then be retrieved by setting the <b>CRYPT_NEXT</b> flag in the <paramref name="Flags"/> parameter. When this function fails with the <b>ERROR_NO_MORE_ITEMS</b> error code, the end of the enumeration has been reached.<br/>
+        ///       This function is not thread safe, and all of the available algorithms might not be enumerated if this function is used in a multithreaded context.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMALGS_EX
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="PROV_ENUMALGS_EX"/> structure that contains information about one algorithm supported by the CSP being queried. The structure returned contains more information about the algorithm than the structure returned for <b>PP_ENUMALGS</b>.<br/>
+        ///       The first time this value is read, the <paramref name="Flags"/> parameter must contain the <b>CRYPT_FIRST</b> flag. Doing so causes this function to retrieve the first element in the enumeration. The subsequent elements can then be retrieved by setting the <b>CRYPT_NEXT</b> flag in the <paramref name="Flags"/> parameter. When this function fails with the <b>ERROR_NO_MORE_ITEMS</b> error code, the end of the enumeration has been reached.<br/>
+        ///       This function is not thread safe and all of the available algorithms might not be enumerated if this function is used in a multithreaded context.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMCONTAINERS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The name of one of the key containers maintained by the CSP in the form of a null-terminated <b>CHAR</b> string.<br/>
+        ///       The first time this value is read, the dwFlags parameter must contain the <b>CRYPT_FIRST</b> flag. Doing so causes this function to retrieve the first element in the enumeration. The subsequent elements can then be retrieved by setting the <b>CRYPT_NEXT</b> flag in the <paramref name="Flags"/> parameter. When this function fails with the <b>ERROR_NO_MORE_ITEMS</b> error code, the end of the enumeration has been reached.<br/>
+        ///       To enumerate key containers associated with a computer, first call <see cref="CryptAcquireContext"/> using the <b>CRYPT_MACHINE_KEYSET</b> flag, and then use the handle returned from <see cref="CryptAcquireContext"/> as the <b>Context</b> parameter in the call to <see cref="CryptGetProvParam"/>.<br/>
+        ///       This function is not thread safe and all of the available algorithms might not be enumerated if this function is used in a multithreaded context.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMELECTROOTS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This constant is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMEX_SIGNING_PROT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Indicates that the current CSP supports the <see cref="PROV_ENUMALGS_EX.Protocols"/> member of the <see cref="PROV_ENUMALGS_EX"/> structure. If this function succeeds, the CSP supports the <see cref="PROV_ENUMALGS_EX.Protocols"/> member of the <see cref="PROV_ENUMALGS_EX"/> structure. If this function fails with an <b>NTE_BAD_TYPE</b> error code, the CSP does not support the dwProtocols member.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMMANDROOTS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This constant is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_IMPTYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="Int32"/> value that indicates how the CSP is implemented. 
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEY_TYPE_SUBTYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This query is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYEXCHANGE_PIN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Specifies that the key exchange PIN is contained in <paramref name="Data"/>. The PIN is represented as a <b>null</b>-terminated ASCII string.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYSET_SEC_DESCR
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieves the security descriptor for the key storage container. The <paramref name="Data"/> parameter is the address of a <see cref="SECURITY_DESCRIPTOR"/> structure that receives the security descriptor for the key storage container. The security descriptor is returned in self-relative format.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYSET_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Determines whether the <paramref name="Context"/> parameter is a computer key set. The <paramref name="Data"/> parameter must be a <see cref="Int32"/>; the <see cref="Int32"/> will be set to the <b>CRYPT_MACHINE_KEYSET</b> flag if that flag was passed to the <see cref="CryptAcquireContext"/> function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYSPEC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns information about the key specifier values that the CSP supports. Key specifier values are joined in a logical <b>OR</b> and returned in the <paramref name="Data"/> parameter of the call as a <see cref="Int32"/>. For example, the Microsoft Base Cryptographic Provider version 1.0 returns a <see cref="Int32"/> value of AT_SIGNATURE | AT_KEYEXCHANGE.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYSTORAGE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns a <see cref="Int32"/> value of CRYPT_SEC_DESCR.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYX_KEYSIZE_INC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The number of bits for the increment length of <b>AT_KEYEXCHANGE</b>. This information is used with information returned in the <b>PP_ENUMALGS_EX</b> value. With the information returned when using <b>PP_ENUMALGS_EX</b> and <b>PP_KEYX_KEYSIZE_INC</b>, the valid key lengths for <b>AT_KEYEXCHANGE</b> can be determined. These key lengths can then be used with <see cref="CryptGenKey"/>. For example if a CSP enumerates <b>CALG_RSA_KEYX</b> (AT_KEYEXCHANGE) with a minimum key length of 512 bits and a maximum of 1024 bits, and returns the increment length as 64 bits, then valid key lengths are 512, 576, 640,… 1024.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_NAME
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The name of the CSP in the form of a null-terminated <b>CHAR</b> string. This string is identical to the one passed in the <b>Provider</b> parameter of the <see cref="CryptAcquireContext"/> function to specify that the current CSP be used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_PROVTYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="Int32"/> value that indicates the provider type of the CSP.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ROOT_CERTSTORE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains the root certificate store for the smart card. This certificate store contains all of the root certificates that are stored on the smart card.<br/>
+        ///       The <paramref name="Data"/> parameter is the address of an <b>HCERTSTORE</b> variable that receives the handle of the certificate store. When this handle is no longer needed, the caller must close it by using the <see cref="CertCloseStore"/> function.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SESSION_KEYSIZE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The size, in bits, of the session key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SGC_INFO
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Used with server gated cryptography.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SIG_KEYSIZE_INC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The number of bits for the increment length of <b>AT_SIGNATURE</b>. This information is used with information returned in the <b>PP_ENUMALGS_EX</b> value. With the information returned when using <b>PP_ENUMALGS_EX</b> and <b>PP_SIG_KEYSIZE_INC</b>, the valid key lengths for <b>AT_SIGNATURE</b> can be determined. These key lengths can then be used with <see cref="CryptGenKey"/>.<br/>
+        ///       For example, if a CSP enumerates <b>CALG_RSA_SIGN</b> (AT_SIGNATURE) with a minimum key length of 512 bits and a maximum of 1024 bits, and returns the increment length as 64 bits, then valid key lengths are 512, 576, 640,… 1024.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SIGNATURE_PIN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Specifies that the key signature PIN is contained in <paramref name="Data"/>. The PIN is represented as a <b>null</b>-terminated ASCII string.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SMARTCARD_GUID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains the identifier of the smart card. The <paramref name="Data"/> parameter is the address of a <b>GUID</b> structure that receives the identifier of the smart card.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SMARTCARD_READER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains the name of the smart card reader. The <paramref name="Data"/> parameter is the address of an ANSI character array that receives a <b>null</b>-terminated ANSI string that contains the name of the smart card reader. The size of this buffer, contained in the variable pointed to by the <paramref name="DataSize"/> parameter, must include the <b>NULL</b> terminator.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SYM_KEYSIZE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The size of the symmetric key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_UI_PROMPT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This query is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_UNIQUE_CONTAINER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The unique container name of the current key container in the form of a <b>null</b>-terminated <b>CHAR</b> string. For many CSPs, this name is the same name returned when the <b>PP_CONTAINER</b> value is used. The <see cref="CryptAcquireContext"/> function must work with this container name.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_USE_HARDWARE_RNG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Indicates whether a hardware random number generator (RNG) is supported. When <b>PP_USE_HARDWARE_RNG</b> is specified, the function succeeds and returns <b>TRUE</b> if a hardware RNG is supported. The function fails and returns <b>FALSE</b> if a hardware RNG is not supported. If a RNG is supported, <b>PP_USE_HARDWARE_RNG</b> can be set in <see cref="CryptSetProvParam"/> to indicate that the CSP must exclusively use the hardware RNG for this provider context. When <b>PP_USE_HARDWARE_RNG</b> is used, the <paramref name="Data"/> parameter must be <b>NULL</b> and <paramref name="Flags"/> must be zero.<br/>
+        ///       None of the Microsoft CSPs currently support using a hardware RNG.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_USER_CERTSTORE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains the user certificate store for the smart card. This certificate store contains all of the user certificates that are stored on the smart card. The certificates in this store are encoded by using PKCS_7_ASN_ENCODING or X509_ASN_ENCODING encoding and should contain the <b>CERT_KEY_PROV_INFO_PROP_ID</b> property.<br/>
+        ///       The <paramref name="Data"/> parameter is the address of an <b>HCERTSTORE</b> variable that receives the handle of an in-memory certificate store. When this handle is no longer needed, the caller must close it by using the <see cref="CertCloseStore"/> function.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_VERSION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The version number of the CSP. The least significant byte contains the minor version number and the next most significant byte the major version number. Version 2.0 is represented as 0x00000200. To maintain backward compatibility with earlier versions of the Microsoft Base Cryptographic Provider and the Microsoft Enhanced Cryptographic Provider, the provider names retain the "v1.0" designation in later versions.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Data">
+        /// A pointer to a buffer to receive the data. The form of this data varies depending on the value of <paramref name="Parameter"/>. When <paramref name="Parameter"/> is set to <b>PP_USE_HARDWARE_RNG</b>, pbData must be set to <b>NULL</b>.
+        /// This parameter can be <b>NULL</b> to set the size of this information for memory allocation purposes.
+        /// </param>
+        /// <param name="DataSize">
+        /// A pointer to a <see cref="Int32"/> value that specifies the size, in bytes, of the buffer pointed to by the <paramref name="Data"/> parameter. When the function returns, the <see cref="Int32"/> value contains the number of bytes stored or to be stored in the buffer.<br/>
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> When processing the data returned in the buffer, applications must use the actual size of the data returned. The actual size can be slightly smaller than the size of the buffer specified on input. (On input, buffer sizes are usually specified large enough to ensure that the largest possible output data fits in the buffer.) On output, the variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.<br/>
+        ///        If <b>PP_ENUMALGS</b>, or <b>PP_ENUMALGS_EX</b> is set, the <paramref name="DataSize"/> parameter works somewhat differently. If <paramref name="Data"/> is <b>NULL</b> or the value pointed to by <paramref name="DataSize"/> is too small, the value returned in this parameter is the size of the largest item in the enumeration list instead of the size of the item currently being read.<br/>
+        ///        If <b>PP_ENUMCONTAINERS</b> is set, the first call to the function returns the size of the maximum key-container allowed by the current provider. This is in contrast to other possible behaviors, like returning the length of the longest existing container, or the length of the current container. Subsequent enumerating calls will not change the <paramref name="DataSize"/> parameter. For each enumerated container, the caller can determine the length of the null-terminated string programmatically, if desired. If one of the enumeration values is read and the <paramref name="Data"/> parameter is <b>NULL</b>, the <b>CRYPT_FIRST</b> flag must be specified for the size information to be correctly retrieved.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <param name="Flags">
+        /// If <paramref name="Parameter"/> is <b>PP_KEYSET_SEC_DESCR</b>, the security descriptor on the key container where the keys are stored is retrieved. For this case, <paramref name="Flags"/> is used to pass in the <b>SECURITY_INFORMATION</b> bit flags that indicate the requested security information, as defined in the Platform SDK. <b>SECURITY_INFORMATION</b> bit flags can be combined with a bitwise-<b>OR</b> operation.<br/>
+        /// The following values are defined for use with <b>PP_KEYSET_SEC_DESCR</b>.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       OWNER_SECURITY_INFORMATION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Owner identifier of the object is being referenced.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       GROUP_SECURITY_INFORMATION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Primary group identifier of the object is being referenced.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       DACL_SECURITY_INFORMATION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Discretionary ACL of the object is being referenced.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SACL_SECURITY_INFORMATION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       System ACL of the object is being referenced.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// The following values are defined for use with <b>PP_ENUMALGS</b>, <b>PP_ENUMALGS_EX</b>, and <b>PP_ENUMCONTAINERS</b>.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_FIRST
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the first element in the enumeration. This has the same effect as resetting the enumerator.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_NEXT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the next element in the enumeration. When there are no more elements to retrieve, this function will fail and set the last error to <b>ERROR_NO_MORE_ITEMS</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SGC_ENUM
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve server-gated cryptography (SGC) enabled certificates. SGC enabled certificates are no longer supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SGC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_FASTSGC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_MORE_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If the buffer specified by the <paramref name="Data"/> parameter is not large enough to hold the returned data, the function sets the <b>ERROR_MORE_DATA</b> code and stores the required buffer size, in bytes, in the variable pointed to by <paramref name="DataSize"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_NO_MORE_ITEMS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The end of the enumeration list has been reached. No valid data has been placed in the <paramref name="Data"/> buffer. This error code is returned only when <paramref name="Parameter"/> equals <b>PP_ENUMALGS</b> or <b>PP_ENUMCONTAINERS</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter specifies a flag that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Parameter"/> parameter specifies an unknown value number.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context specified by <paramref name="Context"/> is not valid.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptGetProvParam(IntPtr Context,CRYPT_PARAM Parameter,Byte[] Data,ref Int32 DataSize,Int32 Flags);
+        #endregion
+        #region M:CryptGetProvParam(IntPtr,CRYPT_PARAM,IntPtr,{ref}Int32,Int32):Boolean
+        /// <summary>
+        /// The <b>CryptGetProvParam</b> function retrieves parameters that govern the operations of a cryptographic service provider (CSP).
+        /// </summary>
+        /// <param name="Context">A handle of the CSP target of the query. This handle must have been created by using the <see cref="CryptAcquireContext"/> function.</param>
+        /// <param name="Parameter">
+        /// The nature of the query. The following queries are defined.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       PP_ADMIN_PIN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns the administrator personal identification number (PIN) in the <paramref name="Data"/> parameter as a <b>LPSTR</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_APPLI_CERT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This constant is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_CHANGE_PASSWORD
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This constant is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_CERTCHAIN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns the certificate chain associated with the <paramref name="Context"/> handle. The returned certificate chain is <b>X509_ASN_ENCODING</b> encoded.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_CONTAINER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The name of the current key container as a null-terminated <b>CHAR</b> string. This string is exactly the same as the one passed in the <b>Container</b> parameter of the <see cref="CryptAcquireContext"/> function to specify the key container to use. The <b>Container</b> parameter can be read to determine the name of the default key container.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_CRYPT_COUNT_KEY_USE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Not implemented by Microsoft CSPs. This behavior may be implemented by other CSPs.
+        ///       <b>Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMALGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="PROV_ENUMALGS"/> structure that contains information about one algorithm supported by the CSP being queried.<br/>
+        ///       The first time this value is read, the dwFlags parameter must contain the <b>CRYPT_FIRST</b> flag. Doing so causes this function to retrieve the first element in the enumeration. The subsequent elements can then be retrieved by setting the <b>CRYPT_NEXT</b> flag in the <paramref name="Flags"/> parameter. When this function fails with the <b>ERROR_NO_MORE_ITEMS</b> error code, the end of the enumeration has been reached.<br/>
+        ///       This function is not thread safe, and all of the available algorithms might not be enumerated if this function is used in a multithreaded context.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMALGS_EX
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="PROV_ENUMALGS_EX"/> structure that contains information about one algorithm supported by the CSP being queried. The structure returned contains more information about the algorithm than the structure returned for <b>PP_ENUMALGS</b>.<br/>
+        ///       The first time this value is read, the <paramref name="Flags"/> parameter must contain the <b>CRYPT_FIRST</b> flag. Doing so causes this function to retrieve the first element in the enumeration. The subsequent elements can then be retrieved by setting the <b>CRYPT_NEXT</b> flag in the <paramref name="Flags"/> parameter. When this function fails with the <b>ERROR_NO_MORE_ITEMS</b> error code, the end of the enumeration has been reached.<br/>
+        ///       This function is not thread safe and all of the available algorithms might not be enumerated if this function is used in a multithreaded context.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMCONTAINERS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The name of one of the key containers maintained by the CSP in the form of a null-terminated <b>CHAR</b> string.<br/>
+        ///       The first time this value is read, the dwFlags parameter must contain the <b>CRYPT_FIRST</b> flag. Doing so causes this function to retrieve the first element in the enumeration. The subsequent elements can then be retrieved by setting the <b>CRYPT_NEXT</b> flag in the <paramref name="Flags"/> parameter. When this function fails with the <b>ERROR_NO_MORE_ITEMS</b> error code, the end of the enumeration has been reached.<br/>
+        ///       To enumerate key containers associated with a computer, first call <see cref="CryptAcquireContext"/> using the <b>CRYPT_MACHINE_KEYSET</b> flag, and then use the handle returned from <see cref="CryptAcquireContext"/> as the <b>Context</b> parameter in the call to <see cref="CryptGetProvParam"/>.<br/>
+        ///       This function is not thread safe and all of the available algorithms might not be enumerated if this function is used in a multithreaded context.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMELECTROOTS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This constant is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMEX_SIGNING_PROT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Indicates that the current CSP supports the <see cref="PROV_ENUMALGS_EX.Protocols"/> member of the <see cref="PROV_ENUMALGS_EX"/> structure. If this function succeeds, the CSP supports the <see cref="PROV_ENUMALGS_EX.Protocols"/> member of the <see cref="PROV_ENUMALGS_EX"/> structure. If this function fails with an <b>NTE_BAD_TYPE</b> error code, the CSP does not support the dwProtocols member.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ENUMMANDROOTS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This constant is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_IMPTYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="Int32"/> value that indicates how the CSP is implemented. 
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEY_TYPE_SUBTYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This query is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYEXCHANGE_PIN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Specifies that the key exchange PIN is contained in <paramref name="Data"/>. The PIN is represented as a <b>null</b>-terminated ASCII string.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYSET_SEC_DESCR
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieves the security descriptor for the key storage container. The <paramref name="Data"/> parameter is the address of a <see cref="SECURITY_DESCRIPTOR"/> structure that receives the security descriptor for the key storage container. The security descriptor is returned in self-relative format.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYSET_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Determines whether the <paramref name="Context"/> parameter is a computer key set. The <paramref name="Data"/> parameter must be a <see cref="Int32"/>; the <see cref="Int32"/> will be set to the <b>CRYPT_MACHINE_KEYSET</b> flag if that flag was passed to the <see cref="CryptAcquireContext"/> function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYSPEC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns information about the key specifier values that the CSP supports. Key specifier values are joined in a logical <b>OR</b> and returned in the <paramref name="Data"/> parameter of the call as a <see cref="Int32"/>. For example, the Microsoft Base Cryptographic Provider version 1.0 returns a <see cref="Int32"/> value of AT_SIGNATURE | AT_KEYEXCHANGE.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYSTORAGE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Returns a <see cref="Int32"/> value of CRYPT_SEC_DESCR.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_KEYX_KEYSIZE_INC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The number of bits for the increment length of <b>AT_KEYEXCHANGE</b>. This information is used with information returned in the <b>PP_ENUMALGS_EX</b> value. With the information returned when using <b>PP_ENUMALGS_EX</b> and <b>PP_KEYX_KEYSIZE_INC</b>, the valid key lengths for <b>AT_KEYEXCHANGE</b> can be determined. These key lengths can then be used with <see cref="CryptGenKey"/>. For example if a CSP enumerates <b>CALG_RSA_KEYX</b> (AT_KEYEXCHANGE) with a minimum key length of 512 bits and a maximum of 1024 bits, and returns the increment length as 64 bits, then valid key lengths are 512, 576, 640,… 1024.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_NAME
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The name of the CSP in the form of a null-terminated <b>CHAR</b> string. This string is identical to the one passed in the <b>Provider</b> parameter of the <see cref="CryptAcquireContext"/> function to specify that the current CSP be used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_PROVTYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="Int32"/> value that indicates the provider type of the CSP.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_ROOT_CERTSTORE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains the root certificate store for the smart card. This certificate store contains all of the root certificates that are stored on the smart card.<br/>
+        ///       The <paramref name="Data"/> parameter is the address of an <b>HCERTSTORE</b> variable that receives the handle of the certificate store. When this handle is no longer needed, the caller must close it by using the <see cref="CertCloseStore"/> function.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SESSION_KEYSIZE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The size, in bits, of the session key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SGC_INFO
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Used with server gated cryptography.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SIG_KEYSIZE_INC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The number of bits for the increment length of <b>AT_SIGNATURE</b>. This information is used with information returned in the <b>PP_ENUMALGS_EX</b> value. With the information returned when using <b>PP_ENUMALGS_EX</b> and <b>PP_SIG_KEYSIZE_INC</b>, the valid key lengths for <b>AT_SIGNATURE</b> can be determined. These key lengths can then be used with <see cref="CryptGenKey"/>.<br/>
+        ///       For example, if a CSP enumerates <b>CALG_RSA_SIGN</b> (AT_SIGNATURE) with a minimum key length of 512 bits and a maximum of 1024 bits, and returns the increment length as 64 bits, then valid key lengths are 512, 576, 640,… 1024.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SIGNATURE_PIN
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Specifies that the key signature PIN is contained in <paramref name="Data"/>. The PIN is represented as a <b>null</b>-terminated ASCII string.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SMARTCARD_GUID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains the identifier of the smart card. The <paramref name="Data"/> parameter is the address of a <b>GUID</b> structure that receives the identifier of the smart card.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SMARTCARD_READER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains the name of the smart card reader. The <paramref name="Data"/> parameter is the address of an ANSI character array that receives a <b>null</b>-terminated ANSI string that contains the name of the smart card reader. The size of this buffer, contained in the variable pointed to by the <paramref name="DataSize"/> parameter, must include the <b>NULL</b> terminator.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_SYM_KEYSIZE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The size of the symmetric key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_UI_PROMPT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This query is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_UNIQUE_CONTAINER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The unique container name of the current key container in the form of a <b>null</b>-terminated <b>CHAR</b> string. For many CSPs, this name is the same name returned when the <b>PP_CONTAINER</b> value is used. The <see cref="CryptAcquireContext"/> function must work with this container name.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_USE_HARDWARE_RNG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Indicates whether a hardware random number generator (RNG) is supported. When <b>PP_USE_HARDWARE_RNG</b> is specified, the function succeeds and returns <b>TRUE</b> if a hardware RNG is supported. The function fails and returns <b>FALSE</b> if a hardware RNG is not supported. If a RNG is supported, <b>PP_USE_HARDWARE_RNG</b> can be set in <see cref="CryptSetProvParam"/> to indicate that the CSP must exclusively use the hardware RNG for this provider context. When <b>PP_USE_HARDWARE_RNG</b> is used, the <paramref name="Data"/> parameter must be <b>NULL</b> and <paramref name="Flags"/> must be zero.<br/>
+        ///       None of the Microsoft CSPs currently support using a hardware RNG.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_USER_CERTSTORE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Obtains the user certificate store for the smart card. This certificate store contains all of the user certificates that are stored on the smart card. The certificates in this store are encoded by using PKCS_7_ASN_ENCODING or X509_ASN_ENCODING encoding and should contain the <b>CERT_KEY_PROV_INFO_PROP_ID</b> property.<br/>
+        ///       The <paramref name="Data"/> parameter is the address of an <b>HCERTSTORE</b> variable that receives the handle of an in-memory certificate store. When this handle is no longer needed, the caller must close it by using the <see cref="CertCloseStore"/> function.<br/>
+        ///       <b>Windows Server 2003 and Windows XP</b>: This parameter is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       PP_VERSION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The version number of the CSP. The least significant byte contains the minor version number and the next most significant byte the major version number. Version 2.0 is represented as 0x00000200. To maintain backward compatibility with earlier versions of the Microsoft Base Cryptographic Provider and the Microsoft Enhanced Cryptographic Provider, the provider names retain the "v1.0" designation in later versions.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Data">
+        /// A pointer to a buffer to receive the data. The form of this data varies depending on the value of <paramref name="Parameter"/>. When <paramref name="Parameter"/> is set to <b>PP_USE_HARDWARE_RNG</b>, pbData must be set to <b>NULL</b>.
+        /// This parameter can be <b>NULL</b> to set the size of this information for memory allocation purposes.
+        /// </param>
+        /// <param name="DataSize">
+        /// A pointer to a <see cref="Int32"/> value that specifies the size, in bytes, of the buffer pointed to by the <paramref name="Data"/> parameter. When the function returns, the <see cref="Int32"/> value contains the number of bytes stored or to be stored in the buffer.<br/>
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> When processing the data returned in the buffer, applications must use the actual size of the data returned. The actual size can be slightly smaller than the size of the buffer specified on input. (On input, buffer sizes are usually specified large enough to ensure that the largest possible output data fits in the buffer.) On output, the variable pointed to by this parameter is updated to reflect the actual size of the data copied to the buffer.<br/>
+        ///        If <b>PP_ENUMALGS</b>, or <b>PP_ENUMALGS_EX</b> is set, the <paramref name="DataSize"/> parameter works somewhat differently. If <paramref name="Data"/> is <b>NULL</b> or the value pointed to by <paramref name="DataSize"/> is too small, the value returned in this parameter is the size of the largest item in the enumeration list instead of the size of the item currently being read.<br/>
+        ///        If <b>PP_ENUMCONTAINERS</b> is set, the first call to the function returns the size of the maximum key-container allowed by the current provider. This is in contrast to other possible behaviors, like returning the length of the longest existing container, or the length of the current container. Subsequent enumerating calls will not change the <paramref name="DataSize"/> parameter. For each enumerated container, the caller can determine the length of the null-terminated string programmatically, if desired. If one of the enumeration values is read and the <paramref name="Data"/> parameter is <b>NULL</b>, the <b>CRYPT_FIRST</b> flag must be specified for the size information to be correctly retrieved.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <param name="Flags">
+        /// If <paramref name="Parameter"/> is <b>PP_KEYSET_SEC_DESCR</b>, the security descriptor on the key container where the keys are stored is retrieved. For this case, <paramref name="Flags"/> is used to pass in the <b>SECURITY_INFORMATION</b> bit flags that indicate the requested security information, as defined in the Platform SDK. <b>SECURITY_INFORMATION</b> bit flags can be combined with a bitwise-<b>OR</b> operation.<br/>
+        /// The following values are defined for use with <b>PP_KEYSET_SEC_DESCR</b>.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       OWNER_SECURITY_INFORMATION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Owner identifier of the object is being referenced.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       GROUP_SECURITY_INFORMATION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Primary group identifier of the object is being referenced.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       DACL_SECURITY_INFORMATION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Discretionary ACL of the object is being referenced.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       SACL_SECURITY_INFORMATION
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       System ACL of the object is being referenced.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// The following values are defined for use with <b>PP_ENUMALGS</b>, <b>PP_ENUMALGS_EX</b>, and <b>PP_ENUMCONTAINERS</b>.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_FIRST
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the first element in the enumeration. This has the same effect as resetting the enumerator.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_NEXT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve the next element in the enumeration. When there are no more elements to retrieve, this function will fail and set the last error to <b>ERROR_NO_MORE_ITEMS</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SGC_ENUM
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Retrieve server-gated cryptography (SGC) enabled certificates. SGC enabled certificates are no longer supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_SGC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_FASTSGC
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag is not used.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_MORE_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If the buffer specified by the <paramref name="Data"/> parameter is not large enough to hold the returned data, the function sets the <b>ERROR_MORE_DATA</b> code and stores the required buffer size, in bytes, in the variable pointed to by <paramref name="DataSize"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_NO_MORE_ITEMS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The end of the enumeration list has been reached. No valid data has been placed in the <paramref name="Data"/> buffer. This error code is returned only when <paramref name="Parameter"/> equals <b>PP_ENUMALGS</b> or <b>PP_ENUMCONTAINERS</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter specifies a flag that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Parameter"/> parameter specifies an unknown value number.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context specified by <paramref name="Context"/> is not valid.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptGetProvParam(IntPtr Context,CRYPT_PARAM Parameter,IntPtr Data,ref Int32 DataSize,Int32 Flags);
+        #endregion
+        #region M:CryptGetUserKey(IntPtr,KEY_SPEC_TYPE,{out}IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptGetUserKey</b> function retrieves a handle of one of a user's two public/private key pairs. This function is used only by the owner of the public/private key pairs and only when the handle of a cryptographic service provider (CSP) and its associated key container is available. If the CSP handle is not available and the user's certificate is, use <see cref="CryptAcquireCertificatePrivateKey"/>.
+        /// </summary>
+        /// <param name="Context"><b>HCRYPTPROV</b> handle of a cryptographic service provider (CSP) created by a call to <see cref="CryptAcquireContext"/>.</param>
+        /// <param name="KeySpec">
+        /// Identifies the private key to use from the key container. It can be <b>AT_KEYEXCHANGE</b> or <b>AT_SIGNATURE</b>.<br/>
+        /// Additionally, some providers allow access to other user-specific keys through this function. For details, see the documentation on the specific provider.
+        /// </param>
+        /// <param name="UserKey">A pointer to the <b>HCRYPTKEY</b> handle of the retrieved keys. When you have finished using the key, delete the handle by calling the <see cref="CryptDestroyKey"/> function.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="KeySpec"/> parameter contains a value that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Context"/> parameter does not contain a valid context handle.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_NO_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key requested by the <paramref name="KeySpec"/> parameter does not exist.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         Boolean CryptGetUserKey(IntPtr Context,KEY_SPEC_TYPE KeySpec,out IntPtr UserKey);
-        Boolean CryptHashData(IntPtr Handle, Byte[] Data, Int32 DataSize);
-        Boolean CryptImportKey(IntPtr Context,Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr r);
+        #endregion
+        #region M:CryptHashData(IntPtr,Byte[],Int32):Boolean
+        /// <summary>
+        /// The <b>CryptHashData</b> function adds data to a specified hash object. This function and <see cref="CryptHashSessionKey"/> can be called multiple times to compute the hash of long or discontinuous data streams.<br/>
+        /// Before calling this function, <b>CryptCreateHash</b> must be called to create a handle of a hash object.
+        /// </summary>
+        /// <param name="Hash">Handle of the hash object.</param>
+        /// <param name="Data">A pointer to a buffer that contains the data to be added to the hash object.</param>
+        /// <param name="DataSize">Number of bytes of data to be added.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Hash"/> handle specifies an algorithm that this CSP does not support.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The hash object specified by the <paramref name="Hash"/> parameter is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_HASH_STATE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       An attempt was made to add data to a hash object that is already marked "finished."
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A keyed hash algorithm is being used, but the session key is no longer valid. This error is generated if the session key is destroyed before the hashing operation is complete.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP context that was specified when the hash object was created cannot be found.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_FAIL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The function failed in some unexpected way.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_NO_MEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The CSP ran out of memory during the operation.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptHashData(IntPtr Hash,Byte[] Data,Int32 DataSize);
+        #endregion
+        #region M:CryptImportKey(IntPtr,Byte[],Int32,IntPtr,Int32,{out}IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptImportKey</b> function transfers a cryptographic key from a key BLOB into a cryptographic service provider (CSP). This function can be used to import an <a href="https://learn.microsoft.com/en-us/windows/desktop/SecGloss/s-gly">Schannel</a> session key, regular session key, public key, or public/private key pair. For all but the public key, the key or key pair is encrypted.
+        /// </summary>
+        /// <param name="Context">The handle of a CSP obtained with the <see cref="CryptAcquireContext"/> function.</param>
+        /// <param name="Data">A <b>BYTE</b> array that contains a <see cref="PUBLICKEYSTRUC"/> BLOB header followed by the encrypted key. This key BLOB is created by the <see cref="CryptExportKey"/> function, either in this application or by another application possibly running on a different computer.</param>
+        /// <param name="DataLen">Contains the length, in bytes, of the key BLOB.</param>
+        /// <param name="PubKey">
+        /// A handle to the cryptographic key that decrypts the key stored in <paramref name="Data"/>. This key must come from the same CSP to which <paramref name="Context"/> refers. The meaning of this parameter differs depending on the CSP type and the type of key BLOB being imported:
+        /// <list type="bullet">
+        ///   <item>If the key BLOB is encrypted with the key exchange key pair, for example, a <b>SIMPLEBLOB</b>, this parameter can be the handle to the key exchange key.</item>
+        ///   <item>If the key BLOB is encrypted with a session key, for example, an encrypted <b>PRIVATEKEYBLOB</b>, this parameter contains the handle of this session key.</item>
+        ///   <item>If the key BLOB is not encrypted, for example, a <b>PUBLICKEYBLOB</b>, this parameter is not used and must be zero.</item>
+        ///   <item>If the key BLOB is encrypted with a session key in an <b>Schannel CSP</b>, for example, an encrypted <b>OPAQUEKEYBLOB</b> or any other vendor-specific <b>OPAQUEKEYBLOB</b>, this parameter is not used and must be set to zero.</item>
+        /// </list>
+        ///  <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///    <tr>
+        ///      <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///        <b>Note:</b> Some CSPs may modify this parameter as a result of the operation. Applications that subsequently use this key for other purposes should call the <see cref="CryptDuplicateKey"/> function to create a duplicate key handle. When the application has finished using the handle, release it by calling the <see cref="CryptDestroyKey"/> function.
+        ///      </td>
+        ///    </tr>
+        ///  </table>
+        /// </param>
+        /// <param name="Flags">
+        /// Currently used only when a public/private key pair in the form of a <b>PRIVATEKEYBLOB</b> is imported into the CSP.<br/>
+        /// This parameter can be one of the following values.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_EXPORTABLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key being imported is eventually to be reexported. If this flag is not used, then calls to <see cref="CryptExportKey"/> with the key handle fail.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_OAEP
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This flag causes PKCS #1 version 2 formatting to be checked with RSA encryption and decryption when importing <b>SIMPLEBLOB</b>s.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_NO_SALT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A no-salt value gets allocated for a 40-bit symmetric key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_USER_PROTECTED
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       If this flag is set, the CSP notifies the user through a dialog box or some other method when certain actions are attempted using this key. The precise behavior is specified by the CSP or the CSP type used. If the provider context was acquired with <b>CRYPT_SILENT</b> set, using this flag causes a failure and the last error is set to <b>NTE_SILENT_CONTEXT</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_IPSEC_HMAC_KEY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Allows for the import of an RC2 key that is larger than 16 bytes. If this flag is not set, calls to the <see cref="CryptImportKey"/> function with RC2 keys that are greater than 16 bytes fail, and a call to <see cref="LastErrorService.GetLastError"/> will return <b>NTE_BAD_DATA</b>.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Key">A pointer to a <b>HCRYPTKEY</b> value that receives the handle of the imported key. When you have finished using the key, release the handle by calling the <see cref="CryptDestroyKey"/> function.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>. One possible error code is the following.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       ERROR_BUSY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Some CSPs set this error if a private key is imported into a container while another thread or process is using this key.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_HANDLE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters specifies a handle that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       ERROR_INVALID_PARAMETER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One of the parameters contains a value that is not valid. This is most often a pointer that is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_ALGID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The simple key BLOB to be imported is not encrypted with the expected key exchange algorithm.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_DATA
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Either the algorithm that works with the public key to be imported is not supported by this CSP, or an attempt was made to import a session key that was encrypted with something other than one of your public keys.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_FLAGS
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Flags"/> parameter specified is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The key BLOB type is not supported by this CSP and is possibly not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_UID
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The <paramref name="Context"/> parameter does not contain a valid context handle.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       NTE_BAD_VER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The version number of the key BLOB does not match the CSP version. This usually indicates that the CSP needs to be upgraded.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptImportKey(IntPtr Context,Byte[] Data,Int32 DataLen,IntPtr PubKey,Int32 Flags,out IntPtr Key);
+        #endregion
+        #region M:CryptMsgClose(IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptMsgClose</b> function closes a cryptographic message handle. At each call to this function, the reference count on the message is reduced by one. When the reference count reaches zero, the message is fully released.
+        /// </summary>
+        /// <param name="Message">Handle of the cryptographic message to be closed.</param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+        /// If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="LastErrorService.GetLastError"/>.
+        /// </returns>
         Boolean CryptMsgClose(IntPtr Message);
-        Boolean CryptMsgControl(IntPtr Message, CRYPT_MESSAGE_FLAGS Flags, CMSG_CTRL CtrlType, IntPtr CtrlPara);
-        Boolean CryptMsgControl(IntPtr Message, CRYPT_MESSAGE_FLAGS Flags, CMSG_CTRL CtrlType, ref CMSG_CTRL_DECRYPT_PARA CtrlPara);
+        #endregion
+        #region M:CryptMsgControl(IntPtr,CRYPT_MESSAGE_FLAGS,CMSG_CTRL,IntPtr):Boolean
+        /// <summary>
+        /// The <b>CryptMsgControl</b> function performs a control operation after a message has been decoded by a final call to the <see cref="CryptMsgUpdate"/> function. The control operations provided by this function are used for decryption, signature and hash verification, and the addition and deletion of certificates, certificate revocation lists (CRLs), signers, and unauthenticated attributes.<br/>
+        /// Important changes that affect the handling of enveloped messages have been made to CryptoAPI to support Secure/Multipurpose Internet Mail Extensions (S/MIME) email interoperability.
+        /// </summary>
+        /// <param name="Message">A handle of a cryptographic message for which a control is to be applied.</param>
+        /// <param name="Flags">
+        /// The following value is defined when the <paramref name="CtrlType"/> parameter is one of the following:
+        /// <list type="bullet">
+        ///   <item>CMSG_CTRL_DECRYPT</item>
+        ///   <item>CMSG_CTRL_KEY_TRANS_DECRYPT</item>
+        ///   <item>CMSG_CTRL_KEY_AGREE_DECRYPT</item>
+        ///   <item>CMSG_CTRL_MAIL_LIST_DECRYPT</item>
+        /// </list>
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CMSG_CRYPT_RELEASE_CONTEXT_FLAG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The handle to the cryptographic provider is released on the final call to the <see cref="CryptMsgClose"/> function. This handle is not released if the <see cref="CryptMsgControl"/> function fails.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If the <paramref name="CtrlType"/> parameter does not specify a decrypt operation, set this value to zero.
+        /// </param>
+        /// <param name="CtrlType">
+        /// The type of operation to be performed. Currently defined message control types and the type of structure that should be passed to the <paramref name="CtrlPara"/> parameter are shown in the following table.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CMSG_CTRL_ADD_ATTR_CERT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A BLOB that contains the encoded bytes of attribute certificate.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_ADD_CERT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CRYPT_INTEGER_BLOB"/> structure that contains the encoded bytes of the certificate to be added to the message.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_ADD_CMS_SIGNER_INFO
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_CMS_SIGNER_INFO"/> structure that contains signer information. This operation differs from <b>CMSG_CTRL_ADD_SIGNER</b> because the signer information contains the signature.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_ADD_CRL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A BLOB that contains the encoded bytes of the CRL to be added to the message.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_ADD_SIGNER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_SIGNER_ENCODE_INFO"/> structure that contains the signer information to be added to the message.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_ADD_SIGNER_UNAUTH_ATTR
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_CTRL_ADD_SIGNER_UNAUTH_ATTR_PARA"/> structure that contains the index of the signer and a BLOB that contains the unauthenticated attribute information to be added to the message.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DECRYPT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_CTRL_DECRYPT_PARA"/> structure used to decrypt the message for the specified key transport recipient. This value is applicable to RSA recipients. This operation specifies that the <see cref="CryptMsgControl"/> function search the recipient index to obtain the key transport recipient information. If the function fails, <see cref="LastErrorService.GetLastError"/> will return <b>CRYPT_E_INVALID_INDEX</b> if no key transport recipient is found.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_ATTR_CERT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The index of the attribute certificate to be removed.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_CERT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The index of the certificate to be deleted from the message.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_CRL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The index of the CRL to be deleted from the message.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_SIGNER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The index of the signer to be deleted.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_SIGNER_UNAUTH_ATTR
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_CTRL_DEL_SIGNER_UNAUTH_ATTR_PARA"/> structure that contains an index that specifies the signer and the index that specifies the signer's unauthenticated attribute to be deleted.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_ENABLE_STRONG_SIGNATURE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CERT_STRONG_SIGN_PARA"/> structure used to perform strong signature checking.<br/>
+        ///       To check for a strong signature, specify this control type before calling <see cref="CryptMsgGetAndVerifySigner"/> or before calling <see cref="CryptMsgControl"/> with the following control types set:
+        ///       <list type="bullet">
+        ///         <item>CMSG_CTRL_VERIFY_SIGNATURE</item>
+        ///         <item>CMSG_CTRL_VERIFY_SIGNATURE_EX</item>
+        ///       </list>
+        ///       After the signature is successfully verified, this function checks for a strong signature. If the signature is not strong, the operation will fail and the <see cref="LastErrorService.GetLastError"/> value will be set to <b>NTE_BAD_ALGID</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_KEY_AGREE_DECRYPT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_CTRL_KEY_AGREE_DECRYPT_PARA"/> structure used to decrypt the message for the specified key agreement session key. Key agreement is used with Diffie-Hellman encryption/decryption.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_KEY_TRANS_DECRYPT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_CTRL_KEY_TRANS_DECRYPT_PARA"/> structure used to decrypt the message for the specified key transport recipient. Key transport is used with RSA encryption/decryption.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_MAIL_LIST_DECRYPT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_CTRL_MAIL_LIST_DECRYPT_PARA"/> structure used to decrypt the message for the specified recipient using a previously distributed key-encryption key (KEK).
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_VERIFY_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       This value is not used.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_VERIFY_SIGNATURE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CERT_INFO"/> structure that identifies the signer of the message whose signature is to be verified.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_VERIFY_SIGNATURE_EX
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       A <see cref="CMSG_CTRL_VERIFY_SIGNATURE_EX_PARA"/> structure that specifies the signer index and public key to verify the message signature. The signer public key can be a <see cref="CERT_PUBLIC_KEY_INFO"/> structure, a certificate context, or a certificate chain context.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="CtrlPara">
+        /// A pointer to a structure determined by the value of <paramref name="CtrlType"/>.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       <b><paramref name="CtrlType"/> value</b>
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <b>Meaning</b>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DECRYPT,<br/>CMSG_CTRL_KEY_TRANS_DECRYPT,<br/>CMSG_CTRL_KEY_AGREE_DECRYPT,<br/>or CMSG_CTRL_MAIL_LIST_DECRYPT,<br/>and the streamed enveloped message is being decoded
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Decoding will be done as if the streamed content were being decrypted. If any encrypted streamed content has accumulated prior to this call, some or all of the plaintext that results from the decryption of the cipher text is passed back to the application through the callback function specified in the call to the <see cref="CryptMsgOpenToDecode"/> function.
+        ///       <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///         <tr>
+        ///           <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///             <b>Note:</b> When streaming an enveloped message, the <see cref="CryptMsgControl"/> function is not called until the polling for the availability of the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> succeeds. If the polling does not succeed, an error results. For a description of that polling, see the <see cref="CryptMsgOpenToDecode"/> function.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_VERIFY_HASH
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The hash computed from the content of the message is compared against the hash contained in the message.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_ADD_SIGNER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       <paramref name="CtrlPara"/> points to a <see cref="CMSG_SIGNER_ENCODE_INFO"/> structure that contains the signer information to be added to the message.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_SIGNER
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       After a deletion is made, any other signer indices in use for this message are no longer valid and must be reacquired by calling the <see cref="CryptMsgGetParam"/> function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_SIGNER_UNAUTH_ATTR
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       After a deletion is made, any other unauthenticated attribute indices in use for this signer are no longer valid and must be reacquired by calling the <see cref="CryptMsgGetParam"/> function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_CERT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       After a deletion is made, any other certificate indices in use for this message are no longer valid and must be reacquired by calling the <see cref="CryptMsgGetParam"/> function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CMSG_CTRL_DEL_CRL
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       After a deletion is made, any other CRL indices in use for this message are no longer valid and will need to be reacquired by calling the <see cref="CryptMsgGetParam"/> function.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is nonzero.<br/>
+        /// If the function fails, the return value is zero and the GetLastError function returns an Abstract Syntax Notation One (ASN.1) encoding/decoding error.<br/>
+        /// When a streamed, enveloped message is being decoded, errors encountered in the application-defined callback function specified by the <b>StreamInfo</b> parameter of the
+        /// <see cref="CryptMsgOpenToDecode"/> function might be propagated to the <see cref="CryptMsgControl"/> function. If this happens, the <b>SetLastError</b> function is not called by the <see cref="CryptMsgControl"/> function after the callback function returns. This preserves any errors encountered under the control of the application. It is the responsibility of the callback function (or one of the APIs that it calls) to call the <b>SetLastError</b> function if an error occurs while the application is processing the streamed data.<br/>
+        /// Propagated errors might be encountered from the following functions:
+        /// <list type="bullet">
+        ///   <item><see cref="CryptCreateHash"/></item>
+        ///   <item><see cref="CryptDecrypt"/></item>
+        ///   <item><see cref="CryptGetHashParam"/></item>
+        ///   <item><see cref="CryptGetUserKey"/></item>
+        ///   <item><see cref="CryptHashData"/></item>
+        ///   <item><see cref="CryptImportKey"/></item>
+        ///   <item><see cref="CryptSignHash"/></item>
+        ///   <item><see cref="CryptVerifySignature"/></item>
+        /// </list>
+        /// The following error codes are most commonly returned.
+        /// <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:none;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;width:20%">
+        ///       CRYPT_E_ALREADY_DECRYPTED
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The message content has already been decrypted. This error can be returned if the <paramref name="CtrlType"/> parameter is set to <b>CMSG_CTRL_DECRYPT</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_AUTH_ATTR_MISSING
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The message does not contain an expected authenticated attribute. This error can be returned if the <paramref name="CtrlType"/> parameter is set to <b>CMSG_CTRL_VERIFY_SIGNATURE</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_BAD_ENCODE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       An error was encountered while encoding or decoding. This error can be returned if the <paramref name="CtrlType"/> parameter is set to <b>CMSG_CTRL_VERIFY_SIGNATURE</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_CONTROL_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The control type is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_HASH_VALUE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The hash value is incorrect.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_INVALID_INDEX
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The index value is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_INVALID_MSG_TYPE
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The message type is not valid.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_OID_FORMAT
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The object identifier is badly formatted. This error can be returned if the <paramref name="CtrlType"/> parameter is set to <b>CMSG_CTRL_ADD_SIGNER</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_RECIPIENT_NOT_FOUND
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The enveloped data message does not contain the specified recipient. This error can be returned if the <paramref name="CtrlType"/> parameter is set to <b>CMSG_CTRL_DECRYPT</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_SIGNER_NOT_FOUND
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The specified signer for the message was not found. This error can be returned if the <paramref name="CtrlType"/> parameter is set to <b>CMSG_CTRL_VERIFY_SIGNATURE</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_UNKNOWN_ALGO
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The cryptographic algorithm is unknown.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       CRYPT_E_UNEXPECTED_ENCODING
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       The message is not encoded as expected. This error can be returned if the <paramref name="CtrlType"/> parameter is set to <b>CMSG_CTRL_VERIFY_SIGNATURE</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       E_INVALIDARG
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       One or more arguments are not valid. This error can be returned if the <paramref name="CtrlType"/> parameter is set to <b>CMSG_CTRL_DECRYPT</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       E_OUTOFMEMORY
+        ///     </td>
+        ///     <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt">
+        ///       Not enough memory was available to complete the operation.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
+        Boolean CryptMsgControl(IntPtr Message,CRYPT_MESSAGE_FLAGS Flags,CMSG_CTRL CtrlType,IntPtr CtrlPara);
+        #endregion
+        Boolean CryptMsgControl(IntPtr Message,CRYPT_MESSAGE_FLAGS Flags,CMSG_CTRL CtrlType,ref CMSG_CTRL_DECRYPT_PARA CtrlPara);
         Boolean CryptMsgGetParam(IntPtr Message, CMSG_PARAM Parameter, Int32 SignerIndex,Byte[] Data, ref Int32 Size);
         Boolean CryptMsgUpdate(IntPtr Message, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data, Int32 Size, Boolean Final);
         Boolean CryptMsgUpdate(IntPtr Message, IntPtr Data, Int32 Size, Boolean Final);
@@ -4553,7 +7008,7 @@ namespace BinaryStudio.Services
         ///        HP_HASHSIZE
         ///      </td>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-        ///        Устанавливается для объекта функции хэширования типа CALG_G28147_IMIT, CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT. В буфер <paramref name="Data"/> записывается величина DWORD, определяющая число байтов имитовставки в диапазоне от 1 до 4, от 1 до 8, от 1 до 16 соответственно. По умолчанию длина имитовставки для объекта хэша CALG_G28147_IMIT равна 4 байтам, для CALG_GR3413_2015_M_IMIT и CALG_GR3413_2015_K_IMIT составляет 4 и 8 байт соответственно.
+        ///        Устанавливается для объекта функции хэширования типа CALG_G28147_IMIT, CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT. В буфер <paramref name="Data"/> записывается величина <see cref="Int32"/>, определяющая число байтов имитовставки в диапазоне от 1 до 4, от 1 до 8, от 1 до 16 соответственно. По умолчанию длина имитовставки для объекта хэша CALG_G28147_IMIT равна 4 байтам, для CALG_GR3413_2015_M_IMIT и CALG_GR3413_2015_K_IMIT составляет 4 и 8 байт соответственно.
         ///      </td>
         ///    </tr>
         ///    <tr>
@@ -4601,7 +7056,7 @@ namespace BinaryStudio.Services
         ///        HP_PBKDF2_COUNT
         ///      </td>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-        ///        Устанавливается для объекта функции хэширования типа CALG_PBKDF2_94_256, CALG_PBKDF2_2012_256 и CALG_PBKDF2_2012_512. В буфер <paramref name="Data"/> записывается величина DWORD, определяющая число итераций алгоритма. По умолчанию количество итераций равно 2000, минимальное допустимое значение параметра 1000.
+        ///        Устанавливается для объекта функции хэширования типа CALG_PBKDF2_94_256, CALG_PBKDF2_2012_256 и CALG_PBKDF2_2012_512. В буфер <paramref name="Data"/> записывается величина <see cref="Int32"/>, определяющая число итераций алгоритма. По умолчанию количество итераций равно 2000, минимальное допустимое значение параметра 1000.
         ///      </td>
         ///    </tr>
         ///    <tr>
@@ -4609,7 +7064,7 @@ namespace BinaryStudio.Services
         ///        HP_PADDING
         ///      </td>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-        ///        Устанавливается для объектов функции хэширования типа CALG_ANSI_X9_19_MAC и CALG_MAC. В буфер <paramref name="Data"/> записывается величина DWORD, определяющая тип выравнивания данных. По умолчанию тип паддинга — ZERO_PADDING, возможен также ISO_IEC_7816_4_PADDING.
+        ///        Устанавливается для объектов функции хэширования типа CALG_ANSI_X9_19_MAC и CALG_MAC. В буфер <paramref name="Data"/> записывается величина <see cref="Int32"/>, определяющая тип выравнивания данных. По умолчанию тип паддинга — ZERO_PADDING, возможен также ISO_IEC_7816_4_PADDING.
         ///      </td>
         ///    </tr>
         ///    <tr>
@@ -4617,7 +7072,7 @@ namespace BinaryStudio.Services
         ///        HP_OPEN
         ///      </td>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-        ///        Если через параметр <paramref name="Data"/> передаётся величина FALSE типа DWORD, производит повторную инициализацию объекта хэша типа CALG_GR3411, CALG_GR3411_HMAC, CALG_GR3411_HMAC34, CALG_G28147_IMIT, CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT, CALG_GR3411_2012_256, CALG_GR3411_2012_512, CALG_GR3411_2012_256_HMAC, CALG_GR3411_2012_512_HMAC в случае, если он закрыт. Если в <paramref name="Data"/> передаётся величина TRUE типа DWORD, закрытый объект функции хэширования типа CALG_GR3411, CALG_GR3411_2012_256, CALG_GR3411_2012_512 или CALG_G28147_IMIT открывается для дальнейшего хэширования данных. Передача в <paramref name="Data"/> величины TRUE для объектов хэша типа CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT приводит к завершению функции с ошибкой NTE_BAD_TYPE.
+        ///        Если через параметр <paramref name="Data"/> передаётся величина FALSE типа <see cref="Int32"/>, производит повторную инициализацию объекта хэша типа CALG_GR3411, CALG_GR3411_HMAC, CALG_GR3411_HMAC34, CALG_G28147_IMIT, CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT, CALG_GR3411_2012_256, CALG_GR3411_2012_512, CALG_GR3411_2012_256_HMAC, CALG_GR3411_2012_512_HMAC в случае, если он закрыт. Если в <paramref name="Data"/> передаётся величина TRUE типа <see cref="Int32"/>, закрытый объект функции хэширования типа CALG_GR3411, CALG_GR3411_2012_256, CALG_GR3411_2012_512 или CALG_G28147_IMIT открывается для дальнейшего хэширования данных. Передача в <paramref name="Data"/> величины TRUE для объектов хэша типа CALG_GR3413_2015_M_IMIT, CALG_GR3413_2015_K_IMIT приводит к завершению функции с ошибкой NTE_BAD_TYPE.
         ///      </td>
         ///    </tr>
         ///    <tr>
@@ -4749,7 +7204,7 @@ namespace BinaryStudio.Services
         ///        NTE_BAD_UID
         ///      </td>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-        ///        The CSP context that was specified when the hKey key was created cannot be found.
+        ///        The CSP context that was specified when the key was created cannot be found.
         ///      </td>
         ///    </tr>
         ///    <tr>
@@ -4927,7 +7382,7 @@ namespace BinaryStudio.Services
         ///        NTE_BAD_UID
         ///      </td>
         ///      <td style="border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;padding:0cm 5.4pt 0cm 5.4pt;">
-        ///        The CSP context that was specified when the hKey key was created cannot be found.
+        ///        The CSP context that was specified when the <paramref name="Key"/> key was created cannot be found.
         ///      </td>
         ///    </tr>
         ///    <tr>
