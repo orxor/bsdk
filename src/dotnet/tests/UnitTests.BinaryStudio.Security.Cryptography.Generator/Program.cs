@@ -120,6 +120,21 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
                         User2,
                         User3
                         });
+                var ProviderName = String.Empty;
+                using (var contextS = CryptographicContext.AcquireContext(ProviderType, CryptographicContextFlags.CRYPT_VERIFYCONTEXT)) {
+                    ProviderName = contextS.ProviderName;
+                    }
+                var IsViPNet = ProviderName.StartsWith("infotecs", StringComparison.OrdinalIgnoreCase);
+                if (IsViPNet) {
+                    var ContainerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),$@"Infotecs\Containers");
+                    if (Directory.Exists(ContainerPath)) {
+                        File.Delete(Path.Combine(ContainerPath,"CN=I-CA"));
+                        File.Delete(Path.Combine(ContainerPath,"CN=R-CA"));
+                        File.Delete(Path.Combine(ContainerPath,"CN=User1"));
+                        File.Delete(Path.Combine(ContainerPath,"CN=User2"));
+                        File.Delete(Path.Combine(ContainerPath,"CN=User3"));
+                        }
+                    }
                 }
             catch (Exception e)
                 {
@@ -414,7 +429,7 @@ namespace UnitTests.BinaryStudio.Security.Cryptography.Generator
         #endif
             {
             UpdateViPNetContainer(Folder,SecureCode,Container,ProviderType,
-                File.ReadAllBytes(Certificate),
+                File.ReadAllBytes(Path.Combine(Folder,Certificate)),
                 Path.GetFileNameWithoutExtension(Certificate));
             }
 

@@ -217,10 +217,10 @@ namespace BinaryStudio.Security.Cryptography
         #endregion
         #region M:DecodeNameString(CryptographicFunctions,{ref}CERT_NAME_BLOB):String
         internal static String DecodeNameString(CryptographicFunctions API,ref CERT_NAME_BLOB source) {
-            var r = API.CertNameToStrW(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, IntPtr.Zero, 0);
+            var r = API.CertNameToStrW(ref source, CERT_X500_NAME_STR, IntPtr.Zero, 0);
             if (r != 0) {
                 using (var buffer = new LocalMemory(r << 1)) {
-                    if (API.CertNameToStrW(X509_ASN_ENCODING, ref source, CERT_X500_NAME_STR, buffer, r) > 0) {
+                    if (API.CertNameToStrW(ref source, CERT_X500_NAME_STR, buffer, r) > 0) {
                         return Marshal.PtrToStringUni(buffer);
                         }
                     }

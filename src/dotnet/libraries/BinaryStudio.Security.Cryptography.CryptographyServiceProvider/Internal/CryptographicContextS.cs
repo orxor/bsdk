@@ -77,16 +77,16 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptSignHash(IntPtr Handle, KEY_SPEC_TYPE KeySpec, Byte[] Signature, ref Int32 Length) { return CryptSignHash(Handle,KeySpec,IntPtr.Zero,0,Signature,ref Length); }
         Boolean CryptographicFunctions.CryptVerifyCertificateSignature(IntPtr Context,Int32 SubjectType,IntPtr Subject,Int32 IssuerType,IntPtr Issuer,Int32 Flags) { return CryptVerifyCertificateSignatureEx(Context,X509_ASN_ENCODING,SubjectType,Subject,IssuerType,Issuer,Flags,IntPtr.Zero); }
         Boolean CryptographicFunctions.CryptVerifySignature(IntPtr Handle, Byte[] Signature, Int32 SignatureSize, IntPtr Key) { return CryptVerifySignature(Handle,Signature,SignatureSize,Key,IntPtr.Zero,0); }
-        Int32 CryptographicFunctions.CertNameToStrA(Int32 CertEncodingType, ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrA(CertEncodingType,ref Name,StrType,psz,csz); }
-        Int32 CryptographicFunctions.CertNameToStrW(Int32 CertEncodingType, ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrW(CertEncodingType,ref Name,StrType,psz,csz); }
+        Int32 CryptographicFunctions.CertNameToStrA(ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrA(X509_ASN_ENCODING,ref Name,StrType,psz,csz); }
+        Int32 CryptographicFunctions.CertNameToStrW(ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrW(X509_ASN_ENCODING,ref Name,StrType,psz,csz); }
         IntPtr CryptographicFunctions.CertAlgIdToOID(ALG_ID Id) { return CertAlgIdToOID(Id); }
-        IntPtr CryptographicFunctions.CertCreateCertificateContext(Int32 CertEncodingType,Byte[] CertEncodedBytes,Int32 CertEncodedLength) { return CertCreateCertificateContext(CertEncodingType,CertEncodedBytes,CertEncodedLength); }
-        IntPtr CryptographicFunctions.CertCreateCRLContext(Int32 CertEncodingType,Byte[] CrlEncodedBytes,Int32 CrlEncodedLength) { return CertCreateCRLContext(CertEncodingType,CrlEncodedBytes,CrlEncodedLength); }
+        IntPtr CryptographicFunctions.CertCreateCertificateContext(Byte[] Source) { return CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Source,Source.Length); }
+        IntPtr CryptographicFunctions.CertCreateCRLContext(Byte[] Source) { return CertCreateCRLContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Source,Source.Length); }
         IntPtr CryptographicFunctions.CertDuplicateCertificateContext(IntPtr CertContext) { return CertDuplicateCertificateContext(CertContext); }
         IntPtr CryptographicFunctions.CertDuplicateCRLContext(IntPtr Context) { return CertDuplicateCRLContext(Context); }
         IntPtr CryptographicFunctions.CertEnumCertificatesInStore(IntPtr CertStore,IntPtr PrevCertContext) { return CertEnumCertificatesInStore(CertStore,PrevCertContext); }
-        IntPtr CryptographicFunctions.CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext) { return CertEnumCRLsInStore(CertStore,PrevCrlContext); }
-        IntPtr CryptographicFunctions.CertFindCertificateInStore(IntPtr CertStore,Int32 CertEncodingType,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext) { return CertFindCertificateInStore(CertStore,CertEncodingType,FindFlags,FindType,FindPara,PrevCertContext); }
+        IntPtr CryptographicFunctions.CertEnumCRLsInStore(IntPtr CertStore,IntPtr PrevCrlContext) { return CertEnumCRLsInStore(CertStore,PrevCrlContext); }
+        IntPtr CryptographicFunctions.CertFindCertificateInStore(IntPtr CertStore,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext) { return CertFindCertificateInStore(CertStore,X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,FindFlags,FindType,FindPara,PrevCertContext); }
         IntPtr CryptographicFunctions.CertGetIssuerCertificateFromStore(IntPtr CertStore,IntPtr SubjectContext,IntPtr PrevIssuerContext,ref Int32 Flags) { return CertGetIssuerCertificateFromStore(CertStore,SubjectContext,PrevIssuerContext,ref Flags); }
         IntPtr CryptographicFunctions.CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, IntPtr Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
         IntPtr CryptographicFunctions.CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, String Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
