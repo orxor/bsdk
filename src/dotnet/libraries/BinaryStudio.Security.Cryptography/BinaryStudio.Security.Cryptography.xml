@@ -759,7 +759,7 @@
         </member>
         <member name="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)">
             <summary>
-            The function closes a certificate store handle and reduces the reference count on the store. There needs to be a corresponding call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> for each successful call to the <see cref="!:CertOpenStore"/> or <see cref="!:CertDuplicateStore"/> functions.
+            The function closes a certificate store handle and reduces the reference count on the store. There needs to be a corresponding call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> for each successful call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertOpenStore(System.IntPtr,System.Int32,System.IntPtr,System.Int32,System.IntPtr)"/> or <see cref="!:CertDuplicateStore"/> functions.
             </summary>
             <param name="Store">Handle of the certificate store to be closed.</param>
             <param name="Flags">
@@ -6897,11 +6897,11 @@
                   CMSG_CTRL_DECRYPT,<br/>CMSG_CTRL_KEY_TRANS_DECRYPT,<br/>CMSG_CTRL_KEY_AGREE_DECRYPT,<br/>or CMSG_CTRL_MAIL_LIST_DECRYPT,<br/>and the streamed enveloped message is being decoded
                 </td>
                 <td>
-                  Decoding will be done as if the streamed content were being decrypted. If any encrypted streamed content has accumulated prior to this call, some or all of the plaintext that results from the decryption of the cipher text is passed back to the application through the callback function specified in the call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> function.
+                  Decoding will be done as if the streamed content were being decrypted. If any encrypted streamed content has accumulated prior to this call, some or all of the plaintext that results from the decryption of the cipher text is passed back to the application through the callback function specified in the call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> function.
                   <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                     <tr>
                       <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
-                        <b>Note:</b> When streaming an enveloped message, the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function is not called until the polling for the availability of the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> succeeds. If the polling does not succeed, an error results. For a description of that polling, see the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> function.
+                        <b>Note:</b> When streaming an enveloped message, the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function is not called until the polling for the availability of the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> succeeds. If the polling does not succeed, an error results. For a description of that polling, see the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> function.
                       </td>
                     </tr>
                   </table>
@@ -6961,7 +6961,7 @@
             If the function succeeds, the return value is nonzero.<br/>
             If the function fails, the return value is zero and the GetLastError function returns an Abstract Syntax Notation One (ASN.1) encoding/decoding error.<br/>
             When a streamed, enveloped message is being decoded, errors encountered in the application-defined callback function specified by the <b>StreamInfo</b> parameter of the
-            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> function might be propagated to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function. If this happens, the <b>SetLastError</b> function is not called by the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function after the callback function returns. This preserves any errors encountered under the control of the application. It is the responsibility of the callback function (or one of the APIs that it calls) to call the <b>SetLastError</b> function if an error occurs while the application is processing the streamed data.<br/>
+            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> function might be propagated to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function. If this happens, the <b>SetLastError</b> function is not called by the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function after the callback function returns. This preserves any errors encountered under the control of the application. It is the responsibility of the callback function (or one of the APIs that it calls) to call the <b>SetLastError</b> function if an error occurs while the application is processing the streamed data.<br/>
             Propagated errors might be encountered from the following functions:
             <list type="bullet">
               <item><see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptCreateHash(System.IntPtr,BinaryStudio.PlatformComponents.Win32.ALG_ID,System.IntPtr,System.IntPtr@)"/></item>
@@ -7142,11 +7142,11 @@
                   CMSG_CTRL_DECRYPT and the streamed enveloped message is being decoded
                 </td>
                 <td>
-                  Decoding will be done as if the streamed content were being decrypted. If any encrypted streamed content has accumulated prior to this call, some or all of the plaintext that results from the decryption of the cipher text is passed back to the application through the callback function specified in the call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> function.
+                  Decoding will be done as if the streamed content were being decrypted. If any encrypted streamed content has accumulated prior to this call, some or all of the plaintext that results from the decryption of the cipher text is passed back to the application through the callback function specified in the call to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> function.
                   <table style="font-family: Arial;width:100%;border-collapse:collapSe;border:solid windowtext 1.0pt;mso-border-alt:solid windowtext .5pt;mso-padding-alt:0cm 5.4pt 0cm 5.4pt; background-color: white;">
                     <tr>
                       <td style="windowtext 1.0pt;padding:0cm 5.4pt 0cm 5.4pt">
-                        <b>Note:</b> When streaming an enveloped message, the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function is not called until the polling for the availability of the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> succeeds. If the polling does not succeed, an error results. For a description of that polling, see the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> function.
+                        <b>Note:</b> When streaming an enveloped message, the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function is not called until the polling for the availability of the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> succeeds. If the polling does not succeed, an error results. For a description of that polling, see the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> function.
                       </td>
                     </tr>
                   </table>
@@ -7158,7 +7158,7 @@
             If the function succeeds, the return value is nonzero.<br/>
             If the function fails, the return value is zero and the GetLastError function returns an Abstract Syntax Notation One (ASN.1) encoding/decoding error.<br/>
             When a streamed, enveloped message is being decoded, errors encountered in the application-defined callback function specified by the <b>StreamInfo</b> parameter of the
-            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> function might be propagated to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function. If this happens, the <b>SetLastError</b> function is not called by the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function after the callback function returns. This preserves any errors encountered under the control of the application. It is the responsibility of the callback function (or one of the APIs that it calls) to call the <b>SetLastError</b> function if an error occurs while the application is processing the streamed data.<br/>
+            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> function might be propagated to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function. If this happens, the <b>SetLastError</b> function is not called by the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> function after the callback function returns. This preserves any errors encountered under the control of the application. It is the responsibility of the callback function (or one of the APIs that it calls) to call the <b>SetLastError</b> function if an error occurs while the application is processing the streamed data.<br/>
             Propagated errors might be encountered from the following functions:
             <list type="bullet">
               <item><see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptCreateHash(System.IntPtr,BinaryStudio.PlatformComponents.Win32.ALG_ID,System.IntPtr,System.IntPtr@)"/></item>
@@ -7583,7 +7583,7 @@
                   <paramref name="Data"/> data type: pointer to a <see cref="T:System.Int32"/>.<br/>
                   Returns the message type of a decoded message of unknown type. The retrieved message type can be
                   compared to supported types to determine whether processing can continued. For supported message types,
-                  see the <b>MessageType</b> parameter of <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/>.
+                  see the <b>MessageType</b> parameter of <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/>.
                 </td>
               </tr>
               <tr>
@@ -7692,7 +7692,7 @@
             <summary>
             The function adds contents to a cryptographic message. The use of this function allows messages to be
             constructed piece by piece through repetitive calls of <b>CryptMsgUpdate</b>. The added message content is
-            either encoded or decoded depending on whether the message was opened with <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/> or <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/>.
+            either encoded or decoded depending on whether the message was opened with <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/> or <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/>.
             </summary>
             <param name="Message">Cryptographic message handle of the message to be updated.</param>
             <param name="Data">A pointer to the buffer holding the data to be encoded or decoded.</param>
@@ -7701,11 +7701,11 @@
             Indicates that the last block of data for encoding or decoding is being processed. Correct usage of this flag
             is dependent upon whether the message being processed has detached data. The inclusion of detached data in
             a message is indicated by setting <b>Flags</b> to <b>CMSG_DETACHED_FLAG</b> in the call to the function that opened the message.<br/>
-            If <b>CMSG_DETACHED_FLAG</b> was not set and the message was opened using either <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> or
-            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/>, <paramref name="Final"/> is set to <b>TRUE</b>, and <b>CryptMsgUpdate</b> is only called once.<br/>
-            If the <b>CMSG_DETACHED_FLAG</b> flag was set and a message is opened using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/>,
+            If <b>CMSG_DETACHED_FLAG</b> was not set and the message was opened using either <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> or
+            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/>, <paramref name="Final"/> is set to <b>TRUE</b>, and <b>CryptMsgUpdate</b> is only called once.<br/>
+            If the <b>CMSG_DETACHED_FLAG</b> flag was set and a message is opened using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/>,
             <paramref name="Final"/> is set to <b>TRUE</b> only on the last call to <b>CryptMsgUpdate</b>.<br/>
-            If the <b>CMSG_DETACHED_FLAG</b> flag was set and a message is opened using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/>,
+            If the <b>CMSG_DETACHED_FLAG</b> flag was set and a message is opened using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/>,
             <paramref name="Final"/> is set to <b>TRUE</b> when the header is processed by a single call to <b>CryptMsgUpdate</b>.
             It is set to <b>FALSE</b> while processing the detached data in subsequent calls to <b>CryptMsgUpdate</b> until
             the last detached data block is to be processed. On the last call to <b>CryptMsgUpdate</b>, it is set to <b>TRUE</b>.<br/>
@@ -7715,8 +7715,8 @@
             <returns>
             If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
             If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.<br/>
-            Errors encountered in the application defined callback function specified by pStreamInfo in <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> and
-            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/> might be propagated to <b>CryptMsgUpdate</b> if streaming is used.
+            Errors encountered in the application defined callback function specified by pStreamInfo in <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> and
+            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/> might be propagated to <b>CryptMsgUpdate</b> if streaming is used.
             If this happens, <b>SetLastError</b> is not called by <b>CryptMsgUpdate</b> after the callback function returns, which preserves any
             errors encountered under the control of the application. It is the responsibility of the callback
             function (or one of the APIs that it calls) to call <b>SetLastError</b> if an error occurs while the application is processing the streamed data.
@@ -7795,7 +7795,7 @@
             <summary>
             The function adds contents to a cryptographic message. The use of this function allows messages to be
             constructed piece by piece through repetitive calls of <b>CryptMsgUpdate</b>. The added message content is
-            either encoded or decoded depending on whether the message was opened with <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/> or <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/>.
+            either encoded or decoded depending on whether the message was opened with <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/> or <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/>.
             </summary>
             <param name="Message">Cryptographic message handle of the message to be updated.</param>
             <param name="Data">A pointer to the buffer holding the data to be encoded or decoded.</param>
@@ -7804,11 +7804,11 @@
             Indicates that the last block of data for encoding or decoding is being processed. Correct usage of this flag
             is dependent upon whether the message being processed has detached data. The inclusion of detached data in
             a message is indicated by setting <b>Flags</b> to <b>CMSG_DETACHED_FLAG</b> in the call to the function that opened the message.<br/>
-            If <b>CMSG_DETACHED_FLAG</b> was not set and the message was opened using either <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> or
-            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/>, <paramref name="Final"/> is set to <b>TRUE</b>, and <b>CryptMsgUpdate</b> is only called once.<br/>
-            If the <b>CMSG_DETACHED_FLAG</b> flag was set and a message is opened using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/>,
+            If <b>CMSG_DETACHED_FLAG</b> was not set and the message was opened using either <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> or
+            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/>, <paramref name="Final"/> is set to <b>TRUE</b>, and <b>CryptMsgUpdate</b> is only called once.<br/>
+            If the <b>CMSG_DETACHED_FLAG</b> flag was set and a message is opened using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/>,
             <paramref name="Final"/> is set to <b>TRUE</b> only on the last call to <b>CryptMsgUpdate</b>.<br/>
-            If the <b>CMSG_DETACHED_FLAG</b> flag was set and a message is opened using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/>,
+            If the <b>CMSG_DETACHED_FLAG</b> flag was set and a message is opened using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/>,
             <paramref name="Final"/> is set to <b>TRUE</b> when the header is processed by a single call to <b>CryptMsgUpdate</b>.
             It is set to <b>FALSE</b> while processing the detached data in subsequent calls to <b>CryptMsgUpdate</b> until
             the last detached data block is to be processed. On the last call to <b>CryptMsgUpdate</b>, it is set to <b>TRUE</b>.<br/>
@@ -7818,8 +7818,8 @@
             <returns>
             If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
             If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.<br/>
-            Errors encountered in the application defined callback function specified by pStreamInfo in <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr,System.IntPtr)"/> and
-            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_MSG_TYPE,BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/> might be propagated to <b>CryptMsgUpdate</b> if streaming is used.
+            Errors encountered in the application defined callback function specified by pStreamInfo in <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/> and
+            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)"/> might be propagated to <b>CryptMsgUpdate</b> if streaming is used.
             If this happens, <b>SetLastError</b> is not called by <b>CryptMsgUpdate</b> after the callback function returns, which preserves any
             errors encountered under the control of the application. It is the responsibility of the callback
             function (or one of the APIs that it calls) to call <b>SetLastError</b> if an error occurs while the application is processing the streamed data.
@@ -10735,7 +10735,7 @@
                 <td>
                   Data type of <paramref name="FindPara"/>: <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> structure.<br/>
                   Searches for a certificate with a subject that matches the issuer in <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/>.<br/>
-                  Instead of using <b>CertFindCertificateInStore</b> with this value, use the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateChain(System.IntPtr,System.IntPtr,System.Runtime.InteropServices.ComTypes.FILETIME@,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_PARA@,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_FLAGS,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_CONTEXT**)"/> function.
+                  Instead of using <b>CertFindCertificateInStore</b> with this value, use the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateChain(System.IntPtr,System.IntPtr,System.Runtime.InteropServices.ComTypes.FILETIME@,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_PARA@,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_FLAGS,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_CONTEXT**)"/> function.
                 </td>
               </tr>
               <tr>
@@ -11034,6 +11034,2106 @@
                 </td>
               </tr>
             </table>
+            </returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertOpenStore(System.IntPtr,System.Int32,System.IntPtr,System.Int32,System.IntPtr)">
+            <summary>
+            This function opens a certificate store by using a specified store provider type. While this function can open a certificate store for most purposes, <see cref="!:CertOpenSystemStore"/> is recommended to open the most common certificate stores.
+            <b>CertOpenStore</b> is required for more complex options and special cases.
+            </summary>
+            <param name="StoreProvider">
+            A pointer to a null-terminated ANSI string that contains the store provider type.<br/>
+            The following values represent the predefined store types.
+            The store provider type determines the contents of the <paramref name="Para"/> parameter and the use and meaning of the high word of the <paramref name="Flags"/> parameter.
+            Additional store providers can be installed or registered by using the <see cref="!:CryptInstallOIDFunctionAddress"/> or <see cref="!:CryptRegisterOIDFunction"/> function.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_COLLECTION<br/>
+                  sz_CERT_STORE_PROV_COLLECTION
+                </td>
+                <td>
+                  Opens a store that will be a collection of other stores.
+                  Stores are added to or removed from the collection by using <see cref="!:CertAddStoreToCollection"/> and <see cref="!:CertRemoveStoreFromCollection"/>.
+                  When a store is added to a collection, all certificates, CRLs, and CTLs in that store become available to searches or enumerations of the collection store.<br/>
+                  The high word of <paramref name="Flags"/> is set to zero.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter must be <b>NULL</b>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_FILE
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs read from a specified open file.
+                  This provider expects the file to contain only a serialized store and not either PKCS #7 signed messages or a single encoded certificate.<br/>
+                  The file pointer must be positioned at the beginning of the serialized store information.
+                  After the data in the serialized store has been loaded into the certificate store, the file pointer is positioned at the beginning of any data that can follow the serialized store data in the file.
+                  If <b>CERT_FILE_STORE_COMMIT_ENABLE</b> is set in <paramref name="Flags"/>, the file handle is duplicated and the store is always committed as a serialized store.
+                  The file is not closed when the store is closed.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter must contain a pointer to the handle of a file opened by using <a href="https://learn.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-createfilea">CreateFile</a>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_FILENAME_A
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a file.
+                  The provider opens the file and first attempts to read the file as a serialized store, then as a PKCS #7 signed message, and finally as a single encoded certificate.<br/>
+                  The <paramref name="EncodingType"/> parameter must contain the encoding types to be used with both messages and certificates.
+                  If the file contains an X.509 encoded certificate, the open operation fails and a call to the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function will return <b>ERROR_ACCESS_DENIED</b>.
+                  If the <b>CERT_FILE_STORE_COMMIT_ENABLE</b> flag is set in <paramref name="Flags"/>, the <b>dwCreationDisposition</b> value passed to <b>CreateFile</b> is as follows:
+                  <list type="bullet">
+                    <item>If the <b>CERT_STORE_CREATE_NEW_FLAG</b> flag is set, <b>CreateFile</b> uses <b>CREATE_NEW</b>.</item>
+                    <item>If the <b>CERT_STORE_OPEN_EXISTING_FLAG</b> flag is set, <b>CreateFile</b> uses <b>OPEN_EXISTING</b>.</item>
+                    <item>For all other settings of <paramref name="Flags"/>, <b>CreateFile</b> uses <b>OPEN_ALWAYS</b>.</item>
+                  </list>
+                  If <paramref name="Flags"/> includes <b>CERT_FILE_STORE_COMMIT_ENABLE</b>, the file is committed as either a PKCS #7 or a serialized store depending on the file type opened.
+                  If the file was empty or if the file name has either a .p7c or .spc extension, the file is committed as a PKCS #7.
+                  Otherwise, the file is committed as a serialized store.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter must contain a pointer to null-terminated ANSI string that contains the name of an existing, unopened file.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_FILENAME(_W)<br/>
+                  sz_CERT_STORE_PROV_FILENAME(_W)
+                </td>
+                <td>
+                  Same as <b>CERT_STORE_PROV_FILENAME_A</b>.
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter must contain a pointer to null-terminated Unicode string that contains the name of an existing, unopened file.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_LDAP(_W)<br/>
+                  sz_CERT_STORE_PROV_LDAP(_W)
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from the results of an LDAP query.<br/>
+                  To perform write operations on the store, the query string must specify a BASE query with no filter and a single attribute.<br/>
+                  <b><paramref name="Para"/> value</b>: If the <paramref name="Flags"/> parameter contains <b>CERT_LDAP_STORE_OPENED_FLAG</b>, set <paramref name="Para"/> to the address of a <b>CERT_LDAP_STORE_OPENED_PARA</b> structure that specifies the established LDAP session to use.<br/>
+                  Otherwise, set <paramref name="Para"/> to point to a null-terminated Unicode string that contains the LDAP query string.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_MEMORY<br/>
+                  sz_CERT_STORE_PROV_MEMORY
+                </td>
+                <td>
+                  Creates a certificate store in cached memory.
+                  No certificates, certificate revocation lists (CRLs), or certificate trust lists (CTLs) are initially loaded into the store.
+                  Typically used to create a temporary store.<br/>
+                  Any addition of certificates, CRLs, or CTLs or changes in properties of certificates, CRLs, or CTLs in a memory store are not automatically saved.
+                  They can be saved to a file or to a memory BLOB by using <see cref="!:CertSaveStore"/>.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter is not used.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_MSG
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from the specified cryptographic message.
+                  The <paramref name="EncodingType"/> parameter must contain the encoding types used with both messages and certificates.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter contains an <b>HCRYPTMSG</b> handle of the encoded message, returned by a call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_PHYSICAL(_W)<br/>
+                  sz_CERT_STORE_PROV_PHYSICAL(_W)
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a specified physical store that is a member of a logical system store.<br/>
+                  Two names are separated with an intervening backslash (\), for example "Root.Default".
+                  Here, "Root" is the name of the system store and ".Default" is the name of the physical store.
+                  The system and physical store names cannot contain any backslashes.
+                  The high word of dwFlags indicates the system store location, usually <b>CERT_SYSTEM_STORE_CURRENT_USER</b>.
+                  Some physical store locations can be opened remotely.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated Unicode string that contains both the system store name and physical names.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_PKCS7<br/>
+                  sz_CERT_STORE_PROV_PKCS7
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from an encoded PKCS #7 signed message.
+                  The <paramref name="EncodingType"/> parameter must specify the encoding types to be used with both messages and certificates.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure that represents the encoded message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_PKCS12<br/>
+                  sz_CERT_STORE_PROV_PKCS12
+                </td>
+                <td>
+                  Initializes the store with the contents of a PKCS #12 packet.<br/>
+                  If the PKCS #12 packet is protected with a NULL or empty password, this function will succeed in opening the store.<br/>
+                  Beginning with Windows 8 and Windows Server 2012, if the password embedded in the PFX packet was protected to an Active Directory (AD) principal and the current user, as a member of that principal, has permission to decrypt the password, this function will succeed in opening the store.
+                  For more information, see the <paramref name="Para"/> parameter and the <b>PKCS12_PROTECT_TO_DOMAIN_SIDS</b> flag of the <see cref="!:PFXExportCertStoreEx"/> function.<br/>
+                  You can protect PFX passwords to an AD principal beginning in Windows 8 and Windows Server 2012.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure that represents the PKCS #12 packet.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_REG
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a registry subkey.<br/>
+                  This provider opens or creates the registry subkeys Certificates, CRLs, and CTLs under the key passed in <paramref name="Para"/>.
+                  The input key is not closed by the provider.
+                  Before returning, the provider opens its own copy of the key passed in <paramref name="Para"/>.
+                  If <b>CERT_STORE_READONLY_FLAG</b> is set in the low word of dwFlags, registry subkeys are opened by using the <b>RegOpenKey</b> with <b>KEY_READ_ACCESS</b>.
+                  Otherwise, registry subkeys are created by using <b>RegCreateKey</b> with <b>KEY_ALL_ACCESS</b>.
+                  Any changes to the contents of the opened store are immediately persisted to the registry.
+                  However, if <b>CERT_STORE_READONLY_FLAG</b> is set in the low word of dwFlags, any attempt to add to the contents of the store or to change a context's property results in an error with <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returning the <b>E_ACCESSDENIED</b> code.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter contains the handle of an open registry key.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SERIALIZED<br/>
+                  sz_CERT_STORE_PROV_SERIALIZED
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a memory location that contains a serialized store.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure that contains the serialized memory BLOB.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SMART_CARD(_W)<br/>
+                  sz_CERT_STORE_PROV_SMART_CARD(_W)
+                </td>
+                <td>
+                  Not currently used.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SYSTEM_A
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from the specified system store.<br/>
+                  The system store is a logical, collection store that consists of one or more physical stores.
+                  A physical store associated with a system store is registered with the <b>CertRegisterPhysicalStore</b> function.
+                  After the system store is opened, all of the physical stores that are associated with it are also opened by calls to <b>CertOpenStore</b> and are added to the system store collection by using the <see cref="!:CertAddStoreToCollection"/> function.
+                  The high word of <paramref name="Flags"/> indicates the system store location, usually set to <b>CERT_SYSTEM_STORE_CURRENT_USER</b>.
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated ANSI string that contains a system store name, such as "My" or "Root".
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SYSTEM(_W)<br/>
+                  sz_CERT_STORE_PROV_SYSTEM(_W)
+                </td>
+                <td>
+                  Same as <b>CERT_STORE_PROV_SYSTEM_A</b>.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated Unicode string that contains a system store name, such as "My" or "Root".
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SYSTEM_REGISTRY_A
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a physical registry store.
+                  The physical store is not opened as a collection store.
+                  Enumerations and searches go through only the certificates, CRLs, and CTLs in that one physical store.<br/>
+                  The high word of <paramref name="Flags"/> indicates the system store location, usually set to <b>CERT_SYSTEM_STORE_CURRENT_USER</b>.
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated ANSI string that contains a system store name, such as "My" or "Root".
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SYSTEM_REGISTRY(_W)<br/>
+                  sz_CERT_STORE_PROV_SYSTEM_REGISTRY(_W)
+                </td>
+                <td>
+                  Same as <b>CERT_STORE_PROV_SYSTEM_REGISTRY_A</b>.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated Unicode string that contains a system store name, such as "My" or "Root".
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="EncodingType">
+            Specifies the certificate encoding type and message encoding type.
+            Encoding is used only when the <b>dwSaveAs</b> parameter of the <see cref="!:CertSaveStore"/> function contains <b>CERT_STORE_SAVE_AS_PKCS7</b>.
+            Otherwise, the <paramref name="EncodingType"/> parameter is not used.<br/>
+            This parameter is only applicable when the <b>CERT_STORE_PROV_MSG</b>, <b>CERT_STORE_PROV_PKCS7</b>, or <b>CERT_STORE_PROV_FILENAME</b> provider type is specified in the <paramref name="StoreProvider"/> parameter.
+            For all other provider types, this parameter is unused and should be set to zero.<br/>
+            This parameter can be a combination of one or more of the following values.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  PKCS_7_ASN_ENCODING
+                </td>
+                <td>
+                  Specifies PKCS #7 message encoding.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  X509_ASN_ENCODING
+                </td>
+                <td>
+                  Specifies X.509 certificate encoding.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Context">
+            This parameter is not used and should be set to NULL.<br/>
+            <b>Windows Server 2003 and Windows XP</b>: A handle to a cryptographic provider.
+            Passing <b>NULL</b> for this parameter causes an appropriate, default provider to be used.
+            Using the default provider is recommended.
+            The default or specified cryptographic provider is used for all store functions that verify the signature of a subject certificate or CRL.
+            This parameter's data type is <b>HCRYPTPROV</b>.
+            </param>
+            <param name="Flags">
+            These values consist of high-word and low-word values combined by using a bitwise-<b>OR</b> operation.<br/>
+            The low-word portion of dwFlags controls a variety of general characteristics of the certificate store opened.
+            This portion can be used with all store provider types.
+            The low-word portion of <paramref name="Flags"/> can be one of the following values.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_BACKUP_RESTORE_FLAG
+                </td>
+                <td>
+                  Use the thread's SE_BACKUP_NAME and SE_RESTORE_NAME privileges to open registry or file-based system stores.
+                  If the thread does not have these privileges, this function must fail with an access denied error.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_CREATE_NEW_FLAG
+                </td>
+                <td>
+                  A new store is created if one did not exist. The function fails if the store already exists.<br/>
+                  If neither <b>CERT_STORE_OPEN_EXISTING_FLAG</b> nor <b>CERT_STORE_CREATE_NEW_FLAG</b> is set, a store is opened if it exists or is created and opened if it did not already exist.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG
+                </td>
+                <td>
+                  Defer closing of the store's provider until all certificates, CRLs, or CTLs obtained from the store are no longer in use.
+                  The store is actually closed when the last certificate, CRL, or CTL obtained from the store is freed.
+                  Any changes made to properties of these certificates, CRLs, and CTLs, even after the call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/>, are persisted.<br/>
+                  If this flag is not set and certificates, CRLs, or CTLs obtained from the store are still in use, any changes to the properties of those certificates, CRLs, and CTLs will not be persisted.<br/>
+                  If this function is called with <b>CERT_CLOSE_STORE_FORCE_FLAG</b>, <b>CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG</b> is ignored.<br/>
+                  When this flag is set and a non-<b>NULL</b> <paramref name="Context"/> parameter value is passed, that provider will continue to be used even after the call to this function.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_DELETE_FLAG
+                </td>
+                <td>
+                  The store is deleted instead of being opened.
+                  This function returns <b>NULL</b> for both success and failure of the deletion.
+                  To determine the success of the deletion, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>, which returns zero if the store was deleted and a nonzero value if it was not deleted.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_ENUM_ARCHIVED_FLAG
+                </td>
+                <td>
+                  Normally, an enumeration of all certificates in the store will ignore any certificate with the <b>CERT_ARCHIVED_PROP_ID</b> property set.
+                  If this flag is set, an enumeration of the certificates in the store will contain all of the certificates in the store, including those that have the <b>CERT_ARCHIVED_PROP_ID</b> property.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_MAXIMUM_ALLOWED_FLAG
+                </td>
+                <td>
+                  Open the store with the maximum set of allowed permissions.
+                  If this flag is specified, registry stores are first opened with write access and if that fails, they are reopened with read-only access.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_NO_CRYPT_RELEASE_FLAG
+                </td>
+                <td>
+                  This flag is not used when the <paramref name="Context"/> parameter is <b>NULL</b>.
+                  This flag is only valid when a non-<b>NULL</b> CSP handle is passed as the <paramref name="Context"/> parameter.
+                  Setting this flag prevents the automatic release of a nondefault CSP when the certificate store is closed.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_OPEN_EXISTING_FLAG
+                </td>
+                <td>
+                  Only open an existing store. If the store does not exist, the function fails.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_READONLY_FLAG
+                </td>
+                <td>
+                  Open the store in read-only mode.
+                  Any attempt to change the contents of the store will result in an error.
+                  When this flag is set and a registry based store provider is being used, the registry subkeys are opened by using <b>RegOpenKey</b> with <b>KEY_READ_ACCESS</b>.
+                  Otherwise, the registry subkeys are created by using <b>RegCreateKey</b> with <b>KEY_ALL_ACCESS</b>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_SET_LOCALIZED_NAME_FLAG
+                </td>
+                <td>
+                  If this flag is supported, the provider sets the store's <b>CERT_STORE_LOCALIZED_NAME_PROP_ID</b> property.
+                  The localized name can be retrieved by calling the <see cref="!:CertGetStoreProperty"/> function with <b>dwPropID</b> set to <b>CERT_STORE_LOCALIZED_NAME_PROP_ID</b>.
+                  This flag is supported for providers of types <b>CERT_STORE_PROV_FILENAME</b>, <b>CERT_STORE_PROV_SYSTEM</b>, <b>CERT_STORE_PROV_SYSTEM_REGISTRY</b>, and <b>CERT_STORE_PROV_PHYSICAL_W</b>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_SHARE_CONTEXT_FLAG
+                </td>
+                <td>
+                  When opening a store multiple times, you can set this flag to ensure efficient memory usage by reusing the memory for the encoded parts of a certificate, CRL, or CTL context across the opened instances of the stores.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_UPDATE_KEYID_FLAG
+                </td>
+                <td>
+                  Lists of key identifiers exist within <b>CurrentUser</b> and <b>LocalMachine</b>.
+                  These key identifiers have properties much like the properties of certificates.
+                  If the <b>CERT_STORE_UPDATE_KEYID_FLAG</b> is set, then for every key identifier in the store's location that has a <b>CERT_KEY_PROV_INFO_PROP_ID</b> property, that property is automatically updated from the key identifier property <b>CERT_KEY_PROV_INFO_PROP_ID</b> or the <b>CERT_KEY_IDENTIFIER_PROP_ID</b> of the certificate related to that key identifier.
+                </td>
+              </tr>
+            </table>
+            The <b>CERT_STORE_PROV_SYSTEM</b>, <b>CERT_STORE_PROV_SYSTEM_REGISTRY</b>, and <b>CERT_STORE_PROV_PHYSICAL</b> provider types use the following high words of <paramref name="Flags"/> to specify system store registry locations:
+            <list type="bullet">
+              <item>CERT_SYSTEM_STORE_CURRENT_SERVICE</item>
+              <item>CERT_SYSTEM_STORE_CURRENT_USER</item>
+              <item>CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY</item>
+              <item>CERT_SYSTEM_STORE_LOCAL_MACHINE</item>
+              <item>CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE</item>
+              <item>CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY</item>
+              <item>CERT_SYSTEM_STORE_SERVICES</item>
+              <item>CERT_SYSTEM_STORE_USERS</item>
+            </list>
+            By default, a system store location is opened relative to the <b>HKEY_CURRENT_USER</b>, <b>HKEY_LOCAL_MACHINE</b>, or <b>HKEY_USERS</b> predefined registry key.<br/>
+            The following high-word flags override this default behavior.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_SYSTEM_STORE_RELOCATE_FLAG
+                </td>
+                <td>
+                  When set, <paramref name="Para"/> must contain a pointer to a <see cref="!:CERT_SYSTEM_STORE_RELOCATE_PARA"/> structure rather than a string.
+                  The structure indicates both the name of the store and its location in the registry.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_SYSTEM_STORE_UNPROTECTED_FLAG
+                </td>
+                <td>
+                  By default, when the CurrentUser "Root" store is opened, any SystemRegistry roots not on the protected root list are deleted from the cache before this function returns.
+                  When this flag is set, this default is overridden and all of the roots in the SystemRegistry are returned and no check of the protected root list is made.
+                </td>
+              </tr>
+            </table>
+            The <b>CERT_STORE_PROV_REGISTRY</b> provider uses the following high-word flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_REGISTRY_STORE_REMOTE_FLAG
+                </td>
+                <td>
+                  <paramref name="Para"/> contains a handle to a registry key on a remote computer.
+                  To access a registry key on a remote computer, security permissions on the remote computer must be set to allow access.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_REGISTRY_STORE_SERIALIZED_FLAG
+                </td>
+                <td>
+                  The <b>CERT_STORE_PROV_REG</b> provider saves certificates, CRLs, and CTLs in a single serialized store subkey instead of performing the default save operation.
+                  The default is that each certificate, CRL, or CTL is saved as a separate registry subkey under the appropriate subkey.<br/>
+                  This flag is mainly used for stores downloaded from the group policy template (GPT), such as the CurrentUserGroupPolicy and LocalMachineGroupPolicy stores.<br/>
+                  When <b>CERT_REGISTRY_STORE_SERIALIZED_FLAG</b> is set, store additions, deletions, or property changes are not persisted until there is a call to either <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> or <see cref="!:CertControlStore"/> using <b>CERT_STORE_CTRL_COMMIT</b>.
+                </td>
+              </tr>
+            </table>
+            The <b>CERT_STORE_PROV_FILE</b> and <b>CERT_STORE_PROV_FILENAME</b> provider types use the following high-word flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_FILE_STORE_COMMIT_ENABLE
+                </td>
+                <td>
+                  Setting this flag commits any additions to the store or any changes made to properties of contexts in the store to the file store either when <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> is called or when <see cref="!:CertControlStore"/> is called with <b>CERT_STORE_CONTROL_COMMIT</b>.<br/>
+                  <b>CertOpenStore</b> fails with <b>E_INVALIDARG</b> if both <b>CERT_FILE_STORE_COMMIT_ENABLE</b> and <b>CERT_STORE_READONLY_FLAG</b> are set in <paramref name="Flags"/>.
+                </td>
+              </tr>
+            </table>
+            The <b>CERT_STORE_PROV_LDAP</b> provider type uses the following high-word flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_LDAP_STORE_AREC_EXCLUSIVE_FLAG
+                </td>
+                <td>
+                  Performs an A-Record-only DNS lookup on the URL named in the <paramref name="Para"/> parameter.
+                  This prevents false DNS queries from being generated when resolving URL host names.
+                  Use this flag when passing a host name as opposed to a domain name for the <paramref name="Para"/> parameter.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_LDAP_STORE_OPENED_FLAG
+                </td>
+                <td>
+                  Use this flag to use an existing LDAP session.
+                  When this flag is specified, the <paramref name="Para"/> parameter is the address of a <b>CERT_LDAP_STORE_OPENED_PARA</b> structure that contains information about the LDAP session to use.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_LDAP_STORE_SIGN_FLAG
+                </td>
+                <td>
+                  To provide integrity required by some applications, digitally sign all LDAP traffic to and from an LDAP server by using the Kerberos authentication protocol.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_LDAP_STORE_UNBIND_FLAG
+                </td>
+                <td>
+                  Use this flag with the <b>CERT_LDAP_STORE_OPENED_FLAG</b> flag to cause the LDAP session to be unbound when the store is closed.
+                  The system will unbind the LDAP session by using the <a href="https://learn.microsoft.com/en-us/previous-versions/windows/desktop/api/winldap/nf-winldap-ldap_unbind">ldap_unbind</a> function when the store is closed.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Para">
+            A 32-bit value that can contain additional information for this function.
+            The contents of this parameter depends on the value of the <paramref name="StoreProvider"/> and other parameters.
+            </param>
+            <returns>
+            If the function succeeds, the function returns a handle to the certificate store.
+            When you have finished using the store, release the handle by calling the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> function.<br/>
+            If the function fails, it returns <b>NULL</b>. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.
+            <div class="note">
+              <b>Note</b>:
+              <b>CreateFile</b>, <b>ReadFile</b>, or registry errors might be propagated and their error codes returned.
+              <b>CertOpenStore</b> has a single error code of its own, the <b>ERROR_FILE_NOT_FOUND</b> code, which indicates that the function was unable to find the provider specified by the <paramref name="StoreProvider"/> parameter.
+            </div>
+            </returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertOpenStore(System.IntPtr,System.Int32,System.IntPtr,System.Int32,System.String)">
+            <summary>
+            This function opens a certificate store by using a specified store provider type. While this function can open a certificate store for most purposes, <see cref="!:CertOpenSystemStore"/> is recommended to open the most common certificate stores.
+            <b>CertOpenStore</b> is required for more complex options and special cases.
+            </summary>
+            <param name="StoreProvider">
+            A pointer to a null-terminated ANSI string that contains the store provider type.<br/>
+            The following values represent the predefined store types.
+            The store provider type determines the contents of the <paramref name="Para"/> parameter and the use and meaning of the high word of the <paramref name="Flags"/> parameter.
+            Additional store providers can be installed or registered by using the <see cref="!:CryptInstallOIDFunctionAddress"/> or <see cref="!:CryptRegisterOIDFunction"/> function.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_COLLECTION<br/>
+                  sz_CERT_STORE_PROV_COLLECTION
+                </td>
+                <td>
+                  Opens a store that will be a collection of other stores.
+                  Stores are added to or removed from the collection by using <see cref="!:CertAddStoreToCollection"/> and <see cref="!:CertRemoveStoreFromCollection"/>.
+                  When a store is added to a collection, all certificates, CRLs, and CTLs in that store become available to searches or enumerations of the collection store.<br/>
+                  The high word of <paramref name="Flags"/> is set to zero.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter must be <b>NULL</b>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_FILE
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs read from a specified open file.
+                  This provider expects the file to contain only a serialized store and not either PKCS #7 signed messages or a single encoded certificate.<br/>
+                  The file pointer must be positioned at the beginning of the serialized store information.
+                  After the data in the serialized store has been loaded into the certificate store, the file pointer is positioned at the beginning of any data that can follow the serialized store data in the file.
+                  If <b>CERT_FILE_STORE_COMMIT_ENABLE</b> is set in <paramref name="Flags"/>, the file handle is duplicated and the store is always committed as a serialized store.
+                  The file is not closed when the store is closed.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter must contain a pointer to the handle of a file opened by using <a href="https://learn.microsoft.com/en-us/windows/desktop/api/fileapi/nf-fileapi-createfilea">CreateFile</a>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_FILENAME_A
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a file.
+                  The provider opens the file and first attempts to read the file as a serialized store, then as a PKCS #7 signed message, and finally as a single encoded certificate.<br/>
+                  The <paramref name="EncodingType"/> parameter must contain the encoding types to be used with both messages and certificates.
+                  If the file contains an X.509 encoded certificate, the open operation fails and a call to the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function will return <b>ERROR_ACCESS_DENIED</b>.
+                  If the <b>CERT_FILE_STORE_COMMIT_ENABLE</b> flag is set in <paramref name="Flags"/>, the <b>dwCreationDisposition</b> value passed to <b>CreateFile</b> is as follows:
+                  <list type="bullet">
+                    <item>If the <b>CERT_STORE_CREATE_NEW_FLAG</b> flag is set, <b>CreateFile</b> uses <b>CREATE_NEW</b>.</item>
+                    <item>If the <b>CERT_STORE_OPEN_EXISTING_FLAG</b> flag is set, <b>CreateFile</b> uses <b>OPEN_EXISTING</b>.</item>
+                    <item>For all other settings of <paramref name="Flags"/>, <b>CreateFile</b> uses <b>OPEN_ALWAYS</b>.</item>
+                  </list>
+                  If <paramref name="Flags"/> includes <b>CERT_FILE_STORE_COMMIT_ENABLE</b>, the file is committed as either a PKCS #7 or a serialized store depending on the file type opened.
+                  If the file was empty or if the file name has either a .p7c or .spc extension, the file is committed as a PKCS #7.
+                  Otherwise, the file is committed as a serialized store.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter must contain a pointer to null-terminated ANSI string that contains the name of an existing, unopened file.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_FILENAME(_W)<br/>
+                  sz_CERT_STORE_PROV_FILENAME(_W)
+                </td>
+                <td>
+                  Same as <b>CERT_STORE_PROV_FILENAME_A</b>.
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter must contain a pointer to null-terminated Unicode string that contains the name of an existing, unopened file.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_LDAP(_W)<br/>
+                  sz_CERT_STORE_PROV_LDAP(_W)
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from the results of an LDAP query.<br/>
+                  To perform write operations on the store, the query string must specify a BASE query with no filter and a single attribute.<br/>
+                  <b><paramref name="Para"/> value</b>: If the <paramref name="Flags"/> parameter contains <b>CERT_LDAP_STORE_OPENED_FLAG</b>, set <paramref name="Para"/> to the address of a <b>CERT_LDAP_STORE_OPENED_PARA</b> structure that specifies the established LDAP session to use.<br/>
+                  Otherwise, set <paramref name="Para"/> to point to a null-terminated Unicode string that contains the LDAP query string.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_MEMORY<br/>
+                  sz_CERT_STORE_PROV_MEMORY
+                </td>
+                <td>
+                  Creates a certificate store in cached memory.
+                  No certificates, certificate revocation lists (CRLs), or certificate trust lists (CTLs) are initially loaded into the store.
+                  Typically used to create a temporary store.<br/>
+                  Any addition of certificates, CRLs, or CTLs or changes in properties of certificates, CRLs, or CTLs in a memory store are not automatically saved.
+                  They can be saved to a file or to a memory BLOB by using <see cref="!:CertSaveStore"/>.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter is not used.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_MSG
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from the specified cryptographic message.
+                  The <paramref name="EncodingType"/> parameter must contain the encoding types used with both messages and certificates.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter contains an <b>HCRYPTMSG</b> handle of the encoded message, returned by a call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)"/>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_PHYSICAL(_W)<br/>
+                  sz_CERT_STORE_PROV_PHYSICAL(_W)
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a specified physical store that is a member of a logical system store.<br/>
+                  Two names are separated with an intervening backslash (\), for example "Root.Default".
+                  Here, "Root" is the name of the system store and ".Default" is the name of the physical store.
+                  The system and physical store names cannot contain any backslashes.
+                  The high word of dwFlags indicates the system store location, usually <b>CERT_SYSTEM_STORE_CURRENT_USER</b>.
+                  Some physical store locations can be opened remotely.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated Unicode string that contains both the system store name and physical names.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_PKCS7<br/>
+                  sz_CERT_STORE_PROV_PKCS7
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from an encoded PKCS #7 signed message.
+                  The <paramref name="EncodingType"/> parameter must specify the encoding types to be used with both messages and certificates.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure that represents the encoded message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_PKCS12<br/>
+                  sz_CERT_STORE_PROV_PKCS12
+                </td>
+                <td>
+                  Initializes the store with the contents of a PKCS #12 packet.<br/>
+                  If the PKCS #12 packet is protected with a NULL or empty password, this function will succeed in opening the store.<br/>
+                  Beginning with Windows 8 and Windows Server 2012, if the password embedded in the PFX packet was protected to an Active Directory (AD) principal and the current user, as a member of that principal, has permission to decrypt the password, this function will succeed in opening the store.
+                  For more information, see the <paramref name="Para"/> parameter and the <b>PKCS12_PROTECT_TO_DOMAIN_SIDS</b> flag of the <see cref="!:PFXExportCertStoreEx"/> function.<br/>
+                  You can protect PFX passwords to an AD principal beginning in Windows 8 and Windows Server 2012.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure that represents the PKCS #12 packet.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_REG
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a registry subkey.<br/>
+                  This provider opens or creates the registry subkeys Certificates, CRLs, and CTLs under the key passed in <paramref name="Para"/>.
+                  The input key is not closed by the provider.
+                  Before returning, the provider opens its own copy of the key passed in <paramref name="Para"/>.
+                  If <b>CERT_STORE_READONLY_FLAG</b> is set in the low word of dwFlags, registry subkeys are opened by using the <b>RegOpenKey</b> with <b>KEY_READ_ACCESS</b>.
+                  Otherwise, registry subkeys are created by using <b>RegCreateKey</b> with <b>KEY_ALL_ACCESS</b>.
+                  Any changes to the contents of the opened store are immediately persisted to the registry.
+                  However, if <b>CERT_STORE_READONLY_FLAG</b> is set in the low word of dwFlags, any attempt to add to the contents of the store or to change a context's property results in an error with <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> returning the <b>E_ACCESSDENIED</b> code.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter contains the handle of an open registry key.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SERIALIZED<br/>
+                  sz_CERT_STORE_PROV_SERIALIZED
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a memory location that contains a serialized store.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_BLOB"/> structure that contains the serialized memory BLOB.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SMART_CARD(_W)<br/>
+                  sz_CERT_STORE_PROV_SMART_CARD(_W)
+                </td>
+                <td>
+                  Not currently used.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SYSTEM_A
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from the specified system store.<br/>
+                  The system store is a logical, collection store that consists of one or more physical stores.
+                  A physical store associated with a system store is registered with the <b>CertRegisterPhysicalStore</b> function.
+                  After the system store is opened, all of the physical stores that are associated with it are also opened by calls to <b>CertOpenStore</b> and are added to the system store collection by using the <see cref="!:CertAddStoreToCollection"/> function.
+                  The high word of <paramref name="Flags"/> indicates the system store location, usually set to <b>CERT_SYSTEM_STORE_CURRENT_USER</b>.
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated ANSI string that contains a system store name, such as "My" or "Root".
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SYSTEM(_W)<br/>
+                  sz_CERT_STORE_PROV_SYSTEM(_W)
+                </td>
+                <td>
+                  Same as <b>CERT_STORE_PROV_SYSTEM_A</b>.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated Unicode string that contains a system store name, such as "My" or "Root".
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SYSTEM_REGISTRY_A
+                </td>
+                <td>
+                  Initializes the store with certificates, CRLs, and CTLs from a physical registry store.
+                  The physical store is not opened as a collection store.
+                  Enumerations and searches go through only the certificates, CRLs, and CTLs in that one physical store.<br/>
+                  The high word of <paramref name="Flags"/> indicates the system store location, usually set to <b>CERT_SYSTEM_STORE_CURRENT_USER</b>.
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated ANSI string that contains a system store name, such as "My" or "Root".
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_PROV_SYSTEM_REGISTRY(_W)<br/>
+                  sz_CERT_STORE_PROV_SYSTEM_REGISTRY(_W)
+                </td>
+                <td>
+                  Same as <b>CERT_STORE_PROV_SYSTEM_REGISTRY_A</b>.<br/>
+                  <b><paramref name="Para"/> value</b>: The <paramref name="Para"/> parameter points to a null-terminated Unicode string that contains a system store name, such as "My" or "Root".
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="EncodingType">
+            Specifies the certificate encoding type and message encoding type.
+            Encoding is used only when the <b>dwSaveAs</b> parameter of the <see cref="!:CertSaveStore"/> function contains <b>CERT_STORE_SAVE_AS_PKCS7</b>.
+            Otherwise, the <paramref name="EncodingType"/> parameter is not used.<br/>
+            This parameter is only applicable when the <b>CERT_STORE_PROV_MSG</b>, <b>CERT_STORE_PROV_PKCS7</b>, or <b>CERT_STORE_PROV_FILENAME</b> provider type is specified in the <paramref name="StoreProvider"/> parameter.
+            For all other provider types, this parameter is unused and should be set to zero.<br/>
+            This parameter can be a combination of one or more of the following values.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  PKCS_7_ASN_ENCODING
+                </td>
+                <td>
+                  Specifies PKCS #7 message encoding.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  X509_ASN_ENCODING
+                </td>
+                <td>
+                  Specifies X.509 certificate encoding.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Context">
+            This parameter is not used and should be set to NULL.<br/>
+            <b>Windows Server 2003 and Windows XP</b>: A handle to a cryptographic provider.
+            Passing <b>NULL</b> for this parameter causes an appropriate, default provider to be used.
+            Using the default provider is recommended.
+            The default or specified cryptographic provider is used for all store functions that verify the signature of a subject certificate or CRL.
+            This parameter's data type is <b>HCRYPTPROV</b>.
+            </param>
+            <param name="Flags">
+            These values consist of high-word and low-word values combined by using a bitwise-<b>OR</b> operation.<br/>
+            The low-word portion of dwFlags controls a variety of general characteristics of the certificate store opened.
+            This portion can be used with all store provider types.
+            The low-word portion of <paramref name="Flags"/> can be one of the following values.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_BACKUP_RESTORE_FLAG
+                </td>
+                <td>
+                  Use the thread's SE_BACKUP_NAME and SE_RESTORE_NAME privileges to open registry or file-based system stores.
+                  If the thread does not have these privileges, this function must fail with an access denied error.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_CREATE_NEW_FLAG
+                </td>
+                <td>
+                  A new store is created if one did not exist. The function fails if the store already exists.<br/>
+                  If neither <b>CERT_STORE_OPEN_EXISTING_FLAG</b> nor <b>CERT_STORE_CREATE_NEW_FLAG</b> is set, a store is opened if it exists or is created and opened if it did not already exist.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG
+                </td>
+                <td>
+                  Defer closing of the store's provider until all certificates, CRLs, or CTLs obtained from the store are no longer in use.
+                  The store is actually closed when the last certificate, CRL, or CTL obtained from the store is freed.
+                  Any changes made to properties of these certificates, CRLs, and CTLs, even after the call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/>, are persisted.<br/>
+                  If this flag is not set and certificates, CRLs, or CTLs obtained from the store are still in use, any changes to the properties of those certificates, CRLs, and CTLs will not be persisted.<br/>
+                  If this function is called with <b>CERT_CLOSE_STORE_FORCE_FLAG</b>, <b>CERT_STORE_DEFER_CLOSE_UNTIL_LAST_FREE_FLAG</b> is ignored.<br/>
+                  When this flag is set and a non-<b>NULL</b> <paramref name="Context"/> parameter value is passed, that provider will continue to be used even after the call to this function.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_DELETE_FLAG
+                </td>
+                <td>
+                  The store is deleted instead of being opened.
+                  This function returns <b>NULL</b> for both success and failure of the deletion.
+                  To determine the success of the deletion, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>, which returns zero if the store was deleted and a nonzero value if it was not deleted.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_ENUM_ARCHIVED_FLAG
+                </td>
+                <td>
+                  Normally, an enumeration of all certificates in the store will ignore any certificate with the <b>CERT_ARCHIVED_PROP_ID</b> property set.
+                  If this flag is set, an enumeration of the certificates in the store will contain all of the certificates in the store, including those that have the <b>CERT_ARCHIVED_PROP_ID</b> property.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_MAXIMUM_ALLOWED_FLAG
+                </td>
+                <td>
+                  Open the store with the maximum set of allowed permissions.
+                  If this flag is specified, registry stores are first opened with write access and if that fails, they are reopened with read-only access.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_NO_CRYPT_RELEASE_FLAG
+                </td>
+                <td>
+                  This flag is not used when the <paramref name="Context"/> parameter is <b>NULL</b>.
+                  This flag is only valid when a non-<b>NULL</b> CSP handle is passed as the <paramref name="Context"/> parameter.
+                  Setting this flag prevents the automatic release of a nondefault CSP when the certificate store is closed.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_OPEN_EXISTING_FLAG
+                </td>
+                <td>
+                  Only open an existing store. If the store does not exist, the function fails.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_READONLY_FLAG
+                </td>
+                <td>
+                  Open the store in read-only mode.
+                  Any attempt to change the contents of the store will result in an error.
+                  When this flag is set and a registry based store provider is being used, the registry subkeys are opened by using <b>RegOpenKey</b> with <b>KEY_READ_ACCESS</b>.
+                  Otherwise, the registry subkeys are created by using <b>RegCreateKey</b> with <b>KEY_ALL_ACCESS</b>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_SET_LOCALIZED_NAME_FLAG
+                </td>
+                <td>
+                  If this flag is supported, the provider sets the store's <b>CERT_STORE_LOCALIZED_NAME_PROP_ID</b> property.
+                  The localized name can be retrieved by calling the <see cref="!:CertGetStoreProperty"/> function with <b>dwPropID</b> set to <b>CERT_STORE_LOCALIZED_NAME_PROP_ID</b>.
+                  This flag is supported for providers of types <b>CERT_STORE_PROV_FILENAME</b>, <b>CERT_STORE_PROV_SYSTEM</b>, <b>CERT_STORE_PROV_SYSTEM_REGISTRY</b>, and <b>CERT_STORE_PROV_PHYSICAL_W</b>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_SHARE_CONTEXT_FLAG
+                </td>
+                <td>
+                  When opening a store multiple times, you can set this flag to ensure efficient memory usage by reusing the memory for the encoded parts of a certificate, CRL, or CTL context across the opened instances of the stores.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_STORE_UPDATE_KEYID_FLAG
+                </td>
+                <td>
+                  Lists of key identifiers exist within <b>CurrentUser</b> and <b>LocalMachine</b>.
+                  These key identifiers have properties much like the properties of certificates.
+                  If the <b>CERT_STORE_UPDATE_KEYID_FLAG</b> is set, then for every key identifier in the store's location that has a <b>CERT_KEY_PROV_INFO_PROP_ID</b> property, that property is automatically updated from the key identifier property <b>CERT_KEY_PROV_INFO_PROP_ID</b> or the <b>CERT_KEY_IDENTIFIER_PROP_ID</b> of the certificate related to that key identifier.
+                </td>
+              </tr>
+            </table>
+            The <b>CERT_STORE_PROV_SYSTEM</b>, <b>CERT_STORE_PROV_SYSTEM_REGISTRY</b>, and <b>CERT_STORE_PROV_PHYSICAL</b> provider types use the following high words of <paramref name="Flags"/> to specify system store registry locations:
+            <list type="bullet">
+              <item>CERT_SYSTEM_STORE_CURRENT_SERVICE</item>
+              <item>CERT_SYSTEM_STORE_CURRENT_USER</item>
+              <item>CERT_SYSTEM_STORE_CURRENT_USER_GROUP_POLICY</item>
+              <item>CERT_SYSTEM_STORE_LOCAL_MACHINE</item>
+              <item>CERT_SYSTEM_STORE_LOCAL_MACHINE_ENTERPRISE</item>
+              <item>CERT_SYSTEM_STORE_LOCAL_MACHINE_GROUP_POLICY</item>
+              <item>CERT_SYSTEM_STORE_SERVICES</item>
+              <item>CERT_SYSTEM_STORE_USERS</item>
+            </list>
+            By default, a system store location is opened relative to the <b>HKEY_CURRENT_USER</b>, <b>HKEY_LOCAL_MACHINE</b>, or <b>HKEY_USERS</b> predefined registry key.<br/>
+            The following high-word flags override this default behavior.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_SYSTEM_STORE_RELOCATE_FLAG
+                </td>
+                <td>
+                  When set, <paramref name="Para"/> must contain a pointer to a <see cref="!:CERT_SYSTEM_STORE_RELOCATE_PARA"/> structure rather than a string.
+                  The structure indicates both the name of the store and its location in the registry.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_SYSTEM_STORE_UNPROTECTED_FLAG
+                </td>
+                <td>
+                  By default, when the CurrentUser "Root" store is opened, any SystemRegistry roots not on the protected root list are deleted from the cache before this function returns.
+                  When this flag is set, this default is overridden and all of the roots in the SystemRegistry are returned and no check of the protected root list is made.
+                </td>
+              </tr>
+            </table>
+            The <b>CERT_STORE_PROV_REGISTRY</b> provider uses the following high-word flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_REGISTRY_STORE_REMOTE_FLAG
+                </td>
+                <td>
+                  <paramref name="Para"/> contains a handle to a registry key on a remote computer.
+                  To access a registry key on a remote computer, security permissions on the remote computer must be set to allow access.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_REGISTRY_STORE_SERIALIZED_FLAG
+                </td>
+                <td>
+                  The <b>CERT_STORE_PROV_REG</b> provider saves certificates, CRLs, and CTLs in a single serialized store subkey instead of performing the default save operation.
+                  The default is that each certificate, CRL, or CTL is saved as a separate registry subkey under the appropriate subkey.<br/>
+                  This flag is mainly used for stores downloaded from the group policy template (GPT), such as the CurrentUserGroupPolicy and LocalMachineGroupPolicy stores.<br/>
+                  When <b>CERT_REGISTRY_STORE_SERIALIZED_FLAG</b> is set, store additions, deletions, or property changes are not persisted until there is a call to either <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> or <see cref="!:CertControlStore"/> using <b>CERT_STORE_CTRL_COMMIT</b>.
+                </td>
+              </tr>
+            </table>
+            The <b>CERT_STORE_PROV_FILE</b> and <b>CERT_STORE_PROV_FILENAME</b> provider types use the following high-word flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_FILE_STORE_COMMIT_ENABLE
+                </td>
+                <td>
+                  Setting this flag commits any additions to the store or any changes made to properties of contexts in the store to the file store either when <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> is called or when <see cref="!:CertControlStore"/> is called with <b>CERT_STORE_CONTROL_COMMIT</b>.<br/>
+                  <b>CertOpenStore</b> fails with <b>E_INVALIDARG</b> if both <b>CERT_FILE_STORE_COMMIT_ENABLE</b> and <b>CERT_STORE_READONLY_FLAG</b> are set in <paramref name="Flags"/>.
+                </td>
+              </tr>
+            </table>
+            The <b>CERT_STORE_PROV_LDAP</b> provider type uses the following high-word flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_LDAP_STORE_AREC_EXCLUSIVE_FLAG
+                </td>
+                <td>
+                  Performs an A-Record-only DNS lookup on the URL named in the <paramref name="Para"/> parameter.
+                  This prevents false DNS queries from being generated when resolving URL host names.
+                  Use this flag when passing a host name as opposed to a domain name for the <paramref name="Para"/> parameter.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_LDAP_STORE_OPENED_FLAG
+                </td>
+                <td>
+                  Use this flag to use an existing LDAP session.
+                  When this flag is specified, the <paramref name="Para"/> parameter is the address of a <b>CERT_LDAP_STORE_OPENED_PARA</b> structure that contains information about the LDAP session to use.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_LDAP_STORE_SIGN_FLAG
+                </td>
+                <td>
+                  To provide integrity required by some applications, digitally sign all LDAP traffic to and from an LDAP server by using the Kerberos authentication protocol.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_LDAP_STORE_UNBIND_FLAG
+                </td>
+                <td>
+                  Use this flag with the <b>CERT_LDAP_STORE_OPENED_FLAG</b> flag to cause the LDAP session to be unbound when the store is closed.
+                  The system will unbind the LDAP session by using the <a href="https://learn.microsoft.com/en-us/previous-versions/windows/desktop/api/winldap/nf-winldap-ldap_unbind">ldap_unbind</a> function when the store is closed.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Para">
+            A 32-bit value that can contain additional information for this function.
+            The contents of this parameter depends on the value of the <paramref name="StoreProvider"/> and other parameters.
+            </param>
+            <returns>
+            If the function succeeds, the function returns a handle to the certificate store.
+            When you have finished using the store, release the handle by calling the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertCloseStore(System.IntPtr,System.Int32)"/> function.<br/>
+            If the function fails, it returns <b>NULL</b>. For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.
+            <div class="note">
+              <b>Note</b>:
+              <b>CreateFile</b>, <b>ReadFile</b>, or registry errors might be propagated and their error codes returned.
+              <b>CertOpenStore</b> has a single error code of its own, the <b>ERROR_FILE_NOT_FOUND</b> code, which indicates that the function was unable to find the provider specified by the <paramref name="StoreProvider"/> parameter.
+            </div>
+            </returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,System.IntPtr)">
+            <summary>
+            This function opens a cryptographic message for decoding and returns a handle of the opened message.
+            The message remains open until the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> function is called.
+            </summary>
+            <param name="Flags">
+            This parameter can be one of the following flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_DETACHED_FLAG
+                </td>
+                <td>
+                  Indicates that the message to be decoded is detached.
+                  If this flag is not set, the message is not detached.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_CRYPT_RELEASE_CONTEXT_FLAG
+                </td>
+                <td>
+                  If set, the <paramref name="Context"/> passed to this function is released on the final <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/>.
+                  The handle is not released if the function fails.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Type">
+            Specifies the type of message to decode.
+            In most cases, the message type is determined from the message header and zero is passed for this parameter.
+            In some cases, notably with Internet Explorer 3.0, messages do not have headers and the type of message to be decoded must be supplied in this function call.
+            If the header is missing and zero is passed for this parameter, the function fails.<br/><br/>
+            This parameter can be one of the following predefined message types.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_DATA
+                </td>
+                <td>
+                  The message is encoded data.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_ENVELOPED
+                </td>
+                <td>
+                  The message is an enveloped message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_HASHED
+                </td>
+                <td>
+                  The message is a hashed message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_SIGNED
+                </td>
+                <td>
+                  The message is a signed message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_SIGNED_AND_ENVELOPED
+                </td>
+                <td>
+                  The message is a signed and enveloped message.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Context">
+            This parameter is not used and should be set to <b>NULL</b>.<br/><br/>
+            <b>Windows Server 2003 and Windows XP</b>: Specifies a handle for the cryptographic provider to use for hashing the message.
+            For signed messages, <paramref name="Context"/> is used for signature verification.
+            This parameter's data type is <b>HCRYPTPROV</b>.<br/><br/>
+            Unless there is a strong reason for passing in a specific cryptographic provider in <paramref name="Context"/>, set this parameter to <b>NULL</b>.
+            Passing in <b>NULL</b> causes the default RSA or DSS provider to be acquired before performing hash, signature verification, or recipient encryption operations.
+            </param>
+            <param name="StreamInfo">
+            When streaming is not being used, this parameter must be set to <b>NULL</b>.<br/><br/>
+            <div class="note">
+              <b>Note</b>:
+              Streaming is not used with <b>CMSG_HASHED</b> messages.
+              When dealing with hashed data, this parameter must be set to <b>NULL</b>.
+            </div>
+            When streaming is being used, the <paramref name="StreamInfo"/> parameter is a pointer to a <b>CMSG_STREAM_INFO</b> structure that contains a pointer to a callback to be called when <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> is executed or when <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> is executed when decoding a streamed enveloped message.<br/><br/>
+            For a signed message, the callback is passed a block of the decoded bytes from the inner content of the message.<br/><br/>
+            For an enveloped message, after each call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/>, you must check to determine whether the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> property is available by calling the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgGetParam(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CMSG_PARAM,System.Int32,System.Byte[],System.Int32@)"/> function.
+            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgGetParam(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CMSG_PARAM,System.Int32,System.Byte[],System.Int32@)"/> will fail and <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> will return <b>CRYPT_E_STREAM_MSG_NOT_READY</b> until <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> has processed enough of the message to make the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> property available.
+            When the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> property is available, you can iterate through the recipients, retrieving a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure for each recipient by using the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgGetParam(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CMSG_PARAM,System.Int32,System.Byte[],System.Int32@)"/> function to retrieve the <b>CMSG_RECIPIENT_INFO_PARAM</b> property.
+            To prevent a denial of service attack from an enveloped message that has an artificially large header block, you must keep track of the amount of memory that has been passed to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> function during this process.
+            If the amount of data exceeds an application defined limit before the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> property is available, you must stop processing the message and call the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> function to cause the operating system to release any memory that has been allocated for the message.
+            A suggested limit is the maximum allowable size of a message.
+            For example, if the maximum message size is 10 MB, the limit for this test should be 10 MB.<br/><br/>
+            The <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure is used to find a matching certificate in a previously opened certificate store by using the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)"/> function.
+            When the correct certificate is found, the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function with a <b>CERT_KEY_PROV_INFO_PROP_ID</b> parameter is called to retrieve a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO"/> structure.
+            The structure contains the information necessary to acquire the recipient's private key by calling <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptAcquireContext(System.IntPtr@,System.String,System.String,System.Int32,System.Int32)"/>, using the <b>pwszContainerName</b>, <b>pwszProvName</b>, <b>dwProvType</b>, and dwFlags members of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO"/> structure. The <paramref name="Context"/> acquired and the <b>dwKeySpec</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO"/> structure are passed to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> structure as a member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_CTRL_DECRYPT_PARA"/> structure to permit the start of the decryption of the inner content.
+            The streaming code will then perform the decryption as the data is input.
+            The resulting blocks of plaintext are passed to the callback function specified by the <b>pfnStreamOutput</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO"/> structure to handle the output of the decrypted message.
+            <div class="note">
+              <b>Note</b>:
+              Streamed decoding of an enveloped message queues the <b>ciphertext</b> in memory until <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> is called to start the decryption.
+              The application must initiate decrypting in a timely manner so that the data can be saved to disk or routed elsewhere before the accumulated <i>ciphertext</i> becomes too large and the system runs out of memory.
+            </div>
+            In the case of a signed message enclosed in an enveloped message, the <a href="https://learn.microsoft.com/en-us/windows/desktop/SecGloss/p-gly">plaintext</a> output from the streaming decode of the enveloped message can be fed into another streaming decode to process the signed message.
+            </param>
+            <returns>
+            If the function succeeds, the function returns the handle of the opened message.<br/><br/>
+            If the function fails, it returns <b>NULL</b>.
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.<br/><br/>
+            The following table lists the error codes most commonly returned by the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Return code
+                </th>
+                <th>
+                  Description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  E_INVALIDARG
+                </td>
+                <td>
+                  One or more arguments are not valid.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  E_OUTOFMEMORY
+                </td>
+                <td>
+                  A memory allocation failure occurred.
+                </td>
+              </tr>
+            </table>
+            </returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToDecode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)">
+            <summary>
+            This function opens a cryptographic message for decoding and returns a handle of the opened message.
+            The message remains open until the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> function is called.
+            </summary>
+            <param name="Flags">
+            This parameter can be one of the following flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_DETACHED_FLAG
+                </td>
+                <td>
+                  Indicates that the message to be decoded is detached.
+                  If this flag is not set, the message is not detached.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_CRYPT_RELEASE_CONTEXT_FLAG
+                </td>
+                <td>
+                  If set, the <paramref name="Context"/> passed to this function is released on the final <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/>.
+                  The handle is not released if the function fails.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Type">
+            Specifies the type of message to decode.
+            In most cases, the message type is determined from the message header and zero is passed for this parameter.
+            In some cases, notably with Internet Explorer 3.0, messages do not have headers and the type of message to be decoded must be supplied in this function call.
+            If the header is missing and zero is passed for this parameter, the function fails.<br/><br/>
+            This parameter can be one of the following predefined message types.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_DATA
+                </td>
+                <td>
+                  The message is encoded data.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_ENVELOPED
+                </td>
+                <td>
+                  The message is an enveloped message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_HASHED
+                </td>
+                <td>
+                  The message is a hashed message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_SIGNED
+                </td>
+                <td>
+                  The message is a signed message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_SIGNED_AND_ENVELOPED
+                </td>
+                <td>
+                  The message is a signed and enveloped message.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Context">
+            This parameter is not used and should be set to <b>NULL</b>.<br/><br/>
+            <b>Windows Server 2003 and Windows XP</b>: Specifies a handle for the cryptographic provider to use for hashing the message.
+            For signed messages, <paramref name="Context"/> is used for signature verification.
+            This parameter's data type is <b>HCRYPTPROV</b>.<br/><br/>
+            Unless there is a strong reason for passing in a specific cryptographic provider in <paramref name="Context"/>, set this parameter to <b>NULL</b>.
+            Passing in <b>NULL</b> causes the default RSA or DSS provider to be acquired before performing hash, signature verification, or recipient encryption operations.
+            </param>
+            <param name="StreamInfo">
+            When streaming is not being used, this parameter must be set to <b>NULL</b>.<br/><br/>
+            <div class="note">
+              <b>Note</b>:
+              Streaming is not used with <b>CMSG_HASHED</b> messages.
+              When dealing with hashed data, this parameter must be set to <b>NULL</b>.
+            </div>
+            When streaming is being used, the <paramref name="StreamInfo"/> parameter is a pointer to a <b>CMSG_STREAM_INFO</b> structure that contains a pointer to a callback to be called when <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> is executed or when <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> is executed when decoding a streamed enveloped message.<br/><br/>
+            For a signed message, the callback is passed a block of the decoded bytes from the inner content of the message.<br/><br/>
+            For an enveloped message, after each call to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/>, you must check to determine whether the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> property is available by calling the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgGetParam(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CMSG_PARAM,System.Int32,System.Byte[],System.Int32@)"/> function.
+            <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgGetParam(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CMSG_PARAM,System.Int32,System.Byte[],System.Int32@)"/> will fail and <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> will return <b>CRYPT_E_STREAM_MSG_NOT_READY</b> until <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> has processed enough of the message to make the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> property available.
+            When the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> property is available, you can iterate through the recipients, retrieving a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure for each recipient by using the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgGetParam(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CMSG_PARAM,System.Int32,System.Byte[],System.Int32@)"/> function to retrieve the <b>CMSG_RECIPIENT_INFO_PARAM</b> property.
+            To prevent a denial of service attack from an enveloped message that has an artificially large header block, you must keep track of the amount of memory that has been passed to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> function during this process.
+            If the amount of data exceeds an application defined limit before the <b>CMSG_ENVELOPE_ALGORITHM_PARAM</b> property is available, you must stop processing the message and call the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> function to cause the operating system to release any memory that has been allocated for the message.
+            A suggested limit is the maximum allowable size of a message.
+            For example, if the maximum message size is 10 MB, the limit for this test should be 10 MB.<br/><br/>
+            The <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure is used to find a matching certificate in a previously opened certificate store by using the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)"/> function.
+            When the correct certificate is found, the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)"/> function with a <b>CERT_KEY_PROV_INFO_PROP_ID</b> parameter is called to retrieve a <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO"/> structure.
+            The structure contains the information necessary to acquire the recipient's private key by calling <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptAcquireContext(System.IntPtr@,System.String,System.String,System.Int32,System.Int32)"/>, using the <b>pwszContainerName</b>, <b>pwszProvName</b>, <b>dwProvType</b>, and dwFlags members of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO"/> structure. The <paramref name="Context"/> acquired and the <b>dwKeySpec</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CRYPT_KEY_PROV_INFO"/> structure are passed to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> structure as a member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_CTRL_DECRYPT_PARA"/> structure to permit the start of the decryption of the inner content.
+            The streaming code will then perform the decryption as the data is input.
+            The resulting blocks of plaintext are passed to the callback function specified by the <b>pfnStreamOutput</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO"/> structure to handle the output of the decrypted message.
+            <div class="note">
+              <b>Note</b>:
+              Streamed decoding of an enveloped message queues the <b>ciphertext</b> in memory until <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgControl(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CRYPT_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_CTRL,System.IntPtr)"/> is called to start the decryption.
+              The application must initiate decrypting in a timely manner so that the data can be saved to disk or routed elsewhere before the accumulated <i>ciphertext</i> becomes too large and the system runs out of memory.
+            </div>
+            In the case of a signed message enclosed in an enveloped message, the <a href="https://learn.microsoft.com/en-us/windows/desktop/SecGloss/p-gly">plaintext</a> output from the streaming decode of the enveloped message can be fed into another streaming decode to process the signed message.
+            </param>
+            <returns>
+            If the function succeeds, the function returns the handle of the opened message.<br/><br/>
+            If the function fails, it returns <b>NULL</b>.
+            For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>.<br/><br/>
+            The following table lists the error codes most commonly returned by the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Return code
+                </th>
+                <th>
+                  Description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  E_INVALIDARG
+                </td>
+                <td>
+                  One or more arguments are not valid.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  E_OUTOFMEMORY
+                </td>
+                <td>
+                  A memory allocation failure occurred.
+                </td>
+              </tr>
+            </table>
+            </returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)">
+            <summary>
+            This function opens a cryptographic message for encoding and returns a handle of the opened message.
+            The message remains open until <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> is called.
+            </summary>
+            <param name="Flags">
+            Currently defined <paramref name="Flags"/> are shown in the following table.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_BARE_CONTENT_FLAG
+                </td>
+                <td>
+                  The streamed output will not have an outer ContentInfo wrapper (as defined by PKCS #7).
+                  This makes it suitable to be streamed into an enclosing message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_DETACHED_FLAG
+                </td>
+                <td>
+                  There is detached data being supplied for the subsequent calls to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_AUTHENTICATED_ATTRIBUTES_FLAG
+                </td>
+                <td>
+                  Authenticated attributes are forced to be included in the SignerInfo (as defined by PKCS #7) in cases where they would not otherwise be required.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_CONTENTS_OCTETS_FLAG
+                </td>
+                <td>
+                  Used when calculating the size of a message that has been encoded by using Distinguished Encoding Rules (DER) and that is nested inside an enveloped message.
+                  This is particularly useful when performing streaming.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_CMS_ENCAPSULATED_CONTENT_FLAG
+                </td>
+                <td>
+                  When set, non-data type-inner content is encapsulated within an <b>OCTET STRING</b>.
+                  Applicable to both signed and enveloped messages.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_CRYPT_RELEASE_CONTEXT_FLAG
+                </td>
+                <td>
+                  If set, the <b>hCryptProv</b> that is passed to this function is released on the final <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/>.
+                  The handle is not released if the function fails.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Type">
+            Indicates the message type. This must be one of the following values.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_DATA
+                </td>
+                <td>
+                  This value is not used.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_SIGNED
+                </td>
+                <td>
+                  The <paramref name="EncodeInfo"/> parameter is the address of a <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO"/> structure that contains the encoding information.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_ENVELOPED
+                </td>
+                <td>
+                  The <paramref name="EncodeInfo"/> parameter is the address of a <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_ENVELOPED_ENCODE_INFO"/> structure that contains the encoding information.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_SIGNED_AND_ENVELOPED
+                </td>
+                <td>
+                  This value is not currently implemented.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_HASHED
+                </td>
+                <td>
+                  The <paramref name="EncodeInfo"/> parameter is the address of a <see cref="!:CMSG_HASHED_ENCODE_INFO"/> structure that contains the encoding information.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="EncodeInfo">
+            The address of a structure that contains the encoding information.
+            The type of data depends on the value of the <paramref name="Type"/> parameter.
+            For details, see <paramref name="Type"/>.
+            </param>
+            <param name="StreamInfo">
+            When streaming is being used, this parameter is the address of a <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO"/> structure.
+            The callback function specified by the <b>pfnStreamOutput</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO"/> structure is called when <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> is executed.
+            The callback is passed the encoded bytes that result from the encoding.
+            For more information about how to use the callback, see <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO"/>.
+            <div class="note">
+              <b>Note</b>:
+              When streaming is being used, the application must not release any data handles that are passed in the <paramref name="EncodeInfo"/> parameter, such as the provider handle in the <b>hCryptProv</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_SIGNER_ENCODE_INFO"/> structure, until after the message handle returned by this function is closed by using the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> function.
+            </div>
+            When streaming is not being used, this parameter is set to <b>NULL</b>.<br/><br/>
+            Streaming is not used with the <b>CMSG_HASHED</b> message type.
+            When dealing with hashed data, this parameter must be set to <b>NULL</b>.<br/><br/>
+            Consider the case of a signed message being enclosed in an enveloped message.
+            The encoded output from the streamed encoding of the signed message feeds into another streaming encoding of the enveloped message.
+            The callback for the streaming encoding calls <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> to encode the enveloped message.
+            The callback for the enveloped message receives the encoded bytes of the nested signed message.
+            </param>
+            <returns>
+            If the function succeeds, it returns a handle to the opened message.
+            This handle must be closed when it is no longer needed by passing it to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> function.<br/><br/>
+            If this function fails, <b>NULL</b> is returned.<br/><br/>
+            To retrieve extended error information, use the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function.<br/><br/>
+            The following table lists the error codes most commonly returned by the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Return code
+                </th>
+                <th>
+                  Description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CRYPT_E_INVALID_MSG_TYPE
+                </td>
+                <td>
+                  The message type is not valid.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CRYPT_E_OID_FORMAT
+                </td>
+                <td>
+                  The OID is badly formatted.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CRYPT_E_UNKNOWN_ALGO
+                </td>
+                <td>
+                  The cryptographic algorithm is unknown.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  E_INVALIDARG
+                </td>
+                <td>
+                  One or more arguments are not valid.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  E_OUTOFMEMORY
+                </td>
+                <td>
+                  There is not enough memory.
+                </td>
+              </tr>
+            </table>
+            In addition, if <paramref name="Type"/> is <b>CMSG_SIGNED</b>, errors can be propagated from <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptCreateHash(System.IntPtr,BinaryStudio.PlatformComponents.Win32.ALG_ID,System.IntPtr,System.IntPtr@)"/>.<br/><br/>
+            If <paramref name="Type"/> is <b>CMSG_ENVELOPED</b>, errors can be propagated from <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptGenKey(System.IntPtr,BinaryStudio.PlatformComponents.Win32.ALG_ID,System.Int32,System.IntPtr@)"/>, <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptImportKey(System.IntPtr,System.Byte[],System.Int32,System.IntPtr,System.Int32,System.IntPtr@)"/>, and <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptExportKey(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Byte[],System.Int32@)"/>.<br/><br/>
+            If <paramref name="Type"/> is <b>CMSG_HASHED</b>, errors can be propagated from <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptCreateHash(System.IntPtr,BinaryStudio.PlatformComponents.Win32.ALG_ID,System.IntPtr,System.IntPtr@)"/>.
+            </returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgOpenToEncode(BinaryStudio.PlatformComponents.Win32.CRYPT_OPEN_MESSAGE_FLAGS,BinaryStudio.PlatformComponents.Win32.CMSG_TYPE,BinaryStudio.PlatformComponents.Win32.CMSG_ENVELOPED_ENCODE_INFO@,BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO@)">
+            <summary>
+            This function opens a cryptographic message for encoding and returns a handle of the opened message.
+            The message remains open until <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> is called.
+            </summary>
+            <param name="Flags">
+            Currently defined <paramref name="Flags"/> are shown in the following table.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_BARE_CONTENT_FLAG
+                </td>
+                <td>
+                  The streamed output will not have an outer ContentInfo wrapper (as defined by PKCS #7).
+                  This makes it suitable to be streamed into an enclosing message.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_DETACHED_FLAG
+                </td>
+                <td>
+                  There is detached data being supplied for the subsequent calls to <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_AUTHENTICATED_ATTRIBUTES_FLAG
+                </td>
+                <td>
+                  Authenticated attributes are forced to be included in the SignerInfo (as defined by PKCS #7) in cases where they would not otherwise be required.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_CONTENTS_OCTETS_FLAG
+                </td>
+                <td>
+                  Used when calculating the size of a message that has been encoded by using Distinguished Encoding Rules (DER) and that is nested inside an enveloped message.
+                  This is particularly useful when performing streaming.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_CMS_ENCAPSULATED_CONTENT_FLAG
+                </td>
+                <td>
+                  When set, non-data type-inner content is encapsulated within an <b>OCTET STRING</b>.
+                  Applicable to both signed and enveloped messages.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_CRYPT_RELEASE_CONTEXT_FLAG
+                </td>
+                <td>
+                  If set, the <b>hCryptProv</b> that is passed to this function is released on the final <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/>.
+                  The handle is not released if the function fails.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="Type">
+            Indicates the message type. This must be one of the following values.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_DATA
+                </td>
+                <td>
+                  This value is not used.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_SIGNED
+                </td>
+                <td>
+                  The <paramref name="EncodeInfo"/> parameter is the address of a <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_SIGNED_ENCODE_INFO"/> structure that contains the encoding information.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_ENVELOPED
+                </td>
+                <td>
+                  The <paramref name="EncodeInfo"/> parameter is the address of a <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_ENVELOPED_ENCODE_INFO"/> structure that contains the encoding information.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_SIGNED_AND_ENVELOPED
+                </td>
+                <td>
+                  This value is not currently implemented.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CMSG_HASHED
+                </td>
+                <td>
+                  The <paramref name="EncodeInfo"/> parameter is the address of a <see cref="!:CMSG_HASHED_ENCODE_INFO"/> structure that contains the encoding information.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="EncodeInfo">
+            The address of a structure that contains the encoding information.
+            The type of data depends on the value of the <paramref name="Type"/> parameter.
+            For details, see <paramref name="Type"/>.
+            </param>
+            <param name="StreamInfo">
+            When streaming is being used, this parameter is the address of a <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO"/> structure.
+            The callback function specified by the <b>pfnStreamOutput</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO"/> structure is called when <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> is executed.
+            The callback is passed the encoded bytes that result from the encoding.
+            For more information about how to use the callback, see <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_STREAM_INFO"/>.
+            <div class="note">
+              <b>Note</b>:
+              When streaming is being used, the application must not release any data handles that are passed in the <paramref name="EncodeInfo"/> parameter, such as the provider handle in the <b>hCryptProv</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CMSG_SIGNER_ENCODE_INFO"/> structure, until after the message handle returned by this function is closed by using the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> function.
+            </div>
+            When streaming is not being used, this parameter is set to <b>NULL</b>.<br/><br/>
+            Streaming is not used with the <b>CMSG_HASHED</b> message type.
+            When dealing with hashed data, this parameter must be set to <b>NULL</b>.<br/><br/>
+            Consider the case of a signed message being enclosed in an enveloped message.
+            The encoded output from the streamed encoding of the signed message feeds into another streaming encoding of the enveloped message.
+            The callback for the streaming encoding calls <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgUpdate(System.IntPtr,System.Byte[],System.Int32,System.Boolean)"/> to encode the enveloped message.
+            The callback for the enveloped message receives the encoded bytes of the nested signed message.
+            </param>
+            <returns>
+            If the function succeeds, it returns a handle to the opened message.
+            This handle must be closed when it is no longer needed by passing it to the <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptMsgClose(System.IntPtr)"/> function.<br/><br/>
+            If this function fails, <b>NULL</b> is returned.<br/><br/>
+            To retrieve extended error information, use the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function.<br/><br/>
+            The following table lists the error codes most commonly returned by the <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/> function.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Return code
+                </th>
+                <th>
+                  Description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CRYPT_E_INVALID_MSG_TYPE
+                </td>
+                <td>
+                  The message type is not valid.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CRYPT_E_OID_FORMAT
+                </td>
+                <td>
+                  The OID is badly formatted.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CRYPT_E_UNKNOWN_ALGO
+                </td>
+                <td>
+                  The cryptographic algorithm is unknown.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  E_INVALIDARG
+                </td>
+                <td>
+                  One or more arguments are not valid.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  E_OUTOFMEMORY
+                </td>
+                <td>
+                  There is not enough memory.
+                </td>
+              </tr>
+            </table>
+            In addition, if <paramref name="Type"/> is <b>CMSG_SIGNED</b>, errors can be propagated from <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptCreateHash(System.IntPtr,BinaryStudio.PlatformComponents.Win32.ALG_ID,System.IntPtr,System.IntPtr@)"/>.<br/><br/>
+            If <paramref name="Type"/> is <b>CMSG_ENVELOPED</b>, errors can be propagated from <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptGenKey(System.IntPtr,BinaryStudio.PlatformComponents.Win32.ALG_ID,System.Int32,System.IntPtr@)"/>, <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptImportKey(System.IntPtr,System.Byte[],System.Int32,System.IntPtr,System.Int32,System.IntPtr@)"/>, and <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptExportKey(System.IntPtr,System.IntPtr,System.Int32,System.Int32,System.Byte[],System.Int32@)"/>.<br/><br/>
+            If <paramref name="Type"/> is <b>CMSG_HASHED</b>, errors can be propagated from <see cref="M:BinaryStudio.Services.CryptographicFunctions.CryptCreateHash(System.IntPtr,BinaryStudio.PlatformComponents.Win32.ALG_ID,System.IntPtr,System.IntPtr@)"/>.
+            </returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateChain(System.IntPtr,System.IntPtr,System.Runtime.InteropServices.ComTypes.FILETIME@,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_PARA@,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_FLAGS,BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_CONTEXT**)">
+            <summary>
+            This function builds a certificate chain context starting from an end certificate and going back, if possible, to a trusted root certificate.
+            </summary>
+            <param name="ChainEngine">
+            A handle of the chain engine (namespace and cache) to be used.
+            If <paramref name="ChainEngine"/> is <b>NULL</b>, the default chain engine, HCCE_CURRENT_USER, is used.
+            This parameter can be set to HCCE_LOCAL_MACHINE.
+            </param>
+            <param name="Context">
+            A pointer to the <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> of the end certificate, the certificate for which a chain is being built.
+            This certificate context will be the zero-index element in the first simple chain.
+            </param>
+            <param name="Time">
+            A reference to a <see cref="T:System.Runtime.InteropServices.ComTypes.FILETIME"/> variable that indicates the time for which the chain is to be validated.
+            Note that the time does not affect trust list, revocation, or root store checking.
+            Trust in a particular certificate being a trusted root is based on the current state of the root store and not the state of the root store at a time passed in by this parameter.
+            For revocation, a certificate revocation list (CRL), itself, must be valid at the current time.
+            The value of this parameter is used to determine whether a certificate listed in a CRL has been revoked.
+            </param>
+            <param name="AdditionalStore">
+            A handle to any additional store to search for supporting certificates and certificate trust lists (CTLs).
+            This parameter can be <b>NULL</b> if no additional store is to be searched.
+            </param>
+            <param name="ChainPara">A reference to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_PARA"/> structure that includes chain-building parameters.</param>
+            <param name="Flags">
+            Flag values that indicate special processing. This parameter can be a combination of one or more of the following flags.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_CACHE_END_CERT
+                </td>
+                <td>
+                  When this flag is set, the end certificate is cached, which might speed up the chain-building process.
+                  By default, the end certificate is not cached, and it would need to be verified each time a chain is built for it.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_REVOCATION_CHECK_CACHE_ONLY
+                </td>
+                <td>
+                  Revocation checking only accesses cached URLs.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_REVOCATION_CHECK_OCSP_CERT
+                </td>
+                <td>
+                  This flag is used internally during chain building for an online certificate status protocol (OCSP) signer certificate to prevent cyclic revocation checks.
+                  During chain building, if the OCSP response is signed by an independent OCSP signer, then, in addition to the original chain build, there is a second chain built for the OCSP signer certificate itself.
+                  This flag is used during this second chain build to inhibit a recursive independent OCSP signer certificate.
+                  If the signer certificate contains the <b>szOID_PKIX_OCSP_NOCHECK</b> extension, revocation checking is skipped for the leaf signer certificate.
+                  Both OCSP and CRL checking are allowed.<br/>
+                  <b>Windows Server 2003 and Windows XP</b>: This value is not supported.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_CACHE_ONLY_URL_RETRIEVAL
+                </td>
+                <td>
+                  Uses only cached URLs in building a certificate chain.
+                  The Internet and intranet are not searched for URL-based objects.
+                  <div class="note">
+                    <b>Note</b>:
+                    This flag is not applicable to revocation checking.
+                    Set <b>CERT_CHAIN_REVOCATION_CHECK_CACHE_ONLY</b> to use only cached URLs for revocation checking.
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_DISABLE_PASS1_QUALITY_FILTERING
+                </td>
+                <td>
+                  For performance reasons, the second pass of chain building only considers potential chain paths that have quality greater than or equal to the highest quality determined during the first pass.
+                  The first pass only considers valid signature, complete chain, and trusted roots to calculate chain quality.
+                  This flag can be set to disable this optimization and consider all potential chain paths during the second pass.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_DISABLE_MY_PEER_TRUST
+                </td>
+                <td>
+                  This flag is not supported.
+                  Certificates in the "My" store are never considered for peer trust.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_ENABLE_PEER_TRUST
+                </td>
+                <td>
+                  End entity certificates in the "TrustedPeople" store are trusted without performing any chain building.
+                  This function does not set the <b>CERT_TRUST_IS_PARTIAL_CHAIN</b> or <b>CERT_TRUST_IS_UNTRUSTED_ROOT</b> <b>dwErrorStatus</b> member bits of the <paramref name="ChainContext"/> parameter.<br/>
+                  <b>Windows Server 2003 Windows XP</b>: This flag is not supported.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_OPT_IN_WEAK_SIGNATURE
+                </td>
+                <td>
+                  Setting this flag indicates the caller wishes to opt into weak signature checks.<br/>
+                  This flag is available in the rollup update for each OS starting with Windows 7 and Windows Server 2008 R2.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_RETURN_LOWER_QUALITY_CONTEXTS
+                </td>
+                <td>
+                  The default is to return only the highest quality chain path.
+                  Setting this flag will return the lower quality chains.
+                  These are returned in the <b>cLowerQualityChainContext</b> and <b>rgpLowerQualityChainContext</b> fields of the chain context.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_DISABLE_AUTH_ROOT_AUTO_UPDATE
+                </td>
+                <td>
+                  Setting this flag inhibits the auto update of third-party roots from the Windows Update Web Server.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_REVOCATION_ACCUMULATIVE_TIMEOUT
+                </td>
+                <td>
+                  When you set <b>CERT_CHAIN_REVOCATION_ACCUMULATIVE_TIMEOUT</b> and you also specify a value for the <b>dwUrlRetrievalTimeout</b> member of the <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CHAIN_PARA"/> structure, the value you specify in <b>dwUrlRetrievalTimeout</b> represents the cumulative timeout across all revocation URL retrievals.<br/>
+                  If you set <b>CERT_CHAIN_REVOCATION_ACCUMULATIVE_TIMEOUT</b> but do not specify a <b>dwUrlRetrievalTimeout</b> value, the maximum cumulative timeout is set, by default, to 20 seconds.
+                  Each URL tested will timeout after half of the remaining cumulative balance has passed.
+                  That is, the first URL times out after 10 seconds, the second after 5 seconds, the third after 2.5 seconds and so on until a URL succeeds, 20 seconds has passed, or there are no more URLs to test.<br/>
+                  If you do not set <b>CERT_CHAIN_REVOCATION_ACCUMULATIVE_TIMEOUT</b>, each revocation URL in the chain is assigned a maximum timeout equal to the value specified in <b>dwUrlRetrievalTimeout</b>.
+                  If you do not specify a value for the <b>dwUrlRetrievalTimeout</b> member, each revocation URL is assigned a maximum default timeout of 15 seconds.
+                  If no URL succeeds, the maximum cumulative timeout value is 15 seconds multiplied by the number of URLs in the chain.<br/>
+                  You can set the default values by using Group Policy.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_TIMESTAMP_TIME
+                </td>
+                <td>
+                  When this flag is set, <paramref name="Time"/> is used as the time stamp time to determine whether the end certificate was time valid.
+                  Current time can also be used to determine whether the end certificate remains time valid.
+                  All other certification authority (CA) and root certificates in the chain are checked by using current time and not <paramref name="Time"/>.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_DISABLE_AIA
+                </td>
+                <td>
+                  Setting this flag explicitly turns off Authority Information Access (AIA) retrievals.
+                </td>
+              </tr>
+            </table>
+            You can also set the following revocation flags, but only one flag from this group may be set at a time.
+            <table class="table_value_meaning">
+              <tr>
+                <th>
+                  Value
+                </th>
+                <th>
+                  Meaning
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_REVOCATION_CHECK_END_CERT
+                </td>
+                <td>
+                  Revocation checking is done on the end certificate and only the end certificate.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_REVOCATION_CHECK_CHAIN
+                </td>
+                <td>
+                  Revocation checking is done on all of the certificates in every chain.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT
+                </td>
+                <td>
+                  Revocation checking is done on all certificates in all of the chains except the root certificate.
+                </td>
+              </tr>
+            </table>
+            </param>
+            <param name="ChainContext">
+            The address of a pointer to the chain context created.
+            When you have finished using the chain context, release the chain by calling the <see cref="!:CertFreeCertificateChain"/> function.
+            </param>
+            <returns>
+            If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+            If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. One possible error code is the following.
+            </returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertGetValidUsages(System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT*,System.Int32*,System.IntPtr,System.Int32*)">
+            <summary>
+            This function returns an array of usages that consist of the intersection of the valid usages for all certificates in an array of certificates.
+            </summary>
+            <param name="cCerts">The number of certificates in the array to be checked.</param>
+            <param name="rghCerts">An array of certificates to be checked for valid usage.</param>
+            <param name="cNumOIDs">
+            The number of valid usages found as the intersection of the valid usages of all certificates in the array.
+            If all of the certificates are valid for all usages, <paramref name="cNumOIDs"/> is set to negative one (–1).
+            </param>
+            <param name="rghOIDs">
+            An array of the object identifiers (OIDs) of the valid usages that are shared by all of the certificates in the <paramref name="rghCerts"/> array.
+            This parameter can be <b>NULL</b> to set the size of this structure for memory allocation purposes.
+            </param>
+            <param name="pcbOIDs">
+            A pointer to a <see cref="T:System.Int32"/> value that specifies the size, in bytes, of the <paramref name="rghOIDs"/> array and the strings pointed to.
+            When the function returns, the <see cref="T:System.Int32"/> value contains the number of bytes needed for the array.
+            </param>
+            <returns>
+            If the function succeeds, the return value is nonzero (<b>TRUE</b>).<br/>
+            If the function fails, the return value is zero (<b>FALSE</b>). For extended error information, call <see cref="M:BinaryStudio.Services.LastErrorService.GetLastError"/>. One possible error code is the following.
             </returns>
         </member>
         <member name="M:BinaryStudio.Services.CryptographicFunctions.CertGetSubjectCertificateFromStore(System.IntPtr,System.Int32,BinaryStudio.PlatformComponents.Win32.CERT_INFO*)">

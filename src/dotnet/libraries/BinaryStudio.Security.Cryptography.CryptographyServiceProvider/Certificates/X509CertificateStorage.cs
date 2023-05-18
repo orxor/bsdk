@@ -69,7 +69,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
                     default: throw new ArgumentOutOfRangeException(nameof(storename))
                             .Add("StoreName",storename);
                     }
-                Store = new EX509CertificateStorage(Validate(Entries.CertOpenStoreA(
+                Store = new EX509CertificateStorage(Validate(Entries.CertOpenStore(
                     CERT_STORE_PROV_SYSTEM_A,
                     PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
                     IntPtr.Zero,
@@ -116,7 +116,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if ((location == X509StoreLocation.CurrentUser) || (location == X509StoreLocation.LocalMachine)) {
                 if (String.Equals(storename,"Device",StringComparison.OrdinalIgnoreCase)) { Store = new DeviceCertificateStorage(CRYPT_PROVIDER_TYPE.AUTO,location); return; }
                 if (String.Equals(storename,"Memory",StringComparison.OrdinalIgnoreCase)) { Store = new MemoryCertificateStorage(location); return; }
-                Store = new EX509CertificateStorage(Validate(Entries.CertOpenStoreA(
+                Store = new EX509CertificateStorage(Validate(Entries.CertOpenStore(
                     CERT_STORE_PROV_SYSTEM_A,
                     PKCS_7_ASN_ENCODING|X509_ASN_ENCODING,
                     IntPtr.Zero,

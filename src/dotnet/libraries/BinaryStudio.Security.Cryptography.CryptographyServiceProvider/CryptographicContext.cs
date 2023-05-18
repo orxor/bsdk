@@ -330,7 +330,7 @@ namespace BinaryStudio.Security.Cryptography
             *(Int64*)(&ft) = time.ToFileTime();
             return entries.CertGetCertificateChain(chainEngine,
                 context, ref ft, additionalStore, ref chainPara, flags,
-                IntPtr.Zero, chainContext);
+                chainContext);
             }
         #endregion
         #region M:CertOIDToAlgId(Oid):ALG_ID

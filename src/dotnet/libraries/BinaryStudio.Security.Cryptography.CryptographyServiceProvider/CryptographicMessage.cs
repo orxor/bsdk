@@ -115,7 +115,7 @@ namespace BinaryStudio.Security.Cryptography
                     }
                 return true;
                 }, IntPtr.Zero);
-            return new CryptographicMessage(Entries.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, flags, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero, ref so),ref so);
+            return new CryptographicMessage(Entries.CryptMsgOpenToDecode(flags, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, ref so),ref so);
             }
         #endregion
         #region M:OpenToDecode(Action<Byte[],Boolean>):CryptographicMessage
@@ -128,7 +128,7 @@ namespace BinaryStudio.Security.Cryptography
                 OutputHandler(Bytes, Final);
                 return true;
                 }, IntPtr.Zero);
-            return new CryptographicMessage(Entries.CryptMsgOpenToDecode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, 0, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, IntPtr.Zero, ref so),ref so);
+            return new CryptographicMessage(Entries.CryptMsgOpenToDecode(0, CMSG_TYPE.CMSG_NONE, IntPtr.Zero, ref so),ref so);
             }
         #endregion
         #region M:OpenToEncode(Action<Byte[],Boolean>,UInt32,CRYPT_OPEN_MESSAGE_FLAGS,CMSG_TYPE,CMSG_SIGNED_ENCODE_INFO):CryptographicMessage
@@ -153,7 +153,7 @@ namespace BinaryStudio.Security.Cryptography
             try
                 {
                 return new CryptographicMessage(
-                    Validate(Entries,Entries.CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING|CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, Flags, Type,EncodeInfo,ref so),NotZero),
+                    Validate(Entries,Entries.CryptMsgOpenToEncode(Flags, Type,EncodeInfo,ref so),NotZero),
                     ref so);
                 }
             catch (Exception e)
@@ -185,7 +185,7 @@ namespace BinaryStudio.Security.Cryptography
             try
                 {
                 return new CryptographicMessage(
-                    Validate(Entries,Entries.CryptMsgOpenToEncode(CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING|CRYPT_MSG_TYPE.PKCS_7_ASN_ENCODING, Flags, Type,ref EncodeInfo,ref so),NotZero),
+                    Validate(Entries,Entries.CryptMsgOpenToEncode(Flags, Type,ref EncodeInfo,ref so),NotZero),
                     ref so);
                 }
             catch (Exception e)

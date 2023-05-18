@@ -88,12 +88,12 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         IntPtr CryptographicFunctions.CertEnumCRLsInStore(IntPtr CertStore,IntPtr PrevCrlContext) { return CertEnumCRLsInStore(CertStore,PrevCrlContext); }
         IntPtr CryptographicFunctions.CertFindCertificateInStore(IntPtr CertStore,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext) { return CertFindCertificateInStore(CertStore,X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,FindFlags,FindType,FindPara,PrevCertContext); }
         IntPtr CryptographicFunctions.CertGetIssuerCertificateFromStore(IntPtr CertStore,IntPtr SubjectContext,IntPtr PrevIssuerContext,ref Int32 Flags) { return CertGetIssuerCertificateFromStore(CertStore,SubjectContext,PrevIssuerContext,ref Flags); }
-        IntPtr CryptographicFunctions.CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, IntPtr Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
-        IntPtr CryptographicFunctions.CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, String Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
-        IntPtr CryptographicFunctions.CryptMsgOpenToDecode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,IntPtr StreamInfo) { return CryptMsgOpenToDecode(EncodingType,Flags,Type,CryptProv,RecipientInfo,StreamInfo); }
-        IntPtr CryptographicFunctions.CryptMsgOpenToDecode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,ref CMSG_STREAM_INFO StreamInfo) { return CryptMsgOpenToDecode(EncodingType,Flags,Type,CryptProv,RecipientInfo,ref StreamInfo); }
-        IntPtr CryptographicFunctions.CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo,ref CMSG_STREAM_INFO StreamInfo) { return CryptMsgOpenToEncode(EncodingType,Flags,Type,ref EncodeInfo,IntPtr.Zero,ref StreamInfo); }
-        unsafe Boolean CryptographicFunctions.CertGetCertificateChain(IntPtr ChainEngine, IntPtr Context, ref FILETIME time, IntPtr AdditionalStore, ref CERT_CHAIN_PARA ChainPara, CERT_CHAIN_FLAGS Flags, IntPtr Reserved, CERT_CHAIN_CONTEXT** ChainContext) { return CertGetCertificateChain(ChainEngine,Context,ref time,AdditionalStore,ref ChainPara,Flags,Reserved,ChainContext); }
+        IntPtr CryptographicFunctions.CertOpenStore(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, IntPtr Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
+        IntPtr CryptographicFunctions.CertOpenStore(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, String Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
+        IntPtr CryptographicFunctions.CryptMsgOpenToDecode(CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr StreamInfo) { return CryptMsgOpenToDecode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,CryptProv,IntPtr.Zero,StreamInfo); }
+        IntPtr CryptographicFunctions.CryptMsgOpenToDecode(CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,ref CMSG_STREAM_INFO StreamInfo) { return CryptMsgOpenToDecode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,CryptProv,IntPtr.Zero,ref StreamInfo); }
+        IntPtr CryptographicFunctions.CryptMsgOpenToEncode(CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo,ref CMSG_STREAM_INFO StreamInfo) { return CryptMsgOpenToEncode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,ref EncodeInfo,IntPtr.Zero,ref StreamInfo); }
+        unsafe Boolean CryptographicFunctions.CertGetCertificateChain(IntPtr ChainEngine,IntPtr Context,ref FILETIME Time,IntPtr AdditionalStore,ref CERT_CHAIN_PARA ChainPara,CERT_CHAIN_FLAGS Flags,CERT_CHAIN_CONTEXT** ChainContext) { return CertGetCertificateChain(ChainEngine,Context,ref Time,AdditionalStore,ref ChainPara,Flags,IntPtr.Zero,ChainContext); }
         unsafe Boolean CryptographicFunctions.CertGetValidUsages(Int32 cCerts,CERT_CONTEXT* rghCerts,Int32* cNumOIDs,IntPtr rghOIDs,Int32* pcbOIDs) { return CertGetValidUsages(cCerts,rghCerts,cNumOIDs,rghOIDs,pcbOIDs); }
         unsafe Boolean CryptographicFunctions.CertSelectCertificateChains(ref Guid SelectionContext,Int32 Flags,CERT_SELECT_CHAIN_PARA* ChainParameters,Int32 cCriteria,CERT_SELECT_CRITERIA* rgpCriteria,IntPtr Store,out Int32 pcSelection,out CERT_CHAIN_CONTEXT* pprgpSelection) { return CertSelectCertificateChains(ref SelectionContext,Flags,ChainParameters,cCriteria,rgpCriteria,Store,out pcSelection,out pprgpSelection); }
         unsafe CERT_SERVER_OCSP_RESPONSE_CONTEXT* CryptographicFunctions.CertGetServerOcspResponseContext(IntPtr ServerOcspResponse,Int32 Flags,IntPtr Reserved) { return CertGetServerOcspResponseContext(ServerOcspResponse,Flags,Reserved); }
@@ -166,11 +166,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CertEnumCertificatesInStore(IntPtr CertStore,IntPtr PrevCertContext);
         [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CertFindCertificateInStore(IntPtr CertStore,Int32 CertEncodingType,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext);
         [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CertGetIssuerCertificateFromStore(IntPtr CertStore,IntPtr SubjectContext,IntPtr PrevIssuerContext,ref Int32 Flags);
-        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,IntPtr si);
-        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,ref CMSG_STREAM_INFO si);
-        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_SIGNED_ENCODE_INFO32 EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
-        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_SIGNED_ENCODE_INFO64 EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
-        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
+        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,IntPtr si);
+        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,ref CMSG_STREAM_INFO si);
+        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_SIGNED_ENCODE_INFO32 EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
+        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_SIGNED_ENCODE_INFO64 EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
+        [DllImport("libcapi20", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
         [DllImport("libcapi20", SetLastError = true)] private static extern unsafe Boolean CertGetCertificateChain(IntPtr ChainEngine, IntPtr Context, ref FILETIME time, IntPtr AdditionalStore, ref CERT_CHAIN_PARA ChainPara, CERT_CHAIN_FLAGS Flags, IntPtr Reserved, CERT_CHAIN_CONTEXT** ChainContext);
         [DllImport("libcapi20", SetLastError = true)] private static extern unsafe Boolean CertGetValidUsages(Int32 cCerts,CERT_CONTEXT* rghCerts,Int32* cNumOIDs,IntPtr rghOIDs,Int32* pcbOIDs);
         [DllImport("libcapi20", SetLastError = true)] private static extern unsafe Boolean CertSelectCertificateChains(ref Guid SelectionContext,Int32 Flags,CERT_SELECT_CHAIN_PARA* ChainParameters,Int32 cCriteria,CERT_SELECT_CRITERIA* rgpCriteria,IntPtr Store,out Int32 pcSelection,out CERT_CHAIN_CONTEXT* pprgpSelection);
@@ -240,18 +240,18 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             return CryptGetHashParam(Handle,Parameter, out Value,ref Size,0);
             }
 
-        IntPtr CryptographicFunctions.CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType, CRYPT_OPEN_MESSAGE_FLAGS Flags,
+        IntPtr CryptographicFunctions.CryptMsgOpenToEncode(CRYPT_OPEN_MESSAGE_FLAGS Flags,
             CMSG_TYPE Type, CMSG_SIGNED_ENCODE_INFO EncodeInfo,
             ref CMSG_STREAM_INFO StreamInfo) {
             if (Environment.Is64BitProcess) {
                 var e = (CMSG_SIGNED_ENCODE_INFO64)EncodeInfo;
-                return CryptMsgOpenToEncode(EncodingType,Flags,Type,
+                return CryptMsgOpenToEncode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,
                     ref e,IntPtr.Zero,ref StreamInfo);
                 }
             else
                 {
                 var e = (CMSG_SIGNED_ENCODE_INFO32)EncodeInfo;
-                return CryptMsgOpenToEncode(EncodingType,Flags,Type,
+                return CryptMsgOpenToEncode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,
                     ref e,IntPtr.Zero,ref StreamInfo);
                 }
             }
