@@ -305,70 +305,83 @@ namespace BinaryStudio.Services
         /// <param name="Store">Handle of a certificate store.</param>
         /// <param name="Context">A pointer to the <see cref="CRL_CONTEXT"/> structure to be added.</param>
         /// <param name="Disposition">Specifies the action to take if a matching CRL or a link to a matching CRL already exists in the store. Currently defined disposition values and their uses are as follows:
-        /// <p>
-        ///   <table class="table_value_meaning">
-        ///     <tr>
-        ///       <td>
-        ///         CERT_STORE_ADD_ALWAYS
-        ///       </td>
-        ///       <td>
-        ///         Makes no check for an existing matching CRL or link to a matching CRL. A new CRL is always added to the store. This can lead to duplicates in a store.
-        ///       </td>
-        ///     </tr>
-        ///     <tr>
-        ///       <td>
-        ///         CERT_STORE_ADD_NEW
-        ///       </td>
-        ///       <td>
-        ///         If a matching CRL or a link to a matching CRL exists, the operation fails. <see cref="LastErrorService.GetLastError"/> returns the <see cref="HRESULT.CRYPT_E_EXISTS"/> code.
-        ///       </td>
-        ///     </tr>
-        ///     <tr>
-        ///       <td>
-        ///         CERT_STORE_ADD_NEWER
-        ///       </td>
-        ///       <td>
-        ///         If a matching CRL or a link to a matching CRL exists, the function compares the <see cref="CRL_INFO.ThisUpdate"/> times on the CRLs. If the existing CRL has a <see cref="CRL_INFO.ThisUpdate"/> time less than the <see cref="CRL_INFO.ThisUpdate"/> time on the new CRL, the old CRL or link is replaced just as with CERT_STORE_ADD_REPLACE_EXISTING.<br/>
-        ///         If the existing CRL has a <see cref="CRL_INFO.ThisUpdate"/> time greater than or equal to the <see cref="CRL_INFO.ThisUpdate"/> time on the CRL to be added, the function fails with <see cref="LastErrorService.GetLastError"/> returning the <see cref="HRESULT.CRYPT_E_EXISTS"/> code.<br/>
-        ///         If a matching CRL or a link to a matching CRL is not found in the store, a new CRL is added to the store.
-        ///       </td>
-        ///     </tr>
-        ///     <tr>
-        ///       <td>
-        ///         CERT_STORE_ADD_NEWER_INHERIT_PROPERTIES
-        ///       </td>
-        ///       <td>
-        ///         The action is the same as for CERT_STORE_ADD_NEWER, except that if an older CRL is replaced, the properties of the older CRL are incorporated into the replacement CRL.
-        ///       </td>
-        ///     </tr>
-        ///     <tr>
-        ///       <td>
-        ///         CERT_STORE_ADD_REPLACE_EXISTING
-        ///       </td>
-        ///       <td>
-        ///         If a matching CRL or a link to a matching CRL exists, the existing CRL or link is deleted and a new CRL is created and added to the store.<br/>
-        ///         If a matching CRL or a link to a matching CRL does not exist, one is added.
-        ///       </td>
-        ///     </tr>
-        ///     <tr>
-        ///       <td>
-        ///         CERT_STORE_ADD_REPLACE_EXISTING_INHERIT_PROPERTIES
-        ///       </td>
-        ///       <td>
-        ///         If a matching CRL exists in the store, the existing context is deleted before creating and adding the new context. The added context inherits properties from the existing CRL.
-        ///       </td>
-        ///     </tr>
-        ///     <tr>
-        ///       <td>
-        ///         CERT_STORE_ADD_USE_EXISTING
-        ///       </td>
-        ///       <td>
-        ///         If a matching CRL or a link to a matching CRL exists, that existing CRL is used and properties from the new CRL are added. The function does not fail, but no new CRL is added. The existing context is duplicated.<br/>
-        ///         If a matching CRL or a link to a matching CRL does not exist, a new CRL is added.
-        ///       </td>
-        ///     </tr>
-        ///   </table>
-        /// </p>
+        /// <table class="table_value_meaning">
+        ///   <tr>
+        ///     <th>
+        ///       Value
+        ///     </th>
+        ///     <th>
+        ///       Meaning
+        ///     </th>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_ADD_ALWAYS
+        ///     </td>
+        ///     <td>
+        ///       Makes no check for an existing matching CRL or link to a matching CRL.
+        ///       A new CRL is always added to the store.
+        ///       This can lead to duplicates in a store.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_ADD_NEW
+        ///     </td>
+        ///     <td>
+        ///       If a matching CRL or a link to a matching CRL exists, the operation fails.
+        ///       <see cref="LastErrorService.GetLastError"/> returns the <see cref="HRESULT.CRYPT_E_EXISTS"/> code.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_ADD_NEWER
+        ///     </td>
+        ///     <td>
+        ///       If a matching CRL or a link to a matching CRL exists, the function compares the <see cref="CRL_INFO.ThisUpdate"/> times on the CRLs.
+        ///       If the existing CRL has a <see cref="CRL_INFO.ThisUpdate"/> time less than the <see cref="CRL_INFO.ThisUpdate"/> time on the new CRL, the old CRL or link is replaced just as with <b>CERT_STORE_ADD_REPLACE_EXISTING</b>.<br/>
+        ///       If the existing CRL has a <see cref="CRL_INFO.ThisUpdate"/> time greater than or equal to the <see cref="CRL_INFO.ThisUpdate"/> time on the CRL to be added, the function fails with <see cref="LastErrorService.GetLastError"/> returning the <see cref="HRESULT.CRYPT_E_EXISTS"/> code.<br/>
+        ///       If a matching CRL or a link to a matching CRL is not found in the store, a new CRL is added to the store.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_ADD_NEWER_INHERIT_PROPERTIES
+        ///     </td>
+        ///     <td>
+        ///       The action is the same as for CERT_STORE_ADD_NEWER, except that if an older CRL is replaced, the properties of the older CRL are incorporated into the replacement CRL.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_ADD_REPLACE_EXISTING
+        ///     </td>
+        ///     <td>
+        ///       If a matching CRL or a link to a matching CRL exists, the existing CRL or link is deleted and a new CRL is created and added to the store.<br/>
+        ///       If a matching CRL or a link to a matching CRL does not exist, one is added.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_ADD_REPLACE_EXISTING_INHERIT_PROPERTIES
+        ///     </td>
+        ///     <td>
+        ///       If a matching CRL exists in the store, the existing context is deleted before creating and adding the new context.
+        ///       The added context inherits properties from the existing CRL.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_ADD_USE_EXISTING
+        ///     </td>
+        ///     <td>
+        ///       If a matching CRL or a link to a matching CRL exists, that existing CRL is used and properties from the new CRL are added.
+        ///       The function does not fail, but no new CRL is added. The existing context is duplicated.<br/>
+        ///       If a matching CRL or a link to a matching CRL does not exist, a new CRL is added.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
         /// <returns>
         /// If the function succeeds, the return value is TRUE.<br/>
         /// If the function fails, the return value is FALSE. Errors from the called functions <see cref="CertAddEncodedCRLToStore"/> and <see cref="CertSetCRLContextProperty"/> can be propagated to this function.<br/>
@@ -13035,11 +13048,88 @@ namespace BinaryStudio.Services
         /// </returns>
         unsafe Boolean CertGetValidUsages(Int32 cCerts,CERT_CONTEXT* rghCerts,Int32* cNumOIDs,IntPtr rghOIDs,Int32* pcbOIDs);
         #endregion
-        unsafe Boolean CertSelectCertificateChains(ref Guid SelectionContext,Int32 Flags,CERT_SELECT_CHAIN_PARA* ChainParameters,Int32 cCriteria,CERT_SELECT_CRITERIA* rgpCriteria,IntPtr Store,out Int32 pcSelection,out CERT_CHAIN_CONTEXT* pprgpSelection);
-        unsafe CERT_SERVER_OCSP_RESPONSE_CONTEXT* CertGetServerOcspResponseContext(IntPtr ServerOcspResponse,Int32 Flags,IntPtr Reserved);
-        unsafe IntPtr CertAddRefServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara);
-        unsafe IntPtr CertCreateSelfSignCertificate(IntPtr CryptProvOrNCryptKey,ref CERT_NAME_BLOB SubjectIssuerBlob,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions);
-
+        #region M:CertCreateSelfSignCertificate(IntPtr,{ref}CERT_NAME_BLOB,Int32,CRYPT_KEY_PROV_INFO*,CRYPT_ALGORITHM_IDENTIFIER*,SYSTEMTIME*,SYSTEMTIME*,CERT_EXTENSIONS*):IntPtr
+        /// <summary>
+        /// This function builds a self-signed certificate and returns a pointer to a <see cref="CERT_CONTEXT"/> structure that represents the certificate.
+        /// </summary>
+        /// <param name="CryptProvOrNCryptKey">
+        /// A handle of a cryptographic provider used to sign the certificate created.
+        /// If <b>NULL</b>, information from the <paramref name="KeyProvInfo"/> parameter is used to acquire the needed handle.
+        /// If <paramref name="KeyProvInfo"/> is also <b>NULL</b>, the default provider type, <b>PROV_RSA_FULL</b> provider type, the default key specification, <b>AT_SIGNATURE</b>, and a newly created key container with a unique container name are used.<br/>
+        /// This handle must be an <b>HCRYPTPROV</b> handle that has been created by using the <see cref="CryptAcquireContext"/> function or an <b>NCRYPT_KEY_HANDLE</b> handle that has been created by using the <b>NCryptOpenKey</b> function.
+        /// New applications should always pass in the <b>NCRYPT_KEY_HANDLE</b> handle of a CNG cryptographic service provider (CSP).
+        /// </param>
+        /// <param name="SubjectIssuer">
+        /// A pointer to a BLOB that contains the distinguished name (DN) for the certificate subject.
+        /// Minimally, a reference to an empty DN must be provided.
+        /// This BLOB is normally created by using the <see cref="CertStrToName"/> function.
+        /// It can also be created by using the <b>CryptEncodeObject</b> function and specifying either the <b>X509_NAME</b> or <b>X509_UNICODE_NAME</b> StructType.
+        /// </param>
+        /// <param name="Flags">
+        /// A set of flags that override the default behavior of this function.
+        /// This can be zero or a combination of one or more of the following values.
+        /// <table class="table_value_meaning">
+        ///   <tr>
+        ///     <th>
+        ///       Value
+        ///     </th>
+        ///     <th>
+        ///       Meaning
+        ///     </th>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_CREATE_SELFSIGN_NO_KEY_INFO
+        ///     </td>
+        ///     <td>
+        ///       By default, the returned <see cref="CERT_CONTEXT"/> references the private keys by setting the <b>CERT_KEY_PROV_INFO_PROP_ID</b>.
+        ///       If you do not want the returned <see cref="CERT_CONTEXT"/> to reference private keys by setting the <b>CERT_KEY_PROV_INFO_PROP_ID</b>, specify <b>CERT_CREATE_SELFSIGN_NO_KEY_INFO</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_CREATE_SELFSIGN_NO_SIGN
+        ///     </td>
+        ///     <td>
+        ///       By default, the certificate being created is signed.
+        ///       If the certificate being created is only a dummy placeholder, the certificate might not need to be signed.
+        ///       Signing of the certificate is skipped if <b>CERT_CREATE_SELFSIGN_NO_SIGN</b> is specified.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="KeyProvInfo">
+        /// A pointer to a <see cref="CRYPT_KEY_PROV_INFO"/> structure.
+        /// Before a certificate is created, the CSP is queried for the key provider, key provider type, and the key container name.
+        /// If the CSP queried does not support these queries, the function fails.
+        /// If the default provider does not support these queries, a <paramref name="KeyProvInfo"/> value must be specified.
+        /// The RSA BASE does support these queries.<br/>
+        /// If the <paramref name="KeyProvInfo"/> parameter is not <b>NULL</b>, the corresponding values are set in the <b>CERT_KEY_PROV_INFO_PROP_ID</b> value of the generated certificate.
+        /// You must ensure that all parameters of the supplied structure are correctly specified.
+        /// </param>
+        /// <param name="SignatureAlgorithm">
+        /// A pointer to a <see cref="CRYPT_ALGORITHM_IDENTIFIER"/> structure.
+        /// If <b>NULL</b>, the default algorithm, SHA1RSA, is used.
+        /// </param>
+        /// <param name="StartTime">
+        /// A pointer to a <see cref="SYSTEMTIME"/> structure.
+        /// If <b>NULL</b>, the system current time is used by default.
+        /// </param>
+        /// <param name="EndTime">
+        /// A pointer to a <see cref="SYSTEMTIME"/> structure.
+        /// If <b>NULL</b>, the <paramref name="StartTime"/> value plus one year will be used by default.
+        /// </param>
+        /// <param name="Extensions">
+        /// A pointer to a <see cref="CERT_EXTENSIONS"/> array of <see cref="CERT_EXTENSION"/> structures.
+        /// By default, the array is empty.
+        /// An alternate subject name, if desired, can be specified as one of these extensions.
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, a <see cref="CERT_CONTEXT"/> variable that points to the created certificate is returned.
+        /// If the function fails, it returns <b>NULL</b>. For extended error information, call <see cref="LastErrorService.GetLastError"/>.
+        /// </returns>
+        unsafe IntPtr CertCreateSelfSignCertificate(IntPtr CryptProvOrNCryptKey,ref CERT_NAME_BLOB SubjectIssuer,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions);
+        #endregion
         #region M:CertGetSubjectCertificateFromStore(IntPtr,Int32,CERT_INFO*):IntPtr
         /**
          * <summary>
@@ -13079,9 +13169,190 @@ namespace BinaryStudio.Services
          */
         unsafe IntPtr CertGetSubjectCertificateFromStore(IntPtr Store,Int32 EncodingType,CERT_INFO* CertId);
         #endregion
-        unsafe IntPtr CertOpenServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara);
+        #region M:CryptFindOIDInfo(CRYPT_OID_INFO_KEY_TYPE,void*,Int32):IntPtr
+        /// <summary>
+        /// This function retrieves the first predefined or registered <see cref="CRYPT_OID_INFO"/> structure that matches a specified key type and key.
+        /// The search can be limited to object identifiers (OIDs) within a specified OID group.<br/>
+        /// Use it to list all or selected subsets of <see cref="CRYPT_OID_INFO"/> structures.
+        /// New <see cref="CRYPT_OID_INFO"/> structures can be registered by using <see cref="CryptRegisterOIDInfo"/>.
+        /// User-registered OIDs can be removed from the list of registered OIDs by using <see cref="CryptUnregisterOIDInfo"/>.<br/>
+        /// New OIDs can be placed in the list of registered OIDs either before or after the predefined entries.
+        /// Because <b>CryptFindOIDInfo</b> returns the first key on the list that matches the search criteria, a newly registered OID placed before a predefined OID entry with the same key overrides a predefined entry.
+        /// </summary>
+        /// <param name="KeyType">
+        /// Specifies the key type to use when finding OID information.<br/>
+        /// This parameter can be one of the following key types.
+        /// <table class="table_value_meaning">
+        ///   <tr>
+        ///     <th>
+        ///       Value
+        ///     </th>
+        ///     <th>
+        ///       Meaning
+        ///     </th>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_OID_INFO_OID_KEY
+        ///     </td>
+        ///     <td>
+        ///       <paramref name="Key"/> is the address of a null-terminated ANSI string that contains the OID string to find.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_OID_INFO_NAME_KEY
+        ///     </td>
+        ///     <td>
+        ///       <paramref name="Key"/> is the address of a null-terminated Unicode string that contains the name to find.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_OID_INFO_ALGID_KEY
+        ///     </td>
+        ///     <td>
+        ///       <paramref name="Key"/> is the address of an <see cref="ALG_ID"/> variable. The following ALG_IDs are supported:
+        ///       <list type="bullet">
+        ///         <item>Hash Algorithms</item>
+        ///         <item>Symmetric Encryption Algorithms</item>
+        ///         <item>Public Key Algorithms</item>
+        ///       </list>
+        ///       Algorithms that are not listed are supported by using Cryptography API: Next Generation (CNG) only; instead, use <b>CRYPT_OID_INFO_CNG_ALGID_KEY</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_OID_INFO_SIGN_KEY
+        ///     </td>
+        ///     <td>
+        ///       <paramref name="Key"/> is the address of an array of two ALG_IDs where the first element contains the hash algorithm identifier and the second element contains the public key algorithm identifier.<br/>
+        ///       The following ALG_ID combinations are supported.
+        ///       <table class="table_value_meaning" style="width:50%">
+        ///         <tr>
+        ///           <th>
+        ///             Signature algorithm identifier
+        ///           </th>
+        ///           <th>
+        ///             Hash algorithm identifier
+        ///           </th>
+        ///         </tr>
+        ///         <tr>
+        ///           <td>
+        ///             CALG_RSA_SIGN
+        ///           </td>
+        ///           <td>
+        ///             CALG_SHA1<br/>
+        ///             CALG_MD5<br/>
+        ///             CALG_MD4<br/>
+        ///             CALG_MD2
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td>
+        ///             CALG_DSS_SIGN
+        ///           </td>
+        ///           <td>
+        ///             CALG_SHA1
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td>
+        ///             CALG_NO_SIGN
+        ///           </td>
+        ///           <td>
+        ///             CALG_SHA1<br/>
+        ///             CALG_NO_SIGN
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///       Algorithms that are not listed are supported through CNG only; instead, use <b>CRYPT_OID_INFO_CNG_SIGN_KEY</b>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_OID_INFO_CNG_ALGID_KEY
+        ///     </td>
+        ///     <td>
+        ///       <paramref name="Key"/> is the address of a null-terminated Unicode string that contains the CNG algorithm identifier to find.
+        ///       This can be one of the predefined CNG Algorithm Identifiers or another registered algorithm identifier.<br/>
+        ///       <b>Windows Server 2003 R2 Windows Server 2003</b>: This key type is not supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_OID_INFO_CNG_SIGN_KEY
+        ///     </td>
+        ///     <td>
+        ///       <paramref name="Key"/> is the address of an array of two null-terminated Unicode string pointers where the first string contains the hash CNG algorithm identifier and the second string contains the public key CNG algorithm identifier.
+        ///       These can be from the predefined CNG Algorithm Identifiers or another registered algorithm identifier.<br/>
+        ///       <b>Windows Server 2003 R2 Windows Server 2003</b>: This key type is not supported.<br/>
+        ///       Optionally, the following key types can be specified in the dwKeyType parameter by using the logical OR operator (|).
+        ///       <table class="table_value_meaning" style="width:50%">
+        ///         <tr>
+        ///           <th>
+        ///             Value
+        ///           </th>
+        ///           <th>
+        ///             Meaning
+        ///           </th>
+        ///         </tr>
+        ///         <tr>
+        ///           <td>
+        ///             CRYPT_OID_INFO_PUBKEY_SIGN_KEY_FLAG
+        ///           </td>
+        ///           <td>
+        ///             Skips public keys in the <b>CRYPT_PUBKEY_ALG_OID_GROUP_ID</b> group that are explicitly flagged with the <b>CRYPT_OID_PUBKEY_ENCRYPT_ONLY_FLAG</b> flag.
+        ///           </td>
+        ///         </tr>
+        ///         <tr>
+        ///           <td>
+        ///             CRYPT_OID_INFO_PUBKEY_ENCRYPT_KEY_FLAG
+        ///           </td>
+        ///           <td>
+        ///             Skips public keys in the <b>CRYPT_PUBKEY_ALG_OID_GROUP_ID</b> group that are explicitly flagged with the <b>CRYPT_OID_PUBKEY_SIGN_ONLY_FLAG</b> flag.
+        ///           </td>
+        ///         </tr>
+        ///       </table>
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="Key">
+        /// The address of a buffer that contains additional search information.
+        /// This parameter depends on the value of the <paramref name="KeyType"/> parameter.
+        /// For more information, see the table under <paramref name="KeyType"/>.
+        /// </param>
+        /// <param name="GroupId">
+        /// The group identifier to use when finding OID information.
+        /// Setting this parameter to zero searches all groups according to the dwKeyType parameter.
+        /// Otherwise, only the indicated <paramref name="GroupId"/> is searched.<br/>
+        /// For information about code that lists the OID information by group identifier, see <see cref="CryptEnumOIDInfo"/>.<br/>
+        /// Optionally, the following flag can be specified in the <paramref name="GroupId"/> parameter by using the logical OR operator (|).
+        /// <table class="table_value_meaning">
+        ///   <tr>
+        ///     <th>
+        ///       Value
+        ///     </th>
+        ///     <th>
+        ///       Meaning
+        ///     </th>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_OID_DISABLE_SEARCH_DS_FLAG
+        ///     </td>
+        ///     <td>
+        ///       Disables searching the directory server.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// The bit length shifted left 16 bits can be specified in the <paramref name="GroupId"/> parameter by using the logical OR operator (|).
+        /// </param>
+        /// <returns>
+        /// Returns a pointer to a constant structure of type <see cref="CRYPT_OID_INFO"/>. The returned pointer must not be freed. When the specified key and group is not found, <b>NULL</b> is returned.
+        /// </returns>
         unsafe IntPtr CryptFindOIDInfo(CRYPT_OID_INFO_KEY_TYPE KeyType,void* Key,Int32 GroupId);
-        void CertAddRefServerOcspResponseContext(IntPtr ServerOcspResponseContext);
-        void CertCloseServerOcspResponse(IntPtr ServerOcspResponse,Int32 Flags);
+        #endregion
         }
     }

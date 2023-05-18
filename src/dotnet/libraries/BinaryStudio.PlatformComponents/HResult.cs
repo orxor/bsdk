@@ -1,10 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace BinaryStudio.PlatformComponents.Win32
     {
     public enum HRESULT
         {
+        /// <summary>
+        /// The operation completed successfully.
+        /// </summary>
         S_OK                                                                  = unchecked((Int32)0x00000000),
+        /// <summary>
+        /// Incorrect function.
+        /// </summary>
         S_FALSE                                                               = unchecked((Int32)0x00000001),
         CACHE_E_NOCACHE_UPDATED                                               = unchecked((Int32)0x80040170),
         CACHE_S_FORMATETC_NOTSUPPORTED                                        = unchecked((Int32)0x00040170),
@@ -3411,41 +3418,146 @@ namespace BinaryStudio.PlatformComponents.Win32
         XENROLL_E_RESPONSE_KA_HASH_MISMATCH                                   = unchecked((Int32)0x80095004),
         XENROLL_E_RESPONSE_KA_HASH_NOT_FOUND                                  = unchecked((Int32)0x80095002),
         XENROLL_E_RESPONSE_UNEXPECTED_KA_HASH                                 = unchecked((Int32)0x80095003),
-        PSX_EPERM                                                             = unchecked((Int32)0x90000001), // Operation not permitted.
-        PSX_ENOENT                                                            = unchecked((Int32)0x90000002), // No such file or directory.
-        PSX_ESRCH                                                             = unchecked((Int32)0x90000003), // No such process.
-        PSX_EINTR                                                             = unchecked((Int32)0x90000004), // Interrupted system call.
-        PSX_EIO                                                               = unchecked((Int32)0x90000005), // Input/output error.
-        PSX_ENXIO                                                             = unchecked((Int32)0x90000006), // No such device or address.
-        PSX_E2BIG                                                             = unchecked((Int32)0x90000007), // Argument list too long.
-        PSX_ENOEXEC                                                           = unchecked((Int32)0x90000008), // Exec format error.
-        PSX_EBADF                                                             = unchecked((Int32)0x90000009), // Bad file descriptor.
-        PSX_ECHILD                                                            = unchecked((Int32)0x9000000a), // No child processes.
-        PSX_EAGAIN                                                            = unchecked((Int32)0x9000000b), // Resource temporarily unavailable.
-        PSX_ENOMEM                                                            = unchecked((Int32)0x9000000c), // Cannot allocate memory.
-        PSX_EACCES                                                            = unchecked((Int32)0x9000000d), // Permission denied.
-        PSX_EFAULT                                                            = unchecked((Int32)0x9000000e), // Bad address.
-        PSX_ENOTBLK                                                           = unchecked((Int32)0x9000000f), // Block device required.
-        PSX_EBUSY                                                             = unchecked((Int32)0x90000010), // Device or resource busy.
-        PSX_EEXIST                                                            = unchecked((Int32)0x90000011), // File exists.
-        PSX_EXDEV                                                             = unchecked((Int32)0x90000012), // Invalid cross-device link.
-        PSX_ENODEV                                                            = unchecked((Int32)0x90000013), // No such device.
-        PSX_ENOTDIR                                                           = unchecked((Int32)0x90000014), // Not a directory.
-        PSX_EISDIR                                                            = unchecked((Int32)0x90000015), // Is a directory.
-        PSX_EINVAL                                                            = unchecked((Int32)0x90000016), // Invalid argument.
-        PSX_ENFILE                                                            = unchecked((Int32)0x90000017), // Too many open files in system.
-        PSX_EMFILE                                                            = unchecked((Int32)0x90000018), // Too many open files.
-        PSX_ENOTTY                                                            = unchecked((Int32)0x90000019), // Inappropriate ioctl for device.
-        PSX_ETXTBSY                                                           = unchecked((Int32)0x9000001a), // Text file busy.
-        PSX_EFBIG                                                             = unchecked((Int32)0x9000001b), // File too large.
-        PSX_ENOSPC                                                            = unchecked((Int32)0x9000001c), // No space left on device.
-        PSX_ESPIPE                                                            = unchecked((Int32)0x9000001d), // Illegal seek.
-        PSX_EROFS                                                             = unchecked((Int32)0x9000001e), // Read-only file system.
-        PSX_EMLINK                                                            = unchecked((Int32)0x9000001f), // Too many links.
-        PSX_EPIPE                                                             = unchecked((Int32)0x90000020), // Broken pipe.
-        PSX_EDOM                                                              = unchecked((Int32)0x90000021), // Numerical argument out of domain.
-        PSX_ERANGE                                                            = unchecked((Int32)0x90000022), // Numerical result out of range.
-        PSX_EDEADLK                                                           = unchecked((Int32)0x90000023), // Resource deadlock avoided.
+        /// <summary>
+        /// Operation not permitted.
+        /// </summary>
+        PSX_EPERM                                                             = unchecked((Int32)0x90000001),
+        /// <summary>
+        /// No such file or directory.
+        /// </summary>
+        PSX_ENOENT                                                            = unchecked((Int32)0x90000002),
+        /// <summary>
+        /// No such process.
+        /// </summary>
+        PSX_ESRCH                                                             = unchecked((Int32)0x90000003),
+        /// <summary>
+        /// Interrupted system call.
+        /// </summary>
+        PSX_EINTR                                                             = unchecked((Int32)0x90000004),
+        /// <summary>
+        /// Input/output error.
+        /// </summary>
+        PSX_EIO                                                               = unchecked((Int32)0x90000005),
+        /// <summary>
+        /// No such device or address.
+        /// </summary>
+        PSX_ENXIO                                                             = unchecked((Int32)0x90000006),
+        /// <summary>
+        /// Argument list too long.
+        /// </summary>
+        PSX_E2BIG                                                             = unchecked((Int32)0x90000007),
+        /// <summary>
+        /// Exec format error.
+        /// </summary>
+        PSX_ENOEXEC                                                           = unchecked((Int32)0x90000008),
+        /// <summary>
+        /// Bad file descriptor.
+        /// </summary>
+        PSX_EBADF                                                             = unchecked((Int32)0x90000009),
+        /// <summary>
+        /// No child processes.
+        /// </summary>
+        PSX_ECHILD                                                            = unchecked((Int32)0x9000000a),
+        /// <summary>
+        /// Resource temporarily unavailable.
+        /// </summary>
+        PSX_EAGAIN                                                            = unchecked((Int32)0x9000000b),
+        /// <summary>
+        /// Cannot allocate memory.
+        /// </summary>
+        PSX_ENOMEM                                                            = unchecked((Int32)0x9000000c),
+        /// <summary>
+        /// Permission denied.
+        /// </summary>
+        PSX_EACCES                                                            = unchecked((Int32)0x9000000d),
+        /// <summary>
+        /// Bad address.
+        /// </summary>
+        PSX_EFAULT                                                            = unchecked((Int32)0x9000000e),
+        /// <summary>
+        /// Block device required.
+        /// </summary>
+        PSX_ENOTBLK                                                           = unchecked((Int32)0x9000000f),
+        /// <summary>
+        /// Device or resource busy.
+        /// </summary>
+        PSX_EBUSY                                                             = unchecked((Int32)0x90000010),
+        /// <summary>
+        /// File exists.
+        /// </summary>
+        PSX_EEXIST                                                            = unchecked((Int32)0x90000011),
+        /// <summary>
+        /// Invalid cross-device link.
+        /// </summary>
+        PSX_EXDEV                                                             = unchecked((Int32)0x90000012),
+        /// <summary>
+        /// No such device.
+        /// </summary>
+        PSX_ENODEV                                                            = unchecked((Int32)0x90000013),
+        /// <summary>
+        /// Not a directory.
+        /// </summary>
+        PSX_ENOTDIR                                                           = unchecked((Int32)0x90000014),
+        /// <summary>
+        /// Is a directory.
+        /// </summary>
+        PSX_EISDIR                                                            = unchecked((Int32)0x90000015),
+        /// <summary>
+        /// Invalid argument.
+        /// </summary>
+        PSX_EINVAL                                                            = unchecked((Int32)0x90000016),
+        /// <summary>
+        /// Too many open files in system.
+        /// </summary>
+        PSX_ENFILE                                                            = unchecked((Int32)0x90000017),
+        /// <summary>
+        /// Too many open files.
+        /// </summary>
+        PSX_EMFILE                                                            = unchecked((Int32)0x90000018),
+        /// <summary>
+        /// Inappropriate ioctl for device.
+        /// </summary>
+        PSX_ENOTTY                                                            = unchecked((Int32)0x90000019),
+        /// <summary>
+        /// Text file busy.
+        /// </summary>
+        PSX_ETXTBSY                                                           = unchecked((Int32)0x9000001a),
+        /// <summary>
+        /// File too large.
+        /// </summary>
+        PSX_EFBIG                                                             = unchecked((Int32)0x9000001b),
+        /// <summary>
+        /// No space left on device.
+        /// </summary>
+        PSX_ENOSPC                                                            = unchecked((Int32)0x9000001c),
+        /// <summary>
+        /// Illegal seek.
+        /// </summary>
+        PSX_ESPIPE                                                            = unchecked((Int32)0x9000001d),
+        /// <summary>
+        /// Read-only file system.
+        /// </summary>
+        PSX_EROFS                                                             = unchecked((Int32)0x9000001e),
+        /// <summary>
+        /// Too many links.
+        /// </summary>
+        PSX_EMLINK                                                            = unchecked((Int32)0x9000001f),
+        /// <summary>
+        /// Broken pipe.
+        /// </summary>
+        PSX_EPIPE                                                             = unchecked((Int32)0x90000020),
+        /// <summary>
+        /// Numerical argument out of domain.
+        /// </summary>
+        PSX_EDOM                                                              = unchecked((Int32)0x90000021),
+        /// <summary>
+        /// Numerical result out of range.
+        /// </summary>
+        PSX_ERANGE                                                            = unchecked((Int32)0x90000022),
+        /// <summary>
+        /// Resource deadlock avoided.
+        /// </summary>
+        PSX_EDEADLK                                                           = unchecked((Int32)0x90000023),
         PSX_ENAMETOOLONG                                                      = unchecked((Int32)0x90000024), // File name too long.
         PSX_ENOLCK                                                            = unchecked((Int32)0x90000025), // No locks available.
         PSX_ENOSYS                                                            = unchecked((Int32)0x90000026), // Function not implemented.

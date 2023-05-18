@@ -8,6 +8,62 @@
             <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
             <filterpriority>2</filterpriority>
         </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.S_OK">
+            <summary>
+            The operation completed successfully.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.S_FALSE">
+            <summary>
+            Incorrect function.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EPERM">
+            <summary>
+            Operation not permitted.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENOENT">
+            <summary>
+            No such file or directory.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ESRCH">
+            <summary>
+            No such process.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EINTR">
+            <summary>
+            Interrupted system call.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EIO">
+            <summary>
+            Input/output error.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENXIO">
+            <summary>
+            No such device or address.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_E2BIG">
+            <summary>
+            Argument list too long.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENOEXEC">
+            <summary>
+            Exec format error.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EBADF">
+            Bad file descriptor.
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ECHILD">
+            No child processes.
+        </member>
         <member name="P:BinaryStudio.PlatformComponents.Win32.Process.CurrentProcess">
             <summary>Gets a new <see cref="T:BinaryStudio.PlatformComponents.Win32.Process" /> component and associates it with the currently active process.</summary>
             <returns>A new <see cref="T:BinaryStudio.PlatformComponents.Win32.Process" /> component associated with the process resource that is running the calling application.</returns>
@@ -30711,9 +30767,6 @@
         <member name="M:System.Collections.ObjectModel.InternalReadOnlyCollection`1.System#Collections#IEnumerable#GetEnumerator">
             <summary>Returns an enumerator that iterates through a collection.</summary>
             <returns>An <see cref="T:System.Collections.IEnumerator" /> that can be used to iterate through the collection.</returns>
-        </member>
-        <member name="T:System.Runtime.CompilerServices.CallerMemberNameAttribute">
-            <summary>Allows you to obtain the method or property name of the caller to the method.</summary>
         </member>
     </members>
 </doc>
