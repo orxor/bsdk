@@ -10,6 +10,7 @@ namespace BinaryStudio.Services
     using CRYPT_DATA_BLOB = CRYPT_BLOB;
     using CRYPT_INTEGER_BLOB = CRYPT_BLOB;
     using DATA_BLOB = CRYPT_BLOB;
+    using CRYPT_HASH_BLOB=CRYPT_BLOB;
 
     [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean PFN_CERT_ENUM_SYSTEM_STORE_LOCATION([MarshalAs(UnmanagedType.LPWStr)] String Name,CERT_SYSTEM_STORE_FLAGS Flags,IntPtr Reserved,IntPtr Arg);
     [UnmanagedFunctionPointer(CallingConvention.StdCall)] public delegate Boolean CertEnumSystemStoreCallbackIntPtr(IntPtr SystemStore, CERT_SYSTEM_STORE_FLAGS Flags, ref CERT_SYSTEM_STORE_INFO StoreInfo, IntPtr Reserved, IntPtr Arg);
@@ -10510,8 +10511,422 @@ namespace BinaryStudio.Services
         /// </returns>
         IntPtr CertEnumCRLsInStore(IntPtr CertStore,IntPtr PrevCrlContext);
         #endregion
+        #region M:CertFindCertificateInStore(IntPtr,Int32,Int32,IntPtr,IntPtr):IntPtr
+        /// <summary>
+        /// This function finds the first or next certificate context in a certificate store that matches a search criteria established by the <paramref name="FindType"/> and its associated <paramref name="FindPara"/>.
+        /// This function can be used in a loop to find all of the certificates in a certificate store that match the specified find criteria.
+        /// </summary>
+        /// <param name="CertStore">A handle of the certificate store to be searched.</param>
+        /// <param name="FindFlags">
+        /// Used with some <paramref name="FindType"/> values to modify the search criteria.
+        /// For most <paramref name="FindType"/> values, <paramref name="FindFlags"/> is not used and should be set to zero.</param>
+        /// <param name="FindType">
+        /// Specifies the type of search being made.
+        /// The search type determines the data type, contents, and the use of <paramref name="FindPara"/>.
+        /// This parameter can be one of the following values.
+        /// <table class="table_value_meaning">
+        ///   <tr>
+        ///     <th>
+        ///       Value
+        ///     </th>
+        ///     <th>
+        ///       Meaning
+        ///     </th>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_ANY
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <b>NULL</b>, not used.<br/>
+        ///       No search criteria used. Returns the next certificate in the store.
+        ///       <div class="note">
+        ///         <b>Note</b>:
+        ///         The order of the certificate context may not be preserved within the store.
+        ///         To access a specific certificate you must iterate across the certificates in the store.
+        ///       </div>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_CERT_ID
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CERT_ENHKEY_USAGE"/> structure.<br/>
+        ///       Searches for a certificate in the store that has either an enhanced key usage extension or an enhanced key usage property and a usage identifier that matches the <see cref="CERT_ENHKEY_USAGE.UsageIdentifierCount"/> member in the <see cref="CERT_ENHKEY_USAGE"/> structure.<br/>
+        ///       A certificate has an enhanced key usage extension if it has a <see cref="CERT_EXTENSION"/> structure with the <see cref="CERT_EXTENSION.pszObjId"/> member set to <b>szOID_ENHANCED_KEY_USAGE</b>.<br/>
+        ///       A certificate has an enhanced key usage property if its CERT_ENHKEY_USAGE_PROP_ID identifier is set.<br/>
+        ///       If CERT_FIND_OPTIONAL_ENHKEY_USAGE_FLAG is set in <paramref name="FindFlags"/>, certificates without the key usage extension or property are also matches.
+        ///       Setting this flag takes precedence over passing NULL in <paramref name="FindPara"/>.<br/>
+        ///       If CERT_FIND_EXT_ONLY_ENHKEY_USAGE_FLAG is set, a match is done only on the key usage extension.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_EXISTING
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CERT_CONTEXT"/> structure.<br/>
+        ///       Searches for a certificate that is an exact match of the specified certificate context.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_HASH
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CRYPT_HASH_BLOB"/> structure.<br/>
+        ///       Searches for a certificate with a SHA1 hash that matches the hash in the <b>CRYPT_HASH_BLOB</b> structure.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_HAS_PRIVATE_KEY
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: NULL, not used.<br/>
+        ///       Searches for a certificate that has a private key. The key can be ephemeral or saved on disk. The key can be a legacy Cryptography API (CAPI) key or a CNG key.
+        ///       <div class="note">
+        ///         <b>Note</b>:
+        ///         The order of the certificate context may not be preserved within the store. Therefore, to access a specific certificate, you must iterate across all certificates.
+        ///       </div>
+        ///       <b>Windows 8 and Windows Server 2012</b>: Support for this flag begins.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_ISSUER_ATTR
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <b>CERT_RDN</b> structure.<br/>
+        ///       Searches for a certificate with specified issuer attributes that match attributes in the <b>CERT_RDN</b> structure.
+        ///       If these values are set, the function compares attributes of the issuer in a certificate with elements of the <b>CERT_RDN_ATTR</b> array in this <b>CERT_RDN</b> structure.
+        ///       Comparisons iterate through the <b>CERT_RDN_ATTR</b> attributes looking for a match with the certificate's issuer attributes.<br/>
+        ///       If the <b>pszObjId</b> member of <b>CERT_RDN_ATTR</b> is <b>NULL</b>, the attribute object identifier is ignored.<br/>
+        ///       If the <b>dwValueType</b> member of <b>CERT_RDN_ATTR</b> is <b>CERT_RDN_ANY_TYPE</b>, the value type is ignored.<br/>
+        ///       If the <b>pbData</b> member of <b>CERT_RDN_VALUE_BLOB</b> is <b>NULL</b>, any value is a match.<br/>
+        ///       Currently only an exact, case-sensitive match is supported.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_ISSUER_NAME
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CERT_NAME_BLOB"/> structure.<br/>
+        ///       Search for a certificate with an exact match of the entire issuer name with the name in <see cref="CERT_NAME_BLOB"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_ISSUER_OF
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CERT_CONTEXT"/> structure.<br/>
+        ///       Searches for a certificate with a subject that matches the issuer in <see cref="CERT_CONTEXT"/>.<br/>
+        ///       Instead of using <b>CertFindCertificateInStore</b> with this value, use the <see cref="CertGetCertificateChain"/> function.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_ISSUER_STR
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: Null-terminated Unicode string.<br/>
+        ///       Searches for a certificate that contains the specified issuer name string.
+        ///       The certificate's issuer member is converted to a name string of the appropriate type using the appropriate form of <b>CertNameToStr</b> formatted as CERT_SIMPLE_NAME_STR.
+        ///       Then a case-insensitive substring-within-a-string match is performed.<br/>
+        ///       If the substring match fails and the subject contains an email <b>RDN</b> with Punycode encoded string, <b>CERT_NAME_STR_ENABLE_PUNYCODE_FLAG</b> is used to convert the subject to a Unicode string and the substring match is performed again.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_KEY_IDENTIFIER
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CRYPT_HASH_BLOB"/> structure.<br/>
+        ///       Searches for a certificate with a <b>CERT_KEY_IDENTIFIER_PROP_ID</b> property that matches the key identifier in <see cref="CRYPT_HASH_BLOB"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_KEY_SPEC
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="Int32"/> variable that contains a key specification.<br/>
+        ///       Searches for a certificate that has a <b>CERT_KEY_SPEC_PROP_ID</b> property that matches the key specification in <paramref name="FindPara"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_MD5_HASH
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CRYPT_HASH_BLOB"/> structure.<br/>
+        ///       Searches for a certificate with an MD5 hash that matches the hash in <see cref="CRYPT_HASH_BLOB"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_PROPERTY
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="Int32"/> variable that contains a property identifier.<br/>
+        ///       Searches for a certificate with a property that matches the property identifier specified by the <see cref="Int32"/> value in <paramref name="FindPara"/>.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_PUBLIC_KEY
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CERT_PUBLIC_KEY_INFO"/> structure.<br/>
+        ///       Searches for a certificate with a public key that matches the public key in the <see cref="CERT_PUBLIC_KEY_INFO"/> structure.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_SHA1_HASH
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CRYPT_HASH_BLOB"/> structure.<br/>
+        ///       Searches for a certificate with a SHA1 hash that matches the hash in the <see cref="CRYPT_HASH_BLOB"/> structure.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_SIGNATURE_HASH
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CRYPT_HASH_BLOB"/> structure.<br/>
+        ///       Searches for a certificate with a signature hash that matches the signature hash in the <see cref="CRYPT_HASH_BLOB"/> structure.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_SUBJECT_ATTR
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <b>CERT_RDN</b> structure.<br/>
+        ///       Searches for a certificate with specified subject attributes that match attributes in the <b>CERT_RDN</b> structure.
+        ///       If RDN values are set, the function compares attributes of the subject in a certificate with elements of the <b>CERT_RDN_ATTR</b> array in this <b>CERT_RDN</b> structure.
+        ///       Comparisons iterate through the <b>CERT_RDN_ATTR</b> attributes looking for a match with the certificate's subject's attributes.<br/>
+        ///       If the <b>pszObjId</b> member of <b>CERT_RDN_ATTR</b> is NULL, the attribute object identifier is ignored.<br/>
+        ///       If the <b>dwValueType</b> member of <b>CERT_RDN_ATTR</b> is CERT_RDN_ANY_TYPE, the value type is ignored.<br/>
+        ///       If the <b>pbData</b> member of <b>CERT_RDN_VALUE_BLOB</b> is NULL, any value is a match.<br/>
+        ///       Currently only an exact, case-sensitive match is supported.<br/>
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_SUBJECT_CERT
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CERT_INFO"/> structure.<br/>
+        ///       Searches for a certificate with both an issuer and a serial number that match the issuer and serial number in the <see cref="CERT_INFO"/> structure.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_SUBJECT_NAME
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CERT_NAME_BLOB"/> structure.<br/>
+        ///       Searches for a certificate with an exact match of the entire subject name with the name in the <see cref="CERT_NAME_BLOB"/> structure.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_SUBJECT_STR
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: Null-terminated Unicode string.<br/>
+        ///       Searches for a certificate that contains the specified subject name string.
+        ///       The certificate's subject member is converted to a name string of the appropriate type using the appropriate form of <b>CertNameToStr</b> formatted as <b>CERT_SIMPLE_NAME_STR</b>.
+        ///       Then a case-insensitive substring-within-a-string match is performed. 
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_CROSS_CERT_DIST_POINTS
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: Not used.<br/>
+        ///       Find a certificate that has either a cross certificate distribution point extension or property.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_FIND_PUBKEY_MD5_HASH
+        ///     </td>
+        ///     <td>
+        ///       Data type of <paramref name="FindPara"/>: <see cref="CRYPT_HASH_BLOB"/> structure.<br/>
+        ///       Find a certificate whose MD5-hashed public key matches the specified hash.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </param>
+        /// <param name="FindPara">Points to a data item or structure used with <paramref name="FindType"/>.</param>
+        /// <param name="PrevCertContext">
+        /// A pointer to the last <see cref="CERT_CONTEXT"/> structure returned by this function.
+        /// This parameter must be <see cref="IntPtr.Zero"/> on the first call of the function.
+        /// To find successive certificates meeting the search criteria, set <paramref name="PrevCertContext"/> to the pointer returned by the previous call to the function.
+        /// This function frees the <see cref="CERT_CONTEXT"/> referenced by non-<see cref="IntPtr.Zero"/> values of this parameter.
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the function returns a pointer to a read-only <see cref="CERT_CONTEXT"/> structure.<br/>
+        /// If the function fails and a certificate that matches the search criteria is not found, the return value is NULL.<br/>
+        /// A non-<see cref="IntPtr.Zero"/>&#32;<see cref="CERT_CONTEXT"/> that CertFindCertificateInStore returns must be freed by <see cref="CertFreeCertificateContext"/> or by being passed as the <paramref name="PrevCertContext"/> parameter on a subsequent call to <b>CertFindCertificateInStore</b>.<br/>
+        /// For extended error information, call GetLastError. Some possible error codes follow.
+        /// <table class="table_value_meaning">
+        ///   <tr>
+        ///     <th>
+        ///       Return code
+        ///     </th>
+        ///     <th>
+        ///       Description
+        ///     </th>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_E_NOT_FOUND
+        ///     </td>
+        ///     <td>
+        ///       No certificate was found matching the search criteria.
+        ///       This can happen if the store is empty or the end of the store's list is reached.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       E_INVALIDARG
+        ///     </td>
+        ///     <td>
+        ///       The handle in the <paramref name="CertStore"/> parameter is not the same as that in the certificate context pointed to by the <paramref name="PrevCertContext"/> parameter, or a value that is not valid was specified in the <paramref name="FindType"/> parameter.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         IntPtr CertFindCertificateInStore(IntPtr CertStore,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext);
+        #endregion
+        #region M:CertGetIssuerCertificateFromStore(IntPtr,IntPtr,IntPtr,{ref}Int32):IntPtr
+        /// <summary>
+        /// This function retrieves the certificate context from the certificate store for the first or next issuer of the specified subject certificate.
+        /// </summary>
+        /// <param name="CertStore">Handle of a certificate store.</param>
+        /// <param name="SubjectContext">
+        /// A pointer to a <see cref="CERT_CONTEXT"/> structure that contains the subject information.
+        /// This parameter can be obtained from any certificate store or can be created by the calling application using the <see cref="CertCreateCertificateContext"/> function.
+        /// </param>
+        /// <param name="PrevIssuerContext">
+        /// A pointer to a <see cref="CERT_CONTEXT"/> structure that contains the issuer information.
+        /// An issuer can have multiple certificates, especially when a validity period is about to change.
+        /// This parameter must be <see cref="IntPtr.Zero"/> on the call to get the first issuer certificate.
+        /// To get the next certificate for the issuer, set <paramref name="PrevIssuerContext"/> to the <see cref="CERT_CONTEXT"/> structure returned by the previous call.<br/>
+        /// This function frees the <see cref="CERT_CONTEXT"/> referenced by non-<see cref="IntPtr.Zero"/> values of this parameter.
+        /// </param>
+        /// <param name="Flags">
+        /// The following flags enable verification checks on the returned certificate.
+        /// They can be combined using a bitwise-<b>OR</b> operation to enable multiple verifications.
+        /// <table class="table_value_meaning">
+        ///   <tr>
+        ///     <th>
+        ///       Value
+        ///     </th>
+        ///     <th>
+        ///       Meaning
+        ///     </th>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_NO_CRL_FLAG
+        ///     </td>
+        ///     <td>
+        ///       Indicates no matching CRL was found.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_NO_ISSUER_FLAG
+        ///     </td>
+        ///     <td>
+        ///       Indicates no issuer certificate was found.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_REVOCATION_FLAG
+        ///     </td>
+        ///     <td>
+        ///       Checks whether the subject certificate is on the issuer's revocation list.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_SIGNATURE_FLAG
+        ///     </td>
+        ///     <td>
+        ///       Uses the public key in the issuer's certificate to verify the signature on the subject certificate.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CERT_STORE_TIME_VALIDITY_FLAG
+        ///     </td>
+        ///     <td>
+        ///       Gets the current time and verifies that it is within the subject certificate's validity period.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// If a verification check of an enabled type succeeds, its flag is set to zero.
+        /// If it fails, its flag remains set upon return.
+        /// For <b>CERT_STORE_REVOCATION_FLAG</b>, the verification succeeds if the function does not find a CRL related to the subject certificate.<br/>
+        /// If <b>CERT_STORE_REVOCATION_FLAG</b> is set and the issuer does not have a CRL in the store, <b>CERT_STORE_NO_CRL_FLAG</b> is set and <b>CERT_STORE_REVOCATION_FLAG</b> remains set.<br/>
+        /// If <b>CERT_STORE_SIGNATURE_FLAG</b> or <b>CERT_STORE_REVOCATION_FLAG</b> is set, <b>CERT_STORE_NO_ISSUER_FLAG</b> is set if the function does not find an issuer certificate in the store.<br/>
+        /// In the case of a verification check failure, a pointer to the issuer's <see cref="CERT_CONTEXT"/> is still returned and <see cref="LastErrorService.GetLastError"/> is not updated.
+        /// </param>
+        /// <returns>
+        /// If the function succeeds, the return value is a pointer to a read-only issuer <see cref="CERT_CONTEXT"/>.<br/>
+        /// If the function fails and the first or next issuer certificate is not found, the return value is <see cref="IntPtr.Zero"/>.<br/>
+        /// Only the last returned <see cref="CERT_CONTEXT"/> structure must be freed by calling <see cref="CertFreeCertificateContext"/>.
+        /// When the returned <see cref="CERT_CONTEXT"/> from one call to the function is supplied as the <paramref name="PrevIssuerContext"/> parameter on a subsequent call, the context is freed as part of the action of the function.<br/>
+        /// For extended error information, call <see cref="LastErrorService.GetLastError"/>. Some possible error codes follow.
+        /// <table class="table_value_meaning">
+        ///   <tr>
+        ///     <th>
+        ///       Return code
+        ///     </th>
+        ///     <th>
+        ///       Description
+        ///     </th>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_E_NOT_FOUND
+        ///     </td>
+        ///     <td>
+        ///       No issuer was found for the subject certificate.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       CRYPT_E_SELF_SIGNED
+        ///     </td>
+        ///     <td>
+        ///       The issuer certificate is the same as the subject certificate. It is a self-signed root certificate.
+        ///     </td>
+        ///   </tr>
+        ///   <tr>
+        ///     <td>
+        ///       E_INVALIDARG
+        ///     </td>
+        ///     <td>
+        ///       The handle in the <paramref name="CertStore"/> parameter is not the same as that of the certificate context pointed to by the <paramref name="PrevIssuerContext"/> parameter, or an unsupported flag was set in <paramref name="Flags"/>.
+        ///     </td>
+        ///   </tr>
+        /// </table>
+        /// </returns>
         IntPtr CertGetIssuerCertificateFromStore(IntPtr CertStore,IntPtr SubjectContext,IntPtr PrevIssuerContext,ref Int32 Flags);
+        #endregion
         IntPtr CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, IntPtr Para);
         IntPtr CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, String Para);
         IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE MsgEncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,IntPtr si);
