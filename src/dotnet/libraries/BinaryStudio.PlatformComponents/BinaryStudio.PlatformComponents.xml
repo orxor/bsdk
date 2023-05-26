@@ -59,10 +59,139 @@
             </summary>
         </member>
         <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EBADF">
+            <summary>
             Bad file descriptor.
+            </summary>
         </member>
         <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ECHILD">
+            <summary>
             No child processes.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EAGAIN">
+            <summary>
+            Resource temporarily unavailable.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENOMEM">
+            <summary>
+            Cannot allocate memory.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EACCES">
+            <summary>
+            Permission denied.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EFAULT">
+            <summary>
+            Bad address.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENOTBLK">
+            <summary>
+            Block device required.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EBUSY">
+            <summary>
+            Device or resource busy.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EEXIST">
+            <summary>
+            File exists.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EXDEV">
+            <summary>
+            Invalid cross-device link.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENODEV">
+            <summary>
+            No such device.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENOTDIR">
+            <summary>
+            Not a directory.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EISDIR">
+            <summary>
+            Is a directory.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EINVAL">
+            <summary>
+            Invalid argument.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENFILE">
+            <summary>
+            Too many open files in system.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EMFILE">
+            <summary>
+            Too many open files.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENOTTY">
+            <summary>
+            Inappropriate ioctl for device.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ETXTBSY">
+            <summary>
+            Text file busy.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EFBIG">
+            <summary>
+            File too large.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ENOSPC">
+            <summary>
+            No space left on device.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ESPIPE">
+            <summary>
+            Illegal seek.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EROFS">
+            <summary>
+            Read-only file system.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EMLINK">
+            <summary>
+            Too many links.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EPIPE">
+            <summary>
+            Broken pipe.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EDOM">
+            <summary>
+            Numerical argument out of domain.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_ERANGE">
+            <summary>
+            Numerical result out of range.
+            </summary>
+        </member>
+        <member name="F:BinaryStudio.PlatformComponents.Win32.HRESULT.PSX_EDEADLK">
+            <summary>
+            Resource deadlock avoided.
+            </summary>
         </member>
         <member name="P:BinaryStudio.PlatformComponents.Win32.Process.CurrentProcess">
             <summary>Gets a new <see cref="T:BinaryStudio.PlatformComponents.Win32.Process" /> component and associates it with the currently active process.</summary>

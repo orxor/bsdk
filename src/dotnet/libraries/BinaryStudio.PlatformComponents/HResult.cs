@@ -3549,11 +3549,11 @@ namespace BinaryStudio.PlatformComponents.Win32
         /// <summary>
         /// Numerical argument out of domain.
         /// </summary>
-        PSX_EDOM                                                              = unchecked((Int32)0x90000021),
+        PSX_EDOM                               = unchecked((Int32)0x90000021),
         /// <summary>
         /// Numerical result out of range.
         /// </summary>
-        PSX_ERANGE                                                            = unchecked((Int32)0x90000022),
+        PSX_ERANGE                             = unchecked((Int32)0x90000022),
         /// <summary>
         /// Resource deadlock avoided.
         /// </summary>
