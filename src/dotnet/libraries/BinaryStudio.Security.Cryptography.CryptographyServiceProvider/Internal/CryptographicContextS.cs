@@ -33,6 +33,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CertExportCertStore(IntPtr Store,ref CRYPT_DATA_BLOB PFX,IntPtr Password,IntPtr Para,Int32 Flags){ return CertExportCertStore(Store,ref PFX,Password,Para,Flags); }
         Boolean CryptographicFunctions.CertExportCertStore(IntPtr Store,ref CRYPT_DATA_BLOB PFX,IntPtr Password,Int32 Flags){ return CertExportCertStore(Store,ref PFX,Password,Flags); }
         Boolean CryptographicFunctions.CertFreeCertificateContext(IntPtr CertContext) { return CertFreeCertificateContext(CertContext); }
+        Boolean CryptographicFunctions.CertFreeCRLContext(IntPtr CrlContext) { return CertFreeCRLContext(CrlContext); }
         Boolean CryptographicFunctions.CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Byte[] Data, ref Int32 Size) { return CertGetCertificateContextProperty(Context,PropertyIndex,Data,ref Size); }
         Boolean CryptographicFunctions.CertRetrieveLogoOrBiometricInfo(IntPtr CertContext,String LogoOrBiometricType,Int32 RetrievalFlags,Int32 Timeout,Int32 Flags,IntPtr Reserved,out IntPtr ppbData,out Int32 pcbData,out IntPtr ppwszMimeType) { return CertRetrieveLogoOrBiometricInfo(CertContext,LogoOrBiometricType,RetrievalFlags,Timeout,Flags,Reserved,out ppbData,out pcbData,out ppwszMimeType); }
         Boolean CryptographicFunctions.CertSerializeCertificateStoreElement(IntPtr CertContext,Int32 Flags,Byte[] pbElement,ref Int32 pcbElement) { return CertSerializeCertificateStoreElement(CertContext,Flags,pbElement,ref pcbElement); }
@@ -142,6 +143,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertDeleteCertificateFromStore(IntPtr CertContext);
         [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertDeleteCRLFromStore(IntPtr Context);
         [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr CertContext);
+        [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertFreeCRLContext(IntPtr CrlContext);
         [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, ref Int32 Size);
         [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertRetrieveLogoOrBiometricInfo(IntPtr CertContext,String LogoOrBiometricType,Int32 RetrievalFlags,Int32 Timeout,Int32 Flags,IntPtr Reserved,out IntPtr ppbData,out Int32 pcbData,out IntPtr ppwszMimeType);
         [DllImport("crypt32.dll", SetLastError = true)] private static extern Boolean CertSerializeCertificateStoreElement(IntPtr CertContext,Int32 Flags,[MarshalAs(UnmanagedType.LPArray)]Byte[] pbElement,ref Int32 pcbElement);

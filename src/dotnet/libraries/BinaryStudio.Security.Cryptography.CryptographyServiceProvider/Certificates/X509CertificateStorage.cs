@@ -153,7 +153,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
          * </summary>
          * <param name="Info">A pointer to a <see cref="CERT_INFO"/> structure. Only the <see cref="CERT_INFO.Issuer"/> and <see cref="CERT_INFO.SerialNumber"/> members are used.</param>
          * <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
-         * <seealso cref="CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
+         * <seealso cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
          */
         public unsafe X509Certificate Find(CERT_INFO* Info)
             {

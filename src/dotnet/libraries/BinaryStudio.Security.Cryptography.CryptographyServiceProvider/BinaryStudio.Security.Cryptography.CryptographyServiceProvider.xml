@@ -59,7 +59,7 @@
             </summary>
             <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
             <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
-            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
+            <seealso cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.IX509CertificateStorage.Add(BinaryStudio.Security.Cryptography.Certificates.X509Certificate)">
             <summary>
@@ -67,8 +67,8 @@
             </summary>
             <param name="o">The certificate to add.</param>
             <exception cref="T:System.ArgumentNullException"><paramref name="o"/> is null.</exception>
-            <seealso cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD)"/>
-            <seealso cref="M:BinaryStudio.Security.Cryptography.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD,System.IntPtr@)"/>
+            <seealso cref="M:BinaryStudio.Services.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD)"/>
+            <seealso cref="M:BinaryStudio.Services.CryptographicFunctions.CertAddCertificateContextToStore(System.IntPtr,System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_STORE_ADD,System.IntPtr@)"/>
         </member>
         <member name="T:BinaryStudio.Security.Cryptography.Certificates.X509Certificate">
             <summary>
@@ -306,7 +306,7 @@
             </summary>
             <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
             <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
-            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
+            <seealso cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.X509CertificateStorage.Add(BinaryStudio.Security.Cryptography.Certificates.X509Certificate)">
             <summary>
@@ -346,7 +346,7 @@
             </summary>
             <param name="Info">A pointer to a <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_INFO"/> structure. Only the <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.Issuer"/> and <see cref="F:BinaryStudio.PlatformComponents.Win32.CERT_INFO.SerialNumber"/> members are used.</param>
             <returns>The certificate if succeeds, otherwise <see langword="null"/>.</returns>
-            <seealso cref="!:CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
+            <seealso cref="M:BinaryStudio.Services.CryptographicFunctions.CertGetSubjectCertificateFromStore"/>
         </member>
         <member name="M:BinaryStudio.Security.Cryptography.Certificates.Internal.EX509CertificateStorage.Dispose(System.Boolean)">
             <summary>Releases the unmanaged resources used by the instance and optionally releases the managed resources.</summary>

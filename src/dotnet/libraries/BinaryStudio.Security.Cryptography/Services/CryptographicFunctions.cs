@@ -852,6 +852,18 @@ namespace BinaryStudio.Services
         /// <returns>The function always returns TRUE.</returns>
         Boolean CertFreeCertificateContext(IntPtr Context);
         #endregion
+        #region M:CertFreeCRLContext(IntPtr):Boolean
+        /// <summary>
+        /// This function frees a certificate revocation list (CRL) context by decrementing its reference count.
+        /// When the reference count goes to zero, <b>CertFreeCRLContext</b> frees the memory used by a CRL context.<br/>
+        /// To free a context obtained by a get, duplicate, or create function, call the appropriate free function.
+        /// To free a context obtained by a find or enumerate function, either pass it in as the previous context parameter to a subsequent invocation of the function, or call the appropriate free function.
+        /// For more information, see the reference topic for the function that obtains the context.
+        /// </summary>
+        /// <param name="Context">A pointer to the <see cref="CRL_CONTEXT"/> to be freed.</param>
+        /// <returns>The function always returns TRUE.</returns>
+        Boolean CertFreeCRLContext(IntPtr Context);
+        #endregion
         #region M:CertGetCertificateContextProperty(IntPtr,CERT_PROP_ID,Byte[],{ref}Int32):Boolean
         /// <summary>
         /// The function retrieves the information contained in an extended property of a certificate context.

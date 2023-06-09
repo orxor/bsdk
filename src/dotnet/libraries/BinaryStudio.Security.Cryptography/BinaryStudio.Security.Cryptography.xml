@@ -748,7 +748,7 @@
               </table>
             </p>
             </param>
-            <param name="StoreContext">A pointer to a pointer to the decoded CRL context. If a copy is made, that context must be freed by using <see cref="!:CertFreeCRLContext"/>.</param>
+            <param name="StoreContext">A pointer to a pointer to the decoded CRL context. If a copy is made, that context must be freed by using <see cref="M:BinaryStudio.Services.CryptographicFunctions.CertFreeCRLContext(System.IntPtr)"/>.</param>
             <returns>
             If the function succeeds, the return value is TRUE.<br/>
             If the function fails, the return value is FALSE. Errors from the called functions <see cref="!:CertAddEncodedCRLToStore"/> and <see cref="!:CertSetCRLContextProperty"/> can be propagated to this function.<br/>
@@ -1110,6 +1110,17 @@
             To free a context obtained by a get, duplicate, or create function, call the appropriate free function. To free a context obtained by a find or enumerate function, either pass it in as the previous context parameter to a subsequent invocation of the function, or call the appropriate free function. For more information, see the reference topic for the function that obtains the context.
             </summary>
             <param name="Context">A pointer to the <see cref="T:BinaryStudio.PlatformComponents.Win32.CERT_CONTEXT"/> to be freed.</param>
+            <returns>The function always returns TRUE.</returns>
+        </member>
+        <member name="M:BinaryStudio.Services.CryptographicFunctions.CertFreeCRLContext(System.IntPtr)">
+            <summary>
+            This function frees a certificate revocation list (CRL) context by decrementing its reference count.
+            When the reference count goes to zero, <b>CertFreeCRLContext</b> frees the memory used by a CRL context.<br/>
+            To free a context obtained by a get, duplicate, or create function, call the appropriate free function.
+            To free a context obtained by a find or enumerate function, either pass it in as the previous context parameter to a subsequent invocation of the function, or call the appropriate free function.
+            For more information, see the reference topic for the function that obtains the context.
+            </summary>
+            <param name="Context">A pointer to the <see cref="T:BinaryStudio.PlatformComponents.Win32.CRL_CONTEXT"/> to be freed.</param>
             <returns>The function always returns TRUE.</returns>
         </member>
         <member name="M:BinaryStudio.Services.CryptographicFunctions.CertGetCertificateContextProperty(System.IntPtr,BinaryStudio.PlatformComponents.Win32.CERT_PROP_ID,System.Byte[],System.Int32@)">
