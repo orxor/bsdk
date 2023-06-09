@@ -71,8 +71,11 @@ type
     procedure WriteValue(Value:Integer);overload;virtual;
     procedure WriteValue(Value:Boolean);overload;virtual;
     procedure WriteValue(Value:String);overload;virtual;
+    procedure WriteValue(Value:PWideChar);overload;virtual;
+    procedure WriteProperty(PropertyName:String;Value:PWideChar);overload;
     procedure WriteProperty(PropertyName:String;Value:OleVariant);overload;
     procedure WriteProperty(PropertyName:String;Value:FILETIME);overload;
+    procedure WriteProperty(PropertyName:String;Value:PBStrList;const Count:Integer);overload;
     procedure WriteNull;virtual;
     procedure WriteRaw(Value:String);virtual;abstract;
   protected
@@ -321,8 +324,13 @@ begin
   AutoCompleteClose(Container);
 end;
 
-procedure JsonWriter.WriteProperty(PropertyName:String;
-  Value:OleVariant);
+procedure JsonWriter.WriteProperty(PropertyName:String;Value:PWideChar);
+begin
+  WritePropertyName(PropertyName);
+  WriteValue(Value);
+end;
+
+procedure JsonWriter.WriteProperty(PropertyName:String;Value:OleVariant);
 begin
   WritePropertyName(PropertyName);
   WriteValue(Value);
@@ -425,6 +433,14 @@ begin
   InternalWriteValue(JsonTokenString);
 end;
 
+procedure JsonWriter.WriteValue(Value:PWideChar);
+begin
+  if Value <> nil then
+    WriteValue(String(Value))
+  else
+    WriteNull;
+end;
+
 procedure JsonWriter.WriteStartArray;
 begin
   InternalWriteStart(JsonTokenStartArray,JsonContainerTypeArray);
@@ -451,6 +467,23 @@ begin
   InternalWriteStart(JsonTokenStartConstructor,JsonContainerTypeConstructor);
 end;
 
+procedure JsonWriter.WriteProperty(PropertyName:String;Value:PBStrList;const Count:Integer);
+var
+  I:Integer;
+begin
+  WritePropertyName(PropertyName);
+  if (Value <> nil) and (Count > 0) then
+  begin
+    WriteStartArray;
+    for I := 0 to Count-1 do
+    begin
+      WriteValue(Value[I]);
+    end;
+    WriteEnd;
+    Exit;
+  end;
+  WriteNull;
+end;
 
 { JsonTextWriter }
 
@@ -614,7 +647,7 @@ begin
 end;
 
 var
-  I,J:Integer;
+  I:Integer;
 
 procedure Move(Source:TJsonStateArray;var Target:TJsonStateArray);
 var
