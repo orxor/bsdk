@@ -32,6 +32,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CertExportCertStore(IntPtr Store,ref CRYPT_DATA_BLOB PFX,IntPtr Password,IntPtr Para,Int32 Flags){ throw new NotSupportedException(); }
         Boolean CryptographicFunctions.CertExportCertStore(IntPtr Store,ref CRYPT_DATA_BLOB PFX,IntPtr Password,Int32 Flags){ throw new NotSupportedException(); }
         Boolean CryptographicFunctions.CertFreeCertificateContext(IntPtr CertContext) { return CertFreeCertificateContext(CertContext); }
+        Boolean CryptographicFunctions.CertFreeCRLContext(IntPtr CrlContext) { return CertFreeCRLContext(CrlContext); }
         Boolean CryptographicFunctions.CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, Byte[] Data, ref Int32 Size) { return CertGetCertificateContextProperty(Context,PropertyIndex,Data,ref Size); }
         Boolean CryptographicFunctions.CertRetrieveLogoOrBiometricInfo(IntPtr CertContext,String LogoOrBiometricType,Int32 RetrievalFlags,Int32 Timeout,Int32 Flags,IntPtr Reserved,out IntPtr ppbData,out Int32 pcbData,out IntPtr ppwszMimeType) { return CertRetrieveLogoOrBiometricInfo(CertContext,LogoOrBiometricType,RetrievalFlags,Timeout,Flags,Reserved,out ppbData,out pcbData,out ppwszMimeType); }
         Boolean CryptographicFunctions.CertSerializeCertificateStoreElement(IntPtr CertContext,Int32 Flags,Byte[] pbElement,ref Int32 pcbElement) { return CertSerializeCertificateStoreElement(CertContext,Flags,pbElement,ref pcbElement); }
@@ -46,10 +47,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptDeriveKey(IntPtr Context,ALG_ID AlgId,IntPtr BaseData,Int32 Flags,out IntPtr Key) { return CryptDeriveKey(Context,AlgId,BaseData,Flags,out Key); }
         Boolean CryptographicFunctions.CryptDestroyHash(IntPtr Handle) { return CryptDestroyHash(Handle); }
         Boolean CryptographicFunctions.CryptDestroyKey(IntPtr Key) { return CryptDestroyKey(Key); }
-        Boolean CryptographicFunctions.CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r) { return CryptDuplicateKey(Key,Reserved,Flags,out r); }
+        Boolean CryptographicFunctions.CryptDuplicateHash(IntPtr Hash,out IntPtr Output) { return CryptDuplicateHash(Hash,IntPtr.Zero,0,out Output); }
+        Boolean CryptographicFunctions.CryptDuplicateKey(IntPtr Key,out IntPtr Output) { return CryptDuplicateKey(Key,IntPtr.Zero,0,out Output); }
         Boolean CryptographicFunctions.CryptEnumOIDInfo(CRYPT_ALG_OID_GROUP_ID GroupId,IntPtr Arg,CryptEnumOidInfoCallback Callback) { return CryptEnumOIDInfo((Int32)GroupId,0,Arg,Callback); }
-        Boolean CryptographicFunctions.CryptEnumProviders(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, StringBuilder name, ref Int32 sz) { return CryptEnumProviders(index,reserved,flags,out type,name,ref sz); }
-        Boolean CryptographicFunctions.CryptEnumProviderTypes(Int32 index, IntPtr reserved, Int32 flags, out Int32 type, StringBuilder name, ref Int32 sz) { return CryptEnumProviderTypes(index,reserved,flags,out type,name,ref sz); }
+        Boolean CryptographicFunctions.CryptEnumProviders(Int32 Index,out Int32 Type, StringBuilder Name,ref Int32 Size) { return CryptEnumProviders(Index,IntPtr.Zero,0,out Type,Name,ref Size); }
+        Boolean CryptographicFunctions.CryptEnumProviderTypes(Int32 Index,out Int32 Type,StringBuilder Name,ref Int32 Size) { return CryptEnumProviderTypes(Index,IntPtr.Zero,0,out Type,Name,ref Size); }
         Boolean CryptographicFunctions.CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags,Byte[] Data,ref Int32 DataLen) { return CryptExportKey(Key,ExpKey,BlobType,Flags,Data,ref DataLen); }
         Boolean CryptographicFunctions.CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r) { return CryptGenKey(Context,AlgId,Flags,out r); }
         Boolean CryptographicFunctions.CryptGenRandom(IntPtr Context,Int32 Length,Byte[] Buffer) { return CryptGenRandom(Context,Length,Buffer); }
@@ -76,33 +78,27 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         Boolean CryptographicFunctions.CryptSignHash(IntPtr Handle, KEY_SPEC_TYPE KeySpec, Byte[] Signature, ref Int32 Length) { return CryptSignHash(Handle,KeySpec,IntPtr.Zero,0,Signature,ref Length); }
         Boolean CryptographicFunctions.CryptVerifyCertificateSignature(IntPtr Context,Int32 SubjectType,IntPtr Subject,Int32 IssuerType,IntPtr Issuer,Int32 Flags) { return CryptVerifyCertificateSignatureEx(Context,X509_ASN_ENCODING,SubjectType,Subject,IssuerType,Issuer,Flags,IntPtr.Zero); }
         Boolean CryptographicFunctions.CryptVerifySignature(IntPtr Handle, Byte[] Signature, Int32 SignatureSize, IntPtr Key) { return CryptVerifySignature(Handle,Signature,SignatureSize,Key,IntPtr.Zero,0); }
-        Int32 CryptographicFunctions.CertNameToStrA(Int32 CertEncodingType, ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrA(CertEncodingType,ref Name,StrType,psz,csz); }
-        Int32 CryptographicFunctions.CertNameToStrW(Int32 CertEncodingType, ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrW(CertEncodingType,ref Name,StrType,psz,csz); }
+        Int32 CryptographicFunctions.CertNameToStrA(ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrA(X509_ASN_ENCODING,ref Name,StrType,psz,csz); }
+        Int32 CryptographicFunctions.CertNameToStrW(ref CERT_NAME_BLOB Name, Int32 StrType, IntPtr psz, Int32 csz) { return CertNameToStrW(X509_ASN_ENCODING,ref Name,StrType,psz,csz); }
         IntPtr CryptographicFunctions.CertAlgIdToOID(ALG_ID Id) { return CertAlgIdToOID(Id); }
-        IntPtr CryptographicFunctions.CertCreateCertificateContext(Int32 CertEncodingType,Byte[] CertEncodedBytes,Int32 CertEncodedLength) { return CertCreateCertificateContext(CertEncodingType,CertEncodedBytes,CertEncodedLength); }
-        IntPtr CryptographicFunctions.CertCreateCRLContext(Int32 CertEncodingType,Byte[] CrlEncodedBytes,Int32 CrlEncodedLength) { return CertCreateCRLContext(CertEncodingType,CrlEncodedBytes,CrlEncodedLength); }
+        IntPtr CryptographicFunctions.CertCreateCertificateContext(Byte[] Source) { return CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Source,Source.Length); }
+        IntPtr CryptographicFunctions.CertCreateCRLContext(Byte[] Source) { return CertCreateCRLContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Source,Source.Length); }
         IntPtr CryptographicFunctions.CertDuplicateCertificateContext(IntPtr CertContext) { return CertDuplicateCertificateContext(CertContext); }
         IntPtr CryptographicFunctions.CertDuplicateCRLContext(IntPtr Context) { return CertDuplicateCRLContext(Context); }
         IntPtr CryptographicFunctions.CertEnumCertificatesInStore(IntPtr CertStore,IntPtr PrevCertContext) { return CertEnumCertificatesInStore(CertStore,PrevCertContext); }
-        IntPtr CryptographicFunctions.CertEnumCRLsInStore(IntPtr CertStore, IntPtr PrevCrlContext) { return CertEnumCRLsInStore(CertStore,PrevCrlContext); }
-        IntPtr CryptographicFunctions.CertFindCertificateInStore(IntPtr CertStore,Int32 CertEncodingType,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext) { return CertFindCertificateInStore(CertStore,CertEncodingType,FindFlags,FindType,FindPara,PrevCertContext); }
+        IntPtr CryptographicFunctions.CertEnumCRLsInStore(IntPtr CertStore,IntPtr PrevCrlContext) { return CertEnumCRLsInStore(CertStore,PrevCrlContext); }
+        IntPtr CryptographicFunctions.CertFindCertificateInStore(IntPtr CertStore,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext) { return CertFindCertificateInStore(CertStore,X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,FindFlags,FindType,FindPara,PrevCertContext); }
         IntPtr CryptographicFunctions.CertGetIssuerCertificateFromStore(IntPtr CertStore,IntPtr SubjectContext,IntPtr PrevIssuerContext,ref Int32 Flags) { return CertGetIssuerCertificateFromStore(CertStore,SubjectContext,PrevIssuerContext,ref Flags); }
-        IntPtr CryptographicFunctions.CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, IntPtr Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
-        IntPtr CryptographicFunctions.CertOpenStoreA(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, String Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
-        IntPtr CryptographicFunctions.CryptMsgOpenToDecode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,IntPtr StreamInfo) { return CryptMsgOpenToDecode(EncodingType,Flags,Type,CryptProv,RecipientInfo,StreamInfo); }
-        IntPtr CryptographicFunctions.CryptMsgOpenToDecode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,ref CMSG_STREAM_INFO StreamInfo) { return CryptMsgOpenToDecode(EncodingType,Flags,Type,CryptProv,RecipientInfo,ref StreamInfo); }
-        IntPtr CryptographicFunctions.CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo,ref CMSG_STREAM_INFO StreamInfo) { return CryptMsgOpenToEncode(EncodingType,Flags,Type,ref EncodeInfo,IntPtr.Zero,ref StreamInfo); }
-        unsafe Boolean CryptographicFunctions.CertGetCertificateChain(IntPtr ChainEngine, IntPtr Context, ref FILETIME time, IntPtr AdditionalStore, ref CERT_CHAIN_PARA ChainPara, CERT_CHAIN_FLAGS Flags, IntPtr Reserved, CERT_CHAIN_CONTEXT** ChainContext) { return CertGetCertificateChain(ChainEngine,Context,ref time,AdditionalStore,ref ChainPara,Flags,Reserved,ChainContext); }
+        IntPtr CryptographicFunctions.CertOpenStore(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, IntPtr Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
+        IntPtr CryptographicFunctions.CertOpenStore(IntPtr StoreProvider, Int32 MsgAndCertEncodingType, IntPtr CryptProv, Int32 Flags, String Para) { return CertOpenStoreA(StoreProvider, MsgAndCertEncodingType,CryptProv,Flags,Para); }
+        IntPtr CryptographicFunctions.CryptMsgOpenToDecode(CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr StreamInfo) { return CryptMsgOpenToDecode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,CryptProv,IntPtr.Zero,StreamInfo); }
+        IntPtr CryptographicFunctions.CryptMsgOpenToDecode(CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,ref CMSG_STREAM_INFO StreamInfo) { return CryptMsgOpenToDecode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,CryptProv,IntPtr.Zero,ref StreamInfo); }
+        IntPtr CryptographicFunctions.CryptMsgOpenToEncode(CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo,ref CMSG_STREAM_INFO StreamInfo) { return CryptMsgOpenToEncode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,ref EncodeInfo,IntPtr.Zero,ref StreamInfo); }
+        unsafe Boolean CryptographicFunctions.CertGetCertificateChain(IntPtr ChainEngine,IntPtr Context,ref FILETIME Time,IntPtr AdditionalStore,ref CERT_CHAIN_PARA ChainPara,CERT_CHAIN_FLAGS Flags,CERT_CHAIN_CONTEXT** ChainContext) { return CertGetCertificateChain(ChainEngine,Context,ref Time,AdditionalStore,ref ChainPara,Flags,IntPtr.Zero,ChainContext); }
         unsafe Boolean CryptographicFunctions.CertGetValidUsages(Int32 cCerts,CERT_CONTEXT* rghCerts,Int32* cNumOIDs,IntPtr rghOIDs,Int32* pcbOIDs) { return CertGetValidUsages(cCerts,rghCerts,cNumOIDs,rghOIDs,pcbOIDs); }
-        unsafe Boolean CryptographicFunctions.CertSelectCertificateChains(ref Guid SelectionContext,Int32 Flags,CERT_SELECT_CHAIN_PARA* ChainParameters,Int32 cCriteria,CERT_SELECT_CRITERIA* rgpCriteria,IntPtr Store,out Int32 pcSelection,out CERT_CHAIN_CONTEXT* pprgpSelection) { return CertSelectCertificateChains(ref SelectionContext,Flags,ChainParameters,cCriteria,rgpCriteria,Store,out pcSelection,out pprgpSelection); }
-        unsafe CERT_SERVER_OCSP_RESPONSE_CONTEXT* CryptographicFunctions.CertGetServerOcspResponseContext(IntPtr ServerOcspResponse,Int32 Flags,IntPtr Reserved) { return CertGetServerOcspResponseContext(ServerOcspResponse,Flags,Reserved); }
-        unsafe IntPtr CryptographicFunctions.CertAddRefServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara) { return CertAddRefServerOcspResponse(ChainContext,Flags,OpenPara); }
         unsafe IntPtr CryptographicFunctions.CertCreateSelfSignCertificate(IntPtr CryptProvOrNCryptKey,ref CERT_NAME_BLOB SubjectIssuerBlob,Int32 Flags,CRYPT_KEY_PROV_INFO* KeyProvInfo,CRYPT_ALGORITHM_IDENTIFIER* SignatureAlgorithm,SYSTEMTIME* StartTime,SYSTEMTIME* EndTime,CERT_EXTENSIONS* Extensions) { return CertCreateSelfSignCertificate(CryptProvOrNCryptKey,ref SubjectIssuerBlob,Flags,KeyProvInfo,SignatureAlgorithm,StartTime,EndTime,Extensions); }
         unsafe IntPtr CryptographicFunctions.CertGetSubjectCertificateFromStore(IntPtr Store,Int32 EncodingType,CERT_INFO* CertId) { return CertGetSubjectCertificateFromStore(Store,EncodingType,CertId); }
-        unsafe IntPtr CryptographicFunctions.CertOpenServerOcspResponse(CERT_CHAIN_CONTEXT* ChainContext,Int32 Flags,CERT_SERVER_OCSP_RESPONSE_OPEN_PARA* OpenPara) { return CertOpenServerOcspResponse(ChainContext,Flags,OpenPara); }
         unsafe IntPtr CryptographicFunctions.CryptFindOIDInfo(CRYPT_OID_INFO_KEY_TYPE KeyType,void* Key,Int32 GroupId) { return CryptFindOIDInfo((Int32)KeyType,Key,GroupId); }
-        void CryptographicFunctions.CertAddRefServerOcspResponseContext(IntPtr ServerOcspResponseContext) { CertAddRefServerOcspResponseContext(ServerOcspResponseContext); }
-        void CryptographicFunctions.CertCloseServerOcspResponse(IntPtr ServerOcspResponse,Int32 Flags) { CertCloseServerOcspResponse(ServerOcspResponse,Flags); }
 
         [DllImport("libadvapi32", SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, IntPtr Zero);
         [DllImport("libadvapi32", SetLastError = true)] private static extern Boolean CertAddCRLContextToStore(IntPtr Store,IntPtr Context,CERT_STORE_ADD Disposition, out IntPtr StoreContext);
@@ -126,6 +122,7 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertCloseStore(IntPtr handle,Int32 flags);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertDeleteCertificateFromStore(IntPtr CertContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertFreeCertificateContext(IntPtr CertContext);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertFreeCRLContext(IntPtr CrlContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertGetCertificateContextProperty(IntPtr Context, CERT_PROP_ID PropertyIndex, [MarshalAs(UnmanagedType.LPArray)]Byte[] Data, ref Int32 Size);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertRetrieveLogoOrBiometricInfo(IntPtr CertContext,String LogoOrBiometricType,Int32 RetrievalFlags,Int32 Timeout,Int32 Flags,IntPtr Reserved,out IntPtr ppbData,out Int32 pcbData,out IntPtr ppwszMimeType);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CertSerializeCertificateStoreElement(IntPtr CertContext,Int32 Flags,[MarshalAs(UnmanagedType.LPArray)]Byte[] pbElement,ref Int32 pcbElement);
@@ -137,7 +134,8 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptAcquireCertificatePrivateKey(IntPtr Certificate, CRYPT_ACQUIRE_FLAGS Flags, IntPtr Parameters,out IntPtr CryptProvOrNCryptKey, out KEY_SPEC_TYPE KeySpec, out Boolean CallerFreeProvOrNCryptKey);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptDeriveKey(IntPtr Context,ALG_ID AlgId,IntPtr BaseData,Int32 Flags,out IntPtr Key);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptDestroyKey(IntPtr Key);
-        [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr r);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptDuplicateHash(IntPtr Hash,IntPtr Reserved,Int32 Flags,out IntPtr Output);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptDuplicateKey(IntPtr Key,IntPtr Reserved,Int32 Flags,out IntPtr Output);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptEnumOIDInfo(Int32 GroupId,Int32 Flags,IntPtr Arg,CryptEnumOidInfoCallback Callback);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptExportKey(IntPtr Key,IntPtr ExpKey,Int32 BlobType,Int32 Flags, [MarshalAs(UnmanagedType.LPArray)] Byte[] Data,ref Int32 DataLen);
         [DllImport("libcrypt32", SetLastError = true)] private static extern Boolean CryptGenKey(IntPtr Context,ALG_ID AlgId,Int32 Flags,out IntPtr r);
@@ -168,11 +166,11 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
         [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CertEnumCertificatesInStore(IntPtr CertStore,IntPtr PrevCertContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CertFindCertificateInStore(IntPtr CertStore,Int32 CertEncodingType,Int32 FindFlags,Int32 FindType,IntPtr FindPara,IntPtr PrevCertContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CertGetIssuerCertificateFromStore(IntPtr CertStore,IntPtr SubjectContext,IntPtr PrevIssuerContext,ref Int32 Flags);
-        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,IntPtr StreamInfo);
-        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,ref CMSG_STREAM_INFO StreamInfo);
-        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_SIGNED_ENCODE_INFO32 EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
-        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_SIGNED_ENCODE_INFO64 EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
-        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,IntPtr StreamInfo);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToDecode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,IntPtr CryptProv,IntPtr RecipientInfo,ref CMSG_STREAM_INFO StreamInfo);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_SIGNED_ENCODE_INFO32 EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_SIGNED_ENCODE_INFO64 EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
+        [DllImport("libcrypt32", SetLastError = true)] private static extern IntPtr CryptMsgOpenToEncode(Int32 EncodingType,CRYPT_OPEN_MESSAGE_FLAGS Flags,CMSG_TYPE Type,ref CMSG_ENVELOPED_ENCODE_INFO EncodeInfo,IntPtr InnerContentObjId,ref CMSG_STREAM_INFO StreamInfo);
         [DllImport("libcrypt32", SetLastError = true)] private static extern unsafe Boolean CertGetCertificateChain(IntPtr ChainEngine, IntPtr Context, ref FILETIME time, IntPtr AdditionalStore, ref CERT_CHAIN_PARA ChainPara, CERT_CHAIN_FLAGS Flags, IntPtr Reserved, CERT_CHAIN_CONTEXT** ChainContext);
         [DllImport("libcrypt32", SetLastError = true)] private static extern unsafe Boolean CertGetValidUsages(Int32 cCerts,CERT_CONTEXT* rghCerts,Int32* cNumOIDs,IntPtr rghOIDs,Int32* pcbOIDs);
         [DllImport("libcrypt32", SetLastError = true)] private static extern unsafe Boolean CertSelectCertificateChains(ref Guid SelectionContext,Int32 Flags,CERT_SELECT_CHAIN_PARA* ChainParameters,Int32 cCriteria,CERT_SELECT_CRITERIA* rgpCriteria,IntPtr Store,out Int32 pcSelection,out CERT_CHAIN_CONTEXT* pprgpSelection);
@@ -245,18 +243,18 @@ namespace BinaryStudio.Security.Cryptography.CryptographyServiceProvider
             return CryptGetHashParam(Handle,Parameter, out Value,ref Size,0);
             }
 
-        IntPtr CryptographicFunctions.CryptMsgOpenToEncode(CRYPT_MSG_TYPE EncodingType, CRYPT_OPEN_MESSAGE_FLAGS Flags,
+        IntPtr CryptographicFunctions.CryptMsgOpenToEncode(CRYPT_OPEN_MESSAGE_FLAGS Flags,
             CMSG_TYPE Type, CMSG_SIGNED_ENCODE_INFO EncodeInfo,
             ref CMSG_STREAM_INFO StreamInfo) {
             if (Environment.Is64BitProcess) {
                 var e = (CMSG_SIGNED_ENCODE_INFO64)EncodeInfo;
-                return CryptMsgOpenToEncode(EncodingType,Flags,Type,
+                return CryptMsgOpenToEncode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,
                     ref e,IntPtr.Zero,ref StreamInfo);
                 }
             else
                 {
                 var e = (CMSG_SIGNED_ENCODE_INFO32)EncodeInfo;
-                return CryptMsgOpenToEncode(EncodingType,Flags,Type,
+                return CryptMsgOpenToEncode(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,Flags,Type,
                     ref e,IntPtr.Zero,ref StreamInfo);
                 }
             }

@@ -9,10 +9,18 @@ uses
   Json in '..\..\core\Json.pas';
 
 const
+  {$IF DEFINED(VER140) OR DEFINED(VER150)}
   TypeKindNames:array[TTypeKind] of String = ('tkUnknown','tkInteger','tkChar',
     'tkEnumeration','tkFloat','tkString','tkSet','tkClass','tkMethod','tkWChar',
     'tkLString','tkWString','tkVariant','tkArray','tkRecord','tkInterface',
     'tkInt64','tkDynArray');
+  {$ELSE}
+  TypeKindNames:array[TTypeKind] of String = ('tkUnknown','tkInteger','tkChar',
+    'tkEnumeration','tkFloat','tkString','tkSet','tkClass','tkMethod','tkWChar',
+    'tkLString','tkWString','tkVariant','tkArray','tkRecord','tkInterface',
+    'tkInt64','tkDynArray','tkUString','tkClassRef','tkPointer','tkProcedure',
+    'tkMRecord');
+  {$IFEND}
 
 procedure Write(Writer:JsonWriter;PropInfo:PPropInfo);overload;
 begin

@@ -239,7 +239,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             if (key == null) { throw new ArgumentOutOfRangeException(nameof(key)); }
             Source = BuildSource(source);
-            Context = Validate(Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length),NotZero);
+            Context = Validate(Entries.CertCreateCertificateContext(source),NotZero);
             SignatureAlgorithm = Source.SignatureAlgorithm.SignatureAlgorithm;
             HashAlgorithm = Source.SignatureAlgorithm.HashAlgorithm;
             KeySpec = key.KeySpec;
@@ -318,7 +318,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         #region M:CertCreateCertificateContext(Byte[]):IntPtr
         private static IntPtr CertCreateCertificateContext(Byte[] source)
             {
-            return Entries.CertCreateCertificateContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
+            return Entries.CertCreateCertificateContext(source);
             }
         #endregion
         #region M:SetProviderInfo(CryptKey):X509Certificate

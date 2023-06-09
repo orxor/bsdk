@@ -45,7 +45,7 @@ namespace BinaryStudio.Security.Cryptography.Certificates
         public X509CertificateRevocationList(Byte[] source) {
             if (source == null) { throw new ArgumentNullException(nameof(source)); }
             Source = BuildSource(source);
-            Context = Entries.CertCreateCRLContext(X509_ASN_ENCODING|PKCS_7_ASN_ENCODING,source,source.Length);
+            Context = Entries.CertCreateCRLContext(source);
             if (Context == IntPtr.Zero) {
                 var hr = GetHRForLastWin32Error();
                 Marshal.ThrowExceptionForHR((Int32)hr);
